@@ -1,0 +1,89 @@
++++
+title = "Tidy up strings with the R package metan"
+linktitle = "Tidy strings"
+date = "2020/04/03"
+toc = true  # Show table of contents? true/false
+type = "docs"  # Do not modify.
+[menu.example]
+    parent = "Data Manipulation"
+    weight = 2
++++
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(cache = TRUE, comment = "#", fig.align = "center", collapse = TRUE)
+```
+
+
+## Getting started
+
+In this quick tip, I show you how to tidy character strings with the package [metan](https://tiagoolivoto.github.io/metan/). If the package is not yet installed, you can download it from [CRAN](https://cran.r-project.org/web/packages/metan/).
+Install the released version of metan from [CRAN](https://CRAN.R-project.org/package=metan) with:
+
+```{r, eval=FALSE}
+install.packages("metan")
+
+```
+
+For the latest release notes on this development version, see the [NEWS file](https://tiagoolivoto.github.io/metan/news/index.html).
+
+Then, load it with:
+```{r message=FALSE, warning=FALSE}
+library(metan)
+```
+
+`metan`'s function [`tidy_strings()`](https://tiagoolivoto.github.io/metan/reference/utils_num_str.html) can be used to tidy up characters strings by putting all word in upper case, replacing any space, tabulation, punctuation characters by `_` (underscore), and putting `_` between lower and upper case.
+
+## A simple example
+Suppose that we have a character string, say, `str = c("Env1", "env 1", "env.1")`. By definition `str` should represent a unique level in plant breeding trials, e.g., environment 1, but in fact it has three levels.
+```{r}
+str <- c("Env1", "env 1", "env.1")
+levels(factor(str))
+```
+Bad idea!
+
+We can use [`tidy_strings()`](https://tiagoolivoto.github.io/metan/reference/utils_num_str.html) to tidy up this string as follows:
+
+```{r}
+tidy_strings(str)
+```
+Great! We have now the unique level we should have before.
+
+## More examples
+All of the following will be translated into `"ENV_1"`.
+```{r}
+messy_env <- c("ENV 1", "Env   1", "Env1", "env1", "Env.1", "Env_1")
+tidy_strings(messy_env)
+```
+All of the following will be translated into `"GEN_*"`.
+```{r}
+messy_gen <- c("GEN1", "gen 2", "Gen.3", "gen-4", "Gen_5", "GEN_6")
+tidy_strings(messy_gen)
+```
+
+All of the following will be translated into `"ENV_GEN"`
+```{r}
+messy_int <- c("EnvGen", "Env_Gen", "env gen", "Env Gen", "ENV.GEN", "ENV_GEN")
+tidy_strings(messy_int)
+```
+
+
+
+## Tidy up a whole data frame
+We can also tidy up strings of a whole data frame. By default the separator character is `_`. To change this default use the argument `sep`.
+```{r}
+library(tibble)
+df <- tibble(Env = messy_env,
+             gen = messy_gen,
+             Env_Gen = interaction(Env, gen),
+             y = rnorm(6, 300, 10))
+df
+tidy_strings(df, sep = "")
+
+```
+
+To select variables to tidy up, simply type the variable name. Here, we also put all column names to upper case
+```{r}
+tidy_strings(df, Env) %>% 
+  colnames_to_upper()
+
+```

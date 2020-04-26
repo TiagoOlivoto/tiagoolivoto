@@ -1,0 +1,218 @@
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>+++
+title = “Descriptive statistics in R with metan”
+date = 2019-12-21
+toc = true # Show table of contents? true/false
+type = “docs” # Do not modify.
+[menu.example]
+parent = “Data Manipulation”
+weight = 1
++++</p>
+<!-- --- -->
+<!-- title: Descriptive statistics in R with metan -->
+<!-- linktitle: Descriptive -->
+<!-- toc: true -->
+<!-- type: docs -->
+<!-- date: "2019-05-05T00:00:00+01:00" -->
+<!-- menu: -->
+<!--   example: -->
+<!--     parent: Data Manipulation -->
+<!--     weight: 1 -->
+<!-- weight: 1 -->
+<!-- --- -->
+<div id="getting-started" class="section level1">
+<h1>Getting started</h1>
+<p>In this quick tip, I will show you how to compute descriptive statistics in R with the package <a href="https://tiagoolivoto.github.io/metan/">metan</a>. If the package is not yet installed, you can download the stable version from <a href="https://cran.r-project.org/web/packages/metan/">CRAN</a> with:</p>
+<pre class="r"><code>install.packages(&quot;metan&quot;)</code></pre>
+<p>Then, load it with:</p>
+<pre class="r"><code>library(metan)</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;GGally&#39;:
+##   method from   
+##   +.gg   ggplot2</code></pre>
+<pre><code>## []=====================================================[]</code></pre>
+<pre><code>## [] Multi-Environment Trial Analysis (metan) v1.4.0     []</code></pre>
+<pre><code>## [] Author: Tiago Olivoto                               []</code></pre>
+<pre><code>## [] Type citation(&#39;metan&#39;) to know how to cite metan    []</code></pre>
+<pre><code>## [] Type vignette(&#39;metan_start&#39;) for a short tutorial   []</code></pre>
+<pre><code>## [] Visit http://bit.ly/2TIq6JE for a complete tutorial []</code></pre>
+<pre><code>## []=====================================================[]</code></pre>
+<p>For the latest release notes see the <a href="https://tiagoolivoto.github.io/metan/news/index.html">NEWS file</a>.</p>
+</div>
+<div id="statistics-by-levels-of-a-factor" class="section level1">
+<h1>Statistics by levels of a factor</h1>
+<p><code>metan</code> provides a simple and intuitive pipe-friendly framework for computing descriptive statistics. A <a href="https://tiagoolivoto.github.io/metan/reference/utils_stats.html">set of functions</a> can be used to compute the most used descriptive statistics quickly. In this tutorial, we will use the data example <code>data_ge2</code> to create motivating examples.</p>
+<p>To compute the mean values for each level of the factor <code>GEN</code> we use the function <code>means_by()</code>.</p>
+<pre class="r"><code>means_by(data_ge2, GEN)</code></pre>
+<pre><code>## # A tibble: 13 x 16
+##    GEN      PH    EH    EP    EL    ED    CL    CD    CW    KW    NR   NKR  CDED
+##    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 H1     2.62  1.50 0.570  15.1  51.2  30.1  15.7  26.7  184.  16.6  32.2 0.588
+##  2 H10    2.31  1.26 0.545  15.1  48.4  28.4  15.9  22.8  164.  15.6  32.4 0.586
+##  3 H11    2.39  1.27 0.527  15.2  48.8  28.3  16.0  22.6  167.  15.6  33   0.580
+##  4 H12    2.44  1.28 0.519  14.3  48.6  28.2  14.8  22.6  157.  16.3  30.4 0.582
+##  5 H13    2.54  1.35 0.532  15.0  50.6  29.4  15.8  26.0  180.  17.4  31.0 0.582
+##  6 H2     2.60  1.38 0.525  15.3  50.9  29.3  16.0  25.7  187.  16.7  31.9 0.574
+##  7 H3     2.59  1.41 0.538  14.5  49.4  28.5  15.7  22.9  169.  15.8  31.4 0.578
+##  8 H4     2.58  1.43 0.546  15.7  49.2  28.6  16.5  25.7  184.  15.5  35   0.581
+##  9 H5     2.57  1.37 0.530  15.6  49.9  29.4  16.6  27.7  184.  16.1  33.9 0.588
+## 10 H6     2.56  1.41 0.553  15.8  51.5  30.3  16.6  27.3  188.  16.3  32.8 0.588
+## 11 H7     2.40  1.32 0.547  15.4  49.5  29.5  16.2  25.9  171.  16.2  31.4 0.597
+## 12 H8     2.33  1.21 0.514  15.0  48.4  28.7  15.9  23.4  160.  15.9  31.3 0.594
+## 13 H9     2.36  1.27 0.532  15.0  47.6  28.6  15.9  23.2  153.  15.5  32.5 0.601
+## # ... with 3 more variables: PERK &lt;dbl&gt;, TKW &lt;dbl&gt;, NKE &lt;dbl&gt;</code></pre>
+<p>The following <code>_by()</code> functions are available for computing the main descriptive statistics by levels of a factor.</p>
+<ul>
+<li><code>cv_by()</code> For computing coefficient of variation.</li>
+<li><code>max_by()</code> For computing maximum values.</li>
+<li><code>means_by()</code> For computing arithmetic means.</li>
+<li><code>min_by()</code> For compuing minimum values.</li>
+<li><code>n_by()</code> For getting the length.</li>
+<li><code>sd_by()</code> For computing sample standard deviation.</li>
+<li><code>sem_by()</code> For computing standard error of the mean .</li>
+</ul>
+</div>
+<div id="useful-functions" class="section level1">
+<h1>Useful functions</h1>
+<p>Other useful functions are also implemented. All of them works naturally with <code>%&gt;%</code>, handle grouped data with <code>group_by()</code> and multiple variables (all numeric variables from <code>.data</code> by default).</p>
+<ul>
+<li><code>av_dev()</code> computes the average absolute deviation.</li>
+<li><code>ci_mean()</code> computes the confidence interval for the mean.</li>
+<li><code>cv()</code> computes the coefficient of variation.</li>
+<li><code>freq_table()</code> Computes frequency fable.</li>
+<li><code>hm_mean()</code>, <code>gm_mean()</code> computes the harmonic and geometric means, respectively. The harmonic mean is the reciprocal of the arithmetic mean of the reciprocals. The geometric mean is the nth root of n products.</li>
+<li><code>kurt()</code> computes the kurtosis like used in SAS and SPSS.</li>
+<li><code>range_data()</code> Computes the range of the values.</li>
+<li><code>sd_amo()</code>, <code>sd_pop()</code> Computes sample and populational standard deviation, respectively.</li>
+<li><code>sem()</code> computes the standard error of the mean.</li>
+<li><code>skew()</code> computes the skewness like used in SAS and SPSS.</li>
+<li><code>sum_dev()</code> computes the sum of the absolute deviations.</li>
+<li><code>sum_sq_dev()</code> computes the sum of the squared deviations.</li>
+<li><code>var_amo()</code>, <code>var_pop()</code> computes sample and populational variance.</li>
+<li><code>valid_n()</code> Return the valid (not NA) length of a data.</li>
+</ul>
+</div>
+<div id="the-wrapper-function-desc_stat" class="section level1">
+<h1>The wrapper function <code>desc_stat()</code></h1>
+<p>To compute all statistics at once we can use <code>desc_stat()</code>. This is a wrapper function around the above ones and may be used to compute measures of central tendency, position, and dispersion. By default (<code>stats = "main"</code>), seven statistics (coefficient of variation, maximum, mean, median, minimum, sample standard deviation, standard error and confidence interval of the mean) are computed. Other allowed values are <code>"all"</code> to show all the statistics, <code>"robust"</code> to show robust statistics, <code>"quantile"</code> to show quantile statistics, or chose one (or more) statistics using a comma-separated vector with the statistic names, e.g., <code>stats = c("mean, cv")</code>. We can also use <code>hist = TRUE</code> to create a histogram for each variable. Here, select helpers can also be used in the argument <code>...</code>.</p>
+<div id="all-statistics-for-all-numeric-variables" class="section level2">
+<h2>All statistics for all numeric variables</h2>
+<pre class="r"><code>desc_stat(data_ge2, stats = &quot;all&quot;)</code></pre>
+<pre><code>## # A tibble: 15 x 29
+##    variable  av.dev      ci    cv   gmean   hmean     iqr    kurt     mad
+##    &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+##  1 CD        0.948   0.186   7.34  15.9    15.9    1.65   -0.352   1.27  
+##  2 CDED      0.0261  0.0053  5.71   0.585   0.584  0.0417  0.669   0.0312
+##  3 CL        1.98    0.365   7.95  28.9    28.8    3.70   -0.748   2.63  
+##  4 CW        5.21    0.99   25.2   24.0    23.0    9.19   -0.662   6.83  
+##  5 ED        2.30    0.437   5.58  49.5    49.4    4.40   -0.783   3.14  
+##  6 EH        0.249   0.045  21.2    1.31    1.28   0.484  -1.08    0.337 
+##  7 EL        0.995   0.199   8.28  15.1    15.1    1.72   -0.0174  1.26  
+##  8 EP        0.0459  0.0089 10.5    0.534   0.531  0.082  -0.369   0.0619
+##  9 KW       27.2     5.18   18.9  170.    166.    46.8    -0.768  35.0   
+## 10 NKE      56.0    11.5    14.2  507.    501.    85.6     0.179  63.6   
+## 11 NKR       2.73    0.548  10.7   32.1    31.9    4.85   -0.116   3.56  
+## 12 NR        1.30    0.259  10.2   16.0    16.0    2.4     0.240   1.78  
+## 13 PERK      1.55    0.300   2.17  87.4    87.4    2.81    0.0317  2.10  
+## 14 PH        0.293   0.0528 13.4    2.46    2.44   0.595  -1.17    0.431 
+## 15 TKW      36.7     7.44   13.9  335.    332.    57.8     0.0313 44.8   
+## # ... with 20 more variables: max &lt;dbl&gt;, mean &lt;dbl&gt;, median &lt;dbl&gt;, min &lt;dbl&gt;,
+## #   n &lt;dbl&gt;, q2.5 &lt;dbl&gt;, q25 &lt;dbl&gt;, q75 &lt;dbl&gt;, q97.5 &lt;dbl&gt;, range &lt;dbl&gt;,
+## #   sd.amo &lt;dbl&gt;, sd.pop &lt;dbl&gt;, se &lt;dbl&gt;, skew &lt;dbl&gt;, sum &lt;dbl&gt;, sum.dev &lt;dbl&gt;,
+## #   sum.sq.dev &lt;dbl&gt;, valid.n &lt;dbl&gt;, var.amo &lt;dbl&gt;, var.pop &lt;dbl&gt;</code></pre>
+</div>
+<div id="robust-statistics-using-select-helpers" class="section level2">
+<h2>Robust statistics using select helpers</h2>
+<pre class="r"><code>data_ge2 %&gt;%
+  desc_stat(contains(&quot;N&quot;),
+            stats = &quot;robust&quot;)</code></pre>
+<pre><code>## # A tibble: 3 x 4
+##   variable     n median   iqr
+##   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1 NKE        156   509. 85.6 
+## 2 NKR        156    32   4.85
+## 3 NR         156    16   2.4</code></pre>
+</div>
+<div id="quantile-functions-choosing-variable-names" class="section level2">
+<h2>Quantile functions choosing variable names</h2>
+<pre class="r"><code>data_ge2 %&gt;%
+  desc_stat(PH, EH, CD, ED,
+            stats = &quot;quantile&quot;)</code></pre>
+<pre><code>## # A tibble: 4 x 7
+##   variable     n    min   q25 median   q75   max
+##   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 CD         156 12.9   15.1   16    16.8  18.6 
+## 2 ED         156 43.5   47.3   49.9  51.7  54.9 
+## 3 EH         156  0.752  1.09   1.41  1.57  1.88
+## 4 PH         156  1.71   2.18   2.52  2.77  3.04</code></pre>
+</div>
+<div id="create-a-histogram-for-each-variable" class="section level2">
+<h2>Create a histogram for each variable</h2>
+<pre class="r"><code>data_ge2 %&gt;%
+  desc_stat(EP, EL, CL,
+            hist = TRUE)</code></pre>
+<p><img src="/tutorials/metan/desc_stat_files/figure-html/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre><code>## # A tibble: 3 x 9
+##   variable    cv    max   mean median    min sd.amo     se     ci
+##   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 CL        7.95 34.7   29.0   28.7   23.5   2.31   0.185  0.365 
+## 2 EL        8.28 17.9   15.2   15.1   11.5   1.26   0.101  0.199 
+## 3 EP       10.5   0.660  0.537  0.544  0.386 0.0564 0.0045 0.0089</code></pre>
+</div>
+<div id="statistics-by-levels-of-factors" class="section level2">
+<h2>Statistics by levels of factors</h2>
+<p>To compute the statistics for each level of a factor, use the argument <code>by</code>. In addition, it is possible to select the statistics to compute using the argument <code>stats</code>, that is a single statistic name, e.g., <code>"mean"</code>, or a a comma-separated vector of names with <code>"</code> at the beginning and end of vector only. Note that the statistic names <strong>ARE NOT</strong> case sensitive, i.e., both <code>"mean"</code>, <code>"Mean"</code>, or <code>"MEAN"</code> are recognized. Comma or spaces can be used to separate the statistics’ names.</p>
+<ul>
+<li>All options bellow will work:
+<ul>
+<li><code>stats = c("mean, se, cv, max, min")</code></li>
+<li><code>stats = c("mean se cv max min")</code></li>
+<li><code>stats = c("MEAN, Se, CV max MIN")</code></li>
+</ul></li>
+</ul>
+<pre class="r"><code>desc_stat(data_ge2,
+          contains(&quot;C&quot;),
+          stats = (&quot;mean, se, cv, max, min&quot;),
+          by = ENV)</code></pre>
+<pre><code>## # A tibble: 16 x 7
+##    ENV   variable   mean     se    cv    max    min
+##    &lt;fct&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1 A1    CD       16.4   0.174   6.62 18.3   14.1  
+##  2 A1    CDED      0.576 0.0059  6.40  0.664  0.495
+##  3 A1    CL       29.7   0.358   7.53 34.7   25.9  
+##  4 A1    CW       28.3   0.906  20.0  38.5   17.8  
+##  5 A2    CD       15.9   0.215   8.46 18.3   13.3  
+##  6 A2    CDED      0.584 0.0054  5.80  0.694  0.507
+##  7 A2    CL       28.5   0.405   8.88 33.0   23.9  
+##  8 A2    CW       23.8   1.11   29.1  35.7   11.1  
+##  9 A3    CD       15.8   0.151   6.00 17.6   14    
+## 10 A3    CDED      0.595 0.0059  6.22  0.681  0.511
+## 11 A3    CL       28.4   0.386   8.47 33.2   23.5  
+## 12 A3    CW       20.8   0.818  24.6  29.6   11.5  
+## 13 A4    CD       15.8   0.194   7.67 18.6   12.9  
+## 14 A4    CDED      0.589 0.0036  3.81  0.631  0.542
+## 15 A4    CL       29.4   0.286   6.07 32.8   25.8  
+## 16 A4    CW       26.4   0.730  17.3  34.7   15.3</code></pre>
+<p>To compute the descriptive statistics by more than one grouping variable, we need to pass a grouped data to the argument <code>.data</code> with the function <code>group_by()</code>. Let’s compute the mean, the standard error of the mean and the sample size for the variables <code>EP</code> and <code>EL</code> for all combinations of the factors <code>ENV</code> and <code>GEN</code>.</p>
+<pre class="r"><code>data_ge2 %&gt;% 
+  group_by(ENV, GEN) %&gt;% 
+  desc_stat(EP, EL,
+            stats = c(&quot;mean, se, n&quot;))</code></pre>
+<pre><code>## # A tibble: 104 x 6
+##    ENV   GEN   variable   mean     se     n
+##    &lt;fct&gt; &lt;fct&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+##  1 A1    H1    EL       15.4   0.637      3
+##  2 A1    H1    EP        0.626 0.0193     3
+##  3 A1    H10   EL       16.1   0.600      3
+##  4 A1    H10   EP        0.584 0.018      3
+##  5 A1    H11   EL       16.6   0.475      3
+##  6 A1    H11   EP        0.574 0.0147     3
+##  7 A1    H12   EL       15.2   0.252      3
+##  8 A1    H12   EP        0.575 0.0212     3
+##  9 A1    H13   EL       14.8   0.0811     3
+## 10 A1    H13   EP        0.568 0.026      3
+## # ... with 94 more rows</code></pre>
+</div>
+</div>
