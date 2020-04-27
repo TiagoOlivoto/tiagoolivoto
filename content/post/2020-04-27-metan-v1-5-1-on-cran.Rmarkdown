@@ -1,0 +1,63 @@
+---
+title: metan v1.5.1 on CRAN
+author: Tiago Olivoto
+date: '2020-04-27'
+slug: metan-v1-5-1-on-cran
+categories:
+  - metan
+tags:
+  - biometical models
+  - metan
+  - Experimental statistics
+  - genotype-environment interaction
+subtitle: ''
+summary: 'Find out the changes made in the v1.5.1 of metan package'
+authors: []
+lastmod: '2020-04-27T13:12:14-03:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+## Overview
+
+The version v1.5.1 of the R package `metan` in now on [CRAN](https://cran.r-project.org/web/packages/metan/). This is a patch release that fixes a bug with the example of the function [`plot.fai_blup()`](https://tiagoolivoto.github.io/metan/reference/plot.fai_blup.html). Minor improvments were made in the functions [`plot_bars()`](https://tiagoolivoto.github.io/metan/reference/barplots.html) and [`plot_factbars()`](https://tiagoolivoto.github.io/metan/reference/barplots.html)
+
+
+## Barplots
+ [`plot_bars()`](https://tiagoolivoto.github.io/metan/reference/barplots.html) and [`plot_factbars()`](https://tiagoolivoto.github.io/metan/reference/barplots.html) now align vertically the labels to the error bars (when present) instead the plot bar.
+
+```{r message=FALSE, warning=FALSE, fig.width=10, fig.height=6}
+library(metan)
+plot_bars(data_g, GEN, PH, lab.bar = letters[1:13])
+
+```
+
+
+
+## fai_blup()
+* `fai_blup()` now returns the eigenvalues and explained variance for each axis and variables into columns instead row names.
+
+```{r}
+mod <- waasb(data_ge,
+             env = ENV,
+             gen = GEN,
+             rep = REP,
+             resp = c(GY, HM))
+FAI <- fai_blup(mod,
+                SI = 15,
+                DI = c('max, max'),
+                UI = c('min, min'))
+
+print(FAI$eigen)
+
+print(FAI$canonical.loadings)
+```
+
+
+Find out more about `metan` at https://tiagoolivoto.github.io/metan/
+
+
