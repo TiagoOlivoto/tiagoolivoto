@@ -24,7 +24,7 @@ projects: []
 
 ## Overview
 
-The version v1.5.1 of the R package `metan` in now on [CRAN](https://cran.r-project.org/web/packages/metan/). This is a patch release that fixes a bug with the example of the function [`plot.fai_blup()`](https://tiagoolivoto.github.io/metan/reference/plot.fai_blup.html). Minor improvments were made in the functions [`plot_bars()`](https://tiagoolivoto.github.io/metan/reference/barplots.html) and [`plot_factbars()`](https://tiagoolivoto.github.io/metan/reference/barplots.html)
+The version v1.5.1 of the R package `metan` in now on [CRAN](https://cran.r-project.org/web/packages/metan/). This is a patch release that fixes a bug with the example of the function [`plot.fai_blup()`](https://tiagoolivoto.github.io/metan/reference/plot.fai_blup.html). Minor improvements were made in the functions [`plot_bars()`](https://tiagoolivoto.github.io/metan/reference/barplots.html) and [`plot_factbars()`](https://tiagoolivoto.github.io/metan/reference/barplots.html)
 
 
 ## Barplots
