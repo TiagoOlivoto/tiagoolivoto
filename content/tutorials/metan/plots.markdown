@@ -5,7 +5,7 @@ date = "2020/04/16"
 toc = true  # Show table of contents? true/false
 type = "docs"  # Do not modify.
 [menu.example]
-    parent = "Data Visualization"
+    parent = "R package metan"
     weight = 2
 +++
 

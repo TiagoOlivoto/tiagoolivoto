@@ -1,16 +1,14 @@
----
-date: "2020-05-19T00:00:00Z"
-title: "Planejamento e Análise de Experimentos Agronômicos [Português]"
-summary: Curso destinado a alunos de graduação, pós-graduação, professores e profissionais que desejam aperceiçoar os conhecimentos nas etapas de planejamento e avaliação de experimentos agronômicos.
-tags:
-- Pacotes R
-- Excel
-- Planejamento Experimental
-- Melhoramento de plantas
-- Análise de experimentos
-- Estatística experimental
----
-
++++
+title = "Planejamento e Análise de Experimentos Agronômicos [Português]"
+linktitle = "Análise de experimentos"
+date = "2020-05-19T00:00:00Z"
+lastmod = "2020/04/04"
+toc = true  # Show table of contents? true/false
+type = "docs"  # Do not modify.
+[menu.example]
+    parent = "Courses"
+    weight = 1
++++
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
@@ -132,7 +130,7 @@ De posse de diversos conjuntos de dados que exemplificam os mais comumente usado
 Por fim, será visto como utilizando pocos comandos, gráficos poderosos podem ser criados para a apresentação dos dados, considerando a estrutura do experimento analisado.
 
 
-# Ministrante
+## Ministrante
 
 O curso será ministrado por Tiago Olivoto. Tiago Olivoto é Engenheiro Agrônomo com Mestrado e Doutorado em Agronomia com ênfase em Melhoramento Genético Vegetal e Experimentação Agrícola. Consulte o resumo do perfil de Tiago clicando no botão abaixo ou visite seu perfil completo nas plataformas abaixo.
 
@@ -218,16 +216,16 @@ Google Escolar
 
 <br>
 
-# Modalidade
+## Modalidade
 
 O curso será realizado em modalidade online. Os alunos inscritos receberão um link para acesso a sala de aula virtual. Como a interação professor-aluno é fundamental para o aprendizado, os alunos poderão, de maneira ordenada, interagir com o professor realizando perguntas, expondo experiências e tirando dúvidas de possíveis erros ocorridos na análise.
 
 
-# Carga horária
+## Carga horária
 
 A carga horária do curso é de 08 horas que serão divididas em duas aulas de 04 horas, a serem realizadas nos dias 06/06 e 13/06/2020 (sábados), das 13:30 as 17:30 h.
 
-# Ementa
+## Ementa
 O curso abordará os aspectos teóricos e práticos dos seguintes tópicos<br>
 <i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Planejamento experimental<br>
 <i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Coleta e tabulação de dados<br>
@@ -238,7 +236,7 @@ O curso abordará os aspectos teóricos e práticos dos seguintes tópicos<br>
 <i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Confecção de gráficos
 
 
-# Requisitos
+## Requisitos
 
 Para o acompanhamento do curso é **sugerido** que o participante tenha concluído a disciplina de experimentação agrícola (ou equivalente) ou possua conhecimentos básicos nesta área de estudo.
 
@@ -252,14 +250,14 @@ Para o acompanhamento do curso é **sugerido** que o participante tenha concluí
    
 No ato da inscrição, o aluno com inscrição confirmada receberá um link para acesso a instruções de instalação destes softwares e as bibliotecas necessárias para realização das análises.
 
-# Material didático
+## Material didático
 Na sexta-feira, 05/06/2020, o aluno receberá um e-mail contendo as orientações para download dos seguintes materiais didáticos
 
 <i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Uma apostila com conteúdo voltado para a o uso do software R para a avaliação de dados experimentais.<br>
 <i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Os conjuntos de dados utilizados em todos os exemplos, em formato Excel.<br>
 <i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Um script R com os códigos utilizados durante o curso.
 
-# Investimento
+## Investimento
 
 O valor da inscrição para o curso é de R$50,00 que deverão ser pagos via depósito ou transferência bancária (Banco do Brasil ou Sicredi) ou utilizando o PayPal. Neste último caso, basta clicar em *Comprar agora* e seguir as instruções.
   
@@ -297,7 +295,7 @@ O valor da inscrição para o curso é de R$50,00 que deverão ser pagos via dep
             </div>
             </div>
 
-# Inscrição
+## Inscrição
 
 Após o pagamento da taxa de inscrição, preencha o formulário de inscrição (clique em *Realizar inscrição*), anexando o comprovante de pagamento, ao final do processo.
 
