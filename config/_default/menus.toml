@@ -15,20 +15,25 @@
 
 
 [[main]]
+  name = "Courses"
+  url = "courses/"
+  weight = 3
+  
+[[main]]
   name = "Projects"
   url = "#projects"
-  weight = 3
+  weight = 4
 
 
 [[main]]
   name = "Tutorials"
   url = "tutorials/"
-  weight = 4
+  weight = 5
   
 #------------------------------
 [[main]] 
     name = "Publications"
-    weight = 5
+    weight = 6
 
 [[main]]
     parent = "Publications"
@@ -48,7 +53,7 @@
 [[main]]
   name = "Contact"
   url = "#contact"
-  weight = 6
+  weight = 7
 
 
 
