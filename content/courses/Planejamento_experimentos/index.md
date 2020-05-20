@@ -1,6 +1,6 @@
 ---
 title: "Planejamento e Análise de Experimentos Agronômicos [Português]"
-summary: Curso voltado a alunos de graduação, pós-graduação, professores e profissionais que desejam 
+summary: Curso voltado a alunos de graduação, pós-graduação, professores e profissionais que desejam aperfeiçoar os conhecimentos no planejamento e análise de experimentos agronômicos
 date: "2020-05-19T00:00:00Z"
 lastmod: "2020/04/04"
 tags:
@@ -18,6 +18,7 @@ tags:
     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
     <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
   </ol>
   <div class="carousel-inner">
     <div class="carousel-item active">
@@ -31,6 +32,9 @@ tags:
     </div>
     <div class="carousel-item">
       <img class="d-block w-100" src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/img/curso_planejamento/img4.png" alt="Third slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/img/curso_planejamento/img5.png" alt="Third slide">
     </div>    
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
