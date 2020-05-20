@@ -1,8 +1,16 @@
 ---
 title: "Planejamento e Análise de Experimentos Agronômicos [Português]"
+summary: Curso voltado a alunos de graduação, pós-graduação, professores e profissionais que desejam 
 date: "2020-05-19T00:00:00Z"
 lastmod: "2020/04/04"
+tags:
+- Melhoramento Genético
+- Experimentação Agrícola
+- Planejamento de Experimentos
+- Análise de Experimentos
+- Pacotes R
 ---
+
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
