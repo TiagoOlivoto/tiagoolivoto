@@ -324,7 +324,7 @@ Google Escolar
 <div style="padding-left:16px" id = "requisitos">
   <h1>Requisitos</h1>
   <p>
-Para o acompanhamento do curso é **sugerido** que o participante tenha concluído a disciplina de experimentação agrícola (ou equivalente) ou possua conhecimentos básicos nesta área de estudo.
+Para o acompanhamento do curso é <b>sugerido</b> que o participante tenha concluído a disciplina de experimentação agrícola (ou equivalente) ou possua conhecimentos básicos nesta área de estudo.
 
 <div class="alert alert-warning" role="alert">
   Durante o curso, não serão abordados aspectos teóricos básicos, tais como princípios da experimentação, características dos principais delineamentos experimentais, etc.
