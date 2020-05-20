@@ -12,6 +12,52 @@ tags:
 ---
 
 
+<style>
+body {
+  margin: 7;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #4169E1;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 10px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+
+
+<div class="topnav">
+  <a class="active" href="#home">Home</a>
+  <a href="#modalidade">Modalidade</a>
+  <a href="#cargahoraria">Carga Horária</a>
+  <a href="#ementa">Ementa</a>
+  <a href="#ministrante">Ministrante</a>
+  <a href="#requisitos">Requisitos</a>
+  <a href="#materialdidatico">Material didático</a>
+  <a href="#inscricao">Inscrição</a>
+</div>
+
+
+
+
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -35,7 +81,7 @@ tags:
     </div>
     <div class="carousel-item">
       <img class="d-block w-100" src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/img/curso_planejamento/img5.png" alt="Third slide">
-    </div>    
+    </div>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -98,13 +144,13 @@ INVESTIMENTO<br>R$50,00
 </div>
 </div>
 
-<link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet">
+
 <div class="jumbotron">
   <h1 class="display-4">Apresentação</h1>
   <p class="lead">O curso tem a finalidade de proporcionar a compreensão dos conhecimentos necessários para o planejamento e análise de experimentos agronômicos. Nele serão abordados aspectos teóricos e a aplicação prática das principais etapas relacionadas a análise dos tipos de experimentos mais utilizados na agronomia.</p>
   <hr class="my-4">
   <p>O curso é baseado nos softwarse R e RStudio, ferramentas gratuítas e poderosas. Este site, por exemplo, foi construído utilizando estas ferramentas <i class="em em-100" aria-role="presentation" aria-label="HUNDRED POINTS SYMBOL"></i>.</p>
-  
+
 <p>
   <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
    Leia uma pequena introdução ao R aqui!
@@ -116,7 +162,7 @@ INVESTIMENTO<br>R$50,00
   <div class="card card-body">
 
 O artigo <a href="https://www.jstor.org/stable/1390807?seq=1#page_scan_tab_contents" target="_blank">R: A Language for Data Analysis and Graphics</a> marca o início de uma nova era no processamento e análise de dados: o desenvolvimento do software R. O R é uma linguagem e ambiente estatístico que traz muitas vantagens para o usuário, embora elas não sejam tão obvias inicialmente: (i) o R é um Software Livre (livre no sentido de liberdade) distribuído sob a <a href="https://www.gnu.org/licenses/quick-guide-gplv3.html" target="_blank">Licença Pública Geral</a>, podendo ser livremente copiado, distribuído, e instalado em diversos computadores livremente. Isso contrasta com softwares comerciais, que têm licenças altamente restritivas, que não permitem que cópias sejam distribuídas ou instaladas em mais de um computador sem a devida licença (que obviamente é paga!); (ii) a grande maioria dos Softwares livres são grátis, e o R não é uma exceção; (iii) os códigos-fontes R estão disponíveis para os usuários, e atualmente são gerenciados por um grupo chamado <a href="https://www.r-project.org/" target="_blank">R Development Core Team</a>. A vantagem de ter o código aberto é que falhas podem ser detectadas e rapidamente corrigidas. Este sistema de revisão depende da participação dos usuários. Em contraste, em muitos pacotes comerciais, as falhas não são corrigidas até o lançamento da próxima versão, o que pode levar vários anos; (iv) o R fornece um interface de entrada por linha de comando (ELC).
-    
+
 No software R, todos os comandos são digitados e o mouse é pouco usado. Pode parecer antigo, pouco amigável ou até pobre em recursos visuais, mas isso faz com que nos deparemos com o melhor recurso do R: a sua flexibilidade. Para usuários familiarizados, a linguagem do R se torna clara e simples. Com poucos comandos, funções poderosas podem ser criadas e o usuário é sempre consciente do que foi pedido através da ELC (Meus dados, minhas análises!). Isso contrasta com pacotes que possuem uma interface amigável (aponte e clique), mas escondem a dinâmica dos cálculos e, potencialmente, os seus erros. Finalmente, o R fornece uma ampla variedade de procedimentos estatísticos básicos ou que exigem grande esforço computacional (modelagem linear e não linear, testes estatísticos clássicos, análise de séries temporais, classificação, agrupamento, etc.) e recursos gráficos elegantes. Um dos pontos fortes de R é a facilidade com que gráficos de qualidade podem ser produzidos, incluindo símbolos matemáticos e fórmulas, quando necessário. O software R está disponível em uma ampla variedade de plataformas UNIX e sistemas similares (incluindo FreeBSD e Linux), Windows e MacOS.
 
 Quem já é usuário de softwares por linhas de comando, como o SAS, provavelmente não notou nenhuma grande diferença até aqui. Toda análise se resume à seguinte sequência *dados > códigos > saída*. A experiência do usuário com o R, no entanto, pode ser mais atrativa utilizando o <a href="https://www.rstudio.com/" target="_blank">RStudio</a>. O Rstudio é um produto de código aberto disponível publicamente em 28/02/2011 que está disponível gratuitamente. Ele é um ambiente de desenvolvimento integrado para R que inclui (i) janelas de edição de texto a partir das quais o código pode ser enviado para o console e/ou salvo no sistema operacional, (ii) listas de objetos em sua área de trabalho, (iii) histórico infinito dos comandos facilmente pesquisável com capacidade de inserir, a partir do histórico, um comando no console novamente; (iv); interface com o sistema operacional para acesso a arquivos; (v) janela de ajuda com botões de voltar e avançar; (vi) download de pacotes. Apesar de todas estas capacidades, o RStudio é muito fácil de utilizar.
@@ -136,10 +182,57 @@ De posse de diversos conjuntos de dados que exemplificam os mais comumente usado
 Por fim, será visto como utilizando pocos comandos, gráficos poderosos podem ser criados para a apresentação dos dados, considerando a estrutura do experimento analisado.
 
 
-## Ministrante
 
+
+
+
+
+<div style="padding-left:16px" id = "modalidade">
+  <h1>Modalidade</h1>
+  <p>
+  O curso será realizado em modalidade online. Os alunos inscritos receberão um link para acesso a sala de aula virtual. Como a interação professor-aluno é fundamental para o aprendizado, os alunos poderão, de maneira ordenada, interagir com o professor realizando perguntas, expondo experiências e tirando dúvidas de possíveis erros ocorridos na análise.
+  </p>
+</div>
+
+
+
+<div style="padding-left:16px" id = "cargahoraria">
+  <h1>Carga horária</h1>
+  <p>
+A carga horária do curso é de 08 horas que serão divididas em duas aulas de 04 horas, a serem realizadas nos dias 06/06 e 13/06/2020 (sábados), das 13:30 as 17:30 h.
+  </p>
+</div>
+
+
+
+<div style="padding-left:16px" id = "ementa">
+  <h1>Ementa</h1>
+  <p>
+O curso abordará os aspectos teóricos e práticos dos seguintes tópicos<br>
+<i class="fas fa-check"></i>Planejamento experimental<br>
+<i class="fas fa-check"></i>Coleta e tabulação de dados<br>
+<i class="fas fa-check"></i>Introdução ao software R<br>
+<i class="fas fa-check"></i>Delineamentos DIC e DBC<br>
+<i class="fas fa-check"></i>Análise de regressão<br>
+<i class="fas fa-check"></i>Experimentos fatoriais<br>
+<i class="fas fa-check"></i>Confecção de gráficos
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div style="padding-left:16px" id = "ministrante">
+  <h1>Ministrante</h1>
+  <p>
 O curso será ministrado por Tiago Olivoto. Tiago Olivoto é Engenheiro Agrônomo com Mestrado e Doutorado em Agronomia com ênfase em Melhoramento Genético Vegetal e Experimentação Agrícola. Consulte o resumo do perfil de Tiago clicando no botão abaixo ou visite seu perfil completo nas plataformas abaixo.
-
 
 <p>
   <a class="btn btn-primary" data-toggle="collapse" href="#perfiltiago" role="button" aria-expanded="false" aria-controls="perfiltiago">
@@ -155,8 +248,6 @@ Tiago Olivoto é Técnico Agrícola pela Escola Estadual de Educação Básica V
 
 </div>
 </div>
-
-
 
 
 
@@ -220,30 +311,19 @@ Google Escolar
 </div>
 </div>
 
-<br>
-
-## Modalidade
-
-O curso será realizado em modalidade online. Os alunos inscritos receberão um link para acesso a sala de aula virtual. Como a interação professor-aluno é fundamental para o aprendizado, os alunos poderão, de maneira ordenada, interagir com o professor realizando perguntas, expondo experiências e tirando dúvidas de possíveis erros ocorridos na análise.
+  </p>
+</div>
 
 
-## Carga horária
-
-A carga horária do curso é de 08 horas que serão divididas em duas aulas de 04 horas, a serem realizadas nos dias 06/06 e 13/06/2020 (sábados), das 13:30 as 17:30 h.
-
-## Ementa
-O curso abordará os aspectos teóricos e práticos dos seguintes tópicos<br>
-<i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Planejamento experimental<br>
-<i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Coleta e tabulação de dados<br>
-<i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Introdução ao software R<br>
-<i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Delineamentos DIC e DBC<br>
-<i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Análise de regressão<br>
-<i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Experimentos fatoriais<br>
-<i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Confecção de gráficos
 
 
-## Requisitos
 
+
+
+
+<div style="padding-left:16px" id = "requisitos">
+  <h1>Requisitos</h1>
+  <p>
 Para o acompanhamento do curso é **sugerido** que o participante tenha concluído a disciplina de experimentação agrícola (ou equivalente) ou possua conhecimentos básicos nesta área de estudo.
 
 <div class="alert alert-warning" role="alert">
@@ -253,20 +333,52 @@ Para o acompanhamento do curso é **sugerido** que o participante tenha concluí
 É necessário que o participante possua computador com conexão a internet ativa e que os softwares necessários estejam previamente instalados. Os seguintes softwares serão utilizados no curso.
 * [R](https://cran.r-project.org/bin/windows/base/)
 * [RStudio](https://rstudio.com/products/rstudio/download/)
-   
+
 No ato da inscrição, o aluno com inscrição confirmada receberá um link para acesso a instruções de instalação destes softwares e as bibliotecas necessárias para realização das análises.
 
-## Material didático
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="padding-left:16px" id = "materialdidatico">
+  <h1>Material didático</h1>
+  <p>
 Na sexta-feira, 05/06/2020, o aluno receberá um e-mail contendo as orientações para download dos seguintes materiais didáticos
 
-<i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Uma apostila com conteúdo voltado para a o uso do software R para a avaliação de dados experimentais.<br>
-<i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Os conjuntos de dados utilizados em todos os exemplos, em formato Excel.<br>
-<i class="em em-point_right" aria-role="presentation" aria-label="WHITE RIGHT POINTING BACKHAND INDEX"></i>Um script R com os códigos utilizados durante o curso.
+<i class="fas fa-check"></i>Uma apostila com conteúdo voltado para a o uso do software R para a avaliação de dados experimentais.<br>
+<i class="fas fa-check"></i>Os conjuntos de dados utilizados em todos os exemplos, em formato Excel.<br>
+<i class="fas fa-check"></i>Um script R com os códigos utilizados durante o curso.
 
-## Investimento
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="padding-left:16px" id = "investimento">
+  <h1>Investimento</h1>
+  <p>
 
 O valor da inscrição para o curso é de R$50,00 que deverão ser pagos via depósito ou transferência bancária (Banco do Brasil ou Sicredi) ou utilizando o PayPal. Neste último caso, basta clicar em *Comprar agora* e seguir as instruções.
-  
+
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/matheusmcuba/icones-bancos-brasileiros@1.1/dist/all.css">
 
@@ -297,11 +409,22 @@ O valor da inscrição para o curso é de R$50,00 que deverão ser pagos via dep
 <input type="image" src="https://www.paypalobjects.com/pt_BR/BR/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - A maneira fácil e segura de enviar pagamentos online!">
 <img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
 </form>
-            </div>            
             </div>
             </div>
+            </div>
+  </p>
+</div>
 
-## Inscrição
+
+
+
+
+
+
+<div style="padding-left:16px" id = "inscricao">
+  <h1>Inscrição</h1>
+  <p>
+
 
 Após o pagamento da taxa de inscrição, preencha o formulário de inscrição (clique em *Realizar inscrição*), anexando o comprovante de pagamento, ao final do processo.
 
@@ -312,8 +435,11 @@ Após o pagamento da taxa de inscrição, preencha o formulário de inscrição 
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfJRva4FniZqzx9PRRezoFLj1-H6ie5WgkWKYSqmEFkDG9XPQ/viewform" target="_blank" class="btn btn-primary btn-lg">Realizar inscrição</a>
     </div>
  </div>
- 
- 
+
+
 <br>
 
 Se você tem alguma dúvida, por favor, não deixe de [escrever uma mensagem](https://tolivoto.netlify.app/#contact).
+
+  </p>
+</div>
