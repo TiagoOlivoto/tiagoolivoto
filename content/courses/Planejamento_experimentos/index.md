@@ -1,14 +1,8 @@
-+++
-title = "Planejamento e Análise de Experimentos Agronômicos [Português]"
-linktitle = "Análise de experimentos"
-date = "2020-05-19T00:00:00Z"
-lastmod = "2020/04/04"
-toc = true  # Show table of contents? true/false
-type = "docs"  # Do not modify.
-[menu.example]
-    parent = "Courses"
-    weight = 1
-+++
+---
+title: "Planejamento e Análise de Experimentos Agronômicos [Português]"
+date: "2020-05-19T00:00:00Z"
+lastmod: "2020/04/04"
+---
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
