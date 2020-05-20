@@ -1,6 +1,7 @@
 +++
 title = "Overview"
 linktitle = "Quick tips for package metan"
+summary = "In this series of quick tips, I'll show how to use the R package metan to manipulate, summarise, analyze and plot data from multi-environment trials"
 date = "2020/04/03"
 lastmod = "2020/04/04"
 toc = true  # Show table of contents? true/false
