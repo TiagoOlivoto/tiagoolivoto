@@ -21,6 +21,7 @@ projects: []
 
 
 
+I'm so excited to announce that the latest version of the R package [`metan`](https://tiagoolivoto.github.io/metan/index.html) is now on [CRAN](https://cran.r-project.org/web/packages/metan/). This is a minor release (v1.6.0) that includes new features and some minor improvements.
 
 ## New functions
 * `Smith_Hazel()` and `print.sh()` and `plot.sh()` for computing the Smith and Hazel selection index.
