@@ -200,7 +200,7 @@ Por fim, será visto como utilizando pocos comandos, gráficos poderosos podem s
 <div style="padding-left:16px" id = "cargahoraria">
   <h1>Carga horária</h1>
   <p>
-A carga horária do curso é de 08 horas que serão divididas em duas aulas de 04 horas, a serem realizadas nos dias 06/06 e 13/06/2020 (sábados), das 13:30 as 17:30 h.
+A carga horária do curso é de 08 horas que serão divididas em duas aulas de 04 horas, a serem realizadas nos dias 06/06 e 13/06/2020 (sábados), das 13:30 as 17:30 h. Com base legal no <a href="http://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/decreto/d5154.htm" target="_blank">Decreto Presidencial N° 5.154 (23 de julho de 2004)</a>, um certificado de participação será enviado após a conclusão do curso.
   </p>
 </div>
 
