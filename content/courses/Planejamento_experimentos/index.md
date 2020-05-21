@@ -391,7 +391,7 @@ O valor da inscrição para o curso é de R$50,00 que deverão ser pagos via dep
                 <small>AG: 0680-7</small><br>
                 <small>CC: 38398-8</small><br>
                 <small>Titular: Tiago Olivoto</small><br>
-                <small>CFP: 019.689.590-17</small>
+                <small>CPF: 019.689.590-17</small>
             </div>
             <div class="col icone" data-color="#003882">
                 <span class="ibb-sicredi fa-4x"></span><br>
@@ -399,7 +399,7 @@ O valor da inscrição para o curso é de R$50,00 que deverão ser pagos via dep
                 <small>AG: 0268</small><br>
                 <small>CC: 47216-6</small><br>
                 <small>Titular: Tiago Olivoto</small><br>
-                <small>CFP: 019.689.590-17</small>
+                <small>CPF: 019.689.590-17</small>
             </div>
             <div class="col icone" data-color="#003882">
                 <span class="fab fa-paypal fa-4x"></span><br>
