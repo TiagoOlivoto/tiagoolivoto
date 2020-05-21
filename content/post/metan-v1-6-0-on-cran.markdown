@@ -1,7 +1,7 @@
 ---
 title: metan v1.6.0 on CRAN
 author: Tiago Olivoto
-date: '2020-04-21'
+date: '2020-05-21'
 slug: metan-v1-5-1-on-cran
 categories:
   - metan
