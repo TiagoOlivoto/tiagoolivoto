@@ -1,27 +1,23 @@
 ---
 title: metan v1.6.0 on CRAN
-author: Tiago Olivoto
+author: TiagoOlivoto
 date: '2020-05-21'
-slug: metan-v1-5-1-on-cran
+slug: metan-v1-6-0-on-cran
 categories:
   - metan
-tags:
-  - biometical models
-  - metan
-  - Experimental statistics
-  - genotype-environment interaction
-  - Biplot
+tags: []
 subtitle: ''
 summary: 'Find out the changes made in the v1.6.0 of metan package'
 authors: []
-lastmod: '2020-05-21T13:12:14-03:00'
+lastmod: '2020-05-21T11:26:48-03:00'
 featured: no
 image:
   caption: ''
   focal_point: ''
   preview_only: no
-projects: [R package metan]
+projects: []
 ---
+
 
 
 
@@ -230,7 +226,7 @@ mgidi_index <- mgidi(mod)
 plot(mgidi_index, type = "contribution")
 ```
 
-<img src="/post/metan-v1-6-0-on-cran_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="/post/2020-05-21-metan-v1-6-0-on-cran_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 * `plot_scores()` now can produce a biplot showing other axes besides PC1 and PC2. To change the default IPCA in each axis use the new arguments `first` and `second`.
 
@@ -265,9 +261,7 @@ p2 <- plot_scores(ammi, type = 2, second = "PC3")
 arrange_ggplot(p1, p2)
 ```
 
-<img src="/post/metan-v1-6-0-on-cran_files/figure-html/unnamed-chunk-6-1.png" width="768" />
+<img src="/post/2020-05-21-metan-v1-6-0-on-cran_files/figure-html/unnamed-chunk-6-1.png" width="768" />
 
 
 Find out more about `metan` at https://tiagoolivoto.github.io/metan/
-
-
