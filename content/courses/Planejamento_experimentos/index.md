@@ -52,6 +52,7 @@ body {
   <a href="#ministrante">Ministrante</a>
   <a href="#requisitos">Requisitos</a>
   <a href="#materialdidatico">Material didático</a>
+  <a href="#investimento">Investimento</a>
   <a href="#inscricao">Inscrição</a>
 </div>
 
