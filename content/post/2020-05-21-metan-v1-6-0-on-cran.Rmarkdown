@@ -1,6 +1,7 @@
 ---
 title: metan v1.6.0 on CRAN
-author: TiagoOlivoto
+authors:
+- admin
 date: '2020-05-21'
 slug: metan-v1-6-0-on-cran
 categories:
@@ -8,7 +9,6 @@ categories:
 tags: []
 subtitle: ''
 summary: 'Find out the changes made in the v1.6.0 of metan package'
-authors: []
 lastmod: '2020-05-21T11:26:48-03:00'
 featured: no
 image:
