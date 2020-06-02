@@ -25,7 +25,7 @@ tags:
 - WAASB
 - stability analysis
 projects: [R package metan]
-publication: '*Methods in Ecology and Evoution, x*(x)'
+publication: '**Methods in Ecology and Evoution**, 11(6):783--789'
 publication_short: ""
 publication_types:
 - "2"
