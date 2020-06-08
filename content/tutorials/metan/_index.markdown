@@ -66,8 +66,8 @@ citation("metan")
 ## Please, support this project by citing it in your publications!
 ## 
 ##   Olivoto, T., and Lúcio, A.D. (2020). metan: an R package for
-##   multi-environment trial analysis. Methods Ecol Evol. Accepted Author
-##   Manuscript doi:10.1111/2041-210X.13384
+##   multi-environment trial analysis. Methods Ecol Evol. 11:783-789
+##   doi:10.1111/2041-210X.13384
 ## 
 ## A BibTeX entry for LaTeX users is
 ## 
@@ -75,8 +75,9 @@ citation("metan")
 ##     author = {Tiago Olivoto and Alessandro Dal'Col L{'{u}}cio},
 ##     title = {metan: an R package for multi-environment trial analysis},
 ##     journal = {Methods in Ecology and Evolution},
-##     volume = {n/a},
-##     number = {n/a},
+##     volume = {11},
+##     number = {6},
+##     pages = {783-789},
 ##     year = {2020},
 ##     doi = {10.1111/2041-210X.13384},
 ##     url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13384},

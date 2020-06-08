@@ -1,0 +1,78 @@
+---
+title: metan v1.6.1 on CRAN
+authors:
+- admin
+date: '2020-06-08'
+slug: metan-v1-6-1-on-cran
+categories:
+  - metan
+tags: []
+subtitle: ''
+summary: 'Find out the changes made in the v1.6.1 of metan package'
+lastmod: '2020-05-21T11:26:48-03:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(comment = "#", collapse = TRUE)
+
+```
+
+I'm so excited to announce that the latest stable version (v1.6.1) of the R package `metan` is now on [CRAN](https://cran.r-project.org/web/packages/metan/). The main features included in this version are detailed below.
+
+* `plot.mgidi()` can now plot the contribution for all genotypes.
+
+In metan v1.6.1, we can plot the contribution of the factors to the MGIDI index for all genotypes, including the arguments `type = "contribution"` and `genotypes == "all"`
+
+
+```{r}
+library(metan)
+model <- gamem(data_g,
+               gen = GEN,
+               rep = REP,
+               resp = c(NR, KW, CW, CL, NKE, TKW, PERK, PH))
+
+# Selection for increase all variables
+mgidi_model <- mgidi(model)
+
+# plot the contribution of each factor on the MGIDI index
+p1 <- plot(mgidi_model, type = "contribution")
+p2 <- plot(mgidi_model, type = "contribution", genotypes = "all")
+arrange_ggplot(p1, p2, rel_widths = c(1, 2))
+```
+
+
+
+* `plot_bars()` and `plot_factbars()` now shows the values with `values = TRUE`
+
+```{r}
+
+
+# one categorical variable
+p1 <- plot_bars(data_g, GEN, PH, values = TRUE)
+p2 <- 
+data_ge2 %>% 
+  subset(GEN  %in% c("H1", "H2", "H3")) %>% 
+  plot_factbars(GEN, ENV, resp = PH, values = TRUE)
+arrange_ggplot(p1, p2)
+
+
+```
+
+
+* Update the functions by using the new `dplyr::across()`
+* Update citation field by including number and version of the published paper.
+
+```{r}
+citation("metan")
+```
+
+
+Follow [metan on Github](https://github.com/TiagoOlivoto/metan) to find out the latest news!
+
+
