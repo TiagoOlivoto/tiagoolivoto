@@ -1,0 +1,79 @@
+---
+title: metan v1.7.0 on cran
+authors:
+- admin
+date: '2020-07-18'
+slug: metan-v1-6-1-on-cran
+categories:
+  - metan
+tags: []
+subtitle: ''
+summary: 'Find out the changes made in the v1.7.0 of metan package'
+lastmod: '2020-07-18T11:26:48-03:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(comment = "#", collapse = TRUE)
+
+```
+
+I'm so excited to announce that the latest stable version (v1.7.0) of the R package `metan` is now on [CRAN](https://cran.r-project.org/web/packages/metan/). The main features included in this version are detailed below.
+
+
+* New function `sum_by()` to compute the sum by levels of factors
+
+```{r}
+library(metan)
+sum_by(data_ge, GEN)
+
+```
+
+
+* `mgidi()` now allows using a fixed-effect model fitted with `gafem()` as input data.
+
+```{r}
+model <- gafem(data_g,
+               gen = GEN,
+               rep = REP,
+               resp = c(NR, KW, CW, CL, NKE, TKW, PERK, PH),
+               verbose = FALSE)
+
+# Selection for increase all variables
+mgidi_model <- mgidi(model)
+
+# plot the contribution of each factor on the MGIDI index
+p1 <- plot(mgidi_model, type = "contribution")
+p2 <- plot(mgidi_model, type = "contribution", genotypes = "all")
+arrange_ggplot(p1, p2, rel_widths = c(1, 2))
+```
+
+
+* `round_cols()` now can be used to round whole matrices.
+
+```{r}
+corr <- corr_coef(data_ge, verbose = FALSE)$cor
+corr
+round_cols(corr)
+
+```
+
+* New functions `clip_read()` and `clip_write()` to read from the clipboard and write to the clipboard, respectively. Take a look at the short video bellow to see how them work!
+
+
+<iframe width="620" height="410" src="https://www.youtube.com/embed/HssjpGyjtGI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+```{r}
+citation("metan")
+```
+
+
+Follow [metan on Github](https://github.com/TiagoOlivoto/metan) to find out the latest news!

@@ -22,5 +22,5 @@ tags:
 knitr::opts_chunk$set(cache = TRUE)
 ```
 
-**A post blog that explains how metan was born will be available soon at [Methods.blog](https://methodsblog.com/)**
+**A post blog that explains how metan was born is [now published in methods.blog](https://methodsblog.com/2020/05/28/metan-package-pt_br/).
 
