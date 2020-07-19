@@ -1,15 +1,17 @@
 ---
-title: metan v1.7.0 on cran
-authors:
-- admin
-date: '2020-07-18'
-slug: metan-v1-6-1-on-cran
+title: metan v1.7.0 now on CRAN
+author: Tiago Olivoto
+date: '2020-07-19'
+slug: metan-v1-7-0-now-on-cran
 categories:
   - metan
-tags: []
+tags:
+  - MGIDI
+  - genotype selection
 subtitle: ''
 summary: 'Find out the changes made in the v1.7.0 of metan package'
-lastmod: '2020-07-18T11:26:48-03:00'
+authors: []
+lastmod: '2020-07-19T09:36:46-03:00'
 featured: no
 image:
   caption: ''
@@ -17,6 +19,7 @@ image:
   preview_only: no
 projects: []
 ---
+
 
 
 
@@ -126,7 +129,7 @@ p2 <- plot(mgidi_model, type = "contribution", genotypes = "all")
 arrange_ggplot(p1, p2, rel_widths = c(1, 2))
 ```
 
-<img src="/post/2020-07-18-metan-v1-7-0-on-cran.en_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="/post/2020-07-19-metan-v1-7-0-now-on-cran.en_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 
 * `round_cols()` now can be used to round whole matrices.
