@@ -1,0 +1,95 @@
+---
+title: metan v1.8.1 now on CRAN
+author: Tiago Olivoto
+date: '2020-09-10'
+slug: metan-v1-8-0-now-on-cran
+categories:
+  - metan
+tags:
+  - GYT biplot
+  - GT biplot
+  - MGIDI
+subtitle: ''
+summary: 'Find out the changes made in the v1.8.1 of metan package'
+authors: []
+lastmod: '2020-09-10T16:12:22-03:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(comment = "#", collapse = TRUE)
+
+```
+
+
+I'm so excited to announce that the latest stable version (v1.8.1) of the R package `metan` is now on [CRAN](https://CRAN.R-project.org/package=metan). The main features included in this version are detailed below.
+
+
+* New function `gytb()` to generate the [Genotype by yield*trait biplot analysis](https://www.nature.com/articles/s41598-018-26688-8).
+
+```{r}
+library(metan)
+mod <- gytb(data_ge2,
+            gen = GEN,
+            yield = EL)
+plot(mod)
+
+
+```
+
+* New functions `row_col_mean()` and `row_col_sum()`to add a row with the mean/sum of each variable and a column with the the mean/sum for each row of a matrix or data frame.
+
+```{r}
+mat <- make_mat(data_ge, ENV, GEN, GY) %>% round_cols()
+mat
+row_col_mean(mat) %>% round_cols()
+row_col_sum(mat) %>% round_cols()
+```
+
+
+* `inspect()` now generate a warning if zero values are observed in data.
+
+```{r}
+data_zero <- data_ge
+data_zero[3, 4] <- 0
+inspect(data_ge)
+inspect(data_zero)
+
+```
+
+
+* New functions `has_zero()`, `remove_cols_zero()`, `remove_rows_zero()`, `select_cols_zero()`, `select_rows_zero()`, and `replace_zero()` to deal with 0s in a data frame.
+```{r}
+data_naz <- data_g %>% round_cols(digits = 1)
+data_naz[c(2, 6, 9), c(6:7, 12:13)] <- 0
+has_zero(data_naz)
+remove_cols_zero(data_naz)
+remove_rows_zero(data_naz)
+select_cols_zero(data_naz)
+select_rows_zero(data_naz)
+replace_zero(data_naz)
+```
+
+
+* New argument `position` in `plot.gamem()` and `plot.mtsi()`  to control the position adjustment of the bar plot.
+```{r}
+rcbd <- gamem(data_g,
+             gen = GEN,
+             rep = REP,
+             resp = c(PH, ED, EL, CL, NR))
+p1 <- plot(rcbd, type = "vcomp")
+p2 <- plot(rcbd, type = "vcomp", position = "stack")
+arrange_ggplot(p1, p2)
+```
+
+* New argument `col.by` in `corr_plot()` to map the color of the points by a categorical variable.
+```{r}
+corr_plot(iris, col.by = Species)
+```
+
+
