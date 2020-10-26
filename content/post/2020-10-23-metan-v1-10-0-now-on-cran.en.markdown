@@ -27,7 +27,19 @@ projects: []
 
 
 
-I'm very pleased to announce that `metan` 1.10.0 is now on [CRAN](https://CRAN.R-project.org/package=metan). Some minor improvements and new functions were added in this version. See the release notes bellow.
+I'm very pleased to announce that `metan` 1.10.0 is now on [CRAN](https://CRAN.R-project.org/package=metan). Some minor improvements and new functions were added in this version.
+
+# Instalation
+
+```r
+# The latest stable version is installed with
+install.packages("ggplot2")
+
+# Or the development version from GitHub:
+# install.packages("devtools")
+devtools::install_github("TiagoOlivoto/metan")
+```
+
 
 # New functions
 
@@ -331,7 +343,7 @@ p2 <- plot(mgidi_mod$data[[1]], type = "contribution", radar = FALSE)
 arrange_ggplot(p1, p2)
 ```
 
-<img src="/post/2020-10-23-metan-v1-10-0-now-on-cran.en_files/figure-html/unnamed-chunk-9-1.png" width="960" />
+<img src="/post/2020-10-23-metan-v1-10-0-now-on-cran.en_files/figure-html/unnamed-chunk-10-1.png" width="960" />
 
 
 * `get_model_data()` now returns the genotypic and phenotypic correlation matrices from objects of class `waasb` and `gamem`.
