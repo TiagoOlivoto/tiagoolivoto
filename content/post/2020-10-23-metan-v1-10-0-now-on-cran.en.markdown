@@ -33,7 +33,7 @@ I'm very pleased to announce that `metan` 1.10.0 is now on [CRAN](https://CRAN.R
 
 ```r
 # The latest stable version is installed with
-install.packages("ggplot2")
+install.packages("metan")
 
 # Or the development version from GitHub:
 # install.packages("devtools")
