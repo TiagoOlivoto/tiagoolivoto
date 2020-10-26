@@ -27,7 +27,7 @@ projects: []
 
 
 
-I'm very pleased to announce that `metan` 1.10.0 is now on [CRAN](https://CRAN.R-project.org/package=metan). Some minor improvements and new functions were added in this version. See a summary bellow.
+I'm very pleased to announce that `metan` 1.10.0 is now on [CRAN](https://CRAN.R-project.org/package=metan). Some minor improvements and new functions were added in this version. See the release notes bellow.
 
 # New functions
 
@@ -140,8 +140,6 @@ as_integer(df, y)
 # 3     0     3 FALSE c     c    
 # 4     1     4 FALSE d     d    
 # 5     0     5 FALSE e     e
-as_integer(df$y)
-# [1] -1 -1  0  1  0
 
 # convert x3 to factor
 as_factor(df, x3)
@@ -205,23 +203,12 @@ n_valid(data_naz)
 #   Sepal.Length Sepal.Width Petal.Length Petal.Width
 #          <int>       <int>        <int>       <int>
 # 1            5           9            5           5
-n_missing(data_naz)
+n_missing(data_naz, na.rm = TRUE) # na.rm = TRUE to suppress the warning.
 # # A tibble: 1 x 5
 #   Species Sepal.Length Sepal.Width Petal.Length Petal.Width
 #     <int>        <int>       <int>        <int>       <int>
 # 1       4            4           0            4           4
-n_unique(data_naz)
-# Warning: NA values removed to compute the function. Use 'na.rm = TRUE' to
-# suppress this warning.
-
-# Warning: NA values removed to compute the function. Use 'na.rm = TRUE' to
-# suppress this warning.
-
-# Warning: NA values removed to compute the function. Use 'na.rm = TRUE' to
-# suppress this warning.
-
-# Warning: NA values removed to compute the function. Use 'na.rm = TRUE' to
-# suppress this warning.
+n_unique(data_naz, na.rm = TRUE) # na.rm = TRUE to suppress the warning.
 # # A tibble: 1 x 5
 #   Species Sepal.Length Sepal.Width Petal.Length Petal.Width
 #     <int>        <int>       <int>        <int>       <int>

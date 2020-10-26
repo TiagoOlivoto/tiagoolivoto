@@ -87,7 +87,6 @@ df
 
 # Convert y to integer
 as_integer(df, y)
-as_integer(df$y)
 
 # convert x3 to factor
 as_factor(df, x3)
