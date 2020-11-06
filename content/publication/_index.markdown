@@ -1,8 +1,10 @@
 +++
 date = "2020/04/03"
-lastmod = "2020/04/04"
+lastmod = "2020/11/06"
 headless = true
 +++
+
+
 
 
 
@@ -13,8 +15,8 @@ headless = true
 ## Production progress
 
 <div class="figure" style="text-align: center">
-<img src="/publication/_index_files/figure-html/unnamed-chunk-2-1.png" alt="Number of publications in journal over time. The complete list of references is at the bottom of the page. Last update at 2020-09-10." width="960" />
-<p class="caption">Figure 1: Number of publications in journal over time. The complete list of references is at the bottom of the page. Last update at 2020-09-10.</p>
+<img src="/publication/_index_files/figure-html/unnamed-chunk-2-1.png" alt="Number of publications in journal over time. The complete list of references is at the bottom of the page. Last update at 2020-11-06." width="960" />
+<p class="caption">Figure 1: Number of publications in journal over time. The complete list of references is at the bottom of the page. Last update at 2020-11-06.</p>
 </div>
 
 <br>
