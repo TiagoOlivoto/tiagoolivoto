@@ -1,0 +1,126 @@
+---
+title: Combining separate ggplots with metan
+author: Tiago Olivoto
+date: '2020-11-06'
+slug: []
+categories:
+  - plot composition
+  - ggplot2
+  - patchwork
+tags:
+  - plot composition
+  - ggplot2
+  - patchwork
+subtitle: ''
+summary: 'Find out more about how metan now combine plots'
+authors: []
+lastmod: '2020-11-06T21:37:28-03:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: [metan]
+---
+
+
+`metan` now uses [patchwork](https://patchwork.data-imaginist.com/index.html) package syntax for composing plots, either internally as example of [residual_plots()](https://tiagoolivoto.github.io/metan/reference/residual_plots.html) or explicitly, with [arrange_ggplot()](https://tiagoolivoto.github.io/metan/reference/arrange_ggplot.html). This function is now a wrapper around patchwork's functions [wrap_elements()](https://patchwork.data-imaginist.com/reference/wrap_elements.html), [plot_layout()](https://patchwork.data-imaginist.com/reference/plot_layout.html), and [plot_annotation()](https://patchwork.data-imaginist.com/reference/plot_annotation.html). Many thanks to [Thomas Lin Pedersen](https://data-imaginist.com/) for his impressive work with patchwork.
+
+From now it will be ridiculously simple to combine separate ggplots into the same graphic using operators (`+`) and (`/`) in metan. To access the new simply install the development version with
+
+
+
+```r
+devtools::install_github("TiagoOlivoto/metan")
+```
+
+
+Some motivating examples
+
+
+```r
+library(metan)
+# Create a simple data
+df <- 
+  data_ge %>% 
+  subset(GEN %in% c("G1", "G2", "G3") & ENV %in% c("E1", "E2"))
+
+# One-way (environment mean)
+env <- plot_bars(df, ENV, GY)
+
+# One-way (genotype mean)
+gen <- plot_bars(df, GEN, GY)
+```
+
+In this plot we will combine the two one-way graphs
+
+```r
+# Combine the two plots
+env + gen
+```
+
+<img src="/post/2020-11-06-combining-separate-ggplots-with-metan/index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+
+Now, lets create a two-way plot (genotype vs environment) with `plot_factbars()` and combine it with the previous plots.
+
+```r
+# Two-way plot (genotype vs environment)
+env_gen <- plot_factbars(df, GEN, ENV, resp = GY)
+
+# Combine the one-way and two-way plots
+p <- (env + gen) / env_gen
+p
+```
+
+<img src="/post/2020-11-06-combining-separate-ggplots-with-metan/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+
+Let's create a bit more elaborate two-way plot
+
+
+```r
+env_gen2 <- 
+  plot_factbars(df,
+                ENV,
+                GEN,
+                lab.bar = letters[1:6],
+                resp = GY,
+                y.expand = .3, 
+                errorbar = FALSE,
+                width.bar = .6,
+                palette = "Blues",
+                values.vjust = 0.5,
+                values.hjust = 1.5,
+                values.angle = 90,
+                plot_theme = theme_metan(color.background = transparent_color()),
+                values = TRUE)
+env_gen2
+```
+
+<img src="/post/2020-11-06-combining-separate-ggplots-with-metan/index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+
+In this plot, we will combine the two two-way plots, giving a relative width greater to `env_gen` plot and adding capital letters as tag levels to the plots.
+
+
+```r
+p2 <- arrange_ggplot(env_gen, env_gen2,
+                     widths = c(1, .6),
+                     tag_levels = "A")
+p2
+```
+
+<img src="/post/2020-11-06-combining-separate-ggplots-with-metan/index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+
+
+
+Now, let's combine the two-way plots into the same graph
+
+
+```r
+# Combine all plots into one graph
+arrange_ggplot(p, p2,
+               guides = "collect",
+               widths = c(.5, 1),
+               tag_levels = "a")
+```
+
+<img src="/post/2020-11-06-combining-separate-ggplots-with-metan/index.en_files/figure-html/unnamed-chunk-7-1.png" width="960" />
