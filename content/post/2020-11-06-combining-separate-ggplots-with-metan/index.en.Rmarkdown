@@ -26,7 +26,7 @@ projects: [metan]
 
 `metan` now uses [patchwork](https://patchwork.data-imaginist.com/index.html) package syntax for composing plots, either internally as example of [residual_plots()](https://tiagoolivoto.github.io/metan/reference/residual_plots.html) or explicitly, with [arrange_ggplot()](https://tiagoolivoto.github.io/metan/reference/arrange_ggplot.html). This function is now a wrapper around patchwork's functions [wrap_elements()](https://patchwork.data-imaginist.com/reference/wrap_elements.html), [plot_layout()](https://patchwork.data-imaginist.com/reference/plot_layout.html), and [plot_annotation()](https://patchwork.data-imaginist.com/reference/plot_annotation.html). Many thanks to [Thomas Lin Pedersen](https://data-imaginist.com/) for his impressive work with patchwork.
 
-From now on it will be ridiculously simple to combine separate ggplots into the same graphic using operators (`+`) and (`/`) in metan. To access the new simply install the development version with
+From now on it will be ridiculously simple to combine separate ggplots into the same graphic using operators (`+`) and (`/`) in metan. To access the news simply install the development version with
 
 
 ```{r eval = FALSE}
