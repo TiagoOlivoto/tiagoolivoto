@@ -28,7 +28,9 @@ knitr::opts_chunk$set(comment = "#", collapse = TRUE)
 
 ```
 
-<a href="https://stackoverflow.com/questions/36003670/how-to-put-a-link-on-a-button-with-bootstrap" class="btn btn-info" role="button">Link Button</a>
+<a href="https://stackoverflow.com/questions/36003670/how-to-put-a-link-on-a-button-with-bootstrap"  class="btn btn-primary" role="button">Este post também está disponível em portugês</a>
+
+
 
 In our recent [paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaa981/5998663?guestAccessKey=79faf1a1-64a8-4ad5-bd72-0e5953e6a167) in [Bioinformatics](https://academic.oup.com/bioinformatics), [Maicon Nardino](https://www.researchgate.net/profile/Maicon_Nardino3) and I describe a new multi-trait genotype-ideotype distance index, MGIDI, for genotype selection and treatment recommendation in biological experiments. So, I prepared this short tutorial on the MGIDI computation.
 
@@ -113,7 +115,7 @@ Then, we obtain the genotype/treatment ranking with
 plot(mgidi_index)
 ```
 
-One of the main differentials of MGIDI index is the strengths and weaknesses view of genotypes/treatments using the following radar plot. The factor with the smallest contribution will be closer to the edge of the radar; then the genotype that stands out for this factor will have strenghts related to the traits within that factor.
+One of the main differentials of MGIDI index is the strengths and weaknesses view of genotypes/treatments using the following radar plot. The factor with the smallest contribution will be closer to the edge of the radar; then the genotype that stands out for this factor will have strengths related to the traits within that factor.
 
 ```{r}
 plot(mgidi_index, type = "contribution")
@@ -151,4 +153,9 @@ The MGIDI index allows a unique and easy-to-interpret selection process. Besides
 
 Our [Supplementary data](https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/bioinformatics/PAP/10.1093_bioinformatics_btaa981/1/btaa981_supplementary_data.pdf?Expires=1609166244&Signature=uAf0EMWlBDbHc4QVo30i5rSZz4i2RZrwImvq9r2IFCYp0MiGBxskr3H3aKCNdhJJ13PM53BGV~~CQXVw6mfs1dn~Nd-K3xlt7EJNaqeD~Wy~ZC1kMxHojlxcXnXktGoyJ9g30940OaVdxDTPFuuWuh7-ALefphrxvLK3~uSu7q1h1gc~USmLcifbQKCVF~vVmDFdnizXQDeEYRk4~QEErL6L6YpeiozAKJPFJQebU0jFFmEVBe-JnzixyEcvvWPniz2TfT5NUEl58eL9FZbmLPd1lRT887uPqHKAhFpwbuFhOrPtMUWEWNslAGbBgxM~A9tAYGC3udfwPfP5Fzp21A__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA) provides the codes used in our article that can be easily adapted in future studies. Another useful function of the `metan` package that can facilitate the implementation of the multi-trait indexes in future studies is `coincidence_index()`, which will make it easier for comparing MGIDI, Smith-Hazel and FAI-BLUP indexes in future studies.
 
-# 
+
+<i class="fas fa-check"></i>Follow our [paper on Research Gate](https://www.researchgate.net/publication/346134633_MGIDI_toward_an_effective_multivariate_selection_in_biological_experiments)<br>
+
+<i class="fas fa-check"></i>Share this post in your social media<br>
+
+<i class="fas fa-check"></i>Enjoy MGIDI index<br>
