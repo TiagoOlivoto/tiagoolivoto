@@ -13,7 +13,7 @@ tags:
   - Multivariate selection
 subtitle: ''
 summary: 'Encontre mais detalhes sobre o índice MGIDI'
-authors: []
+authors: [Tiago Olivoto]
 lastmod: '2020-11-23T14:26:53-03:00'
 featured: no
 image:
@@ -27,55 +27,55 @@ projects: []
 
 <a href="https://tolivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments/"  class="btn btn-primary" role="button">This post is also available in English</a>
 
-Em nosso [artigo recente](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaa981/5998663?guestAccessKey=79faf1a1-64a8-4ad5-bd72-0e5953e6a167) na [Bioinformatics](https://academic.oup.com/bioinformatics), [Maicon Nardino](https://www.researchgate.net/profile/Maicon_Nardino3) e eu descrevos um novo índice de distância genótipo-ideótipo multi-traço, MGIDI, para genótipo seleção e recomendação de tratamento em experimentos biológicos. Então, preparei este breve tutorial sobre a computação MGIDI.
+Em nosso [artigo recente](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaa981/5998663?guestAccessKey=79faf1a1-64a8-4ad5-bd72-0e5953e6a167) na [Bioinformatics](https://academic.oup.com/bioinformatics), [Maicon Nardino](https://www.researchgate.net/profile/Maicon_Nardino3) e eu descrevos um novo índice multivariado de distância genótipo-ideótipo, MGIDI, para seleção e recomendação de tratamentos em experimentos biológicos. Então, preparei este breve tutorial sobre a computação do MGIDI.
 
 ![](mgidi_page.png)
 
 # Motivação
 
-Nardino e eu trabalhamos com dados multitraits desde que comecei meu mestrado na [Universidade Federal de Santa Maria](https://www.ufsm.br/cursos/pos-graduacao/frederico-westphalen/ppgaaa/) (cerca de cinco anos atrás), e selecionar genótipos com base em características múltiplas sempre esteve em nosso radar.
+Nardino e eu trabalhamos com dados multivariados desde que comecei meu mestrado na [Universidade Federal de Santa Maria](https://www.ufsm.br/cursos/pos-graduacao/frederico-westphalen/ppgaaa/) (cerca de cinco anos atrás), e selecionar genótipos com base em múltiplas características sempre foi nosso objetivo. Here I need to thank all the members of the [Genetic breeding and plant production lab](https://www.facebook.com/LMGPPUFSMFW), especially my Master's advisor at that time, Velci Queiróz de Souza. Thank you so much!
 
-Dados multivariados são comuns em experimentos biológicos e o uso de informações sobre características múltiplas é crucial para tomar melhores decisões para recomendações de tratamento ou seleção de genótipos. Índices de seleção de múltiplos traços lineares clássicos, como [Smith](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-1809.1936.tb02143.x) e [Hazel](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1209225/) índice estão disponíveis, mas a presença de multicolinearidade e a escolha arbitrária de coeficientes de ponderação podem corroer os ganhos genéticos.
+Dados multivariados são comuns em experimentos biológicos e o uso de informação multivariada é crucial para tomar melhores decisões de recomendações de tratamentos ou seleção de genótipos. Índices clássicos para seleção multivariada, como [Smith](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-1809.1936.tb02143.x) e [Hazel](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1209225/) estão disponíveis, mas a presença de multicolinearidade e a escolha arbitrária de coeficientes de ponderação podem corroer os ganhos genéticos.
 
-Depois que um dos capítulos de minha tese de doutorado foi publicado como ["Mean Performance and Stability in Multi‐Environment Trials II: Selection Based on Multiple Traits"](https://acsess.onlinelibrary.wiley.com/doi/full/10.2134/agronj2019.03.0221) estávamos convencidos de que combinar a análise fatorial e os princípios da distância euclidiana seria uma boa estratégia para a criação de um índice multitraço para seleção de genótipos em que a maioria das características são selecionadas favoravelmente. Naquela época (2019) Nardino já era Professor de Genética e Melhoramento da Universidade Federal de Viçosa e eu Professor de Agronomia do Centro Univesitario UNIDEAU. Depois de muitas ligações pelo Skype, tínhamos os fundamentos teóricos do índice MGIDI.
+Depois que um dos capítulos de minha tese de doutorado foi publicado como ["Mean Performance and Stability in Multi‐Environment Trials II: Selection Based on Multiple Traits"](https://acsess.onlinelibrary.wiley.com/doi/full/10.2134/agronj2019.03.0221) estava convencido de que combinar princípios de diferentes técnicas multivariadas seria uma boa estratégia para a criação de um índice multivariado para seleção de genótipos em que a maioria das características são selecionadas favoravelmente. Preciso também agradecer aqui meu orientador de Doutorado, Alessandro Dal'Col Lúcio por todo apoio e parceria e os colegas de Graduação e Pós-graduação na Época. Em 2019 Nardino já era Professor de Genética e Melhoramento da Universidade Federal de Viçosa e eu Professor de Agronomia do Centro Univesitario UNIDEAU. Depois de diversas longas chamadas pelo Skype, tínhamos os fundamentos teóricos do índice MGIDI.
 
 # Fundamentos teóricos
 
 A teoria por trás do índice MGIDI é centrada em quatro etapas principais.
 
-1. Reescalar as variáveis para que todas tenham um intervalo de 0-100.
+1. Reescalar as variáveis para que todas tenham um intervalo de 0-100. 
 
-2. Usar uma [análise fatorial](https://stats.idre.ucla.edu/spss/seminars/introduction-to-factor-analysis/a-practical-introduction-to-factor-analysis/) para explicar a correlação redução da estrutura e dimensionalidade dos dados.
+2. Usar uma [análise fatorial](https://stats.idre.ucla.edu/spss/seminars/introduction-to-factor-analysis/a-practical-introduction-to-factor-analysis/) para considerar a estrutura de correlação entre as variáveis e redução de dimensionalidade dos dados.
 
-3. Planejamento de um [ideótipo](https://link.springer.com/article/10.1007/BF00056241) com base em valores conhecidos / desejados de características.
+3. Planejar um [ideótipo](https://link.springer.com/article/10.1007/BF00056241) com base em valores conhecidos/desejados de características.
 
 4. Calcular a distância entre cada genótipo para o ideótipo planejado.
 
-O genótipo / tratamento com o menor MGIDI está então mais próximo do ideótipo e, portanto, apresenta os valores desejados para todos os caracteres p.
+O genótipo/tratamento com o menor MGIDI está então mais próximo do ideótipo e, portanto, apresenta os valores mais desejados para todas as características em estudo.
 
 # Implementação em software
 
-O pacote [`metan`](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384) está sendo reconhecido e utilizado entre melhoristas, principalmente. Portanto, parecia lógico que não havia outra maneira de providenciar acesso livre e de código aberto ao índice MGIDI do que implementá-lo no [metan](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384). E aqui estamos! o índice MGIDI pode ser calculado com `metan::mgidi()`.
+O pacote R [`metan`](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384) está sendo reconhecido e utilizado entre melhoristas, principalmente. Portanto, parecia lógico que não havia outra maneira de providenciar acesso livre e de código aberto ao índice MGIDI do que implementá-lo no [metan](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384). E aqui estamos! o índice MGIDI pode ser computado com `metan::mgidi()`.
 
-A última versão estável do metan está disponível no [CRAN](https://CRAN.R-project.org/package=metan) e pode ser obtida com
+A última versão estável do `metan` está disponível no [CRAN](https://CRAN.R-project.org/package=metan) e pode ser obtida com
 
 
 ```r
 # A última versão estável é instalada com
-install.packages ("metan")
+install.packages("metan")
 
 # Ou a versão de desenvolvimento do GitHub:
 # install.packages ("devtools")
-devtools :: install_github ("TiagoOlivoto / metan")
+devtools::install_github("TiagoOlivoto/metan")
 ```
 
-Os usuários podem ajustar o índice usando dados baseados em repetição ou dados baseados em média.
+Os usuários podem computar o índice usando dados baseados em repetição ou dados baseados em média.
 
 ## Usando dados baseados em repetições
 
-Quando dados baseados em repetição estão disponíveis, ambos modelos de efeitos mistos ou fixos podem ser ajustados com `gamem()` e `gafem()`, respectivamente. Neste exemplo motivador, iremos reproduzir os resultados da seleção do genótipo de trigo realizada em nosso artigo
+Quando dados baseados em repetição estão disponíveis, ambos modelos de efeitos mistos ou fixos podem ser ajustados com `gamem()` e `gafem()`, respectivamente. Neste exemplo, iremos reproduzir os resultados da seleção do genótipos de trigo realizada em nosso artigo.
 
-A primeira etapa é calcular o modelo. Neste caso, um modelo de efeito misto com genótipo como efeito aleatório.
+A primeira etapa é ajusar o modelo. Neste caso, um modelo de efeito misto com genótipo como efeito aleatório.
 
 
 ```r
@@ -91,7 +91,7 @@ library(metan)
 # | Visit 'https://bit.ly/2TIq6JE' for a complete tutorial |
 # |========================================================|
 dados <-
-  read.csv("https://bit.ly/2Z0A7FL", sep = ";")%>%
+  read.csv("https://bit.ly/2Z0A7FL", sep = ";") %>%
   as_factor(GEN, BLOCK)
 
 # Ajustar o modelo de efeito misto
@@ -111,7 +111,7 @@ mgidi_index <-
         ideotype = c(rep("l", 4), rep("h", 10)),
         SI = 15,
         verbose = FALSE)
-gmd(mgidi_index)%>% round_cols ()
+gmd(mgidi_index) %>% round_cols()
 # Class of the model: mgidi
 # Variable extracted: sel_dif
 # # A tibble: 14 x 11
@@ -133,7 +133,7 @@ gmd(mgidi_index)%>% round_cols ()
 # 14 GY    FA5    4380.   4621.   241.     5.5   0.72 173.      3.96 increa~   100
 ```
 
-Em seguida, obtemos a classificação genótipo / tratamento com
+Em seguida, obtemos a classificação genótipo/tratamento com
 
 
 ```r
@@ -142,7 +142,7 @@ plot(mgidi_index)
 
 <img src="/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments-pt-br/index.pt-br_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
-Um dos principais diferenciais do índice MGIDI é a visualização dos pontos fortes e fracos dos genótipos / tratamentos usando o gráfico de radar a seguir. O fator com a menor contribuição estará mais próximo da borda do radar; então, o genótipo que se destaca por esse fator terá pontos fortes relacionados às características desse fator.
+Um dos principais diferenciais do índice MGIDI é a visualização dos pontos fortes e fracos dos genótipos/tratamentos usando o gráfico de radar a seguir. O fator com a menor contribuição estará mais próximo da borda do radar; então, o genótipo que se destaca por esse fator terá pontos fortes relacionados às características desse fator.
 
 
 ```r
@@ -153,13 +153,12 @@ plot(mgidi_index, type = "contribution")
 
 ## Usando uma tabela de dados bidirecional
 
-Nesta seção, extendemos a teoria do índice MGIDI para avaliar um experimento ([Olivoto et al., 2016](https://www.researchgate.net/publication/302920224_Sulfur_and_nitrogen_effects_on_industrial_quality_and_grain_yield_of_wheat)) com uma estrutura de tratamento fatorial qualitativo-qualitativo. O objetivo é escolher o melhor tratamento (combinação de fatores) que proporciona os valores desejados para a maioria das características avaliadas. Aqui, o objetivo é obter menores valores para P e PL e maiores valores para as demais características. Observe que a entrada necessária na função `mgidi()` é uma tabela bidirecional com tratamento / genótipos nos nomes das linhas e características nas colunas.
+Nesta seção, extendemos a teoria do índice MGIDI para avaliar um experimento ([Olivoto et al., 2016](https://www.researchgate.net/publication/302920224_Sulfur_and_nitrogen_effects_on_industrial_quality_and_grain_yield_of_wheat)) com uma estrutura de tratamento fatorial qualitativo-qualitativo. O objetivo é escolher o melhor tratamento (combinação de fatores) que proporciona os valores desejados para a maioria das características avaliadas. Aqui, o objetivo é obter menores valores para P e PL e maiores valores para as demais características. Observe que a entrada necessária na função `mgidi()` é uma tabela bidirecional com tratamento/genótipos nos nomes das linhas e características nas colunas.
 
 
 ```r
-data_ns <-
-   read.csv ("https://bit.ly/3jKx8Jo", sep = ";")
-   str(data_ns)
+data_ns <- read.csv ("https://bit.ly/3jKx8Jo", sep = ";")
+str(data_ns)
 # 'data.frame':	8 obs. of  11 variables:
 #  $ TRAT: chr  "WS_100DR" "WS_30T_40DR_30B" "WS_50T_50DR" "WS_50DR_50B" ...
 #  $ P   : num  91.5 96.8 93.5 96.8 103.5 ...
@@ -173,9 +172,8 @@ data_ns <-
 #  $ GLU : num  30.1 29.9 27.9 29.6 27.6 ...
 #  $ PROT: num  11.8 11.9 12.6 12.6 12.7 ...
    
-data_mat <-
-  column_to_rownames (data_ns, "TRAT")
-# Defina o vetor ideótipo
+data_mat <- column_to_rownames (data_ns, "TRAT")
+# Definir o vetor de ideótipo
 ide_vect <- c("l", "l", rep ("h", 8))
 ide_vect
 #  [1] "l" "l" "h" "h" "h" "h" "h" "h" "h" "h"
@@ -185,7 +183,7 @@ mgidi_data_ns <-
   mgidi(data_mat,
         ideotype = ide_vect,
         verbose = FALSE)
-gmd(mgidi_data_ns)%>% round_cols ()
+gmd(mgidi_data_ns) %>% round_cols()
 # Class of the model: mgidi
 # Variable extracted: sel_dif
 # # A tibble: 10 x 8
@@ -203,7 +201,7 @@ gmd(mgidi_data_ns)%>% round_cols ()
 # 10 GY    FA3    5941.   6459    518.     8.73 increase   100
 ```
 
-O índice MGIDI indicou o tratamento WS\_30T\_40DR\_30B (30% N no estágio de perfilhamento, 40% N no estágio de duplo anel e 30% N no estágio de boost com implementação de enxofre) como o tratamento de melhor desempenho. Este tratamento fornece os valores desejados (valor menor ou maior) para 9 das 10 características analisadas, portanto, a taxa de sucesso, neste caso, foi de 90%.
+O índice MGIDI indicou o tratamento WS\_30T\_40DR\_30B (30% de N no estágio de perfilhamento, 40% de N no estágio de duplo anel e 30% de N no estágio de emborrachamento com uso de enxofre) como o tratamento de melhor desempenho. Este tratamento fornece os valores desejados (valor menor ou maior) para 9 das 10 características analisadas, portanto, a taxa de sucesso, neste caso, foi de 90%.
 
 # O MGIDI na prática
 
@@ -212,9 +210,8 @@ O índice MGIDI permite um processo de seleção único e fácil de interpretar.
 Nosso [Material suplementar]((https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/bioinformatics/PAP/10.1093_bioinformatics_btaa981/1/btaa981_supplementary_data.pdf?Expires=1609166244&Signature=uAf0EMWlBDbHc4QVo30i5rSZz4i2RZrwImvq9r2IFCYp0MiGBxskr3H3aKCNdhJJ13PM53BGV~~CQXVw6mfs1dn~Nd-K3xlt7EJNaqeD~Wy~ZC1kMxHojlxcXnXktGoyJ9g30940OaVdxDTPFuuWuh7-ALefphrxvLK3~uSu7q1h1gc~USmLcifbQKCVF~vVmDFdnizXQDeEYRk4~QEErL6L6YpeiozAKJPFJQebU0jFFmEVBe-JnzixyEcvvWPniz2TfT5NUEl58eL9FZbmLPd1lRT887uPqHKAhFpwbuFhOrPtMUWEWNslAGbBgxM~A9tAYGC3udfwPfP5Fzp21A__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA)) fornece os códigos utilizados em nosso artigo que podem ser facilmente adaptados em estudos futuros. Outra função útil do pacote `metan` que pode facilitar a implementação de índices multi-trait em estudos futuros é` coincidence_index()`,que tornará mais fácil comparar os índices MGIDI, Smith-Hazel e FAI-BLUP em estudos futuros .
 
 
-<i class = "fas fa-check"> </i> Siga nosso [artigo no Research Gate](https://www.researchgate.net/publication/346134633_MGIDI_toward_an_effective_multivariate_selection_in_biological_experiments)<br>
 
-<i class = "fas fa-check"> </i> Compartilhe esta postagem nas suas redes sociais.<br>
-
-<i class = "fas fa-check"> </i> Aproveite o índice MGIDI <br>
+<i class = "fas fa-check"> </i> Siga nosso [artigo no Research Gate](https://www.researchgate.net/publication/346134633_MGIDI_toward_an_effective_multivariate_selection_in_biological_experiments).<br>
+<i class = "fas fa-check"> </i> Compartilhe este post nas suas redes sociais.<br>
+<i class = "fas fa-check"> </i> Aproveite o índice MGIDI. <br>
 

@@ -13,7 +13,7 @@ tags:
   - Multivariate selection
 subtitle: ''
 summary: 'Find out more about the MGIDI index'
-authors: []
+authors: [Tiago Olivoto]
 lastmod: '2020-11-23T14:26:53-03:00'
 featured: no
 image:
@@ -44,7 +44,7 @@ Nardino and I have been working with multi-trait data since I started my Masters
 
 Multivariate data are common in biological experiments and using the information on multiple traits is crucial to make better decisions for treatment recommendations or genotype selection. Classical linear multi-trait selection indexes such as [Smith](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-1809.1936.tb02143.x) and [Hazel](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1209225/) index are available, but the presence of multicollinearity and the arbitrary choosing of weighting coefficients may erode the genetic gains.
 
-After one of my Doctoral thesis chapter has been published as ["Mean Performance and Stability in Multi‐Environment Trials II: Selection Based on Multiple Traits"](https://acsess.onlinelibrary.wiley.com/doi/full/10.2134/agronj2019.03.0221) we were convinced that combining factor analysis and Euclidean distance principles would be a good strategy for creating a multi-trait index for genotype selection in which most of the characteristics are selected favorably. At that time (2019) Nardino was alredy Professor in Genetics and Breeding at Federal University of Viçosa and I Professor of Agronomy At Centro Univesitario UNIDEAU. After a lot of Skype calls, we had the theoretical fundations of the MGIDI index.
+After one of my Doctoral thesis chapter has been published as ["Mean Performance and Stability in Multi‐Environment Trials II: Selection Based on Multiple Traits"](https://acsess.onlinelibrary.wiley.com/doi/full/10.2134/agronj2019.03.0221) I was convinced that combining factor analysis and Euclidean distance principles would be a good strategy for creating a multi-trait index for genotype selection in which most of the characteristics are selected favorably. I also need to thank my Doctoral advisor, Alessandro Dal'Col Lúcio for all the support and partnership and all Graduate and Post-graduate colleagues at that time. At that time (2019) Nardino was alredy Professor in Genetics and Breeding at Federal University of Viçosa and I Professor of Agronomy At Centro Univesitario UNIDEAU. After a lot of long Skype calls, we had the theoretical fundations of the MGIDI index.
 
 # Theoretical fundations
 
@@ -154,8 +154,8 @@ The MGIDI index allows a unique and easy-to-interpret selection process. Besides
 Our [Supplementary data](https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/bioinformatics/PAP/10.1093_bioinformatics_btaa981/1/btaa981_supplementary_data.pdf?Expires=1609166244&Signature=uAf0EMWlBDbHc4QVo30i5rSZz4i2RZrwImvq9r2IFCYp0MiGBxskr3H3aKCNdhJJ13PM53BGV~~CQXVw6mfs1dn~Nd-K3xlt7EJNaqeD~Wy~ZC1kMxHojlxcXnXktGoyJ9g30940OaVdxDTPFuuWuh7-ALefphrxvLK3~uSu7q1h1gc~USmLcifbQKCVF~vVmDFdnizXQDeEYRk4~QEErL6L6YpeiozAKJPFJQebU0jFFmEVBe-JnzixyEcvvWPniz2TfT5NUEl58eL9FZbmLPd1lRT887uPqHKAhFpwbuFhOrPtMUWEWNslAGbBgxM~A9tAYGC3udfwPfP5Fzp21A__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA) provides the codes used in our article that can be easily adapted in future studies. Another useful function of the `metan` package that can facilitate the implementation of the multi-trait indexes in future studies is `coincidence_index()`, which will make it easier for comparing MGIDI, Smith-Hazel and FAI-BLUP indexes in future studies.
 
 
-<i class="fas fa-check"></i>Follow our [paper on Research Gate](https://www.researchgate.net/publication/346134633_MGIDI_toward_an_effective_multivariate_selection_in_biological_experiments)<br>
+<i class="fas fa-check"></i>Follow our [paper on Research Gate](https://www.researchgate.net/publication/346134633_MGIDI_toward_an_effective_multivariate_selection_in_biological_experiments).<br>
 
-<i class="fas fa-check"></i>Share this post in your social media<br>
+<i class="fas fa-check"></i>Share this post in your social media.<br>
 
-<i class="fas fa-check"></i>Enjoy MGIDI index<br>
+<i class="fas fa-check"></i>Enjoy MGIDI index.<br>
