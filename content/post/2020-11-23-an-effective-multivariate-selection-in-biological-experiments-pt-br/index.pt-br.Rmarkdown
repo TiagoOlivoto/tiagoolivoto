@@ -1,5 +1,5 @@
 ---
-title: Em direção uma seleção multivariada eficaz em experimentos biológicos
+title: Em direção a uma seleção multivariada eficaz em experimentos biológicos
 author: Tiago Olivoto
 date: '2020-11-23'
 slug: []
@@ -56,7 +56,7 @@ A teoria por trás do índice MGIDI é centrada em quatro etapas principais.
 
 O genótipo / tratamento com o menor MGIDI está então mais próximo do ideótipo e, portanto, apresenta os valores desejados para todos os caracteres p.
 
-# Implementação de software
+# Implementação em software
 
 O pacote [`metan`](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384) está sendo reconhecido e utilizado entre melhoristas, principalmente. Portanto, parecia lógico que não havia outra maneira de providenciar acesso livre e de código aberto ao índice MGIDI do que implementá-lo no [metan](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384). E aqui estamos! o índice MGIDI pode ser calculado com `metan::mgidi()`.
 
