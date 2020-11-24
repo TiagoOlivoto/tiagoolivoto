@@ -28,7 +28,7 @@ knitr::opts_chunk$set(comment = "#", collapse = TRUE)
 
 ```
 
-<a href="https://stackoverflow.com/questions/36003670/how-to-put-a-link-on-a-button-with-bootstrap"  class="btn btn-primary" role="button">This post is also available in English</a>
+<a href="https://tolivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments/"  class="btn btn-primary" role="button">This post is also available in English</a>
 
 Em nosso [artigo recente](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaa981/5998663?guestAccessKey=79faf1a1-64a8-4ad5-bd72-0e5953e6a167) na [Bioinformatics](https://academic.oup.com/bioinformatics), [Maicon Nardino](https://www.researchgate.net/profile/Maicon_Nardino3) e eu descrevos um novo índice de distância genótipo-ideótipo multi-traço, MGIDI, para genótipo seleção e recomendação de tratamento em experimentos biológicos. Então, preparei este breve tutorial sobre a computação MGIDI.
 
