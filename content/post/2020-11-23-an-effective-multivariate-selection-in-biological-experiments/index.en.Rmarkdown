@@ -1,0 +1,154 @@
+---
+title: Toward an effective multivariate selection in biological experiments
+author: Tiago Olivoto
+date: '2020-11-23'
+slug: []
+categories:
+  - metan
+tags:
+  - MGIDI
+  - biometical models
+  - Plant breeding
+  - Factor Analysis
+  - Multivariate selection
+subtitle: ''
+summary: 'Find out more about the MGIDI index'
+authors: []
+lastmod: '2020-11-23T14:26:53-03:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(comment = "#", collapse = TRUE)
+
+```
+
+<a href="https://stackoverflow.com/questions/36003670/how-to-put-a-link-on-a-button-with-bootstrap" class="btn btn-info" role="button">Link Button</a>
+
+In our recent [paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaa981/5998663?guestAccessKey=79faf1a1-64a8-4ad5-bd72-0e5953e6a167) in [Bioinformatics](https://academic.oup.com/bioinformatics), [Maicon Nardino](https://www.researchgate.net/profile/Maicon_Nardino3) and I describe a new multi-trait genotype-ideotype distance index, MGIDI, for genotype selection and treatment recommendation in biological experiments. So, I prepared this short tutorial on the MGIDI computation.
+
+
+
+![](mgidi_page.png)
+
+# Motivation
+
+Nardino and I have been working with multi-trait data since I started my Mastership at the [Federal University of Santa Maria](https://www.ufsm.br/cursos/pos-graduacao/frederico-westphalen/ppgaaa/) (about five years ago), and selecting genotypes based on multiple traits was always in our radar.
+
+Multivariate data are common in biological experiments and using the information on multiple traits is crucial to make better decisions for treatment recommendations or genotype selection. Classical linear multi-trait selection indexes such as [Smith](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-1809.1936.tb02143.x) and [Hazel](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1209225/) index are available, but the presence of multicollinearity and the arbitrary choosing of weighting coefficients may erode the genetic gains.
+
+After one of my Doctoral thesis chapter has been published as ["Mean Performance and Stability in Multi‐Environment Trials II: Selection Based on Multiple Traits"](https://acsess.onlinelibrary.wiley.com/doi/full/10.2134/agronj2019.03.0221) we were convinced that combining factor analysis and Euclidean distance principles would be a good strategy for creating a multi-trait index for genotype selection in which most of the characteristics are selected favorably. At that time (2019) Nardino was alredy Professor in Genetics and Breeding at Federal University of Viçosa and I Professor of Agronomy At Centro Univesitario UNIDEAU. After a lot of Skype calls, we had the theoretical fundations of the MGIDI index.
+
+# Theoretical fundations
+
+The theory behind MGIDI index is centered on four main steps.
+
+1.  Rescaling the traits so that all have a 0-100 range
+
+2.  Using [factor analysis](https://stats.idre.ucla.edu/spss/seminars/introduction-to-factor-analysis/a-practical-introduction-to-factor-analysis/) to account for the correlation structure and dimensionality reduction of data.
+
+3.  Planning an [ideotype](https://link.springer.com/article/10.1007/BF00056241) based on known/desired values of traits.
+
+4.  To compute the distance between each genotype to the planned ideotype.
+
+The genotype/treatment with the lowest MGIDI is then closer to the ideotype and therefore presents desired values for all the p traits.
+
+# Software implementation
+
+[`metan`](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384) R package has been spread among breeders. So, it seemed logical that  there was no other way to provide freely and open-source acessebility of the MGIDI index than implementing it on [metan](https://translate.google.com/translate?hl=pt-BR&prev=_t&sl=en&tl=pt&u=https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384). An here we're! the MGIDI index can be computed with metan::mgidi().
+
+The latest stable version of metan is on [CRAN](https://CRAN.R-project.org/package=metan) and can be obtained with
+
+```{r eval=FALSE}
+# The latest stable version is installed with
+install.packages("metan")
+
+# Or the development version from GitHub:
+# install.packages("devtools")
+devtools::install_github("TiagoOlivoto/metan")
+```
+
+Users can fit the index either using replicate-based data or mean-based data.
+
+## Using replicate-based data
+
+When replicate-based data are available, both mixed- or fixed-effect models can be fitted with `gamem()` and `gafem()`, respectively. In this motivating example, we will reproduce the results for the wheat genotype selection performed in our paper
+
+The first step is to compute the model. In this case, a mixed-effect model with genotype as random effect.
+
+```{r}
+library(metan)
+data <-
+  read.csv("https://bit.ly/2Z0A7FL", sep = ";") %>%
+  as_factor(GEN, BLOCK) 
+
+# Fit the mixed-effect model
+mod <- gamem(data,
+             gen = GEN,
+             rep = BLOCK,
+             resp = everything(),
+             verbose = FALSE)
+
+```
+
+After fitting the mixed model, we use it as input data in the function `mgidi()`. In this case, our aim was to select genotypes with negative gains for the first four traits in `data` and positive gains for the last 10 traits.
+
+```{r}
+mgidi_index <-
+  mgidi(mod,
+        ideotype = c(rep("l", 4), rep("h", 10)),
+        SI = 15,
+        verbose = FALSE)
+gmd(mgidi_index) %>% round_cols()
+```
+
+Then, we obtain the genotype/treatment ranking with
+
+```{r}
+plot(mgidi_index)
+```
+
+One of the main differentials of MGIDI index is the strengths and weaknesses view of genotypes/treatments using the following radar plot. The factor with the smallest contribution will be closer to the edge of the radar; then the genotype that stands out for this factor will have strenghts related to the traits within that factor.
+
+```{r}
+plot(mgidi_index, type = "contribution")
+```
+
+## Using a two-way table data
+
+In this section, we extend the theory of the MGIDI index to evaluate an experiment ([Olivoto et al., 2016](https://www.researchgate.net/publication/302920224_Sulfur_and_nitrogen_effects_on_industrial_quality_and_grain_yield_of_wheat)) with a two-way qualitative-qualitative treatment structure. The focus is to choose the best treatment that allows desired values for most of the evaluated traits. Here, the goal is to obtain low value for P and PL and high values for the remaining traits. Note that the input needed in the function `mgidi()` is a two-way table with treatment/genotypes in the row names and traits in the columns.
+
+```{r}
+data_ns <-
+   read.csv("https://bit.ly/3jKx8Jo", sep = ";")
+   str(data_ns)
+   
+data_mat <-
+  column_to_rownames(data_ns, "TRAT")
+# Define the ideotype vector
+ide_vect <- c("l", "l", rep("h", 8))
+ide_vect
+
+
+mgidi_data_ns <-
+  mgidi(data_mat,
+        ideotype = ide_vect,
+        verbose = FALSE)
+gmd(mgidi_data_ns) %>% round_cols()
+
+```
+
+The MGIDI index indicated the treatment WS\_30T\_40DR\_30B (30% N at the tillering stage, 40% N at the double ring stage, and 30% N at the boosting stage with sulfur implementation) as the best performing treatment. This treatment provides desired values (lower or higher value) for 9 of the 10 analyzed traits, thus, the success rate, in this case, was 90%.
+
+# The MGIDI in practice
+
+The MGIDI index allows a unique and easy-to-interpret selection process. Besides dealing with collinear traits, the MGIDI index doesn't require the use of any economic weights, providing more balanced gains. This means that the MGIDI index can help breeders to guarantee long-term gains in primary traits (e.g., grain yield) without jeopardizing genetic gains of secondary traits (e.g., plant height).
+
+Our [Supplementary data](https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/bioinformatics/PAP/10.1093_bioinformatics_btaa981/1/btaa981_supplementary_data.pdf?Expires=1609166244&Signature=uAf0EMWlBDbHc4QVo30i5rSZz4i2RZrwImvq9r2IFCYp0MiGBxskr3H3aKCNdhJJ13PM53BGV~~CQXVw6mfs1dn~Nd-K3xlt7EJNaqeD~Wy~ZC1kMxHojlxcXnXktGoyJ9g30940OaVdxDTPFuuWuh7-ALefphrxvLK3~uSu7q1h1gc~USmLcifbQKCVF~vVmDFdnizXQDeEYRk4~QEErL6L6YpeiozAKJPFJQebU0jFFmEVBe-JnzixyEcvvWPniz2TfT5NUEl58eL9FZbmLPd1lRT887uPqHKAhFpwbuFhOrPtMUWEWNslAGbBgxM~A9tAYGC3udfwPfP5Fzp21A__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA) provides the codes used in our article that can be easily adapted in future studies. Another useful function of the `metan` package that can facilitate the implementation of the multi-trait indexes in future studies is `coincidence_index()`, which will make it easier for comparing MGIDI, Smith-Hazel and FAI-BLUP indexes in future studies.
+
+# 
