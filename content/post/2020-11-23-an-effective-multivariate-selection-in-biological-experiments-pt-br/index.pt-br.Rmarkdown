@@ -36,7 +36,7 @@ Em nosso [artigo recente](https://academic.oup.com/bioinformatics/advance-articl
 
 # Motivação
 
-Nardino e eu trabalhamos com dados multivariados desde que comecei meu mestrado na [Universidade Federal de Santa Maria](https://www.ufsm.br/cursos/pos-graduacao/frederico-westphalen/ppgaaa/) (cerca de cinco anos atrás), e selecionar genótipos com base em múltiplas características sempre foi nosso objetivo. Here I need to thank all the members of the [Genetic breeding and plant production lab](https://www.facebook.com/LMGPPUFSMFW), especially my Master's advisor at that time, Velci Queiróz de Souza. Thank you so much!
+Nardino e eu trabalhamos com dados multivariados desde que comecei meu mestrado na [Universidade Federal de Santa Maria](https://www.ufsm.br/cursos/pos-graduacao/frederico-westphalen/ppgaaa/) (cerca de cinco anos atrás), e selecionar genótipos com base em múltiplas características sempre foi nosso objetivo. Aqui preciso agradecer a todos os integrantes do [Laboratório de Melhoramento Genético e Produção de plantas](https://www.facebook.com/LMGPPUFSMFW) em especial ao meu orientador de Mestrado na época, Velci Queiróz de Souza. Muito obrigado por tudo!
 
 Dados multivariados são comuns em experimentos biológicos e o uso de informação multivariada é crucial para tomar melhores decisões de recomendações de tratamentos ou seleção de genótipos. Índices clássicos para seleção multivariada, como [Smith](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-1809.1936.tb02143.x) e [Hazel](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1209225/) estão disponíveis, mas a presença de multicolinearidade e a escolha arbitrária de coeficientes de ponderação podem corroer os ganhos genéticos.
 
