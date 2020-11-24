@@ -25,7 +25,7 @@ projects: []
 
 
 
-<a href="https://tolivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments-pt-br/"  class="btn btn-primary" role="button">Este post também está disponível em portugês</a>
+<a href="https://tolivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments-pt-br/"  class="btn btn-primary" role="button">Este post também pode ser lido em Português</a>
 
 
 
