@@ -62,7 +62,7 @@ The genotype/treatment with the lowest MGIDI is then closer to the ideotype and 
 
 # Software implementation
 
-[`metan`](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384) R package has been spread among breeders. So, it seemed logical that  there was no other way to provide freely and open-source acessebility of the MGIDI index than implementing it on [metan](https://translate.google.com/translate?hl=pt-BR&prev=_t&sl=en&tl=pt&u=https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384). An here we're! the MGIDI index can be computed with metan::mgidi().
+[`metan`](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384) R package has been spread among breeders. So, it seemed logical that  there was no other way to provide freely and open-source acessebility of the MGIDI index than implementing it on [metan](https://translate.google.com/translate?hl=pt-BR&prev=_t&sl=en&tl=pt&u=https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13384). An here we're! the MGIDI index can be computed with `metan::mgidi()`.
 
 The latest stable version of metan is on [CRAN](https://CRAN.R-project.org/package=metan) and can be obtained with
 
