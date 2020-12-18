@@ -1,0 +1,140 @@
+---
+title: metan v1.11.0 now on CRAN
+author: Tiago Olivoto
+date: '2020-12-18'
+slug: []
+categories:
+  - metan
+tags:
+  - data analysis
+  - data manipulation
+  - genotype-environment interaction
+  - Set operations
+subtitle: ''
+summary: 'Find out the changes made in the v1.11.0 of metan package'
+authors: []
+lastmod: '2020-12-18T11:58:25-03:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(comment = "#", collapse = TRUE)
+
+```
+
+I'm so proud to announce that `metan` 1.11.0 is now on [CRAN](https://CRAN.R-project.org/package=metan). This minor release include some new functions and minor improvements.
+
+# Instalation
+```{r eval=FALSE}
+# The latest stable version is installed with
+install.packages("metan")
+
+# Or the development version from GitHub:
+# install.packages("devtools")
+devtools::install_github("TiagoOlivoto/metan")
+```
+
+
+# New functions
+## Genotype-environment data
+* `ge_simula()` to simulate genotype-environment data.
+The function simulates genotype-environment data with different main and interaction effects. The effects are selected from a uniform distribution considering the number of levels of each effect (mandatory arguments) and the effect desired (optional arguments).
+
+```{r, fig.width=10, fig.height=4}
+library(metan)
+df <-
+ge_simula(ngen = 10,
+          nenv = 3,
+          nrep = 4,
+          nvars = 2,
+          seed = 1:2) # to ensure reproducibility
+ge_plot(df, ENV, GEN, V1)
+
+# Change genotype effect (trait 1 with fewer differences among genotypes)
+# Change environment effect (trait 1 with fewer differences among environments)
+# Change interaction effect (trait 1 with fewer interaction effect)
+# Define different intercepts for the two traits
+df2 <-
+ge_simula(ngen = 10,
+          nenv = 3,
+          nrep = 4,
+          nvars = 2,
+          gen_eff = c(1, 150),
+          env_eff = c(1, 50),
+          ge_eff = c(1, 50),
+          intercept = c(80, 1500),
+          seed = 1:2) # to ensure reproducibility
+p1 <- ge_plot(df2, ENV, GEN, V1)
+p2 <- ge_plot(df2, ENV, GEN, V2)
+p1 + p2
+```
+
+
+## Set operations
+Operations with sets are important in the genotype-environment analysis (which metan was designed for). For example, if a genotype was selected by a given index within environments A, B, and C, then, this given genotype is the intersection of environments A, B, and C. R base provides functions for set operations but works with two sets at once only. Let’s see how we could estimate the intersection of three sets with R base functions.
+
+```{r}
+(A <- letters[1:4])
+(B <- letters[2:5])
+(C <- letters[3:7])
+(D <- letters[1:12])
+set_lits <- list(A = A, B = B, C = C, D = D)
+# intersection of A, B, and C
+intersect(intersect(A, B), C)
+
+```
+
+Note that we need call `intersect()` several times in this case. The new group of functions `set_union()`, `set_difference()` and `set_intersect()` overcomes the problem of computing union, intersection, and differences of two sets only with the R base functions.
+
+
+```{r}
+
+# Intersect of A and B
+set_intersect(A, B)
+# Intersect of A, B, and C
+set_intersect(A, B, C)
+
+# Union of all sets
+# All functions understand a list object
+set_union(set_lits)
+set_intersect(set_lits)
+```
+
+* `venn_plot()` to compute Venn plots.
+We can use `venn_plot()` to compute Venn diagrams with two, three or four sets.
+```{r}
+# Two sets
+venn_plot(A, B)
+# Thre sets
+# Show the elements
+venn_plot(A, B, C, show_elements = TRUE)
+# Four sets
+# Show the elements
+venn_plot(set_lits, show_elements = TRUE)
+```
+
+
+# A bit more sophisticated example
+In the following example, we simulate genotype-environment data with data on four traits analyzed in 30 genotypes growing in 10 environments. We compute the winner genotype within each environment with `ge_winner()`.  Our aim is to define the intersect genotype for the four traits, i.e., the genotype that won in some environment across all the four traits.
+
+```{r fig.width=12, fig.height=5}
+df_sets <-
+  ge_simula(ngen = 30,
+            nenv = 10,
+            nrep = 4,
+            ge_eff = 100,
+            nvars = 4,
+            seed = 1:4) # to ensure reproducibility
+ge_win <- ge_winners(df_sets, ENV, GEN)
+winners <- lapply(ge_win[,2:5], function(x){x})
+p1 <- venn_plot(winners)
+p2 <- venn_plot(winners, show_elements = TRUE)
+p1 + p2
+```
+
