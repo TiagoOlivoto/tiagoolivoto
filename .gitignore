@@ -2,7 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
-blogdown
+/blogdown
 Thumbs.db
-public/
+/public/
 write_md.R
+.DS_Store
+/resources/
