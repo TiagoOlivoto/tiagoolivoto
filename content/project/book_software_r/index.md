@@ -18,7 +18,9 @@ tags:
 - Experimental statistics
 title:  Introdução ao Software R [PT-BR]
 url_code: "https://tiagoolivoto.github.io/e-bookr/index.html"
-url_pdf: https://github.com/TiagoOlivoto/tiagoolivoto/blob/master/static/pdf/pdf_r_v2.pdf"
+url_pdf: https://github.com/TiagoOlivoto/tiagoolivoto/blob/master/static/pdf/pdf_r_v2.pdf
+url_source: https://github.com/TiagoOlivoto/e-bookr
+url_dataset: https://github.com/TiagoOlivoto/e-bookr/tree/master/data
 url_slides: ""
 url_video: ""
 ---
