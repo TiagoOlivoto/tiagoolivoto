@@ -28,6 +28,14 @@ subtitle = ""
   [[content.filter_button]]
     name = "R packages"
     tag = "R packages"
+    
+  [[content.filter_button]]
+    name = "Books"
+    tag = "Books"
+    
+  [[content.filter_button]]
+    name = "Indexes"
+    tag = "Indexes"
   
   [[content.filter_button]]
     name = "Other"
