@@ -1,6 +1,6 @@
 ---
-title: Multivariate index for genotype selection
-summary: MGIDI index can be used to an effective multivariate selection in biological experiments, which is included (but not limited to) genotype selection in plant breeding and treatment recomendation in experiments.
+title: Multivariate index for analysis of biological experiments
+summary: The MGIDI index can be used to an effective multivariate selection in biological experiments, which is included (but not limited to) genotype selection in plant breeding and treatment recomendation in (un)replicated experiments.
 author: Tiago Olivoto
 date: '2020-11-23'
 slug: []
