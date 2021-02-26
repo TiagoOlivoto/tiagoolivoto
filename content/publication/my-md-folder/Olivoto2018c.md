@@ -2,7 +2,7 @@
 title = "Morphological characteristics and grain yield of simple corn hybrids in different environments"
 date = "2018-01-01"
 publication_types = ["2"]
-authors = ["Olivoto T.", "Carvalho I.", "Nardino M.", "Ferrari M.", "De Pelegrin A.", "Szareski V.", "Demari G.", "De Souza V."]
+authors = ["**Olivoto T.**", "Carvalho I.", "Nardino M.", "Ferrari M.", "De Pelegrin A.", "Szareski V.", "Demari G.", "De Souza V."]
 publication = "In: **Revista de Ciencias Agroveterinarias**, 17(4):462--471, https://doi.org/10.5965/223811711732018462"
 abstract = ""
 abstract_short = ""
