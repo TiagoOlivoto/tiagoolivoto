@@ -8052,7 +8052,7 @@ article {
   animation-delay: 0.15s; }
 
 .article-container {
-  max-width: 760px;
+  max-width: 80%;
   padding: 0 20px 0 20px;
   margin: 0 auto 0 auto; }
 
@@ -8224,7 +8224,7 @@ article .article-metadata {
  *  Tags
  **************************************************/
 .article-tags {
-  margin-top: 1.2rem; }
+  margin-top: 2.5rem; }
 
 /*************************************************
  *  Sharing
@@ -8272,12 +8272,12 @@ ul.share li:hover i {
  *  Author profile card
  **************************************************/
 .author-card .avatar {
-  width: 60px;
-  height: 60px; }
+  width: 100px;
+  height: 100px; }
 
 .author-card .card-title {
   margin-top: 0;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.84); }
 
@@ -8293,9 +8293,9 @@ ul.share li:hover i {
 
 .author-card .card-subtitle {
   font-weight: 300;
-  font-size: 0.8rem;
+  font-size: 1.5rem;
   color: rgba(0, 0, 0, 0.54);
-  margin-bottom: 7px; }
+  margin-bottom: 1px; }
 
 .dark .author-card .card-subtitle {
   color: rgba(255, 255, 255, 0.54); }
@@ -8303,7 +8303,7 @@ ul.share li:hover i {
 .author-card .card-text {
   color: rgba(0, 0, 0, 0.76);
   font-size: 0.8rem;
-  margin-bottom: 4px; }
+  margin-bottom: 0px; }
 
 .dark .author-card .card-text {
   color: rgba(255, 255, 255, 0.76); }

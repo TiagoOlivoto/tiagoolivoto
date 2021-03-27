@@ -1,0 +1,307 @@
+---
+title: metan v1.13.0 now on CRAN
+author: Tiago Olivoto
+date: '2021-03-27'
+slug: []
+categories:
+  - metan
+tags:
+  - data analysis
+  - data manipulation
+  - MTSI
+  - MPS
+  - MTMPS
+  - HMGV
+  - RPGV
+  - HMRPGV
+  - biplots
+  - AMMI
+  - WAASB
+  - WAAS
+image:
+  placement: 2
+  caption: 'Image by Larisa Koshkina on Pixabay'
+  # focal_point: 'center'
+  preview_only: no
+subtitle: ''
+summary: 'Find out the changes made in the v1.13.0 of metan package'
+authors: []
+lastmod: '2021-02-28'
+featured: no
+projects: []
+---
+
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(comment = "#", collapse = TRUE)
+
+```
+
+After exactly two months since the last stable release, I'm so proud to announce that `metan` 1.13.0 is now on [CRAN](https://CRAN.R-project.org/package=metan). This version includes important new features and bug corrections. In the last months, I've been receiving a lot of positive feedbacks and very useful suggestions to improve the package. Thanks to all!
+
+`metan` was first released on CRAN on 2020/01/14 and since there,  12 stable versions have been released regularly. I'm happy with the results and the package now provides the main tools for manipulating, summarizing, analyzing, and plotting multi-environment trial data in plant breeding.
+
+I need to inform you that due to my dedication to teaching and other new projects, I do not intend to plan a new stable release at least for the next few months. Critical bugs and the inclusion of new minor features will be added in the [development version](https://github.com/TiagoOlivoto/metan). 
+
+# Instalation
+```{r eval=FALSE}
+# The latest stable version is installed with
+install.packages("metan")
+
+# Or the development version from GitHub:
+# install.packages("devtools")
+devtools::install_github("TiagoOlivoto/metan")
+```
+
+
+# New functions
+## Helper functions
+* `progress()` and `run_progress()` for text progress bar in the terminal.
+A simple progress bar was included and the dependence of [progress](https://cran.r-project.org/web/packages/progress/index.html) package removed.
+
+```{r}
+library(metan)
+# Initialize the progress bar out of a loop
+pb <-  progress(max = 10)
+for (i in 1:10) {
+# call the progress bar inside a loop
+ run_progress(pb, actual = i)
+}
+
+# More examples
+# Shows a progress bar without percentage or elapsed time.
+pb <-  progress(max = 5, style = 1)
+for (i in 1:5) {
+ run_progress(pb, actual = i,
+              text = paste("Processing item", i))
+}
+
+# Shows the progress bar and elapsed time.
+pb <-  progress(max = 5, style = 3)
+for (i in 1:5) {
+ run_progress(pb, actual = i,
+              sleep = 1,
+              text = paste("Processing item", i))
+}
+
+# Shows the progress bar, percentage, and elapsed time.
+pb <-  progress(max = 5, 
+                style = 4,
+                char = ".",
+                rightd = "")
+for (i in 1:5) {
+ run_progress(pb, actual = i,
+              sleep = 1,
+              text = paste("Processing item", i))
+}
+```
+
+
+* `rbind_fill_id()` To implement the common pattern of `do.call(rbind, dfs)` with data
+
+```{r}
+(df1 <- data.frame(v1 = c(1, 2), v2 = c(2, 3)))
+(df2 <- data.frame(v3 = c(4, 5)))
+rbind_fill_id(df1, df2,
+             .id = "dfs")
+```
+
+
+
+* `hmgv()`, `rpgv()`, `hmrpgv()`, `blup_indexes()` to compute stability indexes based on a mixed-effect model.
+
+In this version, `Resende_indexes()` was deprecated in favour of `blup_indexes()`
+
+```{r}
+res_ind <- waasb(data_ge,
+                 env = ENV,
+                 gen = GEN,
+                 rep = REP,
+                 resp = c(GY, HM),
+                 verbose = FALSE)
+model_indexes <- blup_indexes(res_ind)
+rbind_fill_id(model_indexes, .id = "TRAITS") %>% round_cols()
+
+```
+
+
+* `mps()` and `mtmps()` for uni- and multivariate-based mean performance and stability
+
+In one of my proposals to analyze stability and performance together, the [WAASBY index](https://acsess.onlinelibrary.wiley.com/doi/full/10.2134/agronj2019.03.0220) has a critical limitation. Since WAASB is based on a singular value decomposition of the BLUPs for GE interaction, the two-way matrix must be complete, i.e., the trial must be balanced (all genotypes present in all environments). In the case of unbalanced data, imputation of missing values is needed to compute the WAASB index. If only a few cells need to be imputed, we have no major problems. Sometimes, however, highly unbalanced data is observed, and imputation may provide biased results. In this release, I have extended the theoretical foundations of the WAASBY index so that mean performance and stability could be computed with any stability index available in metan, including stability indexes that by theory don't require a balanced trial.
+
+
+
+## Minor improvements
+
+* `mgidi()` now have an optional `weights` argument to assign different weights for each trait in the selection process. Thanks to [@MichelSouza](https://www.escavador.com/sobre/6363700/michel-henriques-de-souza) for his suggestion.
+
+* `Resende_indexes()` now remove `NA`s before computing harmonic and arithmetic means.
+
+
+* [Licecycle badges](https://lifecycle.r-lib.org/articles/stages.html) added to the functions' documentation.
+
+* Fix bug in `clustering()` when using  with `by` argument and defacult `nclust` argument.
+
+* Improved outputs in `plot_scores` that now has a `highlight` argument to highlight genotypes or environments by hand. Thanks to [Ibrahim Elbasyoni](https://scholar.google.com/citations?user=zPJjnSEAAAAJ&hl=en&authuser=1) for his suggestions.
+
+As a motivating example, I'll simulate a data with 120 genotypes and 6 environments, with 3 traits using `ge_simula()`. Then, compute the mixed-effect model with `waasb()` and the MTSI index with `mtsi()`.
+
+```{r}
+library(metan)
+df <- ge_simula(ngen = 120,
+                nenv = 6,
+                nrep = 3,
+                nvars = 3,
+                seed = 1:3) # ensure reproducibility
+mtsi_model <- waasb(df,
+                    env = ENV,
+                    gen = GEN,
+                    rep = REP,
+                    resp = everything())
+mtsi_index <- mtsi(mtsi_model)
+
+```
+
+Note that plots with a relatively large number of lines are messy, and a warning *"ggrepel: xx unlabeled data points (too many overlaps)"* will occour.
+
+```{r}
+plot_scores(mtsi_model, type = 3)
+```
+
+In this cases, I strongly suggest using `repel = FALSE` and reduce the size of the shapes and/or labels for environments/genotypes. We can do that now by using `size.shape.*` and `size.tex.*` arguments.
+
+```{r}
+plot_scores(mtsi_model,
+            type = 3,
+            repel = FALSE,
+            size.shape.gen = 1.5,
+            size.tex.gen = 1.5)
+```
+
+Still a bit messy, isn't it? In the case when only some genotypes/environments are to be shown, we can use the `highlight` argument. Combining it with `col.gen = transparent_color()`, a little more `tidy` biplot can be produced. Note that `highlight` argument needs a vector of labels that must match the labels for genotypes/environments. Using `sel_gen()`, we can extract the selected genotypes by the MTSI index easily.
+
+```{r}
+(selected <- sel_gen(mtsi_index))
+plot_scores(mtsi_model,
+            type = 3,
+            repel = FALSE,
+            size.shape.gen = 1.5,
+            size.tex.gen = 2.5,
+            col.gen = transparent_color(),
+            highlight = selected,
+            col.highlight = "red") # default
+```
+
+Showing the plot for all traits would look like something as follows
+
+```{r fig.width=15}
+a <-
+plot_scores(mtsi_model,
+            type = 3,
+            repel = FALSE,
+            size.shape.gen = 1.5,
+            size.tex.gen = 2.5,
+            col.gen = transparent_color(),
+            highlight = sel_gen(mtsi_index),
+            col.highlight = "red") # default
+b <-
+plot_scores(mtsi_model,
+            type = 3,
+            var = 2,
+            repel = FALSE,
+            size.shape.gen = 1.5,
+            size.tex.gen = 2.5,
+            col.gen = transparent_color(),
+            highlight = sel_gen(mtsi_index),
+            col.highlight = "red") # default
+c <-
+plot_scores(mtsi_model,
+            type = 3,
+            var = 3,
+            repel = FALSE,
+            size.shape.gen = 1.5,
+            size.tex.gen = 2.5,
+            col.gen = transparent_color(),
+            highlight = sel_gen(mtsi_index),
+            col.highlight = "red") # default
+arrange_ggplot(a, b, c,
+               tag_levels = "a")
+```
+
+
+* `ge_reg()` now returns hypotesis testing for slope and deviations from the regression. Thanks to [@LeonardoBehring](https://www.researchgate.net/profile/Leonardo_Bhering) and [@MichelSouza](https://www.escavador.com/sobre/6363700/michel-henriques-de-souza) for the suggestion.
+
+```{r}
+reg <- ge_reg(data_ge2,
+             env = ENV,
+             gen = GEN,
+             rep = REP,
+             resp = EH)
+print(reg)
+```
+
+
+* `get_model_data()` now extract BLUEs from objects computed with `gamem()` and `gamem_met()`. Thanks to [@MdFarhad](https://www.researchgate.net/profile/Md_Farhad) for suggesting me this improvement.
+```{r message = FALSE, warning = FALSE}
+mix_mod <- 
+  gamem(data_g, GEN, REP, PH:EP, verbose = FALSE)
+(blups <- gmd(mix_mod, "blupg") %>% round_cols())
+(blues <- gmd(mix_mod, "blueg") %>% round_cols())
+
+library(tidyverse)
+df1 <- pivot_longer(blups, - GEN)
+df2 <- pivot_longer(blues, - GEN)
+bind <- left_join(df1, df2, by = c("GEN", "name"))
+ggplot(bind, aes(value.x, value.y, color = GEN)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1) +
+  labs(x = "blups", y = "blues")
+```
+
+
+* `g_simula()` and `ge_simula()` now have a `res_eff` to control the residual effect.
+
+```{r}
+gen_data <-
+   g_simula(ngen = 5,
+            nrep = 3,
+            nvars = 3,
+            res_eff = c(4, 20, 4),
+            seed = 1:3)
+gen_data
+
+mod <- gamem(gen_data, GEN, REP, everything(), verbose = FALSE)
+plot(mod, type = "vcomp")
+
+```
+
+
+## Cheatsheet
+
+<a href="https://github.com/TiagoOlivoto/metan/raw/master/metan_cheat_sheet.pdf"><img src="https://raw.githubusercontent.com/TiagoOlivoto/metan/master/man/figures/metan_cheat_sheet.png" width="1280" height="720"/></a>
+
+
+# Citation
+
+To cite `metan` in your publications, please, use the official reference paper:
+> Olivoto, T., and Lúcio, A.D. (2020). metan: an R package for multi-environment
+  trial analysis. Methods Ecol Evol. 11:783-789 doi:[10.1111/2041-210X.13384](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13384)
+
+A BibTeX entry for LaTeX users is
+
+``` r
+@Article{Olivoto2020,
+    author = {Tiago Olivoto and Alessandro Dal'Col L{'{u}}cio},
+    title = {metan: an R package for multi-environment trial analysis},
+    journal = {Methods in Ecology and Evolution},
+    volume = {11},
+    number = {6},
+    pages = {783-789},
+    year = {2020},
+    doi = {10.1111/2041-210X.13384},
+  }
+```
+
+
+
+
