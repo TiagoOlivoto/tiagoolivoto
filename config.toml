@@ -25,6 +25,7 @@ theme = "hugo-academic"
 # Get last modified date for content from Git?
 enableGitInfo = false
 
+
 # Default language to use (if you setup multilingual support)
 defaultContentLanguage = "en"
 hasCJKLanguage = false  # Set `true` for Chinese/Japanese/Korean languages.
@@ -56,7 +57,7 @@ ignoreFiles = ["\\.knit\\.md$", "\\.utf8\\.md$", "\\.ipynb$", ".ipynb_checkpoint
   [markup.highlight]
     codeFences = false  # Disable Hugo's code highlighter as it conflicts with Academic's highligher.
   [markup.tableOfContents]
-    startLevel = 2
+    startLevel = 1
     endLevel = 3
 
 [imaging]

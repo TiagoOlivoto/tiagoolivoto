@@ -8,8 +8,8 @@ article {
 }
 
 .article-container {
-  max-width: 80%;
-  padding: 0 20px 0 20px;
+  max-width: 100%;
+  padding: 0 20px 0 120px;
   margin: 0 auto 0 auto;
 }
 
@@ -35,8 +35,8 @@ article {
 
 .featured-image-wrapper {
   position: relative;
-  padding-left: 0; /* Override container padding. */
-  padding-right: 0; /* Override container padding. */
+  padding-left: 120px; /* Override container padding. */
+  padding-right: 20; /* Override container padding. */
 }
 
 .featured-image {

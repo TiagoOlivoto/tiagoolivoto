@@ -1,8 +1,15 @@
 ---
-title: metan v1.13.0 now on CRAN
+toc: true
+title: metan 1.13.0 available now!
+subtitle: ''
+summary: 'Find out the features included in metan v1.13.0'
 author: Tiago Olivoto
-date: '2021-03-27'
-slug: []
+date: '2021-02-27'
+# projects: [R package metan]
+url_source: https://github.com/TiagoOlivoto/metan
+url_project: https://tolivoto.netlify.app/project/metan/
+url_code: https://zenodo.org/record/4642209
+doi: "10.1111/2041-210X.13384"
 categories:
   - metan
 tags:
@@ -21,14 +28,9 @@ tags:
 image:
   placement: 2
   caption: 'Image by Larisa Koshkina on Pixabay'
-  # focal_point: 'center'
   preview_only: no
-subtitle: ''
-summary: 'Find out the changes made in the v1.13.0 of metan package'
-authors: []
-lastmod: '2021-02-28'
+lastmod: '2021-03-27'
 featured: no
-projects: []
 ---
 
 
@@ -55,7 +57,7 @@ devtools::install_github("TiagoOlivoto/metan")
 
 
 # New functions
-## Helper functions
+## Utilities
 * `progress()` and `run_progress()` for text progress bar in the terminal.
 A simple progress bar was included and the dependence of [progress](https://cran.r-project.org/web/packages/progress/index.html) package removed.
 
@@ -107,6 +109,7 @@ rbind_fill_id(df1, df2,
 ```
 
 
+## BLUP-based indexes
 
 * `hmgv()`, `rpgv()`, `hmrpgv()`, `blup_indexes()` to compute stability indexes based on a mixed-effect model.
 
@@ -124,23 +127,25 @@ rbind_fill_id(model_indexes, .id = "TRAITS") %>% round_cols()
 
 ```
 
-
+## Mean performance and stability
 * `mps()` and `mtmps()` for uni- and multivariate-based mean performance and stability
 
 In one of my proposals to analyze stability and performance together, the [WAASBY index](https://acsess.onlinelibrary.wiley.com/doi/full/10.2134/agronj2019.03.0220) has a critical limitation. Since WAASB is based on a singular value decomposition of the BLUPs for GE interaction, the two-way matrix must be complete, i.e., the trial must be balanced (all genotypes present in all environments). In the case of unbalanced data, imputation of missing values is needed to compute the WAASB index. If only a few cells need to be imputed, we have no major problems. Sometimes, however, highly unbalanced data is observed, and imputation may provide biased results. In this release, I have extended the theoretical foundations of the WAASBY index so that mean performance and stability could be computed with any stability index available in metan, including stability indexes that by theory don't require a balanced trial.
 
 
 
+# Minor improvements
+## Bug fixes
+
+* `blup_indexes()` now remove `NA`s before computing harmonic and arithmetic means.
+
+* Fix bug in `clustering()` when using  with `by` argument and defacult `nclust` argument.
+
 ## Minor improvements
 
 * `mgidi()` now have an optional `weights` argument to assign different weights for each trait in the selection process. Thanks to [@MichelSouza](https://www.escavador.com/sobre/6363700/michel-henriques-de-souza) for his suggestion.
 
-* `Resende_indexes()` now remove `NA`s before computing harmonic and arithmetic means.
-
-
 * [Licecycle badges](https://lifecycle.r-lib.org/articles/stages.html) added to the functions' documentation.
-
-* Fix bug in `clustering()` when using  with `by` argument and defacult `nclust` argument.
 
 * Improved outputs in `plot_scores` that now has a `highlight` argument to highlight genotypes or environments by hand. Thanks to [Ibrahim Elbasyoni](https://scholar.google.com/citations?user=zPJjnSEAAAAJ&hl=en&authuser=1) for his suggestions.
 
@@ -228,7 +233,6 @@ arrange_ggplot(a, b, c,
                tag_levels = "a")
 ```
 
-
 * `ge_reg()` now returns hypotesis testing for slope and deviations from the regression. Thanks to [@LeonardoBehring](https://www.researchgate.net/profile/Leonardo_Bhering) and [@MichelSouza](https://www.escavador.com/sobre/6363700/michel-henriques-de-souza) for the suggestion.
 
 ```{r}
@@ -276,7 +280,7 @@ plot(mod, type = "vcomp")
 ```
 
 
-## Cheatsheet
+# Cheatsheet
 
 <a href="https://github.com/TiagoOlivoto/metan/raw/master/metan_cheat_sheet.pdf"><img src="https://raw.githubusercontent.com/TiagoOlivoto/metan/master/man/figures/metan_cheat_sheet.png" width="1280" height="720"/></a>
 
