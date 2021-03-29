@@ -1,4 +1,5 @@
 ---
+toc: true
 title: metan v1.11.0 now on CRAN
 author: Tiago Olivoto
 date: '2020-12-18'
@@ -51,7 +52,7 @@ library(metan)
 #   method from   
 #   +.gg   ggplot2
 # |========================================================|
-# | Multi-Environment Trial Analysis (metan) v1.11.0       |
+# | Multi-Environment Trial Analysis (metan) v1.13.0       |
 # | Author: Tiago Olivoto                                  |
 # | Type 'citation('metan')' to know how to cite metan     |
 # | Type 'vignette('metan_start')' for a short tutorial    |
@@ -67,6 +68,7 @@ ge_simula(ngen = 10,
 # Warning: 'env_eff = 15' recycled for all the 2 traits.
 # Warning: 'rep_eff = 5' recycled for all the 2 traits.
 # Warning: 'ge_eff = 10' recycled for all the 2 traits.
+# Warning: 'res_eff = 5' recycled for all the 2 traits.
 # Warning: 'intercept = 100' recycled for all the 2 traits.
 ge_plot(df, ENV, GEN, V1)
 ```
@@ -90,6 +92,7 @@ ge_simula(ngen = 10,
           intercept = c(80, 1500),
           seed = 1:2) # to ensure reproducibility
 # Warning: 'rep_eff = 5' recycled for all the 2 traits.
+# Warning: 'res_eff = 5' recycled for all the 2 traits.
 p1 <- ge_plot(df2, ENV, GEN, V1)
 p2 <- ge_plot(df2, ENV, GEN, V2)
 p1 + p2
@@ -181,6 +184,7 @@ df_sets <-
 # Warning: 'env_eff = 15' recycled for all the 4 traits.
 # Warning: 'rep_eff = 5' recycled for all the 4 traits.
 # Warning: 'ge_eff = 100' recycled for all the 4 traits.
+# Warning: 'res_eff = 5' recycled for all the 4 traits.
 # Warning: 'intercept = 100' recycled for all the 4 traits.
 ge_win <- ge_winners(df_sets, ENV, GEN)
 winners <- lapply(ge_win[,2:5], function(x){x})

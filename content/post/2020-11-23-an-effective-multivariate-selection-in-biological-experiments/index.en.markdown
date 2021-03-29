@@ -1,4 +1,5 @@
 ---
+toc: true
 title: Toward an effective multivariate selection in biological experiments
 author: Tiago Olivoto
 date: '2020-11-23'
@@ -88,7 +89,7 @@ library(metan)
 #   method from   
 #   +.gg   ggplot2
 # |========================================================|
-# | Multi-Environment Trial Analysis (metan) v1.10.0       |
+# | Multi-Environment Trial Analysis (metan) v1.13.0       |
 # | Author: Tiago Olivoto                                  |
 # | Type 'citation('metan')' to know how to cite metan     |
 # | Type 'vignette('metan_start')' for a short tutorial    |
@@ -144,7 +145,7 @@ Then, we obtain the genotype/treatment ranking with
 plot(mgidi_index)
 ```
 
-<img src="/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 One of the main differentials of MGIDI index is the strengths and weaknesses view of genotypes/treatments using the following radar plot. The factor with the smallest contribution will be closer to the edge of the radar; then the genotype that stands out for this factor will have strengths related to the traits within that factor.
 
@@ -153,7 +154,7 @@ One of the main differentials of MGIDI index is the strengths and weaknesses vie
 plot(mgidi_index, type = "contribution")
 ```
 
-<img src="/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments/index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 ## Using a two-way table data
 

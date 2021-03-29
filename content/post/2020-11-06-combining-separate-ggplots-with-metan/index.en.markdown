@@ -1,4 +1,5 @@
 ---
+toc: true
 title: Combining separate ggplots with metan
 author: Tiago Olivoto
 date: '2020-11-06'
@@ -59,7 +60,7 @@ In this plot we will combine the two one-way graphs
 env + gen
 ```
 
-<img src="/post/2020-11-06-combining-separate-ggplots-with-metan/index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 Now, lets create a two-way plot (genotype vs environment) with `plot_factbars()` and combine it with the previous plots.
 
@@ -72,7 +73,7 @@ p <- (env + gen) / env_gen
 p
 ```
 
-<img src="/post/2020-11-06-combining-separate-ggplots-with-metan/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 Let's create a bit more elaborate two-way plot
 
@@ -96,7 +97,7 @@ env_gen2 <-
 env_gen2
 ```
 
-<img src="/post/2020-11-06-combining-separate-ggplots-with-metan/index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 In this plot, we will combine the two two-way plots, giving a relative width greater to `env_gen` plot and adding capital letters as tag levels to the plots.
 
@@ -108,7 +109,7 @@ p2 <- arrange_ggplot(env_gen, env_gen2,
 p2
 ```
 
-<img src="/post/2020-11-06-combining-separate-ggplots-with-metan/index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 
 
@@ -123,4 +124,4 @@ arrange_ggplot(p, p2,
                tag_levels = "a")
 ```
 
-<img src="/post/2020-11-06-combining-separate-ggplots-with-metan/index.en_files/figure-html/unnamed-chunk-7-1.png" width="960" />
+<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="960" />

@@ -1,4 +1,5 @@
 ---
+toc: true
 title: metan v1.8.1 now on CRAN
 author: Tiago Olivoto
 date: '2020-09-10'
@@ -35,17 +36,19 @@ library(metan)
 # Registered S3 method overwritten by 'GGally':
 #   method from   
 #   +.gg   ggplot2
-# []========================================================[]
-# [] Multi-Environment Trial Analysis (metan) v1.8.1        []
-# [] Author: Tiago Olivoto                                  []
-# [] Type 'citation('metan')' to know how to cite metan     []
-# [] Type 'vignette('metan_start')' for a short tutorial    []
-# [] Visit 'https://bit.ly/2TIq6JE' for a complete tutorial []
-# []========================================================[]
+# |========================================================|
+# | Multi-Environment Trial Analysis (metan) v1.13.0       |
+# | Author: Tiago Olivoto                                  |
+# | Type 'citation('metan')' to know how to cite metan     |
+# | Type 'vignette('metan_start')' for a short tutorial    |
+# | Visit 'https://bit.ly/2TIq6JE' for a complete tutorial |
+# |========================================================|
 mod <- gytb(data_ge2,
             gen = GEN,
             yield = EL)
 plot(mod)
+# Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+# increasing max.overlaps
 ```
 
 <img src="/post/2020-09-10-metan-v1-8-1-now-on-cran.en_files/figure-html/unnamed-chunk-1-1.png" width="672" />
@@ -203,7 +206,6 @@ select_rows_zero(data_naz)
 # 3 H11   3       2.5   1.4   0.6     0     0  27.5  15.2  19.4  168.     0     0
 # # ... with 4 more variables: CDED <dbl>, PERK <dbl>, TKW <dbl>, NKE <dbl>
 replace_zero(data_naz)
-# [1] FALSE
 # # A tibble: 39 x 17
 #    GEN   REP      PH    EH    EP    EL    ED    CL    CD    CW    KW    NR   NKR
 #    <fct> <fct> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
@@ -229,6 +231,11 @@ rcbd <- gamem(data_g,
              gen = GEN,
              rep = REP,
              resp = c(PH, ED, EL, CL, NR))
+# Evaluating trait PH |=========                                   | 20% 00:00:00 
+Evaluating trait ED |==================                          | 40% 00:00:00 
+Evaluating trait EL |==========================                  | 60% 00:00:00 
+Evaluating trait CL |===================================         | 80% 00:00:00 
+Evaluating trait NR |============================================| 100% 00:00:00 
 # Method: REML/BLUP
 # Random effects: GEN
 # Fixed effects: REP

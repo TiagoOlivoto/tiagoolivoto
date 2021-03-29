@@ -5,7 +5,6 @@ subtitle: ''
 summary: 'Find out the features included in metan v1.13.0'
 author: Tiago Olivoto
 date: '2021-02-27'
-# projects: [R package metan]
 url_source: https://github.com/TiagoOlivoto/metan
 url_project: https://tolivoto.netlify.app/project/metan/
 url_code: https://zenodo.org/record/4642209

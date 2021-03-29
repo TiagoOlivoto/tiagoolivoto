@@ -1,4 +1,5 @@
 ---
+toc: true
 title: Em direção a uma seleção multivariada eficaz em experimentos biológicos
 author: Tiago Olivoto
 date: '2020-11-23'
@@ -84,7 +85,7 @@ library(metan)
 #   method from   
 #   +.gg   ggplot2
 # |========================================================|
-# | Multi-Environment Trial Analysis (metan) v1.10.0       |
+# | Multi-Environment Trial Analysis (metan) v1.13.0       |
 # | Author: Tiago Olivoto                                  |
 # | Type 'citation('metan')' to know how to cite metan     |
 # | Type 'vignette('metan_start')' for a short tutorial    |
