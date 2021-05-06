@@ -26,7 +26,7 @@ projects: []
 
 
 
-<a href="https://tolivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments-pt-br/"  class="btn btn-primary" role="button">Este post também pode ser lido em Português</a>
+<a href="https://olivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments-pt-br/"  class="btn btn-primary" role="button">Este post também pode ser lido em Português</a>
 
 
 
@@ -120,22 +120,22 @@ gmd(mgidi_index) %>% round_cols()
 # Class of the model: mgidi
 # Variable extracted: sel_dif
 # # A tibble: 14 x 11
-#    VAR   Factor      Xo      Xs     SD SDperc    h2      SG SGperc sense    goal
-#    <chr> <chr>    <dbl>   <dbl>  <dbl>  <dbl> <dbl>   <dbl>  <dbl> <chr>   <dbl>
-#  1 NSS   FA1      15.5    16.0    0.45   2.9   0.77   0.34    2.22 increa~   100
-#  2 SL    FA1       8.63    9.12   0.5    5.78  0.67   0.33    3.86 increa~   100
-#  3 SW    FA1       2.17    2.54   0.37  17.1   0.84   0.31   14.3  increa~   100
-#  4 NGS   FA1      40.5    42.0    1.51   3.73  0.65   0.99    2.45 increa~   100
-#  5 GMS   FA1       1.62    1.88   0.26  16.0   0.81   0.21   13.0  increa~   100
-#  6 HW    FA2      76.3    77.7    1.37   1.79  0.8    1.1     1.44 increa~   100
-#  7 HIS   FA2      74.7    74.2   -0.52  -0.7   0.79  -0.41   -0.55 increa~     0
-#  8 PH    FA3      86.5    86.4   -0.08  -0.09  0.78  -0.06   -0.07 decrea~   100
-#  9 SH    FA3      77.8    77.1   -0.7   -0.9   0.82  -0.570  -0.74 decrea~   100
-# 10 FLH   FA3      60.4    58.7   -1.68  -2.78  0.83  -1.39   -2.29 decrea~   100
-# 11 FLO   FA4      60.4    59.1   -1.34  -2.22  0.92  -1.24   -2.05 decrea~   100
-# 12 DIS   FA4       2.84    3.11   0.27   9.53  0.9    0.24    8.54 increa~   100
-# 13 NGSP  FA4       2.62    2.64   0.02   0.9   0.52   0.01    0.46 increa~   100
-# 14 GY    FA5    4380.   4621.   241.     5.5   0.72 173.      3.96 increa~   100
+#    VAR   Factor      Xo      Xs     SD SDperc    h2     SG SGperc sense     goal
+#    <chr> <chr>    <dbl>   <dbl>  <dbl>  <dbl> <dbl>  <dbl>  <dbl> <chr>    <dbl>
+#  1 NSS   FA1      15.5    16.0    0.45   2.9   0.77   0.34   2.22 increase   100
+#  2 SL    FA1       8.63    9.12   0.5    5.78  0.67   0.33   3.86 increase   100
+#  3 SW    FA1       2.17    2.54   0.37  17.1   0.84   0.31  14.3  increase   100
+#  4 NGS   FA1      40.5    42.0    1.51   3.73  0.65   0.99   2.45 increase   100
+#  5 GMS   FA1       1.62    1.88   0.26  16.0   0.81   0.21  13.0  increase   100
+#  6 HW    FA2      76.3    77.7    1.37   1.79  0.8    1.1    1.44 increase   100
+#  7 HIS   FA2      74.7    74.2   -0.52  -0.7   0.79  -0.41  -0.55 increase     0
+#  8 PH    FA3      86.5    86.4   -0.08  -0.09  0.78  -0.06  -0.07 decrease   100
+#  9 SH    FA3      77.8    77.1   -0.7   -0.9   0.82  -0.57  -0.74 decrease   100
+# 10 FLH   FA3      60.4    58.7   -1.68  -2.78  0.83  -1.39  -2.29 decrease   100
+# 11 FLO   FA4      60.4    59.1   -1.34  -2.22  0.92  -1.24  -2.05 decrease   100
+# 12 DIS   FA4       2.84    3.11   0.27   9.53  0.9    0.24   8.54 increase   100
+# 13 NGSP  FA4       2.62    2.64   0.02   0.9   0.52   0.01   0.46 increase   100
+# 14 GY    FA5    4380.   4621.   241.     5.5   0.72 173.     3.96 increase   100
 ```
 
 Then, we obtain the genotype/treatment ranking with
