@@ -30,7 +30,7 @@ publication_types:
 url_code: https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/bioinformatics/PAP/10.1093_bioinformatics_btaa981/1/btaa981_supplementary_data.pdf?Expires=1609165162&Signature=TN74meFM3FIk-LkNr42DX3DWBIRe4JYN9gDMetgSJiX70XbTwYXAhQP90~LTLlSjJ0Q4VEkQSyElKnYBK7pl3a5DqvBkoYsiKb2dogSd7kfrF~0K4KpcwssVeDEJvOXPpW7zjGo4meIRQ2tJeT9wvpMrMoHebijWfIGnUreemo~2ZHNmAHfK8dIEKqwUZib7Fs-2H~CyvEK5lnPLjhCyhQjhrUI0IPjugd1tPSdPjpcjudSU6EG~XEMTRIP5v~xtCuQQ9uMFqw01A3knxsjgqEKYEwN5cAEF6Gr9upmVBTEmQS5528VcWXXz~fkDXghRGpJ2STX0mAlIW~Rtiyj3Xg__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA
 url_dataset: https://data.mendeley.com/datasets/p724jxkzmd/2
 url_pdf: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaa981/5998663?guestAccessKey=79faf1a1-64a8-4ad5-bd72-0e5953e6a167
-url_poster: https://tolivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments/
+url_poster: https://olivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments/
 url_project: ""
 url_slides: ""
 url_source: https://github.com/TiagoOlivoto/metan/blob/master/R/mgidi.R

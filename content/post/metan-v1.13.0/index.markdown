@@ -6,7 +6,7 @@ summary: 'Find out the features included in metan v1.13.0'
 author: Tiago Olivoto
 date: '2021-02-27'
 url_source: https://github.com/TiagoOlivoto/metan
-url_project: https://tolivoto.netlify.app/project/metan/
+url_project: https://olivoto.netlify.app/project/metan/
 url_code: https://zenodo.org/record/4642209
 doi: "10.1111/2041-210X.13384"
 categories:

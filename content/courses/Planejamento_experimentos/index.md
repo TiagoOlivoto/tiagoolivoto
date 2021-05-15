@@ -437,7 +437,7 @@ Após o pagamento da taxa de inscrição, preencha o formulário de inscrição 
 
 <br>
 
-Se você tem alguma dúvida, por favor, não deixe de [escrever uma mensagem](https://tolivoto.netlify.app/#contact).
+Se você tem alguma dúvida, por favor, não deixe de [escrever uma mensagem](https://olivoto.netlify.app/#contact).
 
   </p>
 </div>
