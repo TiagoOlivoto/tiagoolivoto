@@ -2,7 +2,7 @@
 # Experience widget.
 widget = "experience"  # See https://sourcethemes.com/academic/docs/page-builder/
 headless = true  # This file represents a page section.
-active = false  # Activate this widget? true/false
+active = true  # Activate this widget? true/false
 weight = 40  # Order that this section will appear.
 
 title = "Experience"
@@ -17,6 +17,18 @@ date_format = "Jan 2006"
 #   Required fields are `title`, `company`, and `date_start`.
 #   Leave `date_end` empty if it's your current employer.
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
+
+[[experience]]
+  title = "Agricultural technician"
+  company = "Camol"
+  location = "Cacique Doble - RS"
+  date_start = "2008-01-01"
+  date_end = "2012-05-30"
+  description = """ Responsibilities include:
+  * Technical assistance to farmers
+  * Inventory control
+  """
+  
 [[experience]]
   title = "sales Technical Assistant"
   company = "Agrofel"
@@ -24,7 +36,11 @@ date_format = "Jan 2006"
   location = "Sananduva - RS"
   date_start = "2012-06-01"
   date_end = "2013-06-01"
-  description = ""
+  description = """ Responsibilities include:
+  * Technical assistance to farmers
+  * Crop protection sales
+  * Fertilizer sales
+  """
 
 [[experience]]
   title = "Professor"
@@ -33,6 +49,6 @@ date_format = "Jan 2006"
   location = "Getúlio Vargas - RS"
   date_start = "2019-02-15"
   date_end = ""
-  description = """Professor of Agronomy."""
+  description = """Professor of Agronomy"""
 
 +++

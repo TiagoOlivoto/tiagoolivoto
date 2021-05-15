@@ -138,7 +138,7 @@ MODALIDADE:<br> online
 <div class="icon">
 <i class="fas fa-dollar-sign fa-4x"></i>
 </div>
-INVESTIMENTO<br>R$50,00
+INVESTIMENTO<br>R$250,00
 </div>
 </div>
 </div>
@@ -378,7 +378,7 @@ Na sexta-feira, 05/06/2020, o aluno receberá um e-mail contendo as orientaçõe
   <h1>Investimento</h1>
   <p>
 
-O valor da inscrição para o curso é de R$50,00 que deverão ser pagos via depósito ou transferência bancária (Banco do Brasil ou Sicredi) ou utilizando o PayPal. Neste último caso, basta clicar em *Comprar agora* e seguir as instruções.
+O valor da inscrição para o curso é de R$250,00 que deverão ser pagos via depósito ou transferência bancária (Banco do Brasil ou Sicredi) ou utilizando o PayPal. Neste último caso, basta clicar em *Comprar agora* e seguir as instruções.
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/matheusmcuba/icones-bancos-brasileiros@1.1/dist/all.css">
@@ -415,9 +415,6 @@ O valor da inscrição para o curso é de R$50,00 que deverão ser pagos via dep
             </div>
   </p>
 </div>
-
-
-
 
 
 

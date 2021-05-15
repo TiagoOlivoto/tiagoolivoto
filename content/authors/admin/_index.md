@@ -54,6 +54,10 @@ social:
 - icon: github
   icon_pack: fab
   link: https://github.com/TiagoOlivoto
+
+- icon: publons
+  icon_pack: ai
+  link: https://publons.com/researcher/1431679/tiago-olivoto/
   
 - icon: linkedin-in
   icon_pack: fab

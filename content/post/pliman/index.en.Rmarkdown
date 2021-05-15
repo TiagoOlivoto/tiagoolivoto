@@ -1,0 +1,150 @@
+---
+toc: true
+title: The R package pliman
+author: Tiago Olivoto
+date: '2021-05-12'
+slug: []
+categories:
+  - metan
+tags:
+  - Pliman
+  - Plant image analysis
+  - Count objects
+  - Disease severity
+  - Image segmentation
+  - Image manipulation
+  - Image index
+subtitle: ''
+summary: 'You provide color palettes, tell pliman what each one represents, and it takes care of the details'
+authors: [Tiago Olivoto]
+lastmod: '2021-05-12'
+featured: no
+image:
+  placement: 2
+  caption: 'Image by Tiago Olivoto'
+  preview_only: no
+projects: []
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(comment = "#", collapse = TRUE)
+
+```
+
+<a href="https://olivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments/"  class="btn btn-primary" role="button">This post is also available in English</a>
+
+
+# Introduction
+
+I am pleased to announce the release of `pliman` (**pl**ant **im**age **an**alysis) 0.2.0 on [CRAN](https://cran.r-project.org/web/packages/pliman/index.html). `pliman` is a package for image analysis, with a special focus on plant images. Image analysis is a useful tool for obtaining quantitative information for target objects. In the context of plant images, quantifying the leaf area, the severity of diseases, the number of lesions, counting the number of grains, obtaining grain statistics (e.g., length and width) are some of the tasks that agronomists, breeders, phytopathologists, geneticists and biologists make routinely.
+
+The package will help you to:
+
+* Measure leaf area with `leaf_area()`
+* Measure disease severity with `symptomatic_area()`
+* Count the number of lesions with `count_lesions()`
+* Count objects in an image with `count_objects()`
+* Get the RGB values for each object in an image with `objects_rgb()`
+* Get object measures with `get_measures()`
+* Plot object measures with `plot_measures()`
+
+# Brief examples
+## Leaf area
+
+Measuring the leaf area is a very common task for breeders and agronomists. The leaf area is used as a key feature for calculating various indexes, such as the Leaf Area Index (IAF), which quantifies the amount of leaf material in a canopy. In pliman, researchers can measure leaf area using images of leaves in two main ways. The first, using `leaf_area()` uses a sample of leaves along with a template with a known area. The background, leaf, and template color palettes must be declared. An alternative way of calculating the leaf area in `pliman` is using` count_objects() `. This function has the advantage of using image segmentation based on various indexes (for example, values of red, green, and blue, RGB). Therefore, the sample palettes do not need to be entered. In the following example, we will calculate the leaf area of the `leaves` image with this last approach. For more details and other examples, see this [vignette](https://tiagoolivoto.github.io/pliman/articles/leaf_area.html).
+
+```{r}
+library(pliman)
+leaves <- image_import(image_pliman("la_leaves.JPG"))
+image_show(leaves)
+```
+
+```{r}
+count <- count_objects(leaves)
+plot_measures(count)
+```
+
+The function `get_measures()` is used to adjust the leaf area using object 6. It is known that this object has a side of 2 cm, therefore presenting 4 cm$^2$.
+
+```{r}
+area <-
+get_measures(count,
+             id = 6,
+             area ~ 4)
+area
+```
+             
+
+## Counting grains in an image
+
+Here, we will count the grains in the image `soybean_touch.png`. This image has a cyan background and contains 30 soybean grains touching each other. Visit [this post](https://tiagoolivoto.github.io/pliman/articles/count_objects.html) for more details and examples.
+
+```{r}
+soy <- image_import(image_pliman("soybean_touch.jpg"))
+image_show(soy)
+```
+
+The function `count_objects()` segments the image using the standard blue index as standard, as follows $NB = (B / (R + G + B))$, where $R$, $G$ and $B$ are the red, green and blue bands. Objects are counted and segmented objects are colored with random permutations.
+
+```{r}
+count <- count_objects(soy)
+```
+
+Users can remove random coloring and identify objects (in this example, grains) using the arguments `marker = "text"` and `show_segmentation = FALSE`. The background color can also be changed with `col_background` argument. In this example, only the five largest grains in area will be identified using `topn_upper = 5`.
+
+```{r}
+count2 <-
+  count_objects(soy,
+                marker = "text",
+                show_segmentation = FALSE,
+                col_background = "white",
+                topn_upper = 5)
+
+
+# Get the object measures
+(medidas <- get_measures(count2))
+```
+
+
+## Disease severity
+
+The disease severity in plants is an important parameter to measure the level of disease and, therefore, can be used to predict production and recommend treatments. In `pliman`, the function` symptomatic_area()` is used to quantify the severity of diseases. The user provides color palettes, tells `pliman` what each one represents and it take care of the details.
+
+```{r}
+img <- image_import(image_pliman("sev_leaf.jpg"))
+healthy <- image_import(image_pliman("sev_healthy.jpg"))
+symptoms <- image_import(image_pliman("sev_sympt.jpg"))
+background <- image_import(image_pliman("sev_back.jpg"))
+image_combine(img, healthy, symptoms,background)
+
+# Compute disease severity
+symptomatic_area(img = img,
+                 img_healthy = healthy,
+                 img_symptoms = symptoms,
+                 img_background = background,
+                 show_image = TRUE)
+
+```
+
+
+# Batch processing
+In plant image analysis, frequently it is necessary to process more than one image. For example, in plant breeding, the number of grains per plant (e.g., wheat) is frequently used in the indirect selection of high-yielding plants. In `pliman`, batch processing can be done when the user declares the argument `img_pattern`.
+
+The following example would be used to count the objects in the images with a pattern name `"trat"` (e.g., `"trat1"`, `"trat2"`, `"tratn"`) saved into the subfolder "`originals"` in the current working directory. The processed images will be saved into the subfolder `"processed"`. The object `list_res` will be a list with two objects (`results` and `statistics`) for each image.
+
+To speed up the processing time, especially for a large number of images, the argument `parallel = TRUE` can be used. In this case, the images are processed asynchronously (in parallel) in separate `R` sessions running in the background on the same machine. The number of sections is set up to 90% of available threads. This number can be controlled explicitly with the argument `workers`.
+
+```{r eval=FALSE}
+list_res <- 
+count_objects(img_pattern = "trat", # matches the name pattern in 'originals' subfolder
+              dir_original = "originals",
+              dir_processed = "processed",
+              parallel = TRUE, # parallel processing
+              workers = 8, # 8 multiple sections
+              save_image = TRUE)
+```
+
+
+<i class = "fas fa-check"> </i> Follow the [pliman project](https://www.researchgate.net/project/R-package-pliman) in Research Gate.<br>
+<i class = "fas fa-check"> </i> Share this post on your social networks.<br>
+<i class = "fas fa-check"> </i> Enjoy the features of the package! <br>

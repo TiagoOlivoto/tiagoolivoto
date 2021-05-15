@@ -8,7 +8,7 @@ links:
 - icon: github
   icon_pack: fab
   name: Follow on Github
-  url: https://github.com/TiagoOlivoto
+  url: https://github.com/TiagoOlivoto/metan
 - icon: r-project
   icon_pack: fab
   name: Follow on CRAN
