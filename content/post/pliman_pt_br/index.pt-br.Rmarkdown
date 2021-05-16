@@ -48,6 +48,29 @@ O pacote irá ajudá-lo a:
 * Obter estatisticas de objetos com `get_measures()`
 * Plotar as estatisticas do objetos com `plot_measures()`
 
+# Instalação
+
+Instale a última versão estável do `pliman` do [CRAN](https://CRAN.R-project.org/package=pliman) com:
+
+```{r, eval=FALSE}
+install.packages("pliman")
+
+```
+
+
+A versão de desenvolvimento do `pliman` pode ser instalada do [GitHub](https://github.com/TiagoOlivoto/pliman) com:
+
+```{r, eval=FALSE}
+devtools::install_github("TiagoOlivoto/pliman")
+
+# To build the HTML vignette use
+devtools::install_github("TiagoOlivoto/pliman", build_vignettes = TRUE)
+
+```
+
+*Nota*: Se você for um usuário do Windows, é sugerido instalar a versão mais recente do [Rtools](https://cran.r-project.org/bin/windows/Rtools/) antes.
+
+
 # Breves exemplos
 ## Área foliar
 

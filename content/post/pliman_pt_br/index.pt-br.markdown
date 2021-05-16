@@ -45,6 +45,31 @@ O pacote irá ajudá-lo a:
 * Obter estatisticas de objetos com `get_measures()`
 * Plotar as estatisticas do objetos com `plot_measures()`
 
+# Instalação
+
+Instale a última versão estável do `pliman` do [CRAN](https://CRAN.R-project.org/package=pliman) com:
+
+
+```r
+install.packages("pliman")
+
+```
+
+
+A versão de desenvolvimento do `pliman` pode ser instalada do [GitHub](https://github.com/TiagoOlivoto/pliman) com:
+
+
+```r
+devtools::install_github("TiagoOlivoto/pliman")
+
+# To build the HTML vignette use
+devtools::install_github("TiagoOlivoto/pliman", build_vignettes = TRUE)
+
+```
+
+*Nota*: Se você for um usuário do Windows, é sugerido instalar a versão mais recente do [Rtools](https://cran.r-project.org/bin/windows/Rtools/) antes.
+
+
 # Breves exemplos
 ## Área foliar
 
@@ -64,7 +89,7 @@ leaves <- image_import(image_pliman("la_leaves.JPG"))
 image_show(leaves)
 ```
 
-<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 
 ```r
@@ -82,7 +107,7 @@ count <- count_objects(leaves)
 plot_measures(count)
 ```
 
-<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 A função `get_measures()` é utilizada para ajustar a área foliar utilizando o objeto 6. Sabe-se que este objeto tem um lado de 2 cm, portanto apresenta 4 cm `\(^2\)`.
 
@@ -95,10 +120,7 @@ get_measures(count,
 # -----------------------------------------
 # measures corrected with:
 # object id: 6
-# area     : 4
-# -----------------------------------------
-# Total    : 147.946 
-# Average  : 24.658 
+# area: 4
 # -----------------------------------------
 area
 #   id        x        y      area perimeter radius_mean radius_min radius_max
@@ -121,7 +143,7 @@ soy <- image_import (image_pliman ("soybean_touch.jpg"))
 image_show(soy)
 ```
 
-<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 A função `count_objects()` segmenta a imagem usando o índice azul padrão como padrão, como segue $ NB = (B / (R + G + B)) $, onde `\(R\)`, `\(G\)` e `\(B\)` são os faixas vermelhas, verdes e azuis. Os objetos são contados e os objetos segmentados são coloridos aleatoriamente
 
@@ -130,7 +152,7 @@ A função `count_objects()` segmenta a imagem usando o índice azul padrão com
 count <- count_objects(soy)
 ```
 
-<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
 ```
 # 
@@ -157,7 +179,7 @@ count2 <-
                 topn_upper = 5)
 ```
 
-<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 ```
 # 
@@ -194,7 +216,7 @@ background <- image_import(image_pliman("sev_back.jpg"))
 image_combine(img, healthy, symptoms,background)
 ```
 
-<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 ```r
 
@@ -206,11 +228,11 @@ symptomatic_area(img = img,
                  show_image = TRUE)
 ```
 
-<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-7-2.png" width="672" />
+<img src="/post/pliman_pt_br/index.pt-br_files/figure-html/unnamed-chunk-9-2.png" width="672" />
 
 ```
 #    healthy symptomatic
-# 1 89.01619    10.98381
+# 1 89.17328    10.82672
 ```
 
 

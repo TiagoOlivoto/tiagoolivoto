@@ -48,6 +48,29 @@ The package will help you to:
 * Get object measures with `get_measures()`
 * Plot object measures with `plot_measures()`
 
+# Installation
+
+Install the latest stable version of `pliman` from [CRAN](https://CRAN.R-project.org/package=pliman) with:
+
+```{r, eval=FALSE}
+install.packages("pliman")
+
+```
+
+
+The development version of `pliman` can be installed from [GitHub](https://github.com/TiagoOlivoto/pliman) with:
+
+```{r, eval=FALSE}
+devtools::install_github("TiagoOlivoto/pliman")
+
+# To build the HTML vignette use
+devtools::install_github("TiagoOlivoto/pliman", build_vignettes = TRUE)
+
+```
+
+*Note*: If you are a Windows user, you should also first download and install the latest version of [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
+
+
 # Brief examples
 ## Leaf area
 
