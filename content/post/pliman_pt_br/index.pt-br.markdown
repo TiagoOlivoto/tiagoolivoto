@@ -28,12 +28,12 @@ projects: []
 
 
 
-<a href="https://olivoto.netlify.app/post/pliman_pt_br/"  class="btn btn-primary" role="button">This post is also available in English</a>
+<a href="https://olivoto.netlify.app/post/pliman/"  class="btn btn-primary" role="button">This post is also available in English</a>
 
 
 # Introdução
 
-Tenho o prazer de anunciar o lançamento do `pliman` (**p**ant **im**age **an**alysis) 0.2.0 no [CRAN](https://cran.r-project.org/web/packages/pliman/index.html). `pliman` é um pacote para análise de imagens, com foco especial em imagens de plantas. A análise de imagens é uma ferramenta útil para obter informações quantitativas para objetos alvo. No contexto de imagens de plantas, quantificar a área foliar, a severidade das doenças, o número de lesões, contar o número de grãos, obter estatísticas de grãos (por exemplo, comprimento e largura) são algumas das tarefas que agrônomos, criadores, fitopatologistas, geneticistas e biólogos fazem rotineiramente.
+Tenho o prazer de anunciar o lançamento do `pliman` (**p**ant **im**age **an**alysis) 0.2.0 no [CRAN](https://cran.r-project.org/web/packages/pliman/index.html). `pliman` é um pacote para análise de imagens, com foco especial em imagens de plantas. A análise de imagens é uma ferramenta útil para obter informações quantitativas para objetos alvo. No contexto de imagens de plantas, quantificar a área foliar, a severidade das doenças, o número de lesões, contar o número de grãos, obter estatísticas de grãos (por exemplo, comprimento e largura) são algumas das tarefas que agrônomos, melhoristas, fitopatologistas, geneticistas e biólogos fazem rotineiramente.
 
 O pacote irá ajudá-lo a:
 
@@ -52,7 +52,6 @@ Instale a última versão estável do `pliman` do [CRAN](https://CRAN.R-project.
 
 ```r
 install.packages("pliman")
-
 ```
 
 
@@ -73,7 +72,7 @@ devtools::install_github("TiagoOlivoto/pliman", build_vignettes = TRUE)
 # Breves exemplos
 ## Área foliar
 
-Medir a área foliar é uma tarefa muito comum para criadores e agrônomos. A área foliar é usada como um recurso chave para o cálculo de vários índices, como o Índice de Área da Folha (IAF), que quantifica a quantidade de material foliar em um dossel. No pliman, os pesquisadores podem medir a área foliar usando imagens de folhas de duas maneiras principais. O primeiro, usando `leaf_area()` usa uma amostra de folhas junto com um modelo com uma área conhecida. As paletas de cores de fundo, folha e modelo devem ser declaradas. Uma forma alternativa de calcular a área foliar em `pliman` é usando` count_objects()`. Esta função tem a vantagem de usar segmentação de imagem com base em vários índices (por exemplo, valores de vermelho, verde e azul, RGB). Portanto, as paletas de amostra não precisam ser inseridas. No exemplo a seguir, calcularemos a área da folha da imagem `leaves` com esta última abordagem. Para mais detalhes e outros exemplos, veja esta [vinheta](https://tiagoolivoto.github.io/pliman/articles/leaf_area.html).
+Medir a área foliar é uma tarefa muito comum para melhoristas e agrônomos. A área foliar é usada como um recurso chave para o cálculo de vários índices, como o Índice de Área da Folha (IAF), que quantifica a quantidade de material foliar em um dossel. No pliman, os pesquisadores podem medir a área foliar usando imagens de folhas de duas maneiras principais. O primeiro, usando `leaf_area()` usa uma amostra de folhas junto com um modelo com uma área conhecida. As paletas de cores de fundo, folha e modelo devem ser declaradas. Uma forma alternativa de calcular a área foliar em `pliman` é usando` count_objects()`. Esta função tem a vantagem de usar segmentação de imagem com base em vários índices (por exemplo, valores de vermelho, verde e azul, RGB). Portanto, as paletas de amostra não precisam ser inseridas. No exemplo a seguir, calcularemos a área da folha da imagem `leaves` com esta última abordagem. Para mais detalhes e outros exemplos, veja esta [vinheta](https://tiagoolivoto.github.io/pliman/articles/leaf_area.html).
 
 
 
@@ -232,7 +231,7 @@ symptomatic_area(img = img,
 
 ```
 #    healthy symptomatic
-# 1 89.17328    10.82672
+# 1 89.07935    10.92065
 ```
 
 

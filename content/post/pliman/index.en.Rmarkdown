@@ -28,7 +28,6 @@ projects: []
 
 ```{r global_options, include = FALSE}
 knitr::opts_chunk$set(comment = "#", collapse = TRUE)
-
 ```
 
 <a href="https://olivoto.netlify.app/post/pliman_pt_br/"  class="btn btn-primary" role="button">Este post também está disponível em Português</a>

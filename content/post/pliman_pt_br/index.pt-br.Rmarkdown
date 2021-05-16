@@ -54,7 +54,6 @@ Instale a última versão estável do `pliman` do [CRAN](https://CRAN.R-project.
 
 ```{r, eval=FALSE}
 install.packages("pliman")
-
 ```
 
 

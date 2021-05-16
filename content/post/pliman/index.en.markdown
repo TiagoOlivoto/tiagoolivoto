@@ -28,7 +28,7 @@ projects: []
 
 
 
-<a href="https://olivoto.netlify.app/post/pliman/"  class="btn btn-primary" role="button">This post is also available in English</a>
+<a href="https://olivoto.netlify.app/post/pliman_pt_br/"  class="btn btn-primary" role="button">Este post também está disponível em Português</a>
 
 
 # Introduction
@@ -233,7 +233,7 @@ symptomatic_area(img = img,
 
 ```
 #    healthy symptomatic
-# 1 88.98669    11.01331
+# 1 89.08895    10.91105
 ```
 
 
