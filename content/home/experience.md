@@ -50,9 +50,9 @@ date_format = "Jan 2006"
   date_start = "2013-10-01"
   date_end = "2015-01-01"
   description = """ Responsibilities include:
-    * Development of municipal agriculture
-    * Municipal environmental inspection
-    * Agricultural team management
+  * Development of municipal agriculture
+  * Municipal environmental inspection
+  * Agricultural team management
   """
   
 [[experience]]
