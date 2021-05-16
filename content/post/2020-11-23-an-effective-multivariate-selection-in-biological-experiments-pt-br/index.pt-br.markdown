@@ -26,7 +26,7 @@ projects: []
 
 
 
-<a href="https://olivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments/"  class="btn btn-primary" role="button">This post is also available in English</a>
+<a href="https://olivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments/" target="_blank" class="btn btn-primary" role="button">This post is also available in English</a>
 
 Em nosso [artigo recente](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaa981/5998663?guestAccessKey=79faf1a1-64a8-4ad5-bd72-0e5953e6a167) na [Bioinformatics](https://academic.oup.com/bioinformatics), [Maicon Nardino](https://www.researchgate.net/profile/Maicon_Nardino3) e eu descrevos um novo índice multivariado de distância genótipo-ideótipo, MGIDI, para seleção e recomendação de tratamentos em experimentos biológicos. Então, preparei este breve tutorial sobre a computação do MGIDI.
 
