@@ -13,7 +13,7 @@ links:
 - icon: r-project
   icon_pack: fab
   name: Follow on CRAN
-  url: https://cran.r-project.org/web/packages/metan/
+  url: https://cran.r-project.org/web/packages/pliman/
 summary: An R package for plant image analysis
 tags:
 - R packages
@@ -116,7 +116,7 @@ symptomatic_area(img = img,
 
 ```
 ##    healthy symptomatic
-## 1 89.28401    10.71599
+## 1 88.91402    11.08598
 ```
 
 # Count objects

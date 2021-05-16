@@ -13,7 +13,7 @@ links:
 - icon: r-project
   icon_pack: fab
   name: Follow on CRAN
-  url: https://cran.r-project.org/web/packages/metan/
+  url: https://cran.r-project.org/web/packages/pliman/
 summary: An R package for plant image analysis
 tags:
 - R packages

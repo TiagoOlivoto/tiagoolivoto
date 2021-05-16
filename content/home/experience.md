@@ -30,7 +30,7 @@ date_format = "Jan 2006"
   """
   
 [[experience]]
-  title = "sales Technical Assistant"
+  title = "Sales Technical Assistant"
   company = "Agrofel"
   company_url = "http://graos.agrofel.com.br/"
   location = "Sananduva - RS"
@@ -42,6 +42,19 @@ date_format = "Jan 2006"
   * Fertilizer sales
   """
 
+[[experience]]
+  title = "Agriculture Secretary"
+  company = "Cacique Doble-RS City Hall"
+  company_url = "https://www.caciquedoble.rs.gov.br/"
+  location = "Cacique Doble - RS"
+  date_start = "2013-10-01"
+  date_end = "2015-01-01"
+  description = """ Responsibilities include:
+    * Development of municipal agriculture
+    * Municipal environmental inspection
+    * Agricultural team management
+  """
+  
 [[experience]]
   title = "Professor"
   company = "UNIDEAU"

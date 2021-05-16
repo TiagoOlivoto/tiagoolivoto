@@ -28,7 +28,7 @@ projects: []
 
 
 
-<a href="https://olivoto.netlify.app/post/2020-11-23-an-effective-multivariate-selection-in-biological-experiments/"  class="btn btn-primary" role="button">This post is also available in English</a>
+<a href="https://olivoto.netlify.app/post/pliman_pt_br/"  class="btn btn-primary" role="button">This post is also available in English</a>
 
 
 # Introdução
@@ -181,7 +181,7 @@ count2 <-
 ```
 
 
-## Gravidade da doença
+## Severidade de doenças
 
 A severidade da doença em plantas é um parâmetro importante para medir o nível da doença e, portanto, pode ser usada para prever a produção e recomendar tratamentos. No `pliman`, a função` symptomatic_area()` é usada para quantificar a severidade das doenças. O usuário fornece paletas de cores, diz ao `pliman` o que cada uma representa e ele cuida dos detalhes.
 
@@ -210,7 +210,7 @@ symptomatic_area(img = img,
 
 ```
 #    healthy symptomatic
-# 1 89.27023    10.72977
+# 1 89.01619    10.98381
 ```
 
 
