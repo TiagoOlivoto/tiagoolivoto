@@ -21,7 +21,7 @@ weight: 3
 library(metan)
 library(rio)
 
-# Dados "bagunçados"
+# Dados "arrumados"
 df_tidy <- import("http://bit.ly/df_tidy", setclass = "tbl")
 print(df_tidy)
 ## # A tibble: 114 x 13
@@ -42,6 +42,7 @@ print(df_tidy)
 ```
 
 ## Inspecionar dados
+
 
 
 ```r
