@@ -4,9 +4,9 @@ linktitle = "Bar plots"
 date = "2020/04/16"
 toc = true  # Show table of contents? true/false
 type = "docs"  # Do not modify.
-[menu.example]
+[menu.metan]
     parent = "R package metan"
-    weight = 5
+    weight = 4
 +++
 
 
@@ -78,7 +78,7 @@ p3 / {( p1 + p2 + plot_layout(widths = c(1.5, 1)))} +
                   tag_suffix = ")")
 ```
 
-<img src="/tutorials/metan/plots_files/figure-html/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" />
+<img src="plots_files/figure-html/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" />
 
 
 ## Bar plots for two-way trials
@@ -120,5 +120,5 @@ p2 <- plot_factbars(df_fat, ENV, GEN,
 p1 + p2 + plot_annotation(tag_levels = "1", tag_prefix = "p")
 ```
 
-<img src="/tutorials/metan/plots_files/figure-html/unnamed-chunk-2-1.png" width="960" style="display: block; margin: auto;" />
+<img src="plots_files/figure-html/unnamed-chunk-2-1.png" width="960" style="display: block; margin: auto;" />
 

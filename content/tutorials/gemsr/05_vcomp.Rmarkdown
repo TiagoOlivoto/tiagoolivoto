@@ -1,0 +1,114 @@
+---
+title: Componentes de variância
+linktitle: "5. Componentes de variância"
+toc: true
+type: docs
+date: "2021/07/09"
+draft: false
+menu:
+  gemsr:
+    parent: GEMS-R
+    weight: 6
+weight: 6
+---
+
+
+```{r collapse = TRUE, message = FALSE, warning=FALSE}
+library(metan)
+library(rio)
+
+# dados
+df_g <- import("df_g.xlsx", setclass = "tbl")
+print(df_g)
+
+```
+
+## Modelo misto
+A função `gamem()` pode ser usada para analisar experimentos únicos(experimentos unilaterais) usando um modelo de efeito misto de acordo com o seguinte modelo:
+
+$$
+y_{ij} = \mu + \alpha_i + \tau_j + \varepsilon_ {ij}
+$$
+
+onde$y_ {ij}$ é o valor observado para o *i*ésimo genótipo no *j*ésimo bloco (*i* = 1, 2, ... *g*; *j* = 1, 2,. ., *r*); sendo *g* e *r* o número de genótipos e blocos, respectivamente; $\alpha_i$ é o efeito aleatório do genótipo *i*; $\tau_j$ é o efeito fixo do bloco *j*; e $\varepsilon_ {ij}$ é o erro aleatório associado a $y_{ij}$. Neste exemplo, usaremos os dados de exemplo `df_g`.
+
+```{r collapse = TRUE,}
+gen_mod <- 
+  gamem(df_g,
+        gen = GEN,
+        rep = BLOCO,
+        resp = everything())
+
+```
+
+A maneira mais fácil de obter os resultados do modelo acima é usando a função `gmd()`, ou seu *shortcut* `gmd()`.
+
+### Diagnósticos do modelo
+```{r collapse = TRUE, fig.width=10}
+plot(gen_mod, type = "res") # padrão
+plot(gen_mod, type = "re") # padrão
+
+```
+
+### Detalhes da análise
+```{r collapse = TRUE,}
+gmd(gen_mod, "details")
+```
+
+### LRT
+```{r collapse = TRUE,}
+gmd(gen_mod, "lrt") 
+```
+
+### Componentes de variância
+```{r collapse = TRUE, fig.width=10}
+gmd(gen_mod, "vcomp")
+plot(gen_mod, type = "vcomp")
+```
+
+### Componentes de variância
+```{r collapse = TRUE,}
+gmd(gen_mod, "vcomp")
+```
+
+
+
+### Parâmetros genéticos
+```{r collapse = TRUE,}
+gmd(gen_mod, "genpar")
+```
+
+
+
+### BLUPs preditos
+```{r collapse = TRUE,}
+gmd(gen_mod, "blupg")
+
+# plotar os BLUPS (default)
+plot_blup(gen_mod)
+
+# Trait MGE
+plot_blup(gen_mod,
+          var = "MGE",
+          height.err.bar = 0,
+          col.shape = c("black", "gray"),
+          x.lab = "Massa de grãos por espiga (g)",
+          y.lab = "Híbridos de milho")
+```
+
+
+
+## Modelos mistos - dentro de ambientes
+
+```{r collapse = TRUE, message = FALSE, warning=FALSE}
+df_ge <- import("df_ge.xlsx", setclass = "tbl")
+mod_gen_whithin <- 
+    gamem(df_ge,
+          gen = GEN,
+          rep = BLOCO,
+          resp = everything(),
+          by = ENV, verbose = FALSE)
+
+gmd(mod_gen_whithin, "lrt")
+gmd(mod_gen_whithin, "vcomp")
+```

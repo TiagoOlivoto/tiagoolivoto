@@ -61,7 +61,15 @@ date_format = "Jan 2006"
   company_url = "https://www.getulio.ideau.com.br/"
   location = "Getúlio Vargas - RS"
   date_start = "2019-02-15"
-  date_end = ""
+  date_end = "2021-07-09"
   description = """Professor of Agronomy"""
 
+[[experience]]
+  title = "Professor"
+  company = "UFSM-FW"
+  company_url = "https://www.ufsm.br/unidades-universitarias/frederico-westphalen/"
+  location = "Frederico Westphalen - RS"
+  date_start = "2021-06-09"
+  date_end = ""
+  description = """Professor"""
 +++

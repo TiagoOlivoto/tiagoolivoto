@@ -1,0 +1,283 @@
++++
+title = "GEMS-R: Pacote metan [Português]"
+linktitle = "GEMS-R: Pacote metan [Português]"
+summary = "Curso sobre o pacote R metan organizado pelo Grupo de Estudos em Melhoramento Vegetal do Semiárido - GEMS. O curso aborda os principais aspectos do pacote metan e instrumenta a análise de dados voltados para o melhoramento genético, como análise individual, conjunta, componentes de variância, índices de estabilidade, análise AMMI, GGE, e modelos biométricos."
+date = "2020/04/03"
+lastmod = "2020/04/04"
+toc = true  # Show table of contents? true/false
+type = "docs"  # Do not modify.
+[menu.gemsr]
+    parent = "GEMS-R"
+    weight = 1
++++
+
+
+
+
+
+<div class="container">
+<div class="col-md-12">
+<div class="row">
+<div class="col-md-3">
+<div class="box-simple">
+<div class="icon">
+<i class="far fa-calendar-alt fa-4x"></i>
+</div>
+Data<br>17/07/2021
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="box-simple">
+<div class="icon">
+<i class="far fa-clock fa-4x"></i>
+</div>
+Carga Horária<br> 06 horas/aula
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="box-simple">
+<div class="icon">
+<i class="fas fa-map-marked-alt fa-4x"></i>
+</div>
+Modalidade:<br> online
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="box-simple">
+<div class="icon">
+<i class="fab fa-r-project fa-4x"></i>
+</div>
+Software:<br> R e Rstudio
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+# <i class="fas fa-calendar-week"></i> Cronograma
+
+<i class="fas fa-check"></i>Primeira parte
+   * Manipulação de dados
+   * Inspeção de dados (outliers, balanceamento, etc)
+   * Estatísticas descritivas;
+   * Análise de variância individual (modelo fixo e misto)
+   * Componentes de variância.
+
+<i class="fas fa-check"></i>Segunda parte
+   * Análise de variância conjunta (modelo fixo e misto)
+   * Índices de estabilidade  
+   * Análise AMMI  
+   * Análise GGE
+   * Modelos biométricos (Agrupamento, correlação, canônica e trilha)
+  
+
+# <i class="far fa-comment"></i> Cheatsheet
+
+<a href="https://github.com/TiagoOlivoto/metan/raw/master/metan_cheat_sheet.pdf"><img src="https://raw.githubusercontent.com/TiagoOlivoto/metan/master/man/figures/metan_cheat_sheet.png" width="935" height="640"/></a>
+
+
+
+<div style="padding-left:16px" id = "ministrante">
+  <h1>Ministrante</h1>
+  <p>
+O curso será ministrado por Tiago Olivoto. Tiago Olivoto é Engenheiro Agrônomo com Mestrado e Doutorado em Agronomia com ênfase em Melhoramento Genético Vegetal e Experimentação Agrícola. Consulte o resumo do perfil de Tiago clicando no botão abaixo ou visite seu perfil completo nas plataformas abaixo.
+
+<p>
+  <a class="btn btn-primary" data-toggle="collapse" href="#perfiltiago" role="button" aria-expanded="false" aria-controls="perfiltiago">
+  Veja o resumo aqui!
+  </a>
+</p>
+
+
+<div class="collapse" id="perfiltiago">
+  <div class="card card-body">
+
+Tiago Olivoto é Técnico Agrícola pela Escola Estadual de Educação Básica Viadutos (2008), Engenheiro agrônomo pela Universidade do Oeste de Santa Catarina (2014), Mestre em Agronomia: Agricultura e Ambiente pela Universidade Federal de Santa Maria (2017) e Doutor em Agronomia com ênfase em Melhoramento Genético Vegetal e Experimentação Agrícola pela Universidade Federal de Santa Maria (2020). Tem experiência profissional como Técnico Agrícola (2008-2011), consultor técnico de vendas (2012-2013), na administração pública e gestão de pessoas (2014-2015), atuando como Secretário Municipal da Agricultura e Meio Ambiente no município de Cacique Doble-RS. Atualmente é Professor Substituto na Universidade Federal de Santa Maria (UFSM). É membro atuante da International Biometric Society (IBS) e integrante da comissão de Jovens Pesquisadores da Região Brasileira da Sociedade Internacional de Biometria, RBras, (JP-RBras) representando os estados do RS, SC e PR. Atua também como revisor ad hoc em revistas científicas nacionais e internacionais. Exerce atividades de pesquisa relacionadas ao planejamento, condução e avaliação de experimentos com culturas anuais, com ênfase no desenvolvimento e aperfeiçoamento de métodos estatístico-experimentais para avaliação de ensaios multi-ambientes em melhoramento genético de plantas. Em seu Currículo, os termos mais frequentes na contextualização da produção científica são: análise de ensaios multi-ambientes, índices multivariados, intervalo de confiança para correlação, planejamento de experimentos, seleção indireta, interação genótipo-vs-ambiente, modelos mistos e parâmetros genéticos. Tem experiência com os softwares Gênes, GEA-R, R, SAS e SPSS. Desenvolveu os pacotes para sofware R metan , voltado para a checagem, manipulação, análise e apresentação de dados de ensaios multi-ambientes e pliman voltado para a análise de imagens de plantas.
+
+</div>
+</div>
+
+
+
+
+<div class="container">
+<div class="col-md-12">
+<div class="row">
+
+<div class="col-md-3">
+<div class="box-simple">
+<a href="http://lattes.cnpq.br/2432360896340086">
+<div class="icon">
+<i class="ai ai-4x ai-lattes"></i>
+</div>
+<h3>
+Currículo Lattes
+</h3>
+</a>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="box-simple">
+<a href="https://www.mendeley.com/profiles/tiago-olivoto/">
+<div class="icon">
+<i class="ai ai-4x ai-mendeley"></i>
+</div>
+<h3>
+Mendeley
+</h3>
+</a>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="box-simple">
+<a href="https://www.researchgate.net/profile/Tiago_Olivoto2">
+<div class="icon">
+<i class="ai ai-4x ai-researchgate"></i>
+</div>
+<h3>
+Research Gate
+</h3>
+</a>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="box-simple">
+<a href="https://scholar.google.com/citations?user=QjxIJkcAAAAJ&hl=pt-BR">
+<div class="icon">
+<i class="ai ai-4x ai-google-scholar"></i>
+</div>
+<h3>
+Google Escolar
+</h3>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+  </p>
+</div>
+
+
+
+
+
+
+# <i class="fas fa-glasses"></i> Visão geral
+
+O pacote [`metan`](https://tiagoolivoto.github.io/metan/) (**m** ulti-**e**nvironment **t**rials**an**alysis) fornece funções úteis para analisar dados de ensaios multi-ambientes usando métodos paramétricos e não paramétricos. O pacote irá ajudá-lo a:
+
+* Inspecionar os dados para possíveis erros comuns;
+* Manipular linhas e colunas;
+* Manipular números e strings;
+* Calcular estatísticas descritivas;
+* Calcular análise de variância dentro de ambientes;
+* Computar análise AMMI com predições considerando diferentes números de eixos de componentes principais de interação;
+* Computar índices de estabilidade baseados em AMMI;
+* Computar análise biplot de GGE;
+* Computar índices de estabilidade baseados em BLUP;
+* Computar componentes de variância e parâmetros genéticos em modelos de efeitos mistos;
+* Executar procedimentos de validação cruzada para modelos da família AMMI e BLUP;
+* Calcule estatísticas de estabilidade paramétricas e não paramétricas
+* Implementar modelos biométricos
+
+
+# <i class="fas fa-tools"></i> Instalação
+
+Instale a versão lançada do metan do [CRAN](https://CRAN.R-project.org/package=metan) com:
+
+
+```r
+install.packages ("metan")
+
+```
+
+Ou instale a versão de desenvolvimento do [GitHub](https://github.com/TiagoOlivoto/metan) com:
+
+
+```r
+devtools::install_github ("TiagoOlivoto/metan")
+
+# Para instalar a vinheta HTML, use
+devtools::install_github ("TiagoOlivoto/metan", build_vignettes = TRUE)
+
+```
+
+*Nota*: Se você for um usuário do Windows, sugere-se primeiro baixar e instalar a versão mais recente do [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
+
+Para obter as notas de lançamento mais recentes sobre esta versão de desenvolvimento, consulte o [arquivo NEWS](https://tiagoolivoto.github.io/metan/news/index.html).
+
+# <i class="far fa-newspaper"></i> Citação
+
+
+```r
+citation("metan")
+# 
+# Please, support this project by citing it in your publications!
+# 
+#   Olivoto, T., and Lúcio, A.D. (2020). metan: an R package for
+#   multi-environment trial analysis. Methods Ecol Evol. 11:783-789
+#   doi:10.1111/2041-210X.13384
+# 
+# A BibTeX entry for LaTeX users is
+# 
+#   @Article{Olivoto2020,
+#     author = {Tiago Olivoto and Alessandro Dal'Col L{'{u}}cio},
+#     title = {metan: an R package for multi-environment trial analysis},
+#     journal = {Methods in Ecology and Evolution},
+#     volume = {11},
+#     number = {6},
+#     pages = {783-789},
+#     year = {2020},
+#     doi = {10.1111/2041-210X.13384},
+#   }
+```
+
+
+
+# <i class="fas fa-box-open"></i> Pacotes necessários
+
+
+```r
+library(tidyverse)  # manipulação de dados
+library(metan)
+library(rio)        # importação/exportação de dados
+```
+
+
+# <i class="fas fa-database"></i> Conjuntos de dados
+
+
+
+
+# <i class="fas fa-scroll"></i> Scripts
+
+
+
+
+
+# <i class="fab fa-creative-commons"></i> Licença
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="http://www.sibi.usp.br/wp-content/uploads/2019/06/CC-BY-NC-SA.jpg" width="300" height="214" /></a><br />Este conteúdo está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons - Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional</a>. O resumo legível da licença afirma que você tem o direito de:
+
+<i class="fas fa-check"></i> **Compartilhar** — copiar e redistribuir o material em qualquer suporte ou formato
+
+<i class="fas fa-check"></i>**Adaptar** — remixar, transformar, e criar a partir do material
+
+<i class="fas fa-check"></i>**Atribuição** — Você deve dar o crédito apropriado, prover um link para a licença e indicar se mudanças foram feitas. Você deve fazê-lo em qualquer circunstância razoável, mas de nenhuma maneira que sugira que o licenciante apoia você ou o seu uso.
+
+<i class="fas fa-check"></i>**De acordo com os termos seguintes**
+
+   * **Não Comercial** — Você não pode usar o material para fins comerciais.
+
+   * **CompartilhaIgual** — Se você remixar, transformar, ou criar a partir do material, tem de distribuir as suas contribuições sob a mesma licença que o original.
+
+   * **Sem restrições adicionais** — Você não pode aplicar termos jurídicos ou medidas de caráter tecnológico que restrinjam legalmente outros de fazerem algo que a licença permita.

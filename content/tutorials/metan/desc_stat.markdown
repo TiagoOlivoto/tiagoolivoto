@@ -4,9 +4,9 @@ linktitle = "Descriptive"
 date = "2020/04/03"
 toc = true  # Show table of contents? true/false
 type = "docs"  # Do not modify.
-[menu.example]
+[menu.metan]
     parent = "R package metan"
-    weight = 4
+    weight = 2
 +++
 
 
@@ -153,7 +153,7 @@ data_ge2 %>%
             hist = TRUE)
 ```
 
-<img src="/tutorials/metan/desc_stat_files/figure-html/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;" />
+<img src="desc_stat_files/figure-html/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;" />
 
 ```
 # # A tibble: 3 x 9

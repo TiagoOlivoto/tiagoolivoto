@@ -4,9 +4,9 @@ linktitle = "Bar plots"
 date = "2020/04/16"
 toc = true  # Show table of contents? true/false
 type = "docs"  # Do not modify.
-[menu.example]
+[menu.metan]
     parent = "R package metan"
-    weight = 5
+    weight = 4
 +++
 
 ```{r global_options, include = FALSE}

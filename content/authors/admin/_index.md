@@ -23,9 +23,9 @@ interests:
 - Statistics
 name: Tiago Olivoto
 organizations:
-- name: UNIDEAU
-  url: "https://www.getulio.ideau.com.br/"
-role: Professor of Agronomy
+- name: UFSM
+  url: "https://www.ufsm.br/unidades-universitarias/frederico-westphalen/"
+role: Professor
 social:
 - icon: envelope
   icon_pack: fas

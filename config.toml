@@ -25,6 +25,8 @@ theme = "hugo-academic"
 # Get last modified date for content from Git?
 enableGitInfo = false
 
+MathJaxCDN = "//cdnjs.cloudflare.com/ajax/libs"
+MathJaxVersion =  "2.7.5"
 
 # Default language to use (if you setup multilingual support)
 defaultContentLanguage = "en"
@@ -60,6 +62,9 @@ ignoreFiles = ["\\.knit\\.md$", "\\.utf8\\.md$", "\\.ipynb$", ".ipynb_checkpoint
     startLevel = 1
     endLevel = 3
 
+[params]
+    footer = "&copy; [Yihui Xie](https://yihui.org) 2017"
+    
 [imaging]
   resampleFilter = "lanczos"
   quality = 90

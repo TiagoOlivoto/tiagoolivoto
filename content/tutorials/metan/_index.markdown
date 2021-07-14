@@ -6,7 +6,7 @@ date = "2020/04/03"
 lastmod = "2020/04/04"
 toc = true  # Show table of contents? true/false
 type = "docs"  # Do not modify.
-[menu.example]
+[menu.metan]
     parent = "R package metan"
     weight = 1
 +++
@@ -80,8 +80,6 @@ citation("metan")
 ##     pages = {783-789},
 ##     year = {2020},
 ##     doi = {10.1111/2041-210X.13384},
-##     url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13384},
-##     eprint = {https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.13384},
 ##   }
 ```
 
