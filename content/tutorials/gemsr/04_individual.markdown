@@ -20,7 +20,7 @@ library(rio)
 library(emmeans)
 
 # dados
-df <- import("df_ge.xlsx", setclass = "tbl")
+df <- import("http://bit.ly/df_ge", setclass = "tbl")
 print(df)
 ## # A tibble: 156 x 13
 ##    ENV   GEN   BLOCO ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB   MGE

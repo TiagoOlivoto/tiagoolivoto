@@ -12,13 +12,15 @@ menu:
 weight: 6
 ---
 
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" ></script>
+
 
 ```{r collapse = TRUE, message = FALSE, warning=FALSE}
 library(metan)
 library(rio)
 
 # dados
-df_g <- import("df_g.xlsx", setclass = "tbl")
+df_g <- import("http://bit.ly/df_g", setclass = "tbl")
 print(df_g)
 
 ```
@@ -30,7 +32,7 @@ $$
 y_{ij} = \mu + \alpha_i + \tau_j + \varepsilon_ {ij}
 $$
 
-onde$y_ {ij}$ é o valor observado para o *i*ésimo genótipo no *j*ésimo bloco (*i* = 1, 2, ... *g*; *j* = 1, 2,. ., *r*); sendo *g* e *r* o número de genótipos e blocos, respectivamente; $\alpha_i$ é o efeito aleatório do genótipo *i*; $\tau_j$ é o efeito fixo do bloco *j*; e $\varepsilon_ {ij}$ é o erro aleatório associado a $y_{ij}$. Neste exemplo, usaremos os dados de exemplo `df_g`.
+onde \\(y_ {ij}\\) é o valor observado para o \\(i\\)-ésimo genótipo no \\(j\\)-ésimo bloco (\\(i\\) = 1, 2, ... \\(g\\); \\(j\\) = 1, 2,..., \\(r\\)); sendo \\(g\\) e \\(r\\) o número de genótipos e blocos, respectivamente; \\(\alpha_i\\) é o efeito aleatório do genótipo \\(i\\); \\(\tau_j\\) é o efeito fixo do bloco \\(j\\); e \\(\varepsilon_ {ij}\\) é o erro aleatório associado a \\(y_{ij}\\). Neste exemplo, usaremos os dados de exemplo `df_g`.
 
 ```{r collapse = TRUE,}
 gen_mod <- 
@@ -66,11 +68,6 @@ gmd(gen_mod, "vcomp")
 plot(gen_mod, type = "vcomp")
 ```
 
-### Componentes de variância
-```{r collapse = TRUE,}
-gmd(gen_mod, "vcomp")
-```
-
 
 
 ### Parâmetros genéticos
@@ -101,7 +98,7 @@ plot_blup(gen_mod,
 ## Modelos mistos - dentro de ambientes
 
 ```{r collapse = TRUE, message = FALSE, warning=FALSE}
-df_ge <- import("df_ge.xlsx", setclass = "tbl")
+df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
 mod_gen_whithin <- 
     gamem(df_ge,
           gen = GEN,

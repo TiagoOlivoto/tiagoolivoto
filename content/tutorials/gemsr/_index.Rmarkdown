@@ -86,7 +86,7 @@ Software:<br> R e Rstudio
 <div style="padding-left:16px" id = "ministrante">
   <h1>Ministrante</h1>
   <p>
-O curso será ministrado por Tiago Olivoto. Tiago Olivoto é Engenheiro Agrônomo com Mestrado e Doutorado em Agronomia com ênfase em Melhoramento Genético Vegetal e Experimentação Agrícola. Consulte o resumo do perfil de Tiago clicando no botão abaixo ou visite seu perfil completo nas plataformas abaixo.
+Consulte o resumo do perfil de Tiago clicando no botão abaixo ou visite seu perfil completo nas plataformas abaixo.
 
 <p>
   <a class="btn btn-primary" data-toggle="collapse" href="#perfiltiago" role="button" aria-expanded="false" aria-controls="perfiltiago">
@@ -211,11 +211,41 @@ devtools::install_github ("TiagoOlivoto/metan", build_vignettes = TRUE)
 
 ```
 
-*Nota*: Se você for um usuário do Windows, sugere-se primeiro baixar e instalar a versão mais recente do [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
-
-Para obter as notas de lançamento mais recentes sobre esta versão de desenvolvimento, consulte o [arquivo NEWS](https://tiagoolivoto.github.io/metan/news/index.html).
+*Nota*: Se você for um usuário do Windows, sugere-se primeiro baixar e instalar a versão mais recente do [Rtools](https://cran.r-project.org/bin/windows/Rtools/). Para obter as notas de lançamento mais recentes sobre esta versão de desenvolvimento, consulte o [arquivo NEWS](https://tiagoolivoto.github.io/metan/news/index.html).
 
 # <i class="far fa-newspaper"></i> Citação
+
+Para citar o metan em publicações, utilize o artigo abaixo
+
+>Olivoto, T., & Lúcio, A. D. (2020). metan: An R package for multi‐environment trial analysis. *Methods in Ecology and Evolution*, 11(6), 783–789. https://doi.org/10.1111/2041-210X.13384
+
+
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/img/gemsr/paper_metan.jpg" alt="First slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/img/gemsr/paper_metan2.jpg" alt="Second slide">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+
+No R, uma entrada BibTex para citações em documentos \\(\LaTeX\\) pode ser obtida com
 
 ```{r}
 citation("metan")
@@ -234,6 +264,43 @@ library(rio)        # importação/exportação de dados
 
 # <i class="fas fa-database"></i> Conjuntos de dados
 
+Cinco conjuntos de dados serão utilizados. Em todos os códigos deste material, a importação dos dados é feita diretamente do diretório, não sendo obrigatório o download dos mesmos para executar os exemplos. Caso queira, os mesmos podem ser obtidos pelos links abaixo. Os dados são de um experimento que avaliou 13 híbridos em quatro locais em um delineamento de blocos completos casualizados com três repetições. Um total de 10 caracteres foram analizados em cinco plantas, sendo a média de cada bloco apresentada:
+
+* ALT_PLANT: Altura de planta (m)
+* ALT_ESP: Altura da espiga (m)
+* COMPES: Comprimento da espiga (cm)
+* DIAMES: Diâmetro da espiga (cm)
+* COMP_SAB: Comprimento do sabugo (cm)
+* DIAM_SAB: Diâmetro do sabugo (cm)
+* MGE: Massa de grãos por espiga (g)
+* NFIL: Número de fileira de grãos (n)
+* MMG: Massa de mil grãos (g)
+* NGE: Número de grãos por espiga (n)
+
+Os seguintes conjuntos foram preparados considerando os dados multi-ambientes para o experimento citado, visando abordar as diferentes potencialidades do pacote `metan`
+
+* `df_g.xlsx`: Dados completos de um único ambiente <a href="http://bit.ly/df_g">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download df_g</button>
+</a>
+
+* `df_ge.xlsx`: Dados completos do ensaio multi-ambiente <a href="http://bit.ly/df_ge">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download df_ge</button>
+</a>
+
+
+* `df_messy.xlsx`: Dados do ensaio multi-ambiente "desarrumados" <a href="http://bit.ly/df_messy">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download df_messy</button>
+</a>
+
+
+* `df_tidy.xlsx`: Dados do ensaio multi-ambiente "arrumados" <a href="http://bit.ly/df_tidy">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download df_tidy</button>
+</a>
+
+
+* `data_ok.xlsx`:  Dados do ensaio multi-ambiente após manipulação e inspeção <a href="http://bit.ly/df_ok">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download df_ok</button>
+</a>
 
 
 

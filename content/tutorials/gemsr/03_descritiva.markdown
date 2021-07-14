@@ -21,7 +21,7 @@ library(metan)
 library(rio)
 
 # dados
-df <- import("df_ok.xlsx", setclass = "tbl")
+df <- import("http://bit.ly/df_ok", setclass = "tbl")
 print(df)
 ## # A tibble: 114 x 13
 ##    ENV   GEN   BLOCO ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB   MGE
@@ -40,7 +40,7 @@ print(df)
 ## #   NGE <dbl>
 ```
 
-Vamos começar com um exemplo muito simples(mas amplamente usado): calcular a média de uma variável numérica (digamos, MGE) do conjunto de dados `df`. Usando a função R base `stats::mean()`, a solução seria:
+Vamos começar com um exemplo muito simples (mas amplamente usado): calcular a média de uma variável numérica (digamos, MGE) do conjunto de dados `df`. Usando a função R base `stats::mean()`, a solução seria:
 
 
 ```r

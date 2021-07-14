@@ -21,7 +21,7 @@ weight: 6
 ```r
 library(metan)
 library(rio)
-df_ge <- import("df_ge.xlsx", setclass = "tbl")
+df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
 joint_an <- 
     anova_joint(df_ge,
                 env = ENV, 

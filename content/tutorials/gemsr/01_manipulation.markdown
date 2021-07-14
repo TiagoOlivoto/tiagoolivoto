@@ -18,39 +18,7 @@ weight: 1
 
 ```r
 library(tidyverse)  # manipulação de dados
-## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
-## v ggplot2 3.3.5     v purrr   0.3.4
-## v tibble  3.1.2     v dplyr   1.0.7
-## v tidyr   1.1.3     v stringr 1.4.0
-## v readr   1.4.0     v forcats 0.5.1
-## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
 library(metan)
-## Registered S3 method overwritten by 'GGally':
-##   method from   
-##   +.gg   ggplot2
-## |=========================================================|
-## | Multi-Environment Trial Analysis (metan) v1.14.0        |
-## | Author: Tiago Olivoto                                   |
-## | Type 'citation('metan')' to know how to cite metan      |
-## | Type 'vignette('metan_start')' for a short tutorial     |
-## | Visit 'https://bit.ly/pkgmetan' for a complete tutorial |
-## |=========================================================|
-## 
-## Attaching package: 'metan'
-## The following object is masked from 'package:forcats':
-## 
-##     as_factor
-## The following object is masked from 'package:dplyr':
-## 
-##     recode_factor
-## The following object is masked from 'package:tidyr':
-## 
-##     replace_na
-## The following objects are masked from 'package:tibble':
-## 
-##     column_to_rownames, remove_rownames, rownames_to_column
 library(rio)        # importação/exportação de dados
 ```
 
@@ -114,22 +82,22 @@ df
 ## # A tibble: 6 x 4
 ##   Env   gen   Env_Gen         y
 ##   <chr> <chr> <fct>       <dbl>
-## 1 ENV 1 GEN1  ENV 1.GEN1   303.
-## 2 Env 1 gen 2 Env 1.gen 2  292.
-## 3 Env1  Gen.3 Env1.Gen.3   303.
-## 4 env1  gen-4 env1.gen-4   295.
-## 5 Env.1 Gen_5 Env.1.Gen_5  312.
-## 6 Env_1 GEN_6 Env_1.GEN_6  278.
+## 1 ENV 1 GEN1  ENV 1.GEN1   286.
+## 2 Env 1 gen 2 Env 1.gen 2  296.
+## 3 Env1  Gen.3 Env1.Gen.3   290.
+## 4 env1  gen-4 env1.gen-4   308.
+## 5 Env.1 Gen_5 Env.1.Gen_5  315.
+## 6 Env_1 GEN_6 Env_1.GEN_6  299.
 tidy_strings(df, sep = "")
 ## # A tibble: 6 x 4
 ##   Env   gen   Env_Gen      y
 ##   <chr> <chr> <chr>    <dbl>
-## 1 ENV1  GEN1  ENV1GEN1  303.
-## 2 ENV1  GEN2  ENV1GEN2  292.
-## 3 ENV1  GEN3  ENV1GEN3  303.
-## 4 ENV1  GEN4  ENV1GEN4  295.
-## 5 ENV1  GEN5  ENV1GEN5  312.
-## 6 ENV1  GEN6  ENV1GEN6  278.
+## 1 ENV1  GEN1  ENV1GEN1  286.
+## 2 ENV1  GEN2  ENV1GEN2  296.
+## 3 ENV1  GEN3  ENV1GEN3  290.
+## 4 ENV1  GEN4  ENV1GEN4  308.
+## 5 ENV1  GEN5  ENV1GEN5  315.
+## 6 ENV1  GEN6  ENV1GEN6  299.
 ```
 
 
@@ -139,7 +107,7 @@ tidy_strings(df, sep = "")
 
 ```r
 # Dados "bagunçados"
-df_messy <- import("df_messy.xlsx", setclass = "tbl")
+df_messy <- import("http://bit.ly/df_messy", setclass = "tbl")
 print(df_messy)
 ## # A tibble: 114 x 13
 ##    env   Gen   BLOCO `Alt plant` `Alt Esp` COMPES DIAMES CompSab DiamSab   Mge

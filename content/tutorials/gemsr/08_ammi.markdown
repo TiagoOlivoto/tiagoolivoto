@@ -31,9 +31,8 @@ library(metan)
 ## | Visit 'https://bit.ly/pkgmetan' for a complete tutorial |
 ## |=========================================================|
 library(rio)
-df_ge <- import("df_ge.xlsx", setclass = "tbl")
+df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
 ```
-
 
 ## O modelo AMMI
 A análise AMMI utiliza análise aditiva de variância aos fatores principais (genótipo e ambiente) e decomposição por valores singulares ao residual do modelo aditivo, isto é, o efeito da GEI somado ao erro experimental. Esta matriz dos efeitos não aditivos, então, pode ser aproximadamente exibida por meio de biplots[^1]. Este método tem ganhado destaque nas últimas décadas, principalmente devido a rápida evolução computacional, o que tornou possível as complexas decomposições de matrizes de alta ordem.

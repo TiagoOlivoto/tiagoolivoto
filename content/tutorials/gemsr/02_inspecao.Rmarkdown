@@ -21,7 +21,7 @@ library(metan)
 library(rio)
 
 # Dados "bagunçados"
-df_tidy <- import("df_tidy.xlsx", setclass = "tbl")
+df_tidy <- import("http://bit.ly/df_tidy", setclass = "tbl")
 print(df_tidy)
 ```
 

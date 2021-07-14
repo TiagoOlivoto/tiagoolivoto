@@ -22,7 +22,7 @@ library(metan)
 library(rio)
 
 # Dados "bagunçados"
-df_tidy <- import("df_tidy.xlsx", setclass = "tbl")
+df_tidy <- import("http://bit.ly/df_tidy", setclass = "tbl")
 print(df_tidy)
 ## # A tibble: 114 x 13
 ##    ENV   GEN   BLOCO ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB   MGE

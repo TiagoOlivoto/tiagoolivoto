@@ -12,6 +12,8 @@ menu:
 weight: 6
 ---
 
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" ></script>
+
 
 
 ```r
@@ -19,7 +21,7 @@ library(metan)
 library(rio)
 
 # dados
-df_g <- import("df_g.xlsx", setclass = "tbl")
+df_g <- import("http://bit.ly/df_g", setclass = "tbl")
 print(df_g)
 ## # A tibble: 39 x 12
 ##    GEN   BLOCO ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB   MGE  NFIL
@@ -44,7 +46,7 @@ $$
 y_{ij} = \mu + \alpha_i + \tau_j + \varepsilon_ {ij}
 $$
 
-onde$y_ {ij}$ é o valor observado para o *i*ésimo genótipo no *j*ésimo bloco (*i* = 1, 2, ... *g*; *j* = 1, 2,. ., *r*); sendo *g* e *r* o número de genótipos e blocos, respectivamente; `\(\alpha_i\)` é o efeito aleatório do genótipo *i*; `\(\tau_j\)` é o efeito fixo do bloco *j*; e `\(\varepsilon_ {ij}\)` é o erro aleatório associado a `\(y_{ij}\)`. Neste exemplo, usaremos os dados de exemplo `df_g`.
+onde \\(y_ {ij}\\) é o valor observado para o \\(i\\)-ésimo genótipo no \\(j\\)-ésimo bloco (\\(i\\) = 1, 2, ... \\(g\\); \\(j\\) = 1, 2,..., \\(r\\)); sendo \\(g\\) e \\(r\\) o número de genótipos e blocos, respectivamente; \\(\alpha_i\\) é o efeito aleatório do genótipo \\(i\\); \\(\tau_j\\) é o efeito fixo do bloco \\(j\\); e \\(\varepsilon_ {ij}\\) é o erro aleatório associado a \\(y_{ij}\\). Neste exemplo, usaremos os dados de exemplo `df_g`.
 
 
 ```r
@@ -60,8 +62,8 @@ Evaluating trait DIAMES |================                        | 40% 00:00:00
 Evaluating trait COMP_SAB |===================                   | 50% 00:00:00 
 Evaluating trait DIAM_SAB |=======================               | 60% 00:00:00 
 Evaluating trait MGE |==============================             | 70% 00:00:00 
-Evaluating trait NFIL |==================================        | 80% 00:00:01 
-Evaluating trait MMG |=======================================    | 90% 00:00:01 
+Evaluating trait NFIL |==================================        | 80% 00:00:00 
+Evaluating trait MMG |=======================================    | 90% 00:00:00 
 Evaluating trait NGE |===========================================| 100% 00:00:01 
 ## Method: REML/BLUP
 ## Random effects: GEN
@@ -154,20 +156,6 @@ plot(gen_mod, type = "vcomp")
 
 <img src="/tutorials/gemsr/05_vcomp_files/figure-html/unnamed-chunk-6-1.png" width="960" />
 
-### Componentes de variância
-
-```r
-gmd(gen_mod, "vcomp")
-## Class of the model: gamem
-## Variable extracted: vcomp
-## # A tibble: 2 x 11
-##   Group    ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB   MGE  NFIL   MMG
-##   <chr>        <dbl>   <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>
-## 1 GEN         0.155  0.118    1.20    5.99     5.70    1.15  1172. 1.14  2941.
-## 2 Residual    0.0128 0.00796  0.734   1.70     1.04    0.739  253. 0.941  674.
-## # ... with 1 more variable: NGE <dbl>
-```
-
 
 
 ### Parâmetros genéticos
@@ -223,7 +211,7 @@ gmd(gen_mod, "blupg")
 plot_blup(gen_mod)
 ```
 
-<img src="/tutorials/gemsr/05_vcomp_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="/tutorials/gemsr/05_vcomp_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 ```r
 
@@ -236,7 +224,7 @@ plot_blup(gen_mod,
           y.lab = "Híbridos de milho")
 ```
 
-<img src="/tutorials/gemsr/05_vcomp_files/figure-html/unnamed-chunk-9-2.png" width="672" />
+<img src="/tutorials/gemsr/05_vcomp_files/figure-html/unnamed-chunk-8-2.png" width="672" />
 
 
 
@@ -244,7 +232,7 @@ plot_blup(gen_mod,
 
 
 ```r
-df_ge <- import("df_ge.xlsx", setclass = "tbl")
+df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
 mod_gen_whithin <- 
     gamem(df_ge,
           gen = GEN,
