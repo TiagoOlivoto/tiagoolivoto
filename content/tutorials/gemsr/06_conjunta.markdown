@@ -46,7 +46,7 @@ $$
 $$
 
 
-onde **y** é um vetor \\(n [= \sum \nolimits_{j = 1} ^ e {(gb)]} \times 1\\) da variável de resposta \\({\bf{y}} = {\rm{ }}{\left[ {{y_{111}},{\rm{ }}{y_{112}},{\rm{ }} \ldots ,{\rm{ }}{y_{geb}}} \right]^\prime }\\); \\(\bf{b}\\) é um vetor \\((eb) \times 1\\) de efeitos fixos desconhecidos \\({\bf{b}} = [\mathop \gamma \nolimits_{11}, \mathop \gamma \nolimits_{12}, ..., \mathop \gamma \nolimits_{eb}]^\prime\\); \\(\bf{u}\\) é um vetor \\(m \[= g + ge\] \times 1\\) de efeitos aleatórios \\({\bf {u}} = {\rm {}} {\left [{{\alpha_1}, { \alpha_2}, ..., {\alpha_g}, \mathop {(\alpha \tau)} \nolimits_{11}, \mathop {(\alpha \tau)} \nolimits_{12}, ... , \mathop {(\alpha \tau)} \nolimits_{ge}} \right] ^ \prime}\\); \\(\bf{X}\\) é uma matriz de design \\(n \times (eb)\\) relacionando \\(\bf{y}\\) a \\({\bf {\beta}}\\); \\(\bf{Z}\\) é uma matriz de design \\(n\times m\\) relacionando \\(\bf{u}\\) a \\(\bf{y}\\); \\({\bf {\varepsilon}}\\) é um vetor \\(n \times 1\\) de erros aleatórios \\({\bf {\varepsilon}} = {\rm {}} {\left \[{{y\_{111}}, {\rm {}} {y\_{112}}, {\rm {}} \ldots, {\rm {}} {y\_{geb}}} \right\] ^ \prime}\\);
+onde **y** é um vetor \\(n [= \sum \nolimits_{j = 1} ^ e {(gb)]} \times 1\\) da variável de resposta \\({\bf{y}} = {\rm{ }}{\left[ {{y_{111}},{\rm{ }}{y_{112}},{\rm{ }} \ldots ,{\rm{ }}{y_{geb}}} \right]^\prime }\\); \\(\bf{b}\\) é um vetor \\((eb) \times 1\\) de efeitos fixos desconhecidos \\({\bf{b}} = [\mathop \gamma \nolimits_{11}, \mathop \gamma \nolimits_{12}, ..., \mathop \gamma \nolimits_{eb}]^\prime\\); \\(\bf{u}\\) é um vetor \\(m \[= g + ge\] \times 1\\) de efeitos aleatórios \\({\bf {u}} = {\rm {}} {\left [{{\alpha_1}, { \alpha_2}, ..., {\alpha_g}, \mathop {(\alpha \tau)} \nolimits_{11}, \mathop {(\alpha \tau)} \nolimits_{12}, ... , \mathop {(\alpha \tau)} \nolimits_{ge}} \right] ^ \prime}\\); \\(\bf{X}\\) é uma matriz de design \\(n \times (eb)\\) relacionando \\(\bf{y}\\) a \\(\bf{b}\\); \\(\bf{Z}\\) é uma matriz de design \\(n\times m\\) relacionando \\(\bf{y}\\) a \\(\bf{u}\\); \\({\bf {\varepsilon}}\\) é um vetor \\(n \times 1\\) de erros aleatórios \\({\bf {\varepsilon}} = {\rm {}} {\left \[{{y\_{111}}, {\rm {}} {y\_{112}}, {\rm {}} \ldots, {\rm {}} {y\_{geb}}} \right\] ^ \prime}\\);
 
 Os vetores \\(\bf{b}\\) e \\(\bf{u}\\) são estimados usando a conhecida equação de modelo misto[^1].
 
@@ -88,10 +88,10 @@ Evaluating trait ALT_ESP |========                               | 20% 00:00:00
 Evaluating trait COMPES |============                            | 30% 00:00:01 
 Evaluating trait DIAMES |================                        | 40% 00:00:01 
 Evaluating trait COMP_SAB |===================                   | 50% 00:00:01 
-Evaluating trait DIAM_SAB |=======================               | 60% 00:00:02 
+Evaluating trait DIAM_SAB |=======================               | 60% 00:00:01 
 Evaluating trait MGE |==============================             | 70% 00:00:02 
 Evaluating trait NFIL |==================================        | 80% 00:00:02 
-Evaluating trait MMG |=======================================    | 90% 00:00:03 
+Evaluating trait MMG |=======================================    | 90% 00:00:02 
 Evaluating trait NGE |===========================================| 100% 00:00:03 
 ## Method: REML/BLUP
 ## Random effects: GEN, GEN:ENV
