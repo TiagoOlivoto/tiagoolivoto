@@ -217,7 +217,7 @@ devtools::install_github ("TiagoOlivoto/metan", build_vignettes = TRUE)
 
 Para citar o metan em publicações, utilize o artigo abaixo
 
->Olivoto, T., & Lúcio, A. D. (2020). metan: An R package for multi‐environment trial analysis. *Methods in Ecology and Evolution*, 11(6), 783–789. https://doi.org/10.1111/2041-210X.13384
+>Olivoto, T., & Lúcio, A. D. (2020). metan: An R package for multi‐environment trial analysis. *Methods in Ecology and Evolution*, 11(6), 783–789. <a href="https://doi.org/10.1111/2041-210X.13384" target="_blank">https://doi.org/10.1111/2041-210X.13384</a>  
 
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
