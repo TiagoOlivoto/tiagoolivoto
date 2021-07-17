@@ -1,0 +1,2263 @@
+---
+title: Scripts R - GEMS-R: metan 
+---
+##Aufgabe 1
+
+# Pacotes
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)  # manipulação de dados
+library(metan)
+library(rio)        # importação/exportação de dados
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, n = NULL, ...){
+  if(!missing(n)){
+    knitr::kable(head(table, n = n), booktabs = TRUE, digits = digits, ...)
+  } else{
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+  }
+}
+```
+
+
+# Formatar strings
+
+A função `tidy_strings()` pode ser usada para organizar strings de caracteres colocando todas as palavras em maiúsculas, substituindo qualquer espaço, tabulação, caracteres de pontuação por `_` e colocando `_` entre maiúsculas e minúsculas.
+
+## Um exemplo simples
+Suponha que tenhamos uma string de caracteres, digamos, `str = c("Env1", "env 1", "env.1")`. Por definição, `str` deve representar um nível único em testes de melhoramento de plantas, por exemplo, ambiente 1, mas na verdade tem três níveis.
+```{r collapse = TRUE, }
+str <- c ("Env1", "env 1", "env.1")
+str %>% factor() %>% levels()
+```
+
+```{r collapse = TRUE, }
+tidy_strings(str)
+```
+Excelente! Agora temos o nível único que deveríamos ter antes.
+
+## Mais exemplos
+Todos os itens a seguir serão convertidos para `" ENV_1 "`.
+```{r collapse = TRUE, }
+messy_env <- c ("ENV 1", "Env 1", "Env1", "env1", "Env.1", "Env_1")
+tidy_strings(messy_env)
+```
+
+Todos os itens a seguir serão traduzidos em `" GEN _ * "`.
+```{r collapse = TRUE, }
+messy_gen <- c ("GEN1", "gen 2", "Gen.3", "gen-4", "Gen_5", "GEN_6")
+tidy_strings(messy_gen)
+```
+
+Todos os itens a seguir serão traduzidos para `" ENV_GEN "`
+```{r collapse = TRUE, }
+messy_int <- c ("EnvGen", "Env_Gen", "env gen", "Env Gen", "ENV.GEN", "ENV_GEN")
+tidy_strings(messy_int)
+```
+
+
+
+## Organize data.frames
+Também podemos organizar strings de um data.frame. Por padrão, o caractere separador é `_`. Para alterar esse padrão, use o argumento `sep`.
+```{r collapse = TRUE, }
+df <- tibble(Env = messy_env,
+             gen = messy_gen,
+             Env_Gen = interaction(Env, gen),
+             y = rnorm(6, 300, 10))
+print_tbl(df)
+
+df_tidy <- tidy_strings(df, sep = "")
+print_tbl(df)
+```
+
+
+
+# Conjunto de dados
+
+```{r collapse = TRUE,  message = FALSE, warning=FALSE}
+# Dados "bagunçados"
+# Apenas 40 linhas 
+df_messy <- import("http://bit.ly/df_messy", setclass = "tbl")
+df_messy %>% print_tbl(n = 40)
+
+```
+
+
+
+
+
+```{r collapse = TRUE, }
+df_tidy <- 
+  df_messy %>% 
+  tidy_colnames() %>% # formata nomes das variáveis
+  fill_na() %>%  # preenche NAs
+  tidy_strings(sep = "") # formata strings
+
+df_tidy %>% print_tbl(n = 40)
+
+# exportar os dados 'arrumados'
+# export(df_tidy, "df_tidy.xlsx")
+```
+
+
+
+# Utilitários para linhas e colunas
+## Adicionar colunas e linhas
+As funções `add_cols()` e `add_rows()` podem ser usadas para adicionar colunas e linhas, respectivamente, a um data.frame. Também é possível adicionar uma coluna com base nos dados existentes. Observe que os argumentos `.after` e` .before` são usados para selecionar a posição da(s) nova(s) coluna(s). Isso é particularmente útil para colocar variáveis da mesma categoria juntas.
+
+```{r collapse = TRUE, }
+df_tidy2 <- 
+  add_cols(df_tidy,
+           ALT_PLANT_CM = ALT_PLANT * 100,
+           .after = ALT_PLANT)
+print_tbl(df_tidy2, n = 5)
+```
+
+## Selecionar ou remover colunas e linhas
+As funções `select_cols()` e `select_rows()` podem ser usadas para selecionar colunas e linhas, respectivamente de um quadro de dados.
+
+```{r collapse = TRUE, }
+select_cols(df_tidy, ENV, GEN) %>% print_tbl(n = 5)
+select_rows(df_tidy, 1:3) %>% print_tbl(n = 5)
+```
+
+As colunas numéricas podem ser selecionadas usando a função `select_numeric_cols()`. Colunas não numéricas são selecionadas com `select_non_numeric_cols()`.
+
+```{r collapse = TRUE, }
+select_numeric_cols(df_tidy) %>% print_tbl(n = 5)
+
+
+# Implementação dplyr
+select(df_tidy, where(is.numeric)) %>% print_tbl(n = 5)
+
+
+select_non_numeric_cols(df_tidy) %>% print_tbl(n = 5)
+
+
+# Implementação dplyr
+select(df_tidy, where(~!is.numeric(.x))) %>% print_tbl(n = 5)
+```
+
+Podemos selecionar a primeira ou última coluna rapidamente com `select_first_col()` e `select_last_col()`, respectivamente.
+
+```{r collapse = TRUE, }
+select_first_col(df_tidy) %>% print_tbl(n = 5)
+select_last_col(df_tidy) %>% print_tbl(n = 5)
+```
+
+
+Para remover colunas ou linhas, use `remove_cols()` e `remove_rows()`.
+```{r collapse = TRUE, }
+remove_cols(df_tidy, ENV, GEN) %>% print_tbl(n = 5)
+
+# Implementação dplyr
+select(df_tidy, -c(ENV, GEN)) %>% print_tbl(n = 5)
+
+```
+
+
+## Concatenar colunas
+A função `concatetate()` pode ser usada para concatenar várias colunas de um data.frame. Ela retorna o data.frame com todas as colunas originais em `.data` mais a variável concatenada, após a última coluna(por padrão), ou em qualquer posição ao usar os argumentos` .before` ou `.after`.
+
+
+```{r collapse = TRUE, }
+concatenado <- 
+  concatenate(df_tidy, ENV, GEN, BLOCO,
+              .after = BLOCO, 
+              new_var = FATORES)
+print_tbl(concatenado, n = 5)
+```
+
+Para eliminar as variáveis existentes e manter apenas a coluna concatenada, use o argumento `drop = TRUE`. Para usar `concatenate()` dentro de uma determinada função como `add_cols()` use o argumento `pull = TRUE` para puxar os resultados para um vetor.
+```{r collapse = TRUE, }
+concatenate(df_tidy, ENV, GEN, BLOCO, drop = TRUE) %>% head()
+concatenate(df_tidy, ENV, GEN, BLOCO, pull = TRUE) %>% head()
+```
+
+
+## Obtendo níveis
+Para obter os níveis e o número de níveis de um fator, as funções `get_levels()` e `get_level_size()` podem ser usadas.
+
+```{r collapse = TRUE, }
+get_levels(df_tidy, ENV)
+get_level_size(df_tidy, ENV) %>% print_tbl()
+```
+
+
+# Utilitários para números e strings
+## Arredondando valores
+A função `round_cols()` arredonda uma coluna selecionada ou um data.frame completo para o número especificado de casas decimais (padrão 0). Se nenhuma variável for informada, todas as variáveis numéricas serão arredondadas.
+
+```{r collapse = TRUE, }
+round_cols(df_tidy, digits = 1) %>% print_tbl(n = 5)
+```
+
+Alternativamente, selecione variáveis para arredondar.
+```{r collapse = TRUE, }
+round_cols(df_tidy, ALT_PLANT:COMPES, digits = 0) %>% print_tbl(n = 5)
+```
+
+## Extraindo e substituindo números
+
+As funções `extract_number()` e `replace_number()` podem ser usadas para extrair ou substituir números. Como exemplo, iremos extrair o número de cada genótipo em `df_tidy`. Por padrão, os números extraídos são colocados como uma nova variável chamada `new_var` após a última coluna dos dados.
+
+```{r collapse = TRUE, }
+extract_number(df_tidy, GEN) %>% print_tbl(n = 5)
+```
+
+Para substituir os números de uma determinada coluna por uma substituição especificada, use `replace_number()`. Por padrão, os números são substituídos por "".
+
+```{r collapse = TRUE, }
+replace_number(df_tidy,
+               BLOCO,
+               pattern  = "1",
+               replacement  = "Rep_1") %>% 
+  print_tbl(n = 5)
+```
+
+## Extraindo, substituindo e removendo strings
+As funções `extract_string()` e `replace_string()` são usadas no mesmo contexto de `extract_number()` e `replace_number()`, mas para lidar com strings.
+
+```{r collapse = TRUE, }
+extract_string(df_tidy, GEN) %>% print_tbl(n = 5)
+```
+
+Para substituir strings, podemos usar a função `replace_strings()`.
+```{r collapse = TRUE, }
+replace_string(df_tidy,
+               GEN,
+               pattern = "H",
+               replacement  = "GEN_") %>% 
+  print_tbl(n = 5)
+```
+
+
+## metan > GÊNES
+Para remover todas as strings de um quadro de dados, use `remove_strings()`.
+```{r collapse = TRUE, }
+remove_strings(df_tidy) %>% print_tbl(n = 5)
+```
+
+
+## metan > Selegen
+```{r collapse = TRUE, }
+df_selegen <- 
+  df_to_selegen_54(df_tidy,
+                   env = ENV,
+                   gen = GEN,
+                   rep = BLOCO)
+print_tbl(df_selegen, n = 15)
+
+```
+
+
+# Dividir/juntar conjunto de dados
+```{r collapse = TRUE, }
+df_list <- split_factors(df_tidy, ENV)
+df_list
+rbind_fill_id(df_list, .id = "AMBIENTE")
+```
+
+
+# Tabela bidirecional
+```{r collapse = TRUE, }
+# Cria uma tabela bidirecional
+tab <- make_mat(df_tidy,
+                row = GEN,
+                col = ENV,
+                value = NGE)
+print_tbl(tab)
+
+
+# máximo valor observado
+tab2 <- make_mat(df_tidy,
+                row = GEN,
+                col = ENV,
+                value = NGE,
+                fun = max)
+print_tbl(tab2)
+
+# soma de linhas e colunas
+row_col_sum(tab) %>% print_tbl()
+
+# média de linhas e colunas
+row_col_mean(tab) %>% print_tbl()
+```
+
+
+# Utilitários para zero e `NAs`
+
+NAs e zeros podem aumentar o ruído na análise de dados. O pacote `metan` possui uma coleção de funções que facilitarão a tarefa de lidar com zeros e valores `NA`.
+
+
+```{r collapse = TRUE,  message = FALSE, warning=FALSE}
+# Dados "bagunçados"
+df_messy <- import("http://bit.ly/df_messy", setclass = "tbl") %>% head(20)
+
+
+```
+
+
+## Remover ou substituir `NA`s
+```{r collapse = TRUE,  message = FALSE, warning=FALSE}
+
+# checar para ver se tem NA
+has_na(df_messy)
+
+# remover colunas com NA
+remove_cols_na(df_messy) %>% print_tbl()
+
+# remover linhas com NA
+remove_rows_na(df_messy) %>% print_tbl()
+
+# selecionar colunas com NA
+select_cols_na(df_messy) %>% print_tbl()
+
+# selecionar colunas com NA
+select_rows_na(df_messy) %>% print_tbl()
+
+# substituir NA por um valor
+replace_na(df_messy, replacement = "FALTA")
+```
+
+
+
+
+
+
+## Remover ou substituir zeros
+```{r collapse = TRUE,  message = FALSE, warning=FALSE}
+
+# checar para ver se tem NA
+has_zero(df_messy)
+
+# remover colunas com NA
+remove_cols_zero(df_messy) %>% print_tbl()
+
+# remover linhas com NA
+remove_rows_zero(df_messy) %>% print_tbl()
+
+# selecionar colunas com NA
+select_cols_zero(df_messy) %>% print_tbl()
+
+# selecionar colunas com NA
+select_rows_zero(df_messy) %>% print_tbl()
+
+# substituir NA por um valor
+replace_zero(df_messy, replacement = NA) # padrão
+```
+
+
+
+
+
+
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 2
+
+
+# Conjunto de dados
+
+```{r collapse = TRUE, message = FALSE, warning=FALSE}
+library(metan)
+library(rio)
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
+# Dados "arrumados"
+df_tidy <- import("http://bit.ly/df_tidy", setclass = "tbl")
+
+```
+
+
+# Inspecionar dados
+
+
+```{r collapse = TRUE,}
+inspect(df_tidy)
+
+
+# converter as três primeiras colunas para fator
+df_ok <- 
+  df_tidy %>% 
+  metan::as_factor(1:3)
+
+```
+
+
+# Fragmentos de texto inesperados
+
+```{r collapse = TRUE,}
+# Encontrar fragmentos de texto
+find_text_in_num(df_ok, MMG)
+df_ok[112, 12]
+
+# substitui '..' por '.' e converte para numérico
+df_ok <- 
+  df_ok %>% 
+  replace_string(MMG, pattern = "\\.{2}", replacement = ".") %>% 
+  as_numeric(MMG)
+
+```
+
+Substituir zeros por `NA`
+
+```{r collapse = TRUE, fig.width=10, fig.height=10}
+df_ok <- 
+  df_ok %>% 
+  replace_zero(ALT_PLANT)
+
+# Nova inspeção
+inspect(df_ok, plot = TRUE)
+
+```
+
+# Outliers
+
+```{r collapse = TRUE, fig.width=10, fig.height=8}
+# Outlier NFIL
+find_outliers(df_ok, NFIL, plots = TRUE)
+
+# Outlier NGE
+find_outliers(df_ok, NGE, plots = TRUE)
+
+
+# Corrigir valores
+df_ok[22, 13] <- 530.2
+
+# Exportar df_ok
+# export(df_ok, "df_ok.xlsx")
+```
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 3
+
+
+O `metan` fornece uma estrutura simples e intuitiva, compatível com o pipe, para realizar estatísticas descritivas. Um [conjunto de funções](https://tiagoolivoto.github.io/metan/reference/utils_stats.html) pode ser usado para calcular rapidamente as estatísticas descritivas mais utilizadas.
+
+```{r collapse = TRUE, message = FALSE, warning=FALSE}
+library(metan)
+library(rio)
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
+# dados
+df <- import("http://bit.ly/df_ok", setclass = "tbl")
+inspect(df, verbose = FALSE) %>% print_tbl()
+```
+
+Vamos começar com um exemplo muito simples (mas amplamente usado): calcular a média de uma variável numérica (digamos, MGE) do conjunto de dados `df`. Usando a função R base `stats::mean()`, a solução seria:
+
+```{r collapse = TRUE,}
+mean(df$MGE)
+```
+
+Considere que agora queremos calcular o valor médio da MGE para cada nível do fator GEN. Em outras palavras, calcular o valor médio da MGE para cada genótipo. A solução usando `stats::aggregate()` é então:
+
+```{r collapse = TRUE,}
+aggregate(MGE ~ GEN, data = df, FUN = mean) %>% print_tbl()
+
+```
+
+# Estatísticas por níveis de um fator
+Usando a função `means_by()` a quantidade de código necessária é drasticamente reduzida. Para calcular a média geral para todas as variáveis numéricas de `df`, simplesmente usamos:
+```{r collapse = TRUE,}
+ov_mean <- means_by(df)
+print_tbl(ov_mean)
+```
+
+Para calcular os valores médios para cada nível do fator GEN, precisamos adicionar a variável de agrupamento `GEN` no argumento `...`
+```{r collapse = TRUE,}
+means_gen <- means_by(df, GEN)
+print_tbl(means_gen)
+
+```
+
+As seguintes funções `*_by()` estão disponíveis para calcular as principais estatísticas descritivas por níveis de um fator.
+
+ - `cv_by()` Para calcular o coeficiente de variação.
+ - `max_by()` Para calcular os valores máximos.
+ - `means_by()` Para calcular a média aritmética.
+ - `min_by()` Para calcular os valores mínimos.
+ - `n_by()` Para obter o número de observações
+ - `sd_by()` Para calcular o desvio padrão amostral.
+ - `sem_by()` Para calcular o erro padrão da média.
+
+# Funções úteis
+Outras funções úteis também são implementadas. Todos eles funcionam naturalmente com `%>%`, lidam com dados agrupados com `dplyr::group_by()` e múltiplas variáveis (todas as variáveis numéricas de `.data` por padrão).
+ 
+ - `av_dev()` calcula o desvio absoluto médio.
+ - `ci_mean()` calcula o intervalo de confiança para a média.
+ - `cv()` calcula o coeficiente de variação.
+ - `freq_table()` Calcula uma tabela de frequência.
+ - `hm_mean()`, `gm_mean()` calcula as médias harmônicas e geométricas, respectivamente. A média harmônica é o recíproco da média aritmética dos recíprocos. A média geométrica é a enésima raiz de n produtos.
+ - `kurt()` calcula a curtose como usado em SAS e SPSS.
+ - `range_data()` Calcula o intervalo dos valores.
+ - `sd_amo()`, `sd_pop()` Calcula a amostra e o desvio padrão populacional, respectivamente.
+ - `sem()` calcula o erro padrão da média.
+ - `skew()` calcula o skewness (assimetria) como usado em SAS e SPSS.
+ - `sum_dev()` calcula a soma dos desvios absolutos.
+ - `sum_sq_dev()` calcula a soma dos desvios quadrados.
+ - `var_amo()`, `var_pop()` calcula a amostra e a variância populacional.
+ - `valid_n()` Retorna o comprimento válido (não `NA`).
+
+Vamos mostrar alguns exemplos. Observe que [select helpers](https://tiagoolivoto.github.io/metan/articles/vignettes_helper.html#select-helpers) pode ser usado para selecionar variáveis com base em seus nomes/tipos. O pacote metan apresenta um conjunto de select helpers que pode ser visto com `?metan::Select_helper`
+
+```{r collapse = TRUE,}
+# Erro padrão da média para variáveis numéricas que contém (SAB)
+df %>% sem(contains("SAB")) %>% print_tbl()
+
+
+# Intervalo de confiança 0,95 para a média
+# Variáveis com largura de nome maior que 3 caracteres
+# Agrupado por níveis de ENV
+df %>%
+  group_by(ENV) %>%
+  ci_mean(width_greater_than(3)) %>% 
+  print_tbl()
+```
+
+
+# A função wrapper `desc_stat()`
+
+Para calcular todas as estatísticas de uma vez, podemos usar `desc_stat()`. Esta é uma função wrapper em torno das anteriores e pode ser usada para calcular medidas de tendência central, posição e dispersão. Por padrão(`stats = "main"`), sete estatísticas (coeficiente de variação, máximo, média, mediana, mínimo, desvio padrão da amostra, erro padrão e intervalo de confiança da média) são calculados. Outros valores permitidos são `"all"` para mostrar todas as estatísticas, `"robust"` para mostrar estatísticas robustas, e `"quantile"` para mostrar estatísticas de quantis ou escolher uma (ou mais) estatísticas usando um vetor separado por vírgulas com os nomes das estatísticas, por exemplo, `stats = c("mean, cv")`. Também podemos usar `hist = TRUE` para criar um histograma para cada variável.
+
+## Todas as estatísticas para todas as variáveis numéricas
+```{r collapse = TRUE,, mensagem = FALSE, fig.height = 5, fig.width = 10, fig.align =" center "}
+all <- desc_stat(df, stats = "all")
+print_tbl(all)
+```
+
+
+## Crie um histograma para cada variável
+```{r collapse = TRUE,, mensagem = FALSE, fig.height = 5, fig.width = 10, fig.align =" center "}
+stat1 <- 
+  df %>% 
+  desc_stat(ALT_ESP, ALT_PLANT, COMP_SAB,
+            hist = TRUE)
+print_tbl(stat1)
+```
+
+## Estatísticas por níveis de fatores
+Para calcular as estatísticas para cada nível de um fator, use o argumento `by`. Além disso, é possível selecionar as estatísticas a serem computadas usando o argumento `stats`, que aceita um único nome de estatística, por exemplo,` "mean" `, ou um vetor de nomes separados por vírgula com` "` no início e apenas no final do vetor. Observe que os nomes das estatísticas **NÃO** diferenciam maiúsculas de minúsculas, ou seja, `"mean"`, `"Mean"` ou `"MEAN"` são reconhecidos. Vírgulas ou espaços podem ser usados separar os nomes das estatísticas.
+
+* Todas as opções abaixo funcionarão:
+   * `stats = c("mean, se, cv, max, min")`
+   * `stats = c("mean se cv max min")`
+   * `stats = c("MEAN, Se, CV max Min")`
+
+
+```{r collapse = TRUE,, mensagem = FALSE, fig.height = 5, fig.width = 5.5, fig.align =" center "}
+stats_c <-
+  desc_stat(df,
+            contains("C"),
+            stats = ("mean, se, cv, max, min, n, n.valid"),
+            by = ENV)
+print_tbl(stats_c)
+```
+
+Podemos converter os resultados acima em um formato *wide* usando a função `desc_wider()`
+
+```{r collapse = TRUE,, mensagem = FALSE, fig.height = 5, fig.width = 5.5, fig.align =" center "}
+desc_wider(stats_c, mean) %>% print_tbl()
+```
+
+Para calcular as estatísticas descritivas por mais de uma variável de agrupamento, é necessário passar os dados agrupados para o argumento `.data` com a função `group_by()`. Vamos calcular a média, o erro padrão da média e o tamanho da amostra para as variáveis `MGE` e` MMG` para todas as combinações dos fatores `ENV` e` GEN`.
+
+```{r collapse = TRUE, }
+stats_grp <- 
+  df %>% 
+  group_by(ENV, GEN) %>%
+  desc_stat(MGE, MMG,
+            stats = c("mean, se, n"))
+print_tbl(stats_grp)
+
+
+```
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 4
+
+
+```{r collapse = TRUE, message = FALSE, warning=FALSE}
+library(metan)
+library(rio)
+library(emmeans)
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
+# dados
+df <- import("http://bit.ly/df_ge", setclass = "tbl")
+print(df)
+```
+
+
+# Anova individual - anova_ind()
+
+```{r collapse = TRUE, warning=FALSE}
+ind_an <- anova_ind(df,
+                    env = ENV,
+                    gen = GEN,
+                    rep = BLOCO,
+                    resp = everything(),
+                    verbose = FALSE)
+print(ind_an)
+
+# Obter dados de todas as variáveis (Coeficiente de variação)
+gmd(ind_an, "CV") %>% print_tbl()
+
+# F-máximo
+gmd(ind_an, what = "FMAX") %>% print_tbl()
+
+```
+
+
+# Anova individual - gafem()
+```{r collapse = TRUE, warning=FALSE, fig.height=3, fig.width=10}
+ind_an2 <- gafem(df,
+                gen = GEN,
+                rep = BLOCO,
+                resp = everything(),
+                by = ENV,
+                verbose = FALSE)
+
+# Obter dados de todas as variáveis
+# P-value
+pval <- gmd(ind_an2, what = "Pr(>F)", verbose = FALSE)
+print_tbl(pval)
+
+# Comparação de médias (MGE dentro do ambiente 2)
+model_mge_a2 <- ind_an2[[2]][[2]][["MGE"]][["model"]]
+pairwise_means <- tukey_hsd(model_mge_a2, "GEN")
+print_tbl(pairwise_means)
+
+# comparações de médias com o pacote emmeans
+(means <- emmeans(model_mge_a2, "GEN"))
+plot(means,
+     comparisons = TRUE,
+     CIs = FALSE,
+     xlab = "Massa de grãos por espiga",
+     ylab = "Genótipos")
+```
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 5
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" ></script>
+
+
+```{r collapse = TRUE, message = FALSE, warning=FALSE}
+library(metan)
+library(rio)
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
+# dados
+df_g <- import("http://bit.ly/df_g", setclass = "tbl")
+inspect(df_g, verbose = FALSE) %>% print_tbl()
+
+```
+
+# Modelo misto
+A função `gamem()` pode ser usada para analisar experimentos únicos(experimentos unilaterais) usando um modelo de efeito misto de acordo com o seguinte modelo:
+
+$$
+y_{ij} = \mu + \alpha_i + \tau_j + \varepsilon_ {ij}
+$$
+
+onde \\(y_ {ij}\\) é o valor observado para o \\(i\\)-ésimo genótipo no \\(j\\)-ésimo bloco (\\(i\\) = 1, 2, ... \\(g\\); \\(j\\) = 1, 2,..., \\(r\\)); sendo \\(g\\) e \\(r\\) o número de genótipos e blocos, respectivamente; \\(\alpha_i\\) é o efeito aleatório do genótipo \\(i\\); \\(\tau_j\\) é o efeito fixo do bloco \\(j\\); e \\(\varepsilon_ {ij}\\) é o erro aleatório associado a \\(y_{ij}\\). Neste exemplo, usaremos os dados de exemplo `df_g`.
+
+```{r collapse = TRUE,}
+gen_mod <- 
+  gamem(df_g,
+        gen = GEN,
+        rep = BLOCO,
+        resp = everything())
+
+```
+
+A maneira mais fácil de obter os resultados do modelo acima é usando a função `gmd()`, ou seu *shortcut* `gmd()`.
+
+## Diagnósticos do modelo
+```{r collapse = TRUE, fig.width=10}
+plot(gen_mod, type = "res") # padrão
+plot(gen_mod, type = "re") # padrão
+
+```
+
+## Detalhes da análise
+```{r collapse = TRUE,}
+details <- gmd(gen_mod, "details")
+print_tbl(details)
+```
+
+## LRT
+```{r collapse = TRUE,}
+lrt <- gmd(gen_mod, "lrt") 
+print_tbl(lrt)
+```
+
+## Componentes de variância
+```{r collapse = TRUE, fig.width=10}
+vcomp <- gmd(gen_mod, "vcomp")
+print_tbl(vcomp)
+plot(gen_mod, type = "vcomp")
+```
+
+
+
+## Parâmetros genéticos
+```{r collapse = TRUE,}
+genpar <- gmd(gen_mod, "genpar")
+print_tbl(genpar)
+```
+
+
+
+## BLUPs preditos
+```{r collapse = TRUE,}
+blupg <- gmd(gen_mod, "blupg")
+print_tbl(blupg)
+
+# plotar os BLUPS (default)
+plot_blup(gen_mod)
+
+# Trait MGE
+plot_blup(gen_mod,
+          var = "MGE",
+          height.err.bar = 0,
+          col.shape = c("black", "gray"),
+          x.lab = "Massa de grãos por espiga (g)",
+          y.lab = "Híbridos de milho")
+```
+
+
+
+# Modelos mistos - dentro de ambientes
+
+```{r collapse = TRUE, message = FALSE, warning=FALSE}
+df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
+mod_gen_whithin <- 
+    gamem(df_ge,
+          gen = GEN,
+          rep = BLOCO,
+          resp = everything(),
+          by = ENV, verbose = FALSE)
+
+gmd(mod_gen_whithin, "lrt") %>%  print_tbl()
+gmd(mod_gen_whithin, "vcomp") %>% print_tbl()
+```
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 6
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" ></script>
+
+
+
+# Anova conjunta - modelo fixo
+
+```{r collapse = TRUE, message = FALSE, warning=FALSE}
+library(metan)
+library(rio)
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
+
+df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
+inspect(df_ge, verbose = FALSE) %>% print_tbl()
+
+joint_an <- 
+    anova_joint(df_ge,
+                env = ENV, 
+                gen = GEN,
+                rep = BLOCO,
+                resp = everything(), 
+                verbose = FALSE)
+
+```
+
+# Anova conjunta - modelo misto
+## O modelo
+O modelo linear mais simples e conhecido com efeito de interação usado para analisar dados em multi-ambientes é:
+
+$$
+{y_{ijk}} = {\rm {}} \mu {\rm {}} + \mathop \alpha \nolimits_i + \mathop \tau \nolimits_j + \mathop {(\alpha \tau)} \nolimits_{ij } + \mathop \gamma \nolimits_{jk} + {\rm {}} \mathop \varepsilon \nolimits_{ijk}
+$$
+
+onde \\(y_{ijk}\\) é a variável resposta (por exemplo, rendimento de grãos) observada no \\(k\\)-ésimo bloco do \\(i\\)-ésimo genótipo no \\(j\\)-ésimo ambiente (\\(i\\) = 1, 2, ..., \\(g\\); \\(j\\) = 1, 2, ..., \\(e\\); \\(k\\) = 1, 2, ..., \\(b\\)); \\(\mu\\) é a média geral; \\(\mathop \alpha \nolimits_i\\) é o efeito do \\(i\\)-ésimo genótipo; \\(\mathop \tau \nolimits_j\\) é o efeito do \\(j\\)-ésimo; \\(\mathop {(\alpha \tau)} \nolimits_{ij}\\) é o efeito de interação do \\(i\\)-ésimo genótipo com o \\(j\\)-ésimo ambiente; \\(\mathop \gamma \nolimits_{jk}\\) é o efeito do \\(k\\)-ésimo bloco dentro do \\(j\\)-ésimo ambiente; e \\(\mathop \varepsilon \nolimits_{ijk}\\) é o erro aleatório. Em um modelo de efeito misto assumindo \\({\alpha_i}\\) e \\(\mathop {(\alpha \tau)} \nolimits_{ij}\\) como efeitos aleatórios, o modelo acima pode ser reescrito como:
+
+$$
+{\bf {y = X b + Zu + \varepsilon}}
+$$
+
+
+onde **y** é um vetor \\(n [= \sum \nolimits_{j = 1} ^ e {(gb)]} \times 1\\) da variável de resposta \\({\bf{y}} = {\rm{ }}{\left[ {{y_{111}},{\rm{ }}{y_{112}},{\rm{ }} \ldots ,{\rm{ }}{y_{geb}}} \right]^\prime }\\); \\(\bf{b}\\) é um vetor \\((eb) \times 1\\) de efeitos fixos desconhecidos \\({\bf{b}} = [\mathop \gamma \nolimits_{11}, \mathop \gamma \nolimits_{12}, ..., \mathop \gamma \nolimits_{eb}]^\prime\\); \\(\bf{u}\\) é um vetor \\(m \[= g + ge\] \times 1\\) de efeitos aleatórios \\({\bf {u}} = {\rm {}} {\left [{{\alpha_1}, { \alpha_2}, ..., {\alpha_g}, \mathop {(\alpha \tau)} \nolimits_{11}, \mathop {(\alpha \tau)} \nolimits_{12}, ... , \mathop {(\alpha \tau)} \nolimits_{ge}} \right] ^ \prime}\\); \\(\bf{X}\\) é uma matriz de design \\(n \times (eb)\\) relacionando \\(\bf{y}\\) a \\(\bf{b}\\); \\(\bf{Z}\\) é uma matriz de design \\(n\times m\\) relacionando \\(\bf{y}\\) a \\(\bf{u}\\); \\({\bf {\varepsilon}}\\) é um vetor \\(n \times 1\\) de erros aleatórios \\({\bf {\varepsilon}} = {\rm {}} {\left \[{{y\_{111}}, {\rm {}} {y\_{112}}, {\rm {}} \ldots, {\rm {}} {y\_{geb}}} \right\] ^ \prime}\\);
+
+Os vetores \\(\bf{b}\\) e \\(\bf{u}\\) são estimados usando a conhecida equação de modelo misto[^1].
+
+
+$$
+\left[ {\begin{array}{*{20}{c}}{{\bf{\hat b }}}\\{{\bf{\hat u}}}\end{array}} \right]{\bf{ = }}{\left[ {\begin{array}{*{20}{c}}{{\bf{X'}}{{\bf{R }}^{ - {\bf{1}}}}{\bf{X}}}&{{\bf{X'}}{{\bf{R }}^{ - {\bf{1}}}}{\bf{Z}}}\\{{\bf{Z'}}{{\bf{R }}^{ - {\bf{1}}}}{\bf{X}}}&{{\bf{Z'}}{{\bf{R }}^{ - {\bf{1}}}}{\bf{Z + }}{{\bf{G}}^{ - {\bf{1}}}}}\end{array}} \right]^ - }\left[ {\begin{array}{*{20}{c}}{{\bf{X'}}{{\bf{R }}^{ - {\bf{1}}}}{\bf{y}}}\\{{\bf{Z'}}{{\bf{R }}^{ - {\bf{1}}}}{\bf{y}}}\end{array}} \right]
+$$
+
+
+onde **G** e **R** são as matrizes de variância-covariância para o vetor de efeito aleatório **u** e o vetor residual \\({\bf{\varepsilon }}\\), respectivamente.
+
+
+## A função gamem_met()
+
+A função `gamem_met()` é usada para ajustar o modelo linear de efeitos mistos. 
+
+```{r collapse = TRUE,}
+args(gamem_met)
+```
+
+O primeiro argumento são os dados, em nosso exemplo `df_ge`. Os argumentos (`env`, `gen` e `rep`) são os nomes das colunas que contêm os níveis de ambientes, genótipos e blocos, respectivamente. O argumento (`resp`) é a variável de resposta a ser analisada . A função permite uma única variável ou um vetor de variáveis resposta. Aqui, usaremos `everything()` para analisar todas as variáveis numéricas nos dados. Por padrão, o genótipo e a interação genótipo *vs* ambiente são considerados efeitos aleatórios. Outros efeitos podem ser considerados usando o argumento `random`. O último argumento (`verbose`) controla se o código é executado silenciosamente ou não.
+
+```{r collapse = TRUE, echo = TRUE}
+met_mixed <-
+  gamem_met(df_ge,
+            env = ENV,
+            gen = GEN,
+            rep = BLOCO,
+            resp = everything(),
+            random = "gen", #Default
+            verbose = TRUE) #Padrão
+
+```
+
+## Gráfico de diagnóstico para resíduos
+
+A função genérica S3 `plot()` é usada para gerar gráficos de diagnóstico de resíduos do modelo.
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 7, fig.height = 7, fig.align =" center "}
+plot(met_mixed)
+```
+
+A normalidade dos efeitos aleatórios de genótipo e efeitos de interação também podem ser obtidos usando `type =" re "`.
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 10, fig.height = 3.33, fig.align =" center "}
+plot(met_mixed, type = "re")
+```
+
+## LRT
+
+A saída `LRT` contém os testes de razão de verossimilhança para genótipo e efeitos aleatórios genótipo versus ambiente. Podemos obter esses valores com `get_model_data()`
+
+```{r collapse = TRUE, aviso = F, mensagem = F}
+lrt <- gmd(met_mixed, "lrt")
+print_tbl(lrt)
+```
+
+## Componentes de variância
+
+```{r collapse = TRUE, fig.width = 10}
+vcomp <- gmd(met_mixed, "vcomp")
+print_tbl(vcomp)
+# plot
+plot(met_mixed, type = "vcomp")
+```
+
+
+## Parâmetros genéticos
+
+```{r collapse = TRUE,}
+genpar <- gmd(met_mixed, "genpar")
+print_tbl(genpar)
+```
+
+
+Na saída acima, além dos componentes de variância para os efeitos aleatórios declarados, alguns parâmetros importantes também são mostrados.
+
+**Heritability** é a herdabilidade em sentido amplo, \\(\mathop h \nolimits_g ^ 2\\), estimada por 
+
+$$
+\mathop h\nolimits_g^2  = \frac{\mathop {\hat\sigma} \nolimits_g^2} {\mathop {\hat\sigma} \nolimits_g^2  + \mathop {\hat\sigma} \nolimits_i^2  + \mathop {\hat\sigma} \nolimits_e^2 }
+$$
+
+onde \\(\mathop {\hat \sigma} \nolimits_g ^ 2\\) é a variância genotípica; \\(\mathop {\hat \sigma} \nolimits_i ^ 2\\) é a variância da interação genótipo *vs* ambiente; e \\(\mathop {\hat \sigma} \nolimits_e ^ 2\\) é a variância residual.
+
+**GEIr2** é o coeficiente de determinação dos efeitos de interação, \\(\mathop r \nolimits_i ^ 2\\), estimado por
+
+$$
+\mathop r\nolimits_i^2  = \frac{\mathop {\hat\sigma} \nolimits_i^2}
+{\mathop {\hat\sigma} \nolimits_g^2  + \mathop {\hat\sigma} \nolimits_i^2  + \mathop {\hat\sigma} \nolimits_e^2 }
+$$
+
+**h2mg** é a herdabilidade com base na média, \\(\mathop h \nolimits\_{gm} ^ 2\\), estimada por
+
+$$
+\mathop h\nolimits_{gm}^2  = \frac{\mathop {\hat\sigma} \nolimits_g^2}{[\mathop {\hat\sigma} \nolimits_g^2  + \mathop {\hat\sigma} \nolimits_i^2 /e + \mathop {\hat\sigma} \nolimits_e^2 /\left( {eb} \right)]}
+$$
+
+onde *e* e *b* são o número de ambientes e blocos, respectivamente;
+
+**Accuracy** é a acurácia de seleção, *Ac*, estimada por
+
+$$
+Ac = \sqrt{\mathop h\nolimits_{gm}^2}
+$$
+
+**rge** é a correlação genótipo-ambiente, \\(\mathop r \nolimits\_{ge}\\), estimada por
+
+$$
+\mathop r\nolimits_{ge} = \frac{\mathop {\hat\sigma} \nolimits_g^2}{\mathop {\hat\sigma} \nolimits_g^2  + \mathop {\hat\sigma} \nolimits_i^2}
+$$
+
+**CVg** e **CVr** são o coeficiente de variação genotípico e o coeficiente de variação residual estimado, respectivamente, por
+
+$$
+CVg  = \left( {\sqrt {\mathop {\hat \sigma }\nolimits_g^2 } /\mu } \right) \times 100
+$$
+
+e 
+
+$$
+CVr = \left( {\sqrt {\mathop {\hat \sigma }\nolimits_e^2 } /\mu } \right) \times 100
+$$
+
+
+onde \\(\mu\\) é a média geral.
+
+**CV ratio** é a razão entre o coeficiente de variação genotípico e residual.
+
+
+## BLUP para genótipos
+
+```{r collapse = TRUE,}
+met_mixed$MGE$BLUPgen
+blupg <- gmd(met_mixed, "blupg")
+print_tbl(blupg)
+```
+
+## Plotar o BLUP para genótipos
+
+```{r collapse = TRUE, echo = TRUE, fig.height = 5, fig.width = 10, fig.align =" center ", mensagem = F, aviso = F}
+a <- plot_blup(met_mixed, var = "MGE")
+b <- plot_blup(met_mixed,
+               var = "MGE",
+               col.shape = c("gray20", "gray80"),
+               plot_theme = theme_metan(grid = "y"))
+arrange_ggplot(a, b, tag_levels = "a")
+
+```
+
+Esta saída mostra as médias previstas para genótipos. **BLUPg** é o efeito genotípico \\((\hat{g_i})\\), que considerando dados balanceados e genótipo como efeito aleatório é estimado por
+
+$$
+\hat g_{i} = h_g ^ 2(\bar y_{i.} - \bar y_{..})
+$$
+
+onde \\(h_g ^ 2\\) é o efeito de *shrinkage* do genótipo.
+
+**Predicted** é a média predita, dada por
+
+$$
+\hat {g}_{i} + \mu
+$$
+
+onde \\(\mu\\) é a média geral.
+
+
+
+**LL** e **UL** são os limites inferior e superior, respectivamente, estimados por 
+
+$$
+(\hat {g}_{i} + \mu) \pm {CI}
+$$
+
+com
+
+$$
+CI = t \times \sqrt {((1-Ac) \times {\mathop \sigma \nolimits_g ^ 2)}}
+$$
+
+onde \\(t\\) é o valor *t* de Student para um teste *t* bicaudal em uma data probabilidade; \\(Ac\\) é a acurácia da seleção e \\(\mathop\sigma\nolimits_g ^2\\) é a variância genotípica.
+
+## BLUP para combinação de genótipos X ambiente
+
+```{r collapse = TRUE,}
+blupint <- met_mixed$MGE$BLUPint
+print_tbl(blupint)
+```
+
+Esta saída mostra as médias preditas para cada combinação de genótipo e ambiente. **BLUPg** é o efeito genotípico descrito acima. **BLUPge** é o efeito genotípico do *i*-ésimo genótipo no *j*-ésimo ambiente \\((\hat g_{ij})\\), que considerando dados balanceados e genótipo como efeito aleatório é estimado por:
+
+$$
+\hat g_{ij} = h_g ^ 2 (\bar y_{i.} - \bar y_{..}) + h_{ge} ^ 2 (y_{ij} - \bar y_{i.} - \bar y_{.j} + \bar y_{..})
+$$
+
+onde \\(h_{ge} ^2\\) é o efeito *shrinkage* para a interação genótipo por ambiente; 
+
+**BLUPg + ge** é o BLUP genotipico somado ao BLUP da interação do genótipo \\(i\\) no ambiente \\(j\\).
+
+**Predicted** é o valor predito (\\(\hat y_{ij}\\)) dado por
+
+
+$$
+\hat y_{ij} = \bar y_{.j} + BLUP_{g+ge}
+$$
+
+
+[^1]: Henderson, C. R. (1975). Best linear unbiased estimation and prediction under a selection model. *Biometrics*, *31*(2), 423--447. <https://doi.org/10.2307/2529430>
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 7
+
+```{r collapse = TRUE,}
+library(metan)
+library(rio)
+df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+```
+
+# Desempenho dos genótipos em cada ambiente
+A função `ge_plot()` pode ser usada para visualizar o desempenho do genótipo nos ambientes.
+
+```{r collapse = TRUE,, fig.width = 12, fig.height = 5, aviso = FALSE, mensagem = FALSE}
+a <- ge_plot(df_ge, ENV, GEN, MMG)
+b <- ge_plot(df_ge, ENV, GEN, MMG, type = 2)
+arrange_ggplot(a, b, tag_levels = "a")
+```
+
+Para identificar o genótipo ganhador em cada ambiente, podemos usar a função `ge_winners()`.
+
+```{r collapse = TRUE,}
+ge_winners(df_ge, ENV, GEN, resp = everything()) %>% print_tbl()
+```
+
+Ou obter a classificação dos genótipos em cada ambiente. 
+```{r collapse = TRUE,}
+winners <- 
+ge_winners(df_ge, ENV, GEN,
+           resp = everything(),
+           type = "ranks",
+           better = c("l, l, h, h, h, h, h, h, h, h"))
+
+print_tbl(winners)
+```
+
+Para mais detalhes sobre os testes, podemos usar `ge_details()`
+```{r collapse = TRUE,}
+details <- ge_details(df_ge, ENV, GEN, resp = everything())
+print_tbl(details)
+
+```
+
+
+# Matriz dupla entrada
+A função `make_mat()` pode ser usada para produzir uma tabela bidirecional com as médias genótipo-ambiente.
+
+```{r collapse = TRUE,}
+mat <- make_mat(df_ge, GEN, ENV, MMG)
+print_tbl(mat)
+```
+
+
+# Efeitos de interação genótipo-ambiente
+A função `ge_effects()` é usada para calcular os efeitos da interação genótipo-ambiente.
+```{r collapse = TRUE,}
+ge_ef <- ge_effects(df_ge, ENV, GEN, MMG)
+print_tbl(ge_ef$MMG)
+
+# o mesmo efeito é calculado com o resíduo do modelo aditivo
+ge_ef2 <- 
+df_ge %>% 
+  means_by(GEN, ENV) %>% 
+  lm(MMG ~ GEN + ENV, data = .) %>% 
+  residuals() %>% 
+  matrix(nrow = 13, byrow = TRUE)
+print_tbl(ge_ef2)
+```
+
+
+
+# Genótipo + interação genótipo-ambiente (GGE)
+Para obter o efeito GGE, usamos argumento `type =" gge "` na função `ge_effects()`.
+
+```{r collapse = TRUE,}
+gge_ef <- ge_effects(df_ge, ENV, GEN, MMG, type = "gge")
+print_tbl(gge_ef$MMG)
+
+# o mesmo efeito é calculado com o resíduo do modelo aditivo
+gge_ef2 <- 
+df_ge %>% 
+  means_by(GEN, ENV) %>% 
+  lm(MMG ~ ENV, data = .) %>% 
+  residuals() %>% 
+  matrix(nrow = 13, byrow = TRUE)
+print_tbl(gge_ef2)
+```
+
+
+# Agrupamento de ambientes
+
+A função `ge_cluster()` computa uma análise de agrupamento para agrupar ambientes com base em suas semelhanças usando uma distância euclidiana baseada em dados padronizados.
+
+```{r collapse = TRUE,, fig.width = 5, fig.height = 4, aviso = FALSE, mensagem = FALSE, fig.align =" center "}
+d1 <- ge_cluster(df_ge, ENV, GEN, MMG, nclust = 2)
+plot(d1, nclust = 2)
+
+```
+
+A função `env_dissimilarity()` calcula a dissimilaridade entre os ambientes de teste usando:
+
+* A partição da partição do quadrado médio da interação genótipo-ambiente (MS_GE) em partes simples (S) e complexas (C), de acordo com Robertson (1959)[^1], onde \\(S = \frac{1}{2} (\sqrt {Q_1} - \sqrt{Q_2}) ^ 2)\\) e \\(C = (1-r) \sqrt {Q1-Q2}\\), sendo \\(r\\) a correlação entre a média do genótipo nos dois ambientes; e \\(Q_1\\) e \\(Q_2\\) o quadrado médio do genótipo nos ambientes 1 e 2, respectivamente.
+
+* A decomposição do MS_GE proposta por Cruz e Castoldi (1991)[^2] em que a parte complexa é dada por \\(C = \sqrt {(1-r) ^ 3 Q1 Q2}\\).
+
+* O quadrado médio da interação entre genótipos e pares de ambientes.
+
+* Os coeficientes de correlação entre a média dos genótipos em cada par de ambiente.
+
+```{r collapse = TRUE,}
+mod <- env_dissimilarity(df_ge, ENV, GEN, BLOCO, MMG)
+
+# Coeficiente de correlação de Pearson
+print_tbl(mod$MMG$correlation)
+
+# Quadrado médio GxEjj '
+print_tbl(mod$MMG$MSGE)
+
+#% Parte simples do QM GxEjj '(Robertson, 1959)
+print_tbl(mod$MMG$SPART_RO)
+
+#% Da parte complexa do QM  GxEjj '(Robertson, 1959)
+print_tbl(mod$MMG$CPART_RO)
+
+
+#% Parte simples do QM  GxEjj '(Cruz e Castoldi, 1991)
+print_tbl(mod$MMG$SPART_CC)
+
+#% Parte complexa do QM  GxEjj '(Cruz e Castoldi, 1991)
+print_tbl(mod$MMG$CPART_CC)
+
+
+```
+
+
+Para obter dendrogramas com base na matriz acima, podemos usar `plot()`. Os dendrogramas são baseados no algoritmo de agrupamento hierárquico UPGMA (método de grupo de pares não ponderados usando médias aritméticas).
+
+```{r collapse = TRUE,, fig.width = 10, fig.height = 6}
+plot(mod)
+```
+
+
+# Análise de regressão conjunta
+Eberhart e Russell (1966)[^3] popularizaram a análise de estabilidade baseada em regressão. Neste procedimento, a análise de adaptabilidade e estabilidade é realizada por meio de ajustes de equações de regressão onde a variável dependente é predita em função de um índice ambiental, de acordo com o seguinte modelo:
+
+$$
+\mathop Y \nolimits_{ij} = {\beta_{0i}} + {\beta_{1i}}{I_j} + {\delta_{ij}} + {\bar \varepsilon_{ij}}
+$$
+
+onde \\({\beta_{0i}}\\) é a média do genótipo \\(i\\) (\\(i\\) = 1, 2, ..., I); \\({\beta_{1i}}\\) é a resposta linear (slope) do genótipo \\(i\\) ao índice ambiental; \\(Ij\\) é o índice ambiental (\\(j\\) = 1, 2, ..., \\(e\\)), onde \\({I_j} = [(y_{.J} / g) - (y_{..}/ge)]\\), \\({\delta_{ij}}\\) é o desvio da regressão e \\({\ bar \varepsilon_{ij}}\\) é o erro experimental.
+
+O modelo é ajustado com a função `ge_reg()`. Os métodos S3 `plot()` e `summary ()` podem ser usados para explorar o modelo ajustado.
+
+```{r collapse = TRUE,, fig.width = 10, fig.height = 10, aviso = FALSE, mensagem = FALSE}
+reg_model <- ge_reg(df_ge,
+                    env = ENV,
+                    gen = GEN,
+                    rep = BLOCO,
+                    resp = MMG,
+                    verbose = FALSE)
+
+# Use o método print()
+# ANOVA
+print_tbl(reg_model$MMG$anova)
+
+# REGRESSÃO
+print_tbl(reg_model$MMG$regression)
+
+
+# Gráfico
+p1 <- plot(reg_model)
+p2 <- plot(reg_model,
+           x.lab = "Índice ambiental",
+           y.lab = "Massa de Mil Grãos (g)",
+           plot_theme = theme_metan_minimal())
+p3 <- plot(reg_model, type = 2)
+
+# reunir os plots
+arrange_ggplot((p1 + p2), p3, ncol = 1,
+               guides = "collect",
+               tag_levels = "A",
+               tag_suffix = ")")
+```
+
+
+# Índice de confiança genotípica
+Annicchiarico (1992)[^4] propôs um método de estabilidade em que o parâmetro de estabilidade é medido pela superioridade do genótipo em relação à média de cada ambiente, de acordo com o seguinte modelo:
+
+$$
+{Z_ {ij}} = \frac {{{Y_ {ij}}}} {{{{\bar Y} _ {. J}}}} \times 100
+$$
+O índice de confiança genotípica do genótipo \\(i\\) (\\(W_i\\)) é então estimado da seguinte forma:
+
+$$
+W_i = Z_ {i.} / E - \alpha \times sd(Z_{i.})
+$$
+Onde \\(\alpha\\) é o quantil da distribuição normal padrão em uma dada probabilidade de erro (\\(\alpha \approx 1,64 \alpha 0,05\\)). O método é implementado usando a função `Annicchiarico()`. O índice de confiança é estimado considerando todos os ambientes, ambientes favoráveis (índice positivo) e ambientes desfavoráveis (índice negativo).
+
+
+
+```{r collapse = TRUE,, fig.width = 5, fig.height = 4, aviso = FALSE, mensagem = FALSE}
+ann1 <- Annicchiarico(df_ge,
+                      env = ENV,
+                      gen = GEN,
+                      rep = BLOCO,
+                      resp = everything(),
+                      verbose = FALSE)
+
+# Wi
+gmd(ann1) %>% print_tbl()
+
+# Ranques
+gmd(ann1, "rank")  %>% print_tbl()
+
+# classificação dos ambientes
+ann1$ALT_PLANT$environments  %>% print_tbl()
+```
+
+
+# Índice de superioridade
+A função `superiority()` implementa o método não paramétrico proposto por Lin e Binns (1988)[^5], que considera que uma medida de superioridade geral de cultivar para dados de ensaios multiambientes é definida como a soma do quadrado da distância média entre a resposta da cultivar e a resposta máxima calculada em todos os locais, de acordo com o seguinte modelo.
+
+$$
+P_i = \sum \limits_ {j = 1} ^ n {(y_ {ij} - y _ {. J}) ^ 2 / (2n)}
+$$
+onde *n* é o número de ambientes
+
+Semelhante ao índice de confiança genotípica, o índice de superioridade é calculado por todos os ambientes, favoráveis e desfavoráveis.
+
+```{r collapse = TRUE,}
+super <- superiority(df_ge,
+                     env = ENV,
+                     gen = GEN,
+                     resp = everything(),
+                     verbose = FALSE)
+gmd(super) %>% print_tbl()
+```
+
+
+
+# Estratificação ambiental
+Um método que combina análise de estabilidade e estratificação ambiental usando análise fatorial foi proposto por Murakami e Cruz (2004)[^6]. Este método é implementado com a função `ge_factanal()`, da seguinte forma:
+
+```{r collapse = TRUE,, fig.width = 5, fig.height = 4, aviso = FALSE, mensagem = FALSE}
+fato <- ge_factanal(df_ge, 
+                    env = ENV,
+                    gen = GEN,
+                    rep = BLOCO,
+                    resp = everything(),
+                    verbose = FALSE,
+                    mineval = 0.7)
+
+# plot
+plot(fato, var = "MMG")
+
+# Autovalores e variância
+print_tbl(fato$MMG$PCA)
+
+# Cargas fatoriais após rotação varimax
+print_tbl(fato$MMG$FA)
+
+# Estratificação
+print_tbl(fato$MMG$env_strat)
+
+```
+
+
+# A função ge_stats()
+
+A maneira mais fácil de calcular os índices de estabilidade mencionados acima é usando a função `ge_stats()`. É uma função "wrapper" que computa todos os índices de estabilidade de uma única vez. Para obter os resultados em um arquivo *"pronto para ler"*, use `gmd()`.
+
+```{r collapse = TRUE,}
+stat_ge <- ge_stats(df_ge,
+                    env = ENV,
+                    gen = GEN,
+                    rep = BLOCO,
+                    resp = c(MMG, MGE))
+# estatisticas
+gmd(stat_ge, "stats") %>% print_tbl()
+
+# Ranques
+gmd(stat_ge, "ranks") %>% print_tbl()
+
+```
+
+Também é possível obter a correlação de postos de Spearman entre os índices de estabilidade usando `corr_stab_ind()`.
+
+```{r collapse = TRUE, fig.width = 10, fig.height = 10}
+corr_stab_ind(stat_ge)
+```
+
+
+[^1]: Robertson, A. (1959). Experimental design on the measurement of heritabilities and genetic correlations: Biometrical genetics. In Biometrical genetics. Pergamon.
+
+[^2]: CRUZ, C.D.; CASTOLDI, F.L. Decomposição da interação genótipos x ambientes em partes simples e complexa. Revista Ceres, v.38, n.219, p.422-430, 1991.
+
+[^3]: Eberhart, S. A., & Russell, W. A. (1966). Stability parameters for comparing varieties. Crop Science, 6(1), 36–40. https://doi.org/10.2135/cropsci1966.0011183X000600010011x
+
+[^4]: Annicchiarico, P. (1992). Cultivar adaptation and recommendation from alfalfa trials in Northern Italy. Journal of Genetics and Breeding, 46, 269–278.
+
+[^5]: Lin, C.S.; & Binns, M.R. (1988). A superiority measure of cultivar performance for cultivar x location data. Canadian Journal of
+Plant Science, 68, 193-198. https://cdnsciencepub.com/doi/abs/10.4141/cjps88-018
+
+[^6]: Murakami, D. M., & Cruz, C. D. (2004). Proposal of methodologies for environment stratification and analysis of genotype adaptability. Cropp Breeding and Applied Biotechnology, 4(1), 7–11. https://doi.org/10.12702/1984-7033.v04n01a02
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 8
+
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" ></script>
+
+
+
+```{r collapse = TRUE,}
+library(metan)
+library(rio)
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
+
+df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
+inspect(df_ge, verbose = FALSE) %>% print_tbl()
+```
+
+## O modelo AMMI
+A análise AMMI utiliza análise aditiva de variância aos fatores principais (genótipo e ambiente) e decomposição por valores singulares ao residual do modelo aditivo, isto é, o efeito da GEI somado ao erro experimental. Esta matriz dos efeitos não aditivos, então, pode ser aproximadamente exibida por meio de biplots[^1]. Este método tem ganhado destaque nas últimas décadas, principalmente devido a rápida evolução computacional, o que tornou possível as complexas decomposições de matrizes de alta ordem.
+
+De posse de uma matriz de dupla entrada oriunda de ensaios multiambientes, a estimativa da variável resposta do \\(i\\)-ésimo genótipo no \\(i\\)-ésimo ambiente é obtida utilizando AMMI de acordo com o seguinte modelo:
+
+$$
+{y_{ij}} = \mu  + {\alpha_i} + {\tau_j} + \sum\limits_{k = 1}^k {{\lambda _k}{a_{ik}}} {t_{jk}} + {\rho _{ij}} + {\varepsilon _{ij}}
+$$
+
+
+onde \\({\lambda_k}\\) é o valor singular para o \\(k\\)-ésimo eixo do componente principal; \\(a_{ik}\\) é o \\(i\\)-ésimo elemento do \\(k\\)-ésimo autovetor de genótipos;  \\(t_{jk}\\) é o \\(j\\)-ésimo elemento do \\(k\\)-ésimo autovetor de ambientes. Um resíduo \\(\rho _{ij}\\) permanece, se todos os \\(k\\)-PCAs não são considerados, onde \\(k\\) = \\(min(G-1; E-1)\\). O modelo AMMI é computado com a função `performs_ammi()`
+
+```{r collapse = TRUE, warning = FALSE, message = FALSE, echo=TRUE, fig.height=3.5}
+ammi_model <- 
+  performs_ammi(df_ge,
+                env = ENV,
+                gen = GEN,
+                rep = BLOCO,
+                resp = MGE:MMG,
+                verbose = FALSE)
+```
+
+
+
+
+
+#### Analise residual
+
+\\(\hat y_{ij} = \bar y_{i.} + \bar y_{.j} - \bar y_{..}\\) 
+
+```{r collapse = TRUE, warning = FALSE, message = FALSE, echo=TRUE, fig.width=8, fig.height=8, fig.align="center"}
+plot(ammi_model)
+```
+
+
+
+### Escoha do número de IPCAs retidos
+
+A análise AMMI aplica a técnica de decomposição por valores singulares na matriz dos efeitos não aditivos do modelo (__*A*__). Logo, esta matriz pode ser aproximada pela pelo seguinte modelo: \\(\mathbf{A = U \lambda V^T}\\), onde onde \\(U\\) é uma matriz \\(g\\) \\(\times\\) \\(e\\) contendo os vetores singulares de \\(\mathbf{AA^T}\\) e formam a base ortonormal para os efeitos de genótipos; \\(\mathbf{V^T}\\) é uma matriz \\(e\\) \\(\times\\) \\(e\\) que contém os vetores singulares de  \\(\mathbf{A^TA}\\) e formam a base ortonormal para os efeitos de ambientes; e \\(\mathbf{\lambda}\\) é uma matriz diagonal \\(e\\) \\(\times\\) \\(e\\) contendo \\(k\\)-valores singulares de \\(\mathbf{A^{T}A}\\) , onde \\(k\\) = \\(min(G-1; E-1)\\). Assim, diferentes modelos (dependendo do número de IPCAs utilizados) podem ser utilziados para estimar o rendimento do genótipo \\(i\\) no ambiente \\(j\\). A tabela abaixo mostra os possíveis modelos. No modelo AMMI0 apenas os efeitos aditivos são considerados. No modelo AMMI1, o primeiro termo multiplicativo é considerado, e assim por diante, até o modelo AMMIF, onde \\(min(G-1;E-1)\\) termos são considerados. 
+
+
+
+| Membros da família AMMI | Resposta esperado do genótipo \\(i\\) no ambiente \\(j\\)                            |
+|:----------------------------------|:------------------------------------------------------------------------------|
+| AMMI0            |\\(\hat y_{ij} = \bar y_{i.} + \bar y_{.j} - \bar y_{..}\\)                    |
+| AMMI1            |\\(\hat y_{ij} = \bar y_{i.} + \bar y_{.j} - \bar y_{..} +\lambda_1 a_{i1}t_{j1}\\) |
+| AMMI2            |\\(\hat y_{ij} = \bar y_{i.} + \bar y_{.j} - \bar y_{..} +\lambda_1 a_{i1}t_{j1}+\lambda_2 a_{i2}t_{j2}\\) |
+| ...              |                                                                               |
+| AMMIF            |\\(\hat y_{ij} = \bar y_{i.} + \bar y_{.j} - \bar y_{..} +\lambda_1 a_{i1}t_{j1}+\lambda_2 a_{i2}t_{j2}+...+\lambda_p a_{ip}t_{jp}\\)  
+
+A escolha do número de IPCAs a ser utilizado é baseada em basicamente dois critérios de sucesso de análise: **Postdiscritive sucess** e **Predictive sucess**. Por definição, **predictive sucess** significa literalmente a afirmação prévia do que acontecerá em algum momento futuro. Neste contexto, testes de validação cruzada (*cross-validation*) podem ser utilizados para avaliar o sucesso preditivo dos membros de modelos da familia AMMI. Por outro lado, **postdiscritive sucess** significa fazer uma afirmação ou dedução sobre algo que aconteceu no passado. Na escolha do número de IPCAs da análise AMMI, \index{AMMI}este sucesso pode ser calculado utilizando testes como o proposto por Gollob (1968)[^2]. 
+
+* **Postdiscritive sucess**
+Testes de hipóteses são realizados e probabilidades de erro são atribuídas para cada membro da família de modelos AMMI utilizando a distribuição de graus de liberdade proposto por Gollob (1968)[^2]. Assim, é possível identificar qual é o número ideal de IPCAs a ser considerado na estimativa. 
+
+```{r collapse = TRUE,}
+gmd(ammi_model, "ipca_pval") %>% print_tbl()
+gmd(ammi_model, "ipca_expl") %>% print_tbl()
+gmd(ammi_model, "ipca_accum") %>% print_tbl()
+```
+
+
+
+\index{predictive sucess}
+
+Utilizando a função `cv_ammif()`, é possível realizar um teste de validação cruzada para a família de modelos AMMI (AMMI0-AMMIF) usando dados com repetições. Automaticamente, a primeira validação é realizada considerando a AMMIF (todos possíveis IPCAs são usados). Considerando esse modelo, o conjunto de dados original é dividido em dois conjuntos de dados: dados de modelagem e dados de validação. 
+
+O conjunto de dados "modelagem" possui todas as combinações (genótipo *vs* ambiente) com o número de repetições informado no argumento `nrepval`. O conjunto de dados "validação" tem uma repetição. A divisão do conjunto de dados em dados de modelagem e validação depende do design informado. Considerando um delineamento de blocos completos casualizados (DBC)\index{DBC}, blocos completos são aleatoriamente selecionados dentro de ambientes, como sugerido por Piepho (1994)[^4]. O bloco restante serve dados de validação. Se `design = "CRD"` for informado, assim declarando que um delineamento intericamente casualizado (DIC) \index{DIC} foi usado, observações são aleatoriamente selecionadas para cada tratamento (combinação genótipo-*vs*-ambiente). Este é o mesmo procedimento sugerido por Gauch (1988)[^3]. Os valores estimados para o membro da família AMMI em estudo são então comparados com os dados de "validação" e um erro de predição \\(\hat{z}_{ij}\\) é estimado para cada tratamento. A raiz quadrada do quadrado médio da diferença de predição (RMSPD) é calculado. Este procedimento é repetido *n* vezes, utilizando o argumento `nboot = n`. Ao final do procedimento, o algorítimo armazena as *n* estimativas do RMSPD para o modelo em questão, e um novo modelo é então testado seguindo os mesmos passos. Uma barra de progresso é mostrada por padrão. Assim, é possível verificar o status do processo. Se necessário, a barra de progresso pode ser desabilitada informando o argumento `verbose = FALSE` na função.
+
+
+
+```{r collapse = TRUE, collapse = TRUE, comment = "#", eval=T, fig.width=10}
+# Validação cruzada para os membros de modelos da família AMMI
+cvalida <- 
+  cv_ammif(df_ge,
+          env = ENV,
+          gen = GEN,
+          rep = BLOCO,
+          resp = MGE,
+          nboot = 20,
+          verbose = FALSE)
+p1 <- plot(cvalida)
+p2 <- plot(cvalida,
+          width.boxplot = 0.5,
+          col.boxplot = "white",
+          plot_theme = theme_metan_minimal())
+p1 + p2
+```
+
+
+
+#### *Valores estimados pelo modelo AMMI*
+```{r}
+predicted <- predict(ammi_model, naxis = c(3, 2, 1))
+print_tbl(predicted$MGE)
+```
+
+
+### Biplot AMMI1
+
+
+```{r collapse = TRUE, warning = FALSE, message = FALSE, echo=TRUE, fig.height=5, fig.width=10, fig.align="center"}
+p1 <- plot_scores(ammi_model)
+p2 <- plot_scores(ammi_model,
+                  x.lab = "Massa de grãos por espiga",
+                  col.segm.env = "black",
+                  col.gen = "gray",
+                  col.env = "black",
+                  highlight = c("H8", "H6", "H2"),
+                  plot_theme = theme_metan_minimal())
+arrange_ggplot(p1, p2, tag_levels = "a")
+```
+
+
+### Biplot AMMI2
+
+
+```{r collapse = TRUE, warning = FALSE, message = FALSE, echo=TRUE, fig.height=5, fig.width=10, fig.align="center"}
+p3 <- plot_scores(ammi_model, type = 2)
+p4 <- plot_scores(ammi_model,
+                  type = 2,
+                  col.segm.env = "black",
+                  col.gen = "gray",
+                  col.env = "black",
+                  highlight = c("H8", "H6", "H2"),
+                  plot_theme = theme_metan_minimal())
+
+arrange_ggplot(p3, p4, tag_levels = "a")
+```
+
+
+
+# Temas
+```{r fig.width=12, fig.height=10}
+p <-
+plot_scores(ammi_model,
+            type = 2,
+            col.segm.env = "black",
+            col.gen = "gray",
+            col.env = "black",
+            highlight = c("H8", "H6", "H2"),
+            col.highlight = "blue",
+            size.tex.env = 5)
+
+p1 <- p  + ggthemes::theme_base()
+p2 <- p  + ggthemes::theme_clean()
+p3 <- p  + ggthemes::theme_excel_new()
+p4 <- p  + ggthemes::theme_solarized()
+p5 <- p  + ggthemes::theme_solid()
+
+
+arrange_ggplot((p1 + p2 + p3) / (p4 + p5),
+               tag_levels = "i",
+               tag_prefix = "p.",
+               tag_suffix = ")",
+               guides = "collect",
+               title = "Meus biplots AMMI",
+               subtitle = "Combinados no metan",
+               caption = "Fonte: ...")
+
+```
+
+
+[^1]: Gabriel, K. R. (1971). The biplot graphic display of matrices with application to principal component analysis. Biometrika, 58(3), 453–467. https://doi.org/10.2307/2334381
+
+
+[^2]: Gollob, H. F. (1968). A statistical model which combines features of factor analytic and analysis of variance techniques. Psychometrika, 33(1), 73–115. https://doi.org/10.1007/BF02289676
+
+[^3]: Gauch, H. G., & Zobel, R. W. (1988). Predictive and postdictive success of statistical analyses of yield trials. Theoretical and Applied Genetics, 76(1), 1–10. https://doi.org/10.1007/BF00288824
+
+
+[^4]: Piepho, H.-P. (1994). Best Linear Unbiased Prediction (BLUP) for regional yield trials: A comparison to additive main effects and multiplicative interaction (AMMI) analysis. Theoretical and Applied Genetics, 89(5), 647–654. https://doi.org/10.1007/BF00222462
+
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 9
+
+O modelo de interação "genótipo + interação genótipo-ambiente (GGE)" tem sido amplamente utilizado para avaliação de genótipos e identificação de megaambientes em ensaios de múltiplos ambientes (MET). Este modelo considera um biplot GGE (ou seja, G + GE), que é construído pelos dois primeiros componentes principais em escala simétrica (PC1 e PC2) derivados da decomposição de valor singular de dados MET centrados no ambiente. O GGE biplot exibe graficamente G mais GE de um MET de uma forma que facilita a avaliação visual do genótipo e a identificação do megaambiente Yan (2007)[^1].
+
+
+```{r collapse = TRUE, collapse = TRUE,}
+library(metan)
+library(rio)
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
+
+df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
+```
+
+# O modelo GGE
+O rendimento médio do genótipo * i * no ambiente * j * é comumente descrito por um modelo linear geral
+
+$$
+\hat y_{ij} + \mu + \alpha_i + \beta_j + \phi_ {ij}
+$$
+
+onde \\(\hat y_{ij}\\) é o rendimento médio do genótipo \\(i\\) no ambiente \\(j\\), \\(i = 1, ... g; j = 1, ... e \\) sendo \\(g\\) e \\(e\\) os números de genótipos e ambientes, respectivamente; \\(\mu \\) é a média geral; \\(\alpha_i \\) é o efeito principal do genótipo \\(i\\); \\(\beta_j \\) é o efeito principal do ambiente \\(j\\), e \\(\phi_{ij} \\) é o efeito de interação entre o genótipo \\(i\\) e o ambiente \\(j\\). A decomposição por valores singulares de \\(\phi_ {ij} \\) resulta no modelo AMMI. A exclusão de \\(\alpha_i \\), permite que a variação explicada por este termo (do genótipo) seja absorvida pelo termo \\(\phi_ {ij}\\). No modelo GGE, o termo \\(\alpha_i \\) é excluído do modelo acima e, em seguida, a matriz de dados centrada no ambiente, \\(\phi_ {ij} \\), é submetida decomposição por valor singular[^2]. Explicitamente, temos:
+
+$$
+{\phi_ {ij} = \hat y_ {ij}} - \mu - \beta_j = \sum \limits_ {k = 1} ^ p \xi_ {ik} ^ * \eta_ {jk} ^ *
+$$
+
+onde \\(\xi_ {ik} ^ * = \lambda_k ^ \alpha \xi_ {ik}\\); \\(\eta_ {jk} ^ * = \lambda_k ^ {1- \alpha} \eta_ {jk} \\), sendo \\(\lambda_k \\) o \\(k\\)-ésimo autovalor (\\(k = 1, ... p\\) , com \\(p \le min (e, g)\\); \\(\alpha \\) é o fator de partição de valor singular para o componente principal (PC) \\(k\\); \\(\xi_{ik} ^ * \\) e \\(\eta_{jk} ^ * \\) são os escores para o genótipo \\(i\\) e ambiente \\(j\\), respectivamente.
+
+A função `gge()` é usada para ajustar um modelo GGE. De acordo com Yan (2003)[^2], a função suporta quatro métodos de centralização de dados, dois métodos de escalonamento de dados e três opções para particionamento de valor singular:
+
+# Métodos de centralização disponíveis
+
+* `0` ou` "none" `para nenhuma centralização;
+* `1` ou` "global" `centrado globalmente (E + G + GE);
+* `2` ou` "environment" `(padrão), para centrado no ambiente (G + GE);
+* `3` ou` "double" `centrado na interação (GE), ou seja, o modelo AMMI. Um biplot não pode ser produzido com modelos produzidos sem centralização.
+
+# Métodos de escalonamento disponíveis
+
+* `0` ou` "none" `(padrão) para nenhum escalonamento;
+* `1` ou` "sd" `onde cada valor é dividido pelo desvio padrão de seu ambiente correspondente (coluna). Isso colocará todos os ambientes aproximadamente na mesma faixa de valores.
+
+# Métodos de particionamento de valores singulares disponíveis
+
+* `1` ou` "genotype" `O valor singular é inteiramente particionado nos autovetores do genótipo, também chamados de preservação de métrica de linha;
+* `2` ou` "environment" `(padrão) o valor singular é inteiramente particionado nos autovetores do ambiente, também chamados de preservação de métrica de coluna;
+* `3` ou` "symmetrical" `O valor singular é simetricamente particionado nos autovetores de genótipo e do ambiente. Este SVP é mais frequentemente usado na análise AMMI e outras análises biplot, mas não é ideal para visualizar a relação entre as entradas ou que entre os testadores[^1].
+
+
+# Ajustando o modelo GGE
+
+```{r collapse = TRUE, echo = TRUE}
+gge_model <- 
+  gge(df_ge,
+      env = ENV,
+      gen = GEN,
+      resp = MMG)
+
+```
+
+O modelo acima foi ajustado considerando 
+* Preservação da métrica da coluna (onde o valor singular é inteiramente particionado nos autovetores do ambiente)
+* Centrado no ambiente (o biplot conterá uma informação mista de G + GEI)
+* Nenhum método de escalonamento.
+
+Para alterar essas configurações padrão, use os argumentos `svp`,` centering` e `scaling`, respectivamente.
+
+
+
+# Visualizando o Biplot
+A função genérica `plot()` é usada para gerar um biplot usando como entrada um modelo ajustado da classe `gge`. O tipo de biplot é escolhido pelo argumento `type` na função. Dez tipos de biplots estão disponíveis de acordo com @ Yan2003.
+
+* `type = 1` Um biplot básico.
+* `type = 2` Desempenho médio vs. estabilidade.
+* `type = 3` Qual-ganhou-onde.
+* `type = 4` Discriminatividade vs. representatividade.
+* `type = 5` Examinar um ambiente.
+* `type = 6` Classificação de ambientes.
+* `type = 7` Examinar um genótipo.
+* `type = 8` Classificação de genótipos
+* `type = 9` Comparar dois genótipos.
+* `type = 10` Relação entre ambientes.
+
+Neste material, para cada tipo de biplot, são produzidos dois gráficos. Um com as configurações padrão e outro para mostrar algumas opções gráficas da função.
+
+# Biplot tipo 1: Um biplot básico
+Esta é a configuração padrão no gráfico da função, portanto, este biplot é produzido apenas chamando `plot(modelo)`, como mostrado abaixo.
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 10, fig.height = 5, fig.align =" center ", message = F, warning = F}
+a <- plot(gge_model)
+b <- plot(gge_model,
+          col.gen = "orange",
+          size.text.env = 2,
+          plot_theme = theme_metan (grid = "both"))
+arrange_ggplot(a, b, tag_levels = "a")
+
+```
+
+
+
+# Biplot tipo 2: Desempenho médio vs. estabilidade
+
+Neste biplot, a visualização da performance e da estabilidade dos genótipos é obtida desenhando uma coordenada ambiental média (AEC) no biplot focado no genótipo. Primeiro, um ambiente médio, representado pelo pequeno círculo, é definido pelos escores médios de PC1 e PC2 dos ambientes. A linha que passa pela origem do biplot e pelo AEC pode ser chamada de média. As projeções dos escores do genótipo neste eixo deve, portanto, aproximar o rendimento médio dos genótipos.
+
+A ordenada AEC é a linha que passa pela origem do biplot e é perpendicular à abscissa AEC. Portanto, se a abscissa AEC representa o G, a ordenada AEC deve aproximar o GEI associado a cada genótipo, que é uma medida de variabilidade ou instabilidade dos genótipos. Uma maior projeção na ordenada AEC, independente da direção, significa maior instabilidade. Em nosso exemplo, H1 foi considerado  relativamente estável e com boa performance.
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 10, fig.height = 5, fig.align =" center ", message = F, warning = F}
+gge_model <- gge (df_ge, ENV, GEN, MMG, svp = "genotype")
+c <- plot(gge_model, type = 2)
+d <- plot(gge_model,
+          type = 2,
+          col.gen = "black",
+          col.env = "red",
+          axis_expand = 1.5,
+          plot_theme = theme_metan_minimal())
+arrange_ggplot(c, d, tag_levels = list(c("c", "d")))
+
+```
+
+
+# Biplot tipo 3: Qual-Ganhou-Onde
+
+Neste biplot, um polígono é desenhado unindo os genótipos que estão localizados mais longe da origem do biplot, de modo que todos os outros genótipos estão contidos no polígono. Os genótipos-vértice possuem os vetores mais longos, em suas respectivas direções, o que é uma medida de capacidade de resposta aos ambientes. Eles estão, portanto, entre os genótipos mais responsivos; todos os outros genótipos são menos responsivos em suas respectivas direções. Um genótipo localizado na origem teria a mesma classificação em todos os ambientes.
+
+As linhas perpendiculares às laterais do polígono dividem o biplot em setores. Como regra, o genótipo-vértice é o genótipo de maior rendimento em todos os ambientes que compartilham o setor com ele[^1].
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 10, fig.height = 5, fig.align =" center ", message = F, warning = F}
+gge_model <- gge (df_ge, ENV, GEN, MMG, svp = "symmetrical")
+e <- plot(gge_model, type = 3)
+f <- plot(gge_model,
+          type = 3,
+          size.shape.win = 5,
+          large_label = 6,
+          col.gen = "black",
+          col.env = "gray",
+          title = FALSE,
+          plot_theme = theme_metan(color.background = transparent_color()))
+arrange_ggplot(e, f, tag_levels = list (c("e", "f")))
+
+```
+
+
+# Biplot tipo 4: Discriminatividade vs. representatividade
+
+A seta indica a posição do ambiente médio, que é definido pelas pontuações médias de PC1 e PC2 em todos os ambientes. Esse ambiente médio pode ser considerado um ambiente virtual. Uma linha que atravessa a origem do biplot e o ambiente médio, conhecido como eixo do ambiente médio. O comprimento do vetor de um ambiente representa sua capacidade de discriminação. O ângulo entre um ambiente e o eixo do ambiente médio representa a representatividade do ambiente: quanto maior o ângulo, menos representativo é o ambiente[^3] 
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 10, fig.height = 5, fig.align =" center ", message = F, warning = F}
+gge_model <- gge (df_ge, ENV, GEN, MMG)
+g <- plot(gge_model, type = 4)
+h <- plot(gge_model,
+          type = 4,
+          plot_theme = theme_metan_minimal())
+arrange_ggplot(g, h, tag_levels = list (c ("g", "h")))
+
+```
+
+
+
+
+# Biplot tipo 5: Examinar um ambiente
+
+A identificação de genótipos mais adaptados a um ambiente pode ser facilmente alcançada por meio de um biplot GGE. Por exemplo, para visualizar o desempenho de diferentes genótipos em um determinado ambiente, por exemplo, A2, basta desenhar uma linha que passa pela origem do biplot e o marcador de A2. Os genótipos podem ser classificados de acordo com suas projeções no eixo A2 com base em seu desempenho em A2, na direção apontada pela seta. Em nosso exemplo, em A2, o genótipo de maior rendimento
+foi o H2, e o genótipo de menor rendimento foi o H9.
+
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 10, fig.height = 5, fig.align =" center ", message = F, warning = F}
+gge_model <- gge (df_ge, ENV, GEN, MMG, svp = "symmetrical")
+i <- plot(gge_model, type = 5, sel_env = "A2")
+j <- plot(gge_model,
+          type = 5,
+          sel_env = "A2",
+          col.gen = "black",
+          col.env = "black",
+          size.text.env = 12,
+          axis_expand = 1.5)
+arrange_ggplot(i, j, tag_levels = list(c("i", "j")))
+
+```
+
+# Biplot tipo 6: Ranqueamento de ambientes
+
+Neste biplot, o ambiente "ideal" é usado como o centro de um conjunto de linhas concêntricas que servem como régua para medir a distância entre um ambiente e o ambiente ideal. Uma vez que o foco principal neste biplot são os ambientes, a partição de valor singular usada é "ambiente" (padrão). 
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 10, fig.height = 5, fig.align =" center ", message = F, warning = F}
+
+gge_model <- gge(df_ge, ENV, GEN, MMG)
+k <- plot(gge_model, type = 6)
+l <- plot(gge_model,
+          type = 6,
+          col.line = "red",
+          col.gen = "black",
+          col.env = "black",
+          col.circle = "blue",
+          col.alpha.circle = 1,
+          size.text.env = 8,
+          axis_expand = 1.5,
+          size.shape = 4,
+          plot_theme = theme_metan(color.background = "white"))
+arrange_ggplot(k, l, tag_levels = list (c ("k", "l")))
+
+```
+
+
+# Biplot tipo 7: Examinar um genótipo
+
+De forma análoga à visualização do desempenho do genótipo em um determinado ambiente (biplot 5), a visualização da média e da estabilidade dos genótipos é obtida desenhando uma coordenada de ambiente média (AEC) no biplot focado no genótipo.
+
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 10, fig.height = 5, fig.align =" center ", message = F, warning = F}
+gge_model <- gge(df_ge, ENV, GEN, MMG, svp = "genotype")
+m <- plot(gge_model, type = 7, sel_gen = "H4")
+n <- plot(gge_model,
+          type = 7,
+          sel_gen = "H4",
+          col.gen = "black",
+          col.env = "black",
+          size.text.env = 10,
+          axis_expand = 1.5,
+          plot_theme = theme_metan (grid = "both"))
+arrange_ggplot(m, n, tag_levels = list(c("m", "n")))
+
+```
+
+# Biplot tipo 8: Classificação de genótipos
+
+Este biplot compara todos os genótipos com o genótipo "ideal". O genótipo ideal, representado pelo círculo pequeno com uma seta apontando para ele, é definido como tendo o maior rendimento em todos os ambientes. Ou seja, tem o rendimento médio mais alto e é absolutamente estável. Os genótipos são classificados com base em sua distância do genótipo ideal[^1]. Em nosso exemplo, H1 superaram os outros genótipos.
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 10, fig.height = 5, fig.align =" center ", message = F, warning = F}
+o <- plot(gge_model, type = 8)
+p <- plot(gge_model,
+          type = 8,
+          col.gen = "black",
+          col.env = "gray",
+          size.text.gen = 6,
+          plot_theme = theme_metan_minimal())
+arrange_ggplot(o, p, tag_levels = list (c ("o", "p")))
+
+```
+
+
+# Biplot tipo 9: Comparar dois genótipos
+
+Para comparar dois genótipos, por exemplo, H10 e H8, desenhe uma linha para conectá-los e também uma perpendicular que passa pela origem do biplot e é perpendicular à linha que conecta esses genótipos. Vemos que um ambiente, A2, está do mesmo lado da linha perpendicular que H10, e os outros 03 ambientes estão do outro lado da linha perpendicular, junto com H8. Isso indica que H10 rendeu mais do que H8 em A2, mas H8 rendeu mais do que H10 nos outros 03 ambientes.
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 10, fig.height = 5, fig.align =" center ", message = F, warning = F}
+gge_model <- gge (df_ge, ENV, GEN, MMG, svp = "symmetrical")
+q <- plot(gge_model,
+          type = 9, 
+          sel_gen1 = "H8",
+          sel_gen2 = "H10")
+r <- plot(gge_model,
+          type = 9,
+          sel_gen1 = "H8",
+          sel_gen2 = "H10",
+          col.gen = "black",
+          size.text.gen = 1,
+          size.text.win = 5,
+          title = FALSE,
+          plot_theme = theme_metan_minimal())
+arrange_ggplot(q, r, tag_levels = list (c("q", "r")))
+
+```
+
+# Biplot tipo 10: Relação entre ambientes
+
+```{r collapse = TRUE, echo = TRUE, fig.width = 10, fig.height = 5, fig.align =" center ", message = F, warning = F}
+gge_model <- gge(df_ge, ENV, GEN, MMG)
+s <- plot(gge_model, type = 10)
+t <- plot(gge_model,
+          type = 10,
+          col.gen = "black",
+          título = FALSE)
+arrange_ggplot(s, t, tag_levels = list (c("s", "t")))
+```
+
+
+
+[^1]: Yan, W., Kang, M. S., Ma, B., Woods, S., & Cornelius, P. L. (2007). GGE Biplot vs. AMMI analysis of genotype-by-environment data. Crop Science, 47(2), 641–653. https://doi.org/10.2135/cropsci2006.06.0374
+
+[^2]: Yan, Weikai., & Kang, M. S. (2003). GGE biplot analysis: A graphical tool for breeders, geneticists, and agronomists. CRC Press.
+
+[^3]: http://www.ggebiplot.com/hs2010.htm
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 10
+
+
+```{r collapse = TRUE,}
+library(metan)
+library(rio)
+library(ggforce)
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
+
+df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
+```
+
+
+
+# Índices univariados
+
+A função `waasb()` calcula o WAASB, acrônimo para **W**eighted **A**verage of the **A**bsolute **S**cores obtidos pela decomposição por valores singulares dos **B**LUPs para interação genótipo-ambiente obtidos por um Modelo Linear de Efeito Misto[^1]. O índice WAASB para um determinado genótipo \((i\\)) é dado por:
+
+$$
+WAASB_i = \sum_ {k = 1} ^ {p} | IPCA_ {ik} \times EP_k | / \sum_ {k = 1} ^ {p} EP_k
+$$
+
+
+onde \\(WAASB_i\\) é a média ponderada dos scores absolutos do \\(i\\)-ésimo genótipo; \\(IPCA_{ik}\\) são os scores do \\(i\\)-ésimo genótipo no \\(k\\)-ésimo IPCA; \\(EP_k\\) é a variância explicada no \\(k\\)-ésimo IPCA para \\(k = 1,2, .., p\\), \\(p = min (g-1; e-1)\\). O modelo é ajustado com a função `waasb()`. Tanto `waasb()` quanto `gamem_met()` ajustam o mesmo modelo.
+
+```{r collapse = TRUE,}
+model_waasb <- 
+  waasb(df_ge,
+        env = ENV,
+        gen = GEN,
+        rep = BLOCO,
+        resp = everything(), 
+        verbose = FALSE)
+
+# índice WAASB
+waasb_ind <- gmd(model_waasb, "WAASB")
+print_tbl(waasb_ind)
+```
+
+
+
+## Biplots
+Como o índice WAASB é baseado em decomposição por valores singulares, é possível obter os mesmos biplots utilizados na análise AMMI convencional
+
+```{r fig.width=8}
+p1 <- plot_scores(model_waasb, var = 9)
+p2 <- plot_scores(model_waasb, type = 2, var = 9)
+p1 + p2
+```
+
+No método WAASB, o seguinte biplot representa quatro classificações relativas à interpretação conjunta de desempenho médio e estabilidade (para genótipos) ou discriminação (ambientes).
+
+* Quadrante I. Os genótipos incluídos neste quadrante podem ser considerados genótipos instáveis e com produtividade abaixo da média geral. Ambientes neste quadrante apresentam alta capacidade de discriminação.
+
+* Quadrante II. Neste quadrante estão incluídos os genótipos instáveis, embora com produtividade acima da média geral. Os ambientes incluídos neste quadrante merecem atenção especial, pois, além de proporcionarem altas magnitudes da variável resposta, apresentam boa capacidade de discriminação.
+
+* Quadrante III. Os genótipos deste quadrante apresentam baixa produtividade, mas podem ser considerados estáveis, devido aos menores valores de WAASB. Quanto menor esse valor, mais estável o genótipo pode ser considerado. Os ambientes incluídos neste quadrante podem ser considerados pouco produtivos e com baixa capacidade de discriminação.
+
+* Quadrante IV. Os genótipos dentro deste quadrante são altamente produtivos e amplamente adaptados devido à alta magnitude da variável de resposta e baixos valores do índice WAASB.
+
+```{r fig.width=10}
+p3 <- plot_scores(model_waasb, type = 3, var = 9)
+p4 <- plot_scores(model_waasb,
+                  type = 3,
+                  var = 9,
+                  highlight = c("H1", "H6"),
+                  plot_theme = theme_metan_minimal(),
+                  title = FALSE)
+
+arrange_ggplot(p3, p4, tag_levels = "a", guides = "collect")
+
+# extendendo o plot
+
+desc <- c("Esses híbridos têm rendimento de grãos acima da média geral. \ N
+Eles são mais estáveis do que aqueles acima da linha horizontal")
+plot_scores(model_waasb,
+            type = 3,
+            var = 9, 
+            x.lab = "Massa de mil grãos (g)",
+            y.lab = "Média poderada dos escores absolutos (WAASB)",
+            col.segm.env = "transparent") +
+geom_mark_rect(aes(filter =  Code  %in% c("H13", "H4", "H6"),
+                     label = "Descrição",
+                     description = desc),
+               label.fontsize = 9,
+               show.legend = F,
+               con.cap = 0,
+               con.colour = "red",
+               color = "red",
+               expand = 0.015,
+               label.buffer = unit(2, "cm"))+
+theme_gray()+
+theme(legend.position = c(0.1, 0.9),
+      legend.background = element_blank(),
+      legend.title = element_blank(),
+      aspect.ratio = 1)
+```
+
+
+
+
+
+A seleção simultânea para desempenho médio e estabilidade é baseada no índice WAASBY[^1]. Este índice considera a estabilidade (*WAASB*) e o desempenho médio (variável dependente, *Y*) para classificação de genótipos considerando o seguinte modelo:
+
+$$
+WAASB{Y_i} = \frac {{\left ({r {G_i} \times {\theta _Y}} \right) + \left ({r {W_i} \times {\theta _S}} \right)}} {{{\theta _Y} + {\theta _S}}}
+$$
+
+onde \\(WAASBY_i\\) é o índice de seleção simultânea para o \\(i\\)-ésimo genótipo que pondera entre desempenho e estabilidade; \\(rY_i\\) e \\(rW_i\\) são os valores reescalados (0-100) para a variável dependente e WAASB, respectivamente; \\(\theta _Y\\) e \\(\theta_S\\) são os pesos da variável dependente e WAASB, respectivamente. Os valores redimensionados são usados para tornar WAASB e Y diretamente comparáveis. Os valores máximo e mínimo para redimensionar a variável dependente dependerão do objetivo da seleção. Por exemplo, assumindo que o valor mais alto para a variável dependente é melhor, digamos, para rendimento de grãos, o genótipo com a média mais alta terá \\(rY_i = 100\\) após o reescalonamento. Por outro lado, se o valor mais baixo é melhor, digamos, para altura de espiga, o genótipo com a média mais baixa terá \\(rY_i = 100\\) após o reescalonamento. O genótipo com o menor WAASB terá \\(rW_i = 100\\). De fato, o índice WAASBY já é computado com a função `waasb()`, então, agora, basta extrair-mos os valores
+
+
+
+```{r collapse = TRUE,}
+waasby_ind <- gmd(model_waasb, what = "WAASBY")
+print_tbl(waasby_ind, digits = 2)
+
+plot_waasby(model_waasb, var = "MMG")
+```
+
+
+# Índices multivariados
+## Índice de estabilidade multitrait (MTSI)
+
+A função `mtsi()` é usada para calcular o índice de estabilidade multi-trait (MTSI)[^2]. Neste caso, com o modelo calculado com os argumentos padrões, todas as variáveis analizadas são para ter ganhos positivos desejados.
+
+```{r collapse = TRUE,}
+mtsi_model <- mtsi(model_waasb, verbose = FALSE)
+
+# Autovalores e variância explicada
+print_tbl(mtsi_model$PCA)
+
+# Diferencial de seleção para estabilidade
+print_tbl(mtsi_model$sel_dif_stab)
+
+# Diferencial de seleção para performance
+print_tbl(mtsi_model$sel_dif_trait)
+
+```
+
+
+
+## Índice MGIDI
+O índice MGIDI[] pode ser visto como o índice MTSI com um peso de 100 para o desempenho médio. Este índice é calculado com a função `mgidi()`. Aqui, usaremos os dados de exemplo `df_g`. 
+
+
+```{r collapse = TRUE, message = FALSE, warning=FALSE}
+# dados
+df_g <- import("http://bit.ly/df_g", setclass = "tbl")
+
+```
+
+
+```{r collapse = TRUE,}
+gen_mod <- 
+  gamem(df_g,
+        gen = GEN,
+        rep = BLOCO,
+        resp = everything(),
+        verbose = FALSE)
+
+
+mgidi_mod <- mgidi(gen_mod)
+
+# radar plot
+plot(mgidi_mod)
+
+# pontos fortes e fracos
+plot(mgidi_mod, type = "contribution", genotypes = "all")
+print_tbl(mgidi_mod$sel_dif)
+
+```
+
+
+
+[^1]: Olivoto, T., Lúcio, A. D. C., Silva, J. A. G., Marchioro, V. S., Souza, V. Q., & Jost, E. (2019). Mean Performance and Stability in Multi‐Environment Trials I: Combining Features of AMMI and BLUP Techniques. Agronomy Journal, 111(6), 2949–2960. https://doi.org/10.2134/agronj2019.03.0220
+
+[^2]: Olivoto, T., Lúcio, A. D. C., Silva, J. A. G., Sari, B. G., & Diel, M. I. (2019). Mean Performance and Stability in Multi‐Environment Trials II: Selection Based on Multiple Traits. Agronomy Journal, 111(6), 2961–2969. https://doi.org/10.2134/agronj2019.03.0221
+
+[^3]: Olivoto, T., & Nardino, M. (2020). MGIDI: toward an effective multivariate selection in biological experiments. Bioinformatics. [doi.org/10.1093/bioinformatics/btaa981](https://academic.oup.com/bioinformatics/article/37/10/1383/5998663?guestAccessKey=79faf1a1-64a8-4ad5-bd72-0e5953e6a167)
+
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 11
+
+```{r collapse = TRUE, collapse = TRUE,}
+library(metan)
+library(rio)
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
+```
+
+# Correlação linear
+
+
+A função `corr_coef()` pode ser usada para calcular o coeficiente de correlação de Pearson com valores de p. Um mapa de calor de correlação pode ser criado com a função `plot()`.
+
+```{r collapse = TRUE, fig.width = 7, fig.height = 7, mensagem = FALSE, aviso = FALSE, fig.align =" center "}
+# Todas as variáveis ​​numéricas
+ccoef <- corr_coef(df_ge)
+plot(ccoef)
+```
+
+
+Podemos usar uma função auxiliar de seleção para selecionar variáveis. Aqui, selecionaremos variáveis ​​que começam com "C" ** OU ** termina com "D" usando `union_var ()`.
+
+```{r collapse = TRUE, fig.width = 7, fig.height = 7, mensagem = FALSE, aviso = FALSE, fig.align =" center "}
+ccoef2 <- corr_coef(df_ge, contains("A"))
+plot(ccoef2, dígitos = 2)
+
+```
+
+
+A função `corr_plot()` pode ser usada para visualizar (graficamente e numericamente) uma matriz de correlação. Os gráficos de dispersão em pares são produzidos e podem ser mostrados na diagonal superior ou inferior, o que pode ser visto como uma versão mais agradável e personalizável baseada em ggplot2 da função R de base de `pairs()`.
+
+```{r collapse = TRUE,, eval = FALSE, fig.height = 12, fig.width = 12, fig.align =" center "}
+a <- corr_plot(df_ge, MMG, MGE, COMPES, DIAMES, NGE)
+
+
+corr_plot(df_ge, MMG, MGE, COMPES, DIAMES, NGE,
+          lower = NULL,
+          upper = "corr")
+
+corr_plot(df_ge, MMG, MGE, COMPES, DIAMES, NGE,
+          shape.point = 19,
+          size.point = 2,
+          alpha.point = 0.5,
+          alpha.diag = 0,
+          pan.spacing = 0,
+          diag.type = "boxplot",
+          col.sign = "gray",
+          alpha.sign = 0.3,
+          axis.labels = TRUE)
+
+corr_plot(df_ge, MMG, MGE, COMPES, DIAMES, NGE,
+          prob = 0.01,
+          shape.point = 21,
+          col.point = "black",
+          fill.point = "orange",
+          size.point = 2,
+          alpha.point = 0.6,
+          maxsize = 4,
+          minsize = 2,
+          smooth = TRUE,
+          size.smooth = 1,
+          col.smooth = "black",
+          col.sign = "cyan",
+          col.up.panel = "black",
+          col.lw.panel = "black",
+          col.dia.panel = "black",
+          pan.spacing = 0,
+          lab.position = "tl")
+
+```
+
+Também é possível usar uma variável categórica dos dados para mapear o gráfico de dispersão por cores.
+
+```{r collapse = TRUE, fig.height = 6, fig.width = 6}
+corr_plot(df_ge, MMG, MGE, COMPES, DIAMES, NGE, col.by = ENV)
+```
+
+
+
+# Matrizes de correlação/covariância
+
+
+
+A função `covcor_design()` pode ser usada para calcular matrizes de correlação genéticas, fenotípicas e residuais de correlação por meio da Análise de Variância (ANOVA) usando um delineamento de bloco completo ao acaso (DBC) ou delineamento inteiramente ao acaso (DIC).
+
+As correlações fenotípicas (\\(r_p\\)), genotípicas (\\(r_g\\)) e residuais (\\(r_r\\)) são calculadas da seguinte forma:
+
+$$
+r ^ p_ {xy} = \frac {cov ^ p_ {xy}} {\sqrt {var ^ p_ {x} var ^ p_ {y}}} \\
+r ^ g_ {xy} = \frac {cov ^ g_ {xy}} {\sqrt {var ^ g_ {x} var ^ g_ {y}}} \\
+r ^ r_ {xy} = \frac {cov ^ r_ {xy}} {\sqrt {var ^ r_ {x} var ^ r_ {y}}}
+$$
+
+Usando os quadrados médios (*MS*) do método ANOVA, as variâncias (*var*) e as covariâncias (*cov*) são calculadas da seguinte forma:
+
+$$
+cov ^ p_ {xy} = [(MST_ {x + y} - MST_x - MST_y) / 2] / r \\
+var ^ p_x = MST_x / r \\
+var ^ p_y = MST_y / r \\
+cov ^ r_ {xy} = (MSR_ {x + y} - MSR_x - MSR_y) / 2 \\
+var ^ r_x = MSR_x \\
+var ^ r_y = MSR_y \\
+cov ^ g_ {xy} = [(cov ^ p_ {xy} \times r) - cov ^ r_ {xy}] / r \\
+var ^ g_x = (MST_x - MSE_x) / r \\
+var ^ g_y = (MST_x - MSE_y) / r \\
+$$
+
+onde \\(MST\\) é o quadrado médio para tratamento, \\(MSR\\) é o quadrado médio para resíduos e \\(r\\) é o número de repetições. A função `covcor_design()` retorna uma lista com as matrize. Matrizes específicas podem ser retornadas usando o argumento `type`, conforme mostrado abaixo.
+
+
+```{r collapse = TRUE,, fig.height = 5, fig.width = 5.5, fig.align =" center "}
+df_g <- import("http://bit.ly/df_g", setclass = "tbl")
+correl <- covcor_design(df_g,
+                        gen = GEN,
+                        rep = BLOCO,
+                        resp = c(MMG, MGE, COMPES, DIAMES, NGE))
+```
+
+
+
+## Correlações
+```{r collapse = TRUE,}
+# genéticas
+print_tbl(correl$geno_cor)
+
+# fenotípicas
+print_tbl(correl$phen_cor)
+
+# residuais
+print_tbl(correl$resi_cor)
+```
+
+
+## Covariâncias
+```{r collapse = TRUE,}
+# genéticas
+print_tbl(correl$geno_cov)
+
+# fenotípicas
+print_tbl(correl$phen_cov)
+
+# residuais
+print_tbl(correl$resi_cov)
+```
+
+
+# Distância de Mahalanobis
+
+A matriz de covariância residual e as médias podem ser usados  na função `mahala()` para calcular a distância de Mahalanobis.
+
+```{r collapse = TRUE,, fig.height = 5, fig.width = 5.5, fig.align =" center ", mensagem = FALSE, aviso = FALSE}
+D2 <- mahala(.means = correl$means, covar = correl$resi_cov, inverted = FALSE)
+print_tbl(D2)
+D2 %>% 
+  as.dist() %>% 
+  hclust() %>% 
+  plot()
+```
+
+
+
+
+# Diagnóstico de colinearidade
+
+Os códigos a seguir calculam um diagnóstico de colinearidade completo de uma matriz de correlação de características do preditor. Vários indicadores, como fator de inflação de variância, número de condição e determinante da matriz são considerados[^1]
+
+```{r collapse = TRUE,}
+colin <- colindiag(df_ge)
+print(colin)
+
+print_tbl(colin$evalevet)
+```
+
+
+## Diagnóstico para cada nível do fator ENV
+
+```{r collapse = TRUE,}
+colin2 <- colindiag(df_ge, by = ENV)
+print(colin2)         
+```
+
+
+
+# Análise de trilha
+Neste exemplo, a variável massa de grãos por espiga (MGE) será utilziada como resposta e todas as outras como explicativa
+
+```{r collapse = TRUE,}
+pcoeff <- path_coeff(df_ge, resp = MGE)
+print(pcoeff)
+```
+
+Para declarar características preditoras, use o argumento `pred`
+
+```{r collapse = TRUE,}
+pcoeff2 <-
+  path_coeff(df_ge,
+             resp = MGE,
+             pred = c(MMG, COMPES, DIAMES, NGE))
+print(pcoeff2)
+
+
+```
+
+
+Para selecionando um conjunto de preditores com multicolinearidade mínima use o argumento `brutstep`.
+```{r collapse = TRUE,}
+pcoeff3 <-
+  path_coeff(df_ge,
+             resp = MGE,
+             brutstep = TRUE)
+print(pcoeff3$Models$Model_4)
+```
+
+
+Também é possível calcular uma análise para cada nível de um determinado fator
+```{r collapse = TRUE,}
+pcoeff4 <-
+  path_coeff(df_ge,
+             resp = MGE,
+             pred = c(MMG, COMPES, DIAMES, NGE),
+             by = ENV)
+```
+
+
+# Correlações canônicas
+Em primeiro lugar, renomearemos as características relacionadas à planta `ALT_PLANT e ALT_ESP` com o sufixo `_PLANTA` para mostrar a usabilidade do select helper `contains()`.
+
+```{r collapse = TRUE, }
+data_cc <- 
+  df_ge %>% 
+  rename(ESP_COMPES = COMPES,
+         ESP_DIAMES = DIAMES,
+         ESP_COMPSAB = COMP_SAB,
+         GRAO_MGE = MGE,
+         GRAO_MMG = MMG)
+  
+# Digitar os nomes das variáveis
+cc1 <- can_corr(data_cc,
+                FG = c(GRAO_MGE, GRAO_MMG),
+                SG = c(ESP_COMPES, ESP_DIAMES, ESP_COMPSAB))
+
+# usando select helpers
+cc2 <- can_corr(data_cc,
+                FG = contains("GRAO_"),
+                SG = contains("ESP_"))
+
+```
+
+
+
+
+
+
+
+[^1]: Olivoto, T., Souza, V. Q., Nardino, M., Carvalho, I. R., Ferrari, M., Pelegrin, A. J., Szareski, V. J., & Schmidt, D. (2017). Multicollinearity in path analysis: A simple method to reduce its effects. Agronomy Journal, 109(1), 131–142. https://doi.org/10.2134/agronj2016.04.0196
+```{r, echo=FALSE, eval=TRUE}
+```

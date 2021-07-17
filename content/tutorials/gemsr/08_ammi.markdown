@@ -24,15 +24,41 @@ library(metan)
 ##   method from   
 ##   +.gg   ggplot2
 ## |=========================================================|
-## | Multi-Environment Trial Analysis (metan) v1.14.0        |
+## | Multi-Environment Trial Analysis (metan) v1.15.0        |
 ## | Author: Tiago Olivoto                                   |
 ## | Type 'citation('metan')' to know how to cite metan      |
 ## | Type 'vignette('metan_start')' for a short tutorial     |
 ## | Visit 'https://bit.ly/pkgmetan' for a complete tutorial |
 ## |=========================================================|
 library(rio)
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
+
 df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
+inspect(df_ge, verbose = FALSE) %>% print_tbl()
 ```
+
+
+
+|Variable  |Class     |Missing |Levels | Valid_n|    Min| Median|    Max| Outlier|
+|:---------|:---------|:-------|:------|-------:|------:|------:|------:|-------:|
+|ENV       |character |No      |0      |     156|     NA|     NA|     NA|      NA|
+|GEN       |character |No      |0      |     156|     NA|     NA|     NA|      NA|
+|BLOCO     |character |No      |0      |     156|     NA|     NA|     NA|      NA|
+|ALT_PLANT |numeric   |No      |-      |     156|   1.71|   2.52|   3.04|       0|
+|ALT_ESP   |numeric   |No      |-      |     156|   0.75|   1.41|   1.88|       0|
+|COMPES    |numeric   |No      |-      |     156|  11.50|  15.13|  17.94|       1|
+|DIAMES    |numeric   |No      |-      |     156|  43.48|  49.95|  54.86|       0|
+|COMP_SAB  |numeric   |No      |-      |     156|  23.49|  28.67|  34.66|       0|
+|DIAM_SAB  |numeric   |No      |-      |     156|  12.90|  16.00|  18.56|       0|
+|MGE       |numeric   |No      |-      |     156| 105.72| 174.63| 250.89|       0|
+|NFIL      |numeric   |No      |-      |     156|  12.40|  16.00|  21.20|       1|
+|MMG       |numeric   |No      |-      |     156| 218.32| 342.07| 451.68|       1|
+|NGE       |numeric   |No      |-      |     156| 331.80| 509.20| 696.60|       3|
 
 ## O modelo AMMI
 A análise AMMI utiliza análise aditiva de variância aos fatores principais (genótipo e ambiente) e decomposição por valores singulares ao residual do modelo aditivo, isto é, o efeito da GEI somado ao erro experimental. Esta matriz dos efeitos não aditivos, então, pode ser aproximadamente exibida por meio de biplots[^1]. Este método tem ganhado destaque nas últimas décadas, principalmente devido a rápida evolução computacional, o que tornou possível as complexas decomposições de matrizes de alta ordem.
@@ -53,7 +79,7 @@ ammi_model <-
                 env = ENV,
                 gen = GEN,
                 rep = BLOCO,
-                resp = everything(),
+                resp = MGE:MMG,
                 verbose = FALSE)
 ```
 
@@ -95,37 +121,46 @@ Testes de hipóteses são realizados e probabilidades de erro são atribuídas p
 
 
 ```r
-gmd(ammi_model, "ipca_pval")
+gmd(ammi_model, "ipca_pval") %>% print_tbl()
 ## Class of the model: performs_ammi
 ## Variable extracted: Pr(>F)
-## # A tibble: 3 x 12
-##   PC       DF ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB    MGE   NFIL
-##   <chr> <dbl>     <dbl>   <dbl>  <dbl>  <dbl>    <dbl>    <dbl>  <dbl>  <dbl>
-## 1 PC1      14    0       0      0      0             0   0      0      0     
-## 2 PC2      12    0.0084  0.0477 0.0538 0             0   0.0423 0.0185 0.0153
-## 3 PC3      10    0.276   0.767  0.401  0.0438        0   0.192  0.0573 0.0268
-## # ... with 2 more variables: MMG <dbl>, NGE <dbl>
-gmd(ammi_model, "ipca_expl")
+```
+
+
+
+|PC  | DF|   MGE|  NFIL|   MMG|
+|:---|--:|-----:|-----:|-----:|
+|PC1 | 14| 0.000| 0.000| 0.000|
+|PC2 | 12| 0.018| 0.015| 0.001|
+|PC3 | 10| 0.057| 0.027| 0.003|
+
+```r
+gmd(ammi_model, "ipca_expl") %>% print_tbl()
 ## Class of the model: performs_ammi
 ## Variable extracted: Proportion
-## # A tibble: 3 x 12
-##   PC       DF ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB   MGE  NFIL
-##   <chr> <dbl>     <dbl>   <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl> <dbl>
-## 1 PC1      14      82.8    86.2   61.9   53.3     60.8     59.1  65.9  53.5
-## 2 PC2      12      12.1    10.7   25.7   33.8     24.5     25.4  19.8  25.8
-## 3 PC3      10       5.1     3.1   12.5   12.9     14.7     15.5  14.3  20.8
-## # ... with 2 more variables: MMG <dbl>, NGE <dbl>
-gmd(ammi_model, "ipca_accum")
+```
+
+
+
+|PC  | DF|  MGE| NFIL|  MMG|
+|:---|--:|----:|----:|----:|
+|PC1 | 14| 65.9| 53.5| 63.4|
+|PC2 | 12| 19.8| 25.8| 20.3|
+|PC3 | 10| 14.3| 20.8| 16.4|
+
+```r
+gmd(ammi_model, "ipca_accum") %>% print_tbl()
 ## Class of the model: performs_ammi
 ## Variable extracted: Accumulated
-## # A tibble: 3 x 12
-##   PC       DF ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB   MGE  NFIL
-##   <chr> <dbl>     <dbl>   <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl> <dbl>
-## 1 PC1      14      82.8    86.2   61.9   53.3     60.8     59.1  65.9  53.5
-## 2 PC2      12      94.9    96.9   87.5   87.1     85.3     84.5  85.7  79.2
-## 3 PC3      10     100     100    100    100      100      100   100   100  
-## # ... with 2 more variables: MMG <dbl>, NGE <dbl>
 ```
+
+
+
+|PC  | DF|   MGE|  NFIL|   MMG|
+|:---|--:|-----:|-----:|-----:|
+|PC1 | 14|  65.9|  53.5|  63.4|
+|PC2 | 12|  85.7|  79.2|  83.6|
+|PC3 | 10| 100.0| 100.0| 100.0|
 
 
 
@@ -145,7 +180,7 @@ cvalida <-
           env = ENV,
           gen = GEN,
           rep = BLOCO,
-          resp = MMG,
+          resp = MGE,
           nboot = 20,
           verbose = FALSE)
 p1 <- plot(cvalida)
@@ -162,15 +197,76 @@ p1 + p2
 
 #### *Valores estimados pelo modelo AMMI*
 
+```r
+predicted <- predict(ammi_model, naxis = c(3, 2, 1))
+print_tbl(predicted$MGE)
+```
+
+
+
+|ENV |GEN |       Y| RESIDUAL|   Ypred|     ResAMMI| YpredAMMI|   AMMI0|
+|:---|:---|-------:|--------:|-------:|-----------:|---------:|-------:|
+|A1  |H1  | 202.690|   -7.555| 210.245|  -7.5554235|  202.6896| 210.245|
+|A1  |H10 | 192.409|    2.018| 190.391|   2.0179625|  192.4092| 190.391|
+|A1  |H11 | 188.254|   -5.484| 193.738|  -5.4842169|  188.2537| 193.738|
+|A1  |H12 | 180.480|   -3.492| 183.972|  -3.4917843|  180.4799| 183.972|
+|A1  |H13 | 218.604|   12.268| 206.336|  12.2676643|  218.6040| 206.336|
+|A1  |H2  | 203.831|   -9.666| 213.497|  -9.6660847|  203.8311| 213.497|
+|A1  |H3  | 198.207|    2.254| 195.954|   2.2537474|  198.2075| 195.954|
+|A1  |H4  | 201.823|   -8.935| 210.759|  -8.9354843|  201.8230| 210.759|
+|A1  |H5  | 192.698|  -17.435| 210.133| -17.4353770|  192.6976| 210.133|
+|A1  |H6  | 231.853|   17.355| 214.498|  17.3552882|  231.8529| 214.498|
+|A1  |H7  | 181.548|  -16.001| 197.549| -16.0012644|  181.5482| 197.549|
+|A1  |H8  | 196.110|    9.752| 186.358|   9.7517041|  196.1098| 186.358|
+|A1  |H9  | 204.175|   24.923| 179.251|  24.9232686|  204.1748| 179.251|
+|A2  |H1  | 188.196|    8.953| 179.244|   8.9526968|  188.1963| 179.244|
+|A2  |H10 | 159.892|    0.503| 159.390|   0.5026040|  159.8924| 159.390|
+|A2  |H11 | 163.608|    0.871| 162.736|   0.8711752|  163.6077| 162.736|
+|A2  |H12 | 131.275|  -21.696| 152.970| -21.6957254|  131.2746| 152.970|
+|A2  |H13 | 169.069|   -6.265| 175.335|  -6.2654949|  169.0695| 175.335|
+|A2  |H2  | 218.856|   36.360| 182.496|  36.3597241|  218.8555| 182.496|
+|A2  |H3  | 190.942|   25.990| 164.952|  25.9895136|  190.9418| 164.952|
+|A2  |H4  | 197.464|   17.707| 179.757|  17.7065093|  197.4636| 179.757|
+|A2  |H5  | 186.242|    7.110| 179.132|   7.1101488|  186.2417| 179.132|
+|A2  |H6  | 215.028|   31.532| 183.496|  31.5319535|  215.0282| 183.496|
+|A2  |H7  | 143.801|  -22.747| 166.548| -22.7471679|  143.8009| 166.548|
+|A2  |H8  | 112.961|  -42.396| 155.357| -42.3955883|  112.9612| 155.357|
+|A2  |H9  | 112.330|  -35.920| 148.250| -35.9203488|  112.3297| 148.250|
+|A3  |H1  | 156.817|   -0.802| 157.619|  -0.8022958|  156.8165| 157.619|
+|A3  |H10 | 120.558|  -17.207| 137.765| -17.2068874|  120.5581| 137.765|
+|A3  |H11 | 140.715|   -0.396| 141.112|  -0.3964161|  140.7153| 141.112|
+|A3  |H12 | 148.362|   17.016| 131.345|  17.0162025|  148.3617| 131.345|
+|A3  |H13 | 181.602|   27.892| 153.710|  27.8915272|  181.6017| 153.710|
+|A3  |H2  | 160.308|   -0.563| 160.871|  -0.5633588|  160.3076| 160.871|
+|A3  |H3  | 138.987|   -4.341| 143.328|  -4.3407837|  138.9867| 143.328|
+|A3  |H4  | 143.454|  -14.678| 158.132| -14.6779798|  143.4543| 158.132|
+|A3  |H5  | 161.118|    3.611| 157.507|   3.6107590|  161.1175| 157.507|
+|A3  |H6  | 137.067|  -24.804| 161.871| -24.8042110|  137.0672| 161.871|
+|A3  |H7  | 155.655|   10.732| 144.923|  10.7320919|  155.6554| 144.923|
+|A3  |H8  | 141.431|    7.699| 133.732|   7.6987349|  141.4307| 133.732|
+|A3  |H9  | 122.468|   -4.157| 126.625|  -4.1573828|  122.4679| 126.625|
+|A4  |H1  | 187.285|   -0.595| 187.880|  -0.5949776|  187.2850| 187.880|
+|A4  |H10 | 182.713|   14.686| 168.026|  14.6863209|  182.7125| 168.026|
+|A4  |H11 | 176.382|    5.009| 171.373|   5.0094578|  176.3823| 171.373|
+|A4  |H12 | 169.778|    8.171| 161.607|   8.1713072|  169.7780| 161.607|
+|A4  |H13 | 150.078|  -33.894| 183.971| -33.8936966|  150.0776| 183.971|
+|A4  |H2  | 165.002|  -26.130| 191.132| -26.1302806|  165.0019| 191.132|
+|A4  |H3  | 149.686|  -23.902| 173.589| -23.9024773|  149.6862| 173.589|
+|A4  |H4  | 194.300|    5.907| 188.393|   5.9069548|  194.3005| 188.393|
+|A4  |H5  | 194.482|    6.714| 187.768|   6.7144693|  194.4824| 187.768|
+|A4  |H6  | 168.050|  -24.083| 192.133| -24.0830307|  168.0496| 192.133|
+|A4  |H7  | 203.201|   28.016| 175.184|  28.0163404|  203.2008| 175.184|
+|A4  |H8  | 188.938|   24.945| 163.993|  24.9451493|  188.9383| 163.993|
+|A4  |H9  | 172.041|   15.154| 156.886|  15.1544630|  172.0409| 156.886|
+
 
 ### Biplot AMMI1
 
 
 
 ```r
-p1 <- plot_scores(ammi_model, var = 7)
+p1 <- plot_scores(ammi_model)
 p2 <- plot_scores(ammi_model,
-                  var = 7,
                   x.lab = "Massa de grãos por espiga",
                   col.segm.env = "black",
                   col.gen = "gray",
@@ -180,12 +276,61 @@ p2 <- plot_scores(ammi_model,
 arrange_ggplot(p1, p2, tag_levels = "a")
 ```
 
-<img src="/tutorials/gemsr/08_ammi_files/figure-html/unnamed-chunk-6-1.png" width="960" style="display: block; margin: auto;" />
+<img src="/tutorials/gemsr/08_ammi_files/figure-html/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;" />
 
 
-O biplot **AMMI2** representa os dois primeiros IPCAs oriundos da decomposição por valor singular da matriz dos efeitos da interação e é utilizado para realizar inferências quanto aos padrões da interação genótipo *vs* ambiente. Neste caso, como apenas três ambientes foram utilizados, os dois primeiros IPCAs explicam 100% da da soma de quadrados da interação. O segundo biplot (**AMMI1**) é utilizado para identificar tanto a estabilidade quando a produtividade dos genótipos. Neste tipo de biplot, os genótipos com escores do PC1 próximos de zero e à direita da linha vertical, são considerados os mais estáveis e com rendimento superior a média geral.
+### Biplot AMMI2
 
 
+
+```r
+p3 <- plot_scores(ammi_model, type = 2)
+p4 <- plot_scores(ammi_model,
+                  type = 2,
+                  col.segm.env = "black",
+                  col.gen = "gray",
+                  col.env = "black",
+                  highlight = c("H8", "H6", "H2"),
+                  plot_theme = theme_metan_minimal())
+
+arrange_ggplot(p3, p4, tag_levels = "a")
+```
+
+<img src="/tutorials/gemsr/08_ammi_files/figure-html/unnamed-chunk-8-1.png" width="960" style="display: block; margin: auto;" />
+
+
+
+# Temas
+
+```r
+p <-
+plot_scores(ammi_model,
+            type = 2,
+            col.segm.env = "black",
+            col.gen = "gray",
+            col.env = "black",
+            highlight = c("H8", "H6", "H2"),
+            col.highlight = "blue",
+            size.tex.env = 5)
+
+p1 <- p  + ggthemes::theme_base()
+p2 <- p  + ggthemes::theme_clean()
+p3 <- p  + ggthemes::theme_excel_new()
+p4 <- p  + ggthemes::theme_solarized()
+p5 <- p  + ggthemes::theme_solid()
+
+
+arrange_ggplot((p1 + p2 + p3) / (p4 + p5),
+               tag_levels = "i",
+               tag_prefix = "p.",
+               tag_suffix = ")",
+               guides = "collect",
+               title = "Meus biplots AMMI",
+               subtitle = "Combinados no metan",
+               caption = "Fonte: ...")
+```
+
+<img src="/tutorials/gemsr/08_ammi_files/figure-html/unnamed-chunk-9-1.png" width="1152" />
 
 
 [^1]: Gabriel, K. R. (1971). The biplot graphic display of matrices with application to principal component analysis. Biometrika, 58(3), 453–467. https://doi.org/10.2307/2334381

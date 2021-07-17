@@ -20,7 +20,15 @@ weight: 9
 ```{r collapse = TRUE,}
 library(metan)
 library(rio)
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
+
 df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
+inspect(df_ge, verbose = FALSE) %>% print_tbl()
 ```
 
 ## O modelo AMMI
@@ -41,7 +49,7 @@ ammi_model <-
                 env = ENV,
                 gen = GEN,
                 rep = BLOCO,
-                resp = everything(),
+                resp = MGE:MMG,
                 verbose = FALSE)
 ```
 
@@ -79,9 +87,9 @@ A escolha do número de IPCAs a ser utilizado é baseada em basicamente dois cri
 Testes de hipóteses são realizados e probabilidades de erro são atribuídas para cada membro da família de modelos AMMI utilizando a distribuição de graus de liberdade proposto por Gollob (1968)[^2]. Assim, é possível identificar qual é o número ideal de IPCAs a ser considerado na estimativa. 
 
 ```{r collapse = TRUE,}
-gmd(ammi_model, "ipca_pval")
-gmd(ammi_model, "ipca_expl")
-gmd(ammi_model, "ipca_accum")
+gmd(ammi_model, "ipca_pval") %>% print_tbl()
+gmd(ammi_model, "ipca_expl") %>% print_tbl()
+gmd(ammi_model, "ipca_accum") %>% print_tbl()
 ```
 
 
@@ -101,7 +109,7 @@ cvalida <-
           env = ENV,
           gen = GEN,
           rep = BLOCO,
-          resp = MMG,
+          resp = MGE,
           nboot = 20,
           verbose = FALSE)
 p1 <- plot(cvalida)
@@ -115,15 +123,18 @@ p1 + p2
 
 
 #### *Valores estimados pelo modelo AMMI*
+```{r}
+predicted <- predict(ammi_model, naxis = c(3, 2, 1))
+print_tbl(predicted$MGE)
+```
 
 
 ### Biplot AMMI1
 
 
 ```{r collapse = TRUE, warning = FALSE, message = FALSE, echo=TRUE, fig.height=5, fig.width=10, fig.align="center"}
-p1 <- plot_scores(ammi_model, var = 7)
+p1 <- plot_scores(ammi_model)
 p2 <- plot_scores(ammi_model,
-                  var = 7,
                   x.lab = "Massa de grãos por espiga",
                   col.segm.env = "black",
                   col.gen = "gray",
@@ -134,9 +145,53 @@ arrange_ggplot(p1, p2, tag_levels = "a")
 ```
 
 
-O biplot **AMMI2** representa os dois primeiros IPCAs oriundos da decomposição por valor singular da matriz dos efeitos da interação e é utilizado para realizar inferências quanto aos padrões da interação genótipo *vs* ambiente. Neste caso, como apenas três ambientes foram utilizados, os dois primeiros IPCAs explicam 100% da da soma de quadrados da interação. O segundo biplot (**AMMI1**) é utilizado para identificar tanto a estabilidade quando a produtividade dos genótipos. Neste tipo de biplot, os genótipos com escores do PC1 próximos de zero e à direita da linha vertical, são considerados os mais estáveis e com rendimento superior a média geral.
+### Biplot AMMI2
 
 
+```{r collapse = TRUE, warning = FALSE, message = FALSE, echo=TRUE, fig.height=5, fig.width=10, fig.align="center"}
+p3 <- plot_scores(ammi_model, type = 2)
+p4 <- plot_scores(ammi_model,
+                  type = 2,
+                  col.segm.env = "black",
+                  col.gen = "gray",
+                  col.env = "black",
+                  highlight = c("H8", "H6", "H2"),
+                  plot_theme = theme_metan_minimal())
+
+arrange_ggplot(p3, p4, tag_levels = "a")
+```
+
+
+
+# Temas
+```{r fig.width=12, fig.height=10}
+p <-
+plot_scores(ammi_model,
+            type = 2,
+            col.segm.env = "black",
+            col.gen = "gray",
+            col.env = "black",
+            highlight = c("H8", "H6", "H2"),
+            col.highlight = "blue",
+            size.tex.env = 5)
+
+p1 <- p  + ggthemes::theme_base()
+p2 <- p  + ggthemes::theme_clean()
+p3 <- p  + ggthemes::theme_excel_new()
+p4 <- p  + ggthemes::theme_solarized()
+p5 <- p  + ggthemes::theme_solid()
+
+
+arrange_ggplot((p1 + p2 + p3) / (p4 + p5),
+               tag_levels = "i",
+               tag_prefix = "p.",
+               tag_suffix = ")",
+               guides = "collect",
+               title = "Meus biplots AMMI",
+               subtitle = "Combinados no metan",
+               caption = "Fonte: ...")
+
+```
 
 
 [^1]: Gabriel, K. R. (1971). The biplot graphic display of matrices with application to principal component analysis. Biometrika, 58(3), 453–467. https://doi.org/10.2307/2334381

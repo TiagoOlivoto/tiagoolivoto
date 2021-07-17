@@ -15,12 +15,21 @@ weight: 6
 
 
 
-## Anova conjunta - modelo fixo
+# Anova conjunta - modelo fixo
 
 ```{r collapse = TRUE, message = FALSE, warning=FALSE}
 library(metan)
 library(rio)
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
+
 df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
+inspect(df_ge, verbose = FALSE) %>% print_tbl()
+
 joint_an <- 
     anova_joint(df_ge,
                 env = ENV, 
@@ -31,8 +40,8 @@ joint_an <-
 
 ```
 
-## Anova conjunta - modelo misto
-### O modelo
+# Anova conjunta - modelo misto
+## O modelo
 O modelo linear mais simples e conhecido com efeito de interação usado para analisar dados em multi-ambientes é:
 
 $$
@@ -59,7 +68,7 @@ $$
 onde **G** e **R** são as matrizes de variância-covariância para o vetor de efeito aleatório **u** e o vetor residual \\({\bf{\varepsilon }}\\), respectivamente.
 
 
-### A função gamem_met()
+## A função gamem_met()
 
 A função `gamem_met()` é usada para ajustar o modelo linear de efeitos mistos. 
 
@@ -81,7 +90,7 @@ met_mixed <-
 
 ```
 
-### Gráfico de diagnóstico para resíduos
+## Gráfico de diagnóstico para resíduos
 
 A função genérica S3 `plot()` é usada para gerar gráficos de diagnóstico de resíduos do modelo.
 
@@ -95,26 +104,30 @@ A normalidade dos efeitos aleatórios de genótipo e efeitos de interação tamb
 plot(met_mixed, type = "re")
 ```
 
-### LRT
+## LRT
 
 A saída `LRT` contém os testes de razão de verossimilhança para genótipo e efeitos aleatórios genótipo versus ambiente. Podemos obter esses valores com `get_model_data()`
 
 ```{r collapse = TRUE, aviso = F, mensagem = F}
-dados <- gmd(met_mixed, "lrt")
+lrt <- gmd(met_mixed, "lrt")
+print_tbl(lrt)
 ```
 
-### Componentes de variância
+## Componentes de variância
 
 ```{r collapse = TRUE, fig.width = 10}
-gmd(met_mixed, "vcomp")
+vcomp <- gmd(met_mixed, "vcomp")
+print_tbl(vcomp)
+# plot
 plot(met_mixed, type = "vcomp")
 ```
 
 
-### Parâmetros genéticos
+## Parâmetros genéticos
 
 ```{r collapse = TRUE,}
-gmd(met_mixed, "genpar")
+genpar <- gmd(met_mixed, "genpar")
+print_tbl(genpar)
 ```
 
 
@@ -173,15 +186,15 @@ onde \\(\mu\\) é a média geral.
 **CV ratio** é a razão entre o coeficiente de variação genotípico e residual.
 
 
-### BLUP para genótipos
+## BLUP para genótipos
 
 ```{r collapse = TRUE,}
 met_mixed$MGE$BLUPgen
-gmd(met_mixed, "blupg")
-
+blupg <- gmd(met_mixed, "blupg")
+print_tbl(blupg)
 ```
 
-### Plotar o BLUP para genótipos
+## Plotar o BLUP para genótipos
 
 ```{r collapse = TRUE, echo = TRUE, fig.height = 5, fig.width = 10, fig.align =" center ", mensagem = F, aviso = F}
 a <- plot_blup(met_mixed, var = "MGE")
@@ -193,13 +206,13 @@ arrange_ggplot(a, b, tag_levels = "a")
 
 ```
 
-Esta saída mostra as médias previstas para genótipos. **BLUPg** é o efeito genotípico \\((\hat{g} \_{i})\\), que considerando dados balanceados e genótipo como efeito aleatório é estimado por
+Esta saída mostra as médias previstas para genótipos. **BLUPg** é o efeito genotípico \\((\hat{g_i})\\), que considerando dados balanceados e genótipo como efeito aleatório é estimado por
 
 $$
-\hat{g}_{i} = h_g ^ 2(\bar {y}_{i.} - \bar {y}_{..})
+\hat g_{i} = h_g ^ 2(\bar y_{i.} - \bar y_{..})
 $$
 
-onde \\(h_g ^ 2\\) é o efeito de encolhimento do genótipo.
+onde \\(h_g ^ 2\\) é o efeito de *shrinkage* do genótipo.
 
 **Predicted** é a média predita, dada por
 
@@ -225,27 +238,28 @@ $$
 
 onde \\(t\\) é o valor *t* de Student para um teste *t* bicaudal em uma data probabilidade; \\(Ac\\) é a acurácia da seleção e \\(\mathop\sigma\nolimits_g ^2\\) é a variância genotípica.
 
-### BLUP para combinação de genótipos X ambiente
+## BLUP para combinação de genótipos X ambiente
 
 ```{r collapse = TRUE,}
-met_mixed$MGE$BLUPint
+blupint <- met_mixed$MGE$BLUPint
+print_tbl(blupint)
 ```
 
-Esta saída mostra as médias previstas para cada combinação de genótipo e ambiente. **BLUPg** é o efeito genotípico descrito acima. **BLUPge** é o efeito genotípico do *i* th genótipo no *j* th ambiente \\((\hat {g}_{ij})$, que considerando dados balanceados e genótipo como efeito aleatório é estimado por:
+Esta saída mostra as médias preditas para cada combinação de genótipo e ambiente. **BLUPg** é o efeito genotípico descrito acima. **BLUPge** é o efeito genotípico do *i*-ésimo genótipo no *j*-ésimo ambiente \\((\hat g_{ij})\\), que considerando dados balanceados e genótipo como efeito aleatório é estimado por:
 
 $$
-\hat {g}_{ij} = h_g ^ 2 (\bar {y}_{i.} - \bar {y}_{..}) + h_{ge} ^ 2 (y_{ij} - \bar {y}_{i.} - \bar {y}_{. j} + \bar {y}_{..})
+\hat g_{ij} = h_g ^ 2 (\bar y_{i.} - \bar y_{..}) + h_{ge} ^ 2 (y_{ij} - \bar y_{i.} - \bar y_{.j} + \bar y_{..})
 $$
 
-onde \\(h_{ge} ^2\\) é o efeito de encolhimento para a interação genótipo por ambiente; 
+onde \\(h_{ge} ^2\\) é o efeito *shrinkage* para a interação genótipo por ambiente; 
 
-**BLUPg + ge** é \\(BLUP_g + BLUP_{ge}\\);
+**BLUPg + ge** é o BLUP genotipico somado ao BLUP da interação do genótipo \\(i\\) no ambiente \\(j\\).
 
-**Predicted** é o valor predito (\\(\hat {y}_{ij}\\)) dado por
+**Predicted** é o valor predito (\\(\hat y_{ij}\\)) dado por
 
 
 $$
-\hat{y}_{ij} = \bar{y}_{.j}+BLUP_{g+ge}
+\hat y_{ij} = \bar y_{.j} + BLUP_{g+ge}
 $$
 
 

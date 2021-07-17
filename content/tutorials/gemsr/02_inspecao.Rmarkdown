@@ -14,33 +14,39 @@ weight: 3
 ---
 
 
-## Conjunto de dados
+# Conjunto de dados
 
 ```{r collapse = TRUE, message = FALSE, warning=FALSE}
 library(metan)
 library(rio)
 
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
 # Dados "arrumados"
 df_tidy <- import("http://bit.ly/df_tidy", setclass = "tbl")
-print(df_tidy)
+
 ```
 
-## Inspecionar dados
+
+# Inspecionar dados
 
 
 ```{r collapse = TRUE,}
 inspect(df_tidy)
+
 
 # converter as três primeiras colunas para fator
 df_ok <- 
   df_tidy %>% 
   metan::as_factor(1:3)
 
-
-
 ```
 
-## Fragmentos de texto inesperados
+
+# Fragmentos de texto inesperados
 
 ```{r collapse = TRUE,}
 # Encontrar fragmentos de texto
@@ -53,11 +59,9 @@ df_ok <-
   replace_string(MMG, pattern = "\\.{2}", replacement = ".") %>% 
   as_numeric(MMG)
 
-
-
 ```
 
-Substituir zeros por NA
+Substituir zeros por `NA`
 
 ```{r collapse = TRUE, fig.width=10, fig.height=10}
 df_ok <- 
@@ -69,7 +73,7 @@ inspect(df_ok, plot = TRUE)
 
 ```
 
-## Outliers
+# Outliers
 
 ```{r collapse = TRUE, fig.width=10, fig.height=8}
 # Outlier NFIL
@@ -81,7 +85,6 @@ find_outliers(df_ok, NGE, plots = TRUE)
 
 # Corrigir valores
 df_ok[22, 13] <- 530.2
-
 
 # Exportar df_ok
 # export(df_ok, "df_ok.xlsx")

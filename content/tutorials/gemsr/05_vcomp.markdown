@@ -20,26 +20,34 @@ weight: 6
 library(metan)
 library(rio)
 
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
 # dados
 df_g <- import("http://bit.ly/df_g", setclass = "tbl")
-print(df_g)
-## # A tibble: 39 x 12
-##    GEN   BLOCO ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB   MGE  NFIL
-##    <chr> <chr>     <dbl>   <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl> <dbl>
-##  1 H1    I          3.00   1.88    15.1   50.8     31.1     15.6  191.  16.4
-##  2 H1    II         2.97   1.83    15.2   52.1     31.2     15.7  197.  17.2
-##  3 H1    III        2.81   1.67    14.6   52.7     32.2     15.1  177.  17.6
-##  4 H10   I          2.10   0.91    16.0   46.7     27.2     17.1  151.  15.2
-##  5 H10   II         2.12   1.03    14.6   46.4     26.6     15.5  152.  13.2
-##  6 H10   III        1.92   1.02    16.0   47.1     26.6     16.3  177.  13.6
-##  7 H11   I          2.13   1.05    14.8   46.9     27.0     15.9  169.  13.2
-##  8 H11   II         2.13   1.01    16.0   47.7     28.0     16.3  168.  14  
-##  9 H11   III        2.18   0.992   14.6   47.3     26.7     14.8  153.  14  
-## 10 H12   I          2.15   0.982   14.3   45.3     25.7     14.8  138.  13.6
-## # ... with 29 more rows, and 2 more variables: MMG <dbl>, NGE <dbl>
+inspect(df_g, verbose = FALSE) %>% print_tbl()
 ```
 
-## Modelo misto
+
+
+|Variable  |Class     |Missing |Levels | Valid_n|    Min| Median|    Max| Outlier|
+|:---------|:---------|:-------|:------|-------:|------:|------:|------:|-------:|
+|GEN       |character |No      |0      |      39|     NA|     NA|     NA|      NA|
+|BLOCO     |character |No      |0      |      39|     NA|     NA|     NA|      NA|
+|ALT_PLANT |numeric   |No      |-      |      39|   1.81|   2.27|   3.04|       0|
+|ALT_ESP   |numeric   |No      |-      |      39|   0.75|   1.19|   1.88|       0|
+|COMPES    |numeric   |No      |-      |      39|  12.50|  15.16|  17.94|       0|
+|DIAMES    |numeric   |No      |-      |      39|  44.71|  48.21|  53.74|       0|
+|COMP_SAB  |numeric   |No      |-      |      39|  23.85|  27.63|  33.02|       0|
+|DIAM_SAB  |numeric   |No      |-      |      39|  13.28|  15.88|  18.28|       0|
+|MGE       |numeric   |No      |-      |      39| 105.72| 169.05| 236.11|       0|
+|NFIL      |numeric   |No      |-      |      39|  13.20|  16.00|  18.00|       0|
+|MMG       |numeric   |No      |-      |      39| 226.60| 332.56| 451.68|       0|
+|NGE       |numeric   |No      |-      |      39| 354.00| 493.60| 674.40|       3|
+
+# Modelo misto
 A função `gamem()` pode ser usada para analisar experimentos únicos(experimentos unilaterais) usando um modelo de efeito misto de acordo com o seguinte modelo:
 
 $$
@@ -61,9 +69,9 @@ Evaluating trait COMPES |============                            | 30% 00:00:00
 Evaluating trait DIAMES |================                        | 40% 00:00:00 
 Evaluating trait COMP_SAB |===================                   | 50% 00:00:00 
 Evaluating trait DIAM_SAB |=======================               | 60% 00:00:00 
-Evaluating trait MGE |==============================             | 70% 00:00:00 
-Evaluating trait NFIL |==================================        | 80% 00:00:00 
-Evaluating trait MMG |=======================================    | 90% 00:00:00 
+Evaluating trait MGE |==============================             | 70% 00:00:01 
+Evaluating trait NFIL |==================================        | 80% 00:00:01 
+Evaluating trait MMG |=======================================    | 90% 00:00:01 
 Evaluating trait NGE |===========================================| 100% 00:00:01 
 ## Method: REML/BLUP
 ## Random effects: GEN
@@ -84,7 +92,7 @@ Evaluating trait NGE |===========================================| 100% 00:00:01
 
 A maneira mais fácil de obter os resultados do modelo acima é usando a função `gmd()`, ou seu *shortcut* `gmd()`.
 
-### Diagnósticos do modelo
+## Diagnósticos do modelo
 
 ```r
 plot(gen_mod, type = "res") # padrão
@@ -100,57 +108,67 @@ plot(gen_mod, type = "re") # padrão
 
 <img src="/tutorials/gemsr/05_vcomp_files/figure-html/unnamed-chunk-3-2.png" width="960" />
 
-### Detalhes da análise
+## Detalhes da análise
 
 ```r
-gmd(gen_mod, "details")
+details <- gmd(gen_mod, "details")
 ## Class of the model: gamem
 ## Variable extracted: details
-## # A tibble: 6 x 11
-##   Parameters ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB MGE   NFIL  MMG  
-##   <chr>      <chr>     <chr>   <chr>  <chr>  <chr>    <chr>    <chr> <chr> <chr>
-## 1 Ngen       13        13      13     13     13       13       13    13    13   
-## 2 OVmean     2.4619    1.3131  15.23~ 48.73~ 28.463   15.8874  168.~ 15.7~ 333.~
-## 3 Min        1.814 (H~ 0.752 ~ 12.5 ~ 44.71~ 23.852 ~ 13.28 (~ 105.~ 13.2~ 226.~
-## 4 Max        3.04 (H3~ 1.878 ~ 17.94~ 53.74~ 33.018 ~ 18.28 (~ 236.~ 18 (~ 451.~
-## 5 MinGEN     1.9593 (~ 0.846 ~ 13.36~ 45.26~ 24.5707~ 13.88 (~ 112.~ 13.7~ 236.~
-## 6 MaxGEN     2.9467 (~ 1.7953~ 17.24~ 53.19~ 32.7087~ 17.62 (~ 218.~ 17.4~ 415.~
-## # ... with 1 more variable: NGE <chr>
+print_tbl(details)
 ```
 
-### LRT
+
+
+|Parameters |ALT_PLANT        |ALT_ESP          |COMPES            |DIAMES             |COMP_SAB           |DIAM_SAB           |MGE                  |NFIL             |MMG                  |NGE               |
+|:----------|:----------------|:----------------|:-----------------|:------------------|:------------------|:------------------|:--------------------|:----------------|:--------------------|:-----------------|
+|Ngen       |13               |13               |13                |13                 |13                 |13                 |13                   |13               |13                   |13                |
+|OVmean     |2.4619           |1.3131           |15.2333           |48.7385            |28.463             |15.8874            |168.4356             |15.7949          |333.8148             |504.6513          |
+|Min        |1.814 (H8 in II) |0.752 (H8 in II) |12.5 (H12 in III) |44.71 (H8 in I)    |23.852 (H8 in II)  |13.28 (H12 in III) |105.7167 (H9 in I)   |13.2 (H10 in II) |226.5956 (H9 in III) |354 (H12 in II)   |
+|Max        |3.04 (H3 in II)  |1.878 (H1 in I)  |17.94 (H6 in III) |53.742 (H6 in III) |33.018 (H2 in III) |18.28 (H6 in III)  |236.1105 (H6 in III) |18 (H13 in III)  |451.6832 (H3 in II)  |674.4 (H6 in III) |
+|MinGEN     |1.9593 (H8)      |0.846 (H8)       |13.36 (H12)       |45.2607 (H8)       |24.5707 (H8)       |13.88 (H12)        |112.3297 (H9)        |13.7333 (H11)    |236.2815 (H8)        |424 (H12)         |
+|MaxGEN     |2.9467 (H2)      |1.7953 (H1)      |17.24 (H6)        |53.19 (H2)         |32.7087 (H2)       |17.62 (H6)         |218.8555 (H2)        |17.4667 (H2)     |415.6753 (H2)        |621.7333 (H6)     |
+
+## LRT
 
 ```r
-gmd(gen_mod, "lrt") 
+lrt <- gmd(gen_mod, "lrt") 
 ## Class of the model: gamem
 ## Variable extracted: lrt
-## # A tibble: 10 x 8
-##    VAR       model     npar logLik   AIC   LRT    Df `Pr(>Chisq)`
-##    <chr>     <chr>    <dbl>  <dbl> <dbl> <dbl> <dbl>        <dbl>
-##  1 ALT_PLANT Genotype     4  -22.8  53.6 49.2      1     2.27e-12
-##  2 ALT_ESP   Genotype     4  -17.7  43.4 53.7      1     2.36e-13
-##  3 COMPES    Genotype     4  -66.8 142.  13.6      1     2.24e- 4
-##  4 DIAMES    Genotype     4  -91.7 191.  24.9      1     5.95e- 7
-##  5 COMP_SAB  Genotype     4  -89.3 187.  32.9      1     9.69e- 9
-##  6 DIAM_SAB  Genotype     4  -66.4 141.  13.0      1     3.11e- 4
-##  7 MGE       Genotype     4 -186.  379.  29.8      1     4.67e- 8
-##  8 NFIL      Genotype     4  -68.1 144.  10.1      1     1.45e- 3
-##  9 MMG       Genotype     4 -202.  413.  28.7      1     8.30e- 8
-## 10 NGE       Genotype     4 -203.  414.   6.81     1     9.07e- 3
+print_tbl(lrt)
 ```
 
-### Componentes de variância
+
+
+|VAR       |model    | npar|   logLik|     AIC|    LRT| Df| Pr(>Chisq)|
+|:---------|:--------|----:|--------:|-------:|------:|--:|----------:|
+|ALT_PLANT |Genotype |    4|  -22.779|  53.557| 49.238|  1|      0.000|
+|ALT_ESP   |Genotype |    4|  -17.699|  43.398| 53.684|  1|      0.000|
+|COMPES    |Genotype |    4|  -66.845| 141.690| 13.617|  1|      0.000|
+|DIAMES    |Genotype |    4|  -91.660| 191.320| 24.927|  1|      0.000|
+|COMP_SAB  |Genotype |    4|  -89.278| 186.555| 32.902|  1|      0.000|
+|DIAM_SAB  |Genotype |    4|  -66.422| 140.844| 13.005|  1|      0.000|
+|MGE       |Genotype |    4| -185.644| 379.288| 29.849|  1|      0.000|
+|NFIL      |Genotype |    4|  -68.094| 144.188| 10.145|  1|      0.001|
+|MMG       |Genotype |    4| -202.400| 412.800| 28.734|  1|      0.000|
+|NGE       |Genotype |    4| -202.803| 413.607|  6.808|  1|      0.009|
+
+## Componentes de variância
 
 ```r
-gmd(gen_mod, "vcomp")
+vcomp <- gmd(gen_mod, "vcomp")
 ## Class of the model: gamem
 ## Variable extracted: vcomp
-## # A tibble: 2 x 11
-##   Group    ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB   MGE  NFIL   MMG
-##   <chr>        <dbl>   <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>
-## 1 GEN         0.155  0.118    1.20    5.99     5.70    1.15  1172. 1.14  2941.
-## 2 Residual    0.0128 0.00796  0.734   1.70     1.04    0.739  253. 0.941  674.
-## # ... with 1 more variable: NGE <dbl>
+print_tbl(vcomp)
+```
+
+
+
+|Group    | ALT_PLANT| ALT_ESP| COMPES| DIAMES| COMP_SAB| DIAM_SAB|      MGE|  NFIL|      MMG|      NGE|
+|:--------|---------:|-------:|------:|------:|--------:|--------:|--------:|-----:|--------:|--------:|
+|GEN      |     0.155|   0.118|  1.205|  5.992|    5.698|    1.154| 1172.429| 1.137| 2941.365| 1682.787|
+|Residual |     0.013|   0.008|  0.734|  1.703|    1.043|    0.739|  252.595| 0.941|  673.583| 2014.021|
+
+```r
 plot(gen_mod, type = "vcomp")
 ```
 
@@ -158,54 +176,61 @@ plot(gen_mod, type = "vcomp")
 
 
 
-### Parâmetros genéticos
+## Parâmetros genéticos
 
 ```r
-gmd(gen_mod, "genpar")
+genpar <- gmd(gen_mod, "genpar")
 ## Class of the model: gamem
 ## Variable extracted: genpar
-## # A tibble: 11 x 11
-##    Parameters ALT_PLANT  ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB      MGE   NFIL
-##    <chr>          <dbl>    <dbl>  <dbl>  <dbl>    <dbl>    <dbl>    <dbl>  <dbl>
-##  1 Gen_var       0.155   0.118    1.20   5.99     5.70     1.15  1172.     1.14 
-##  2 Gen (%)      92.4    93.7     62.1   77.9     84.5     61.0     82.3   54.7  
-##  3 Res_var       0.0128  0.00796  0.734  1.70     1.04     0.739  253.     0.941
-##  4 Res (%)       7.62    6.30    37.9   22.1     15.5     39.0     17.7   45.3  
-##  5 Phen_var      0.168   0.126    1.94   7.70     6.74     1.89  1425.     2.08 
-##  6 H2            0.924   0.937    0.621  0.779    0.845    0.610    0.823  0.547
-##  7 h2mg          0.973   0.978    0.831  0.913    0.942    0.824    0.933  0.784
-##  8 Accuracy      0.987   0.989    0.912  0.956    0.971    0.908    0.966  0.885
-##  9 CVg          16.0    26.2      7.21   5.02     8.39     6.76    20.3    6.75 
-## 10 CVr           4.59    6.80     5.62   2.68     3.59     5.41     9.44   6.14 
-## 11 CV ratio      3.48    3.86     1.28   1.88     2.34     1.25     2.15   1.10 
-## # ... with 2 more variables: MMG <dbl>, NGE <dbl>
+print_tbl(genpar)
 ```
 
 
 
-### BLUPs preditos
+|Parameters | ALT_PLANT| ALT_ESP| COMPES| DIAMES| COMP_SAB| DIAM_SAB|      MGE|   NFIL|      MMG|      NGE|
+|:----------|---------:|-------:|------:|------:|--------:|--------:|--------:|------:|--------:|--------:|
+|Gen_var    |     0.155|   0.118|  1.205|  5.992|    5.698|    1.154| 1172.429|  1.137| 2941.365| 1682.787|
+|Gen (%)    |    92.383|  93.700| 62.139| 77.867|   84.522|   60.954|   82.274| 54.722|   81.367|   45.520|
+|Res_var    |     0.013|   0.008|  0.734|  1.703|    1.043|    0.739|  252.595|  0.941|  673.583| 2014.021|
+|Res (%)    |     7.617|   6.300| 37.861| 22.133|   15.478|   39.046|   17.726| 45.278|   18.633|   54.480|
+|Phen_var   |     0.168|   0.126|  1.939|  7.695|    6.741|    1.894| 1425.024|  2.078| 3614.948| 3696.808|
+|H2         |     0.924|   0.937|  0.621|  0.779|    0.845|    0.610|    0.823|  0.547|    0.814|    0.455|
+|h2mg       |     0.973|   0.978|  0.831|  0.913|    0.942|    0.824|    0.933|  0.784|    0.929|    0.715|
+|Accuracy   |     0.987|   0.989|  0.912|  0.956|    0.971|    0.908|    0.966|  0.885|    0.964|    0.845|
+|CVg        |    15.983|  26.209|  7.205|  5.022|    8.386|    6.762|   20.329|  6.751|   16.247|    8.129|
+|CVr        |     4.589|   6.796|  5.624|  2.678|    3.589|    5.412|    9.436|  6.141|    7.775|    8.893|
+|CV ratio   |     3.483|   3.857|  1.281|  1.876|    2.337|    1.249|    2.154|  1.099|    2.090|    0.914|
+
+
+
+## BLUPs preditos
 
 ```r
-gmd(gen_mod, "blupg")
+blupg <- gmd(gen_mod, "blupg")
 ## Class of the model: gamem
 ## Variable extracted: blupg
-## # A tibble: 13 x 11
-##    GEN   ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB   MGE  NFIL   MMG
-##    <chr>     <dbl>   <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>
-##  1 H1         2.92   1.78    15.0   51.6     31.3     15.6  187.  16.8  385.
-##  2 H10        2.06   0.994   15.5   46.9     26.9     16.2  160.  14.4  317.
-##  3 H11        2.16   1.03    15.1   47.4     27.3     15.7  164.  14.2  341.
-##  4 H12        2.10   0.904   13.7   46.9     27.3     14.2  134.  15.1  315.
-##  5 H13        2.23   1.11    15.6   50.1     31.8     16.6  169.  16.6  327.
-##  6 H2         2.93   1.74    15.9   52.8     32.5     16.5  215.  17.1  410.
-##  7 H3         2.93   1.74    15.3   50.2     30.0     15.9  189.  15.1  395.
-##  8 H4         2.84   1.62    16.3   49.3     29.6     17.0  196.  15.1  385.
-##  9 H5         2.70   1.42    16.3   48.2     27.5     16.8  185.  16.0  333.
-## 10 H6         2.81   1.54    16.9   51.4     27.0     17.3  212.  16.7  345.
-## 11 H7         2.15   1.11    14.7   47.4     27.3     15.6  145.  15.6  295.
-## 12 H8         1.97   0.856   14.0   45.6     24.8     14.6  117.  16.3  243.
-## 13 H9         2.21   1.22    13.8   45.7     26.9     14.6  116.  16.4  248.
-## # ... with 1 more variable: NGE <dbl>
+print_tbl(blupg)
+```
+
+
+
+|GEN | ALT_PLANT| ALT_ESP| COMPES| DIAMES| COMP_SAB| DIAM_SAB|     MGE|   NFIL|     MMG|     NGE|
+|:---|---------:|-------:|------:|------:|--------:|--------:|-------:|------:|-------:|-------:|
+|H1  |     2.917|   1.785| 15.017| 51.603|   31.340|   15.563| 186.872| 16.792| 385.023| 490.175|
+|H10 |     2.060|   0.994| 15.477| 46.904|   26.891|   16.229| 160.465| 14.388| 317.204| 508.904|
+|H11 |     2.155|   1.025| 15.139| 47.439|   27.304|   15.696| 163.931| 14.179| 341.393| 485.600|
+|H12 |     2.103|   0.904| 13.676| 46.909|   27.301|   14.233| 133.764| 15.120| 314.632| 447.000|
+|H13 |     2.234|   1.112| 15.627| 50.133|   31.760|   16.617| 169.027| 16.583| 327.351| 517.672|
+|H2  |     2.934|   1.735| 15.859| 52.805|   32.464|   16.469| 215.477| 17.105| 409.870| 523.772|
+|H3  |     2.928|   1.740| 15.294| 50.207|   29.987|   15.865| 189.434| 15.120| 395.348| 483.122|
+|H4  |     2.836|   1.620| 16.297| 49.308|   29.574|   16.975| 195.519| 15.120| 384.768| 508.808|
+|H5  |     2.698|   1.418| 16.270| 48.200|   27.479|   16.821| 185.049| 15.956| 332.910| 544.502|
+|H6  |     2.815|   1.544| 16.901| 51.369|   26.981|   17.315| 211.906| 16.687| 345.164| 588.344|
+|H7  |     2.145|   1.113| 14.712| 47.449|   27.260|   15.568| 145.452| 15.642| 295.030| 492.081|
+|H8  |     1.973|   0.856| 13.953| 45.562|   24.795|   14.557| 116.678| 16.269| 243.199| 484.695|
+|H9  |     2.206|   1.223| 13.809| 45.714|   26.883|   14.629| 116.089| 16.374| 247.701| 485.791|
+
+```r
 
 # plotar os BLUPS (default)
 plot_blup(gen_mod)
@@ -228,7 +253,7 @@ plot_blup(gen_mod,
 
 
 
-## Modelos mistos - dentro de ambientes
+# Modelos mistos - dentro de ambientes
 
 
 ```r
@@ -240,32 +265,67 @@ mod_gen_whithin <-
           resp = everything(),
           by = ENV, verbose = FALSE)
 
-gmd(mod_gen_whithin, "lrt")
-## # A tibble: 40 x 9
-##    ENV   VAR       model     npar logLik   AIC       LRT    Df `Pr(>Chisq)`
-##    <chr> <chr>     <chr>    <dbl>  <dbl> <dbl>     <dbl> <dbl>        <dbl>
-##  1 A1    ALT_PLANT Genotype     4   19.7 -31.3  2.32e- 1     1     0.630   
-##  2 A1    ALT_ESP   Genotype     4   18.5 -29.0  2.13e+ 0     1     0.144   
-##  3 A1    COMPES    Genotype     4  -61.5 131.  -1.42e-14     1     1       
-##  4 A1    DIAMES    Genotype     4  -77.9 164.   7.96e+ 0     1     0.00478 
-##  5 A1    COMP_SAB  Genotype     4  -84.4 177.   1.26e+ 1     1     0.000392
-##  6 A1    DIAM_SAB  Genotype     4  -58.8 126.   1.03e- 1     1     0.748   
-##  7 A1    MGE       Genotype     4 -163.  333.   2.07e+ 0     1     0.150   
-##  8 A1    NFIL      Genotype     4  -80.2 168.   2.55e+ 0     1     0.110   
-##  9 A1    MMG       Genotype     4 -187.  382.   3.65e+ 0     1     0.0559  
-## 10 A1    NGE       Genotype     4 -205.  418.   5.29e- 1     1     0.467   
-## # ... with 30 more rows
-gmd(mod_gen_whithin, "vcomp")
-## # A tibble: 8 x 12
-##   ENV   Group    ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB    MGE  NFIL
-##   <chr> <chr>        <dbl>   <dbl>  <dbl>  <dbl>    <dbl>    <dbl>  <dbl> <dbl>
-## 1 A1    GEN        0.00130 0.00433 0       1.76      3.09   0.0676  100.  1.14 
-## 2 A1    Residual   0.0146  0.0126  1.44    1.83      2.05   1.17    297.  2.92 
-## 3 A2    GEN        0.155   0.118   1.20    5.99      5.70   1.15   1172.  1.14 
-## 4 A2    Residual   0.0128  0.00796 0.734   1.70      1.04   0.739   253.  0.941
-## 5 A3    GEN        0.0171  0.00501 0.0472  5.37      4.27   0.240   181.  1.18 
-## 6 A3    Residual   0.0328  0.0338  0.984   2.43      1.41   0.634   280.  1.27 
-## 7 A4    GEN        0       0       0.809   0.398     1.22   0.474    39.6 0.375
-## 8 A4    Residual   0.0282  0.0221  0.969   4.42      2.10   1.06    717.  1.44 
-## # ... with 2 more variables: MMG <dbl>, NGE <dbl>
+gmd(mod_gen_whithin, "lrt") %>%  print_tbl()
 ```
+
+
+
+|ENV |VAR       |model    | npar|   logLik|     AIC|    LRT| Df| Pr(>Chisq)|
+|:---|:---------|:--------|----:|--------:|-------:|------:|--:|----------:|
+|A1  |ALT_PLANT |Genotype |    4|   19.651| -31.302|  0.232|  1|      0.630|
+|A1  |ALT_ESP   |Genotype |    4|   18.480| -28.960|  2.134|  1|      0.144|
+|A1  |COMPES    |Genotype |    4|  -61.532| 131.065|  0.000|  1|      1.000|
+|A1  |DIAMES    |Genotype |    4|  -77.909| 163.817|  7.960|  1|      0.005|
+|A1  |COMP_SAB  |Genotype |    4|  -84.379| 176.758| 12.568|  1|      0.000|
+|A1  |DIAM_SAB  |Genotype |    4|  -58.807| 125.614|  0.103|  1|      0.748|
+|A1  |MGE       |Genotype |    4| -162.635| 333.270|  2.073|  1|      0.150|
+|A1  |NFIL      |Genotype |    4|  -80.166| 168.333|  2.552|  1|      0.110|
+|A1  |MMG       |Genotype |    4| -186.894| 381.789|  3.654|  1|      0.056|
+|A1  |NGE       |Genotype |    4| -205.051| 418.101|  0.529|  1|      0.467|
+|A2  |ALT_PLANT |Genotype |    4|  -22.779|  53.557| 49.238|  1|      0.000|
+|A2  |ALT_ESP   |Genotype |    4|  -17.699|  43.398| 53.684|  1|      0.000|
+|A2  |COMPES    |Genotype |    4|  -66.845| 141.690| 13.617|  1|      0.000|
+|A2  |DIAMES    |Genotype |    4|  -91.660| 191.320| 24.927|  1|      0.000|
+|A2  |COMP_SAB  |Genotype |    4|  -89.278| 186.555| 32.902|  1|      0.000|
+|A2  |DIAM_SAB  |Genotype |    4|  -66.422| 140.844| 13.005|  1|      0.000|
+|A2  |MGE       |Genotype |    4| -185.644| 379.288| 29.849|  1|      0.000|
+|A2  |NFIL      |Genotype |    4|  -68.094| 144.188| 10.145|  1|      0.001|
+|A2  |MMG       |Genotype |    4| -202.400| 412.800| 28.734|  1|      0.000|
+|A2  |NGE       |Genotype |    4| -202.803| 413.607|  6.808|  1|      0.009|
+|A3  |ALT_PLANT |Genotype |    4|   -0.947|   9.893|  3.810|  1|      0.051|
+|A3  |ALT_ESP   |Genotype |    4|    3.562|   0.877|  0.561|  1|      0.454|
+|A3  |COMPES    |Genotype |    4|  -55.480| 118.959|  0.073|  1|      0.786|
+|A3  |DIAMES    |Genotype |    4|  -91.901| 191.802| 17.595|  1|      0.000|
+|A3  |COMP_SAB  |Genotype |    4|  -86.207| 180.414| 22.367|  1|      0.000|
+|A3  |DIAM_SAB  |Genotype |    4|  -52.489| 112.979|  2.449|  1|      0.118|
+|A3  |MGE       |Genotype |    4| -165.345| 338.690|  5.002|  1|      0.025|
+|A3  |NFIL      |Genotype |    4|  -71.073| 150.146|  7.673|  1|      0.006|
+|A3  |MMG       |Genotype |    4| -190.433| 388.866|  6.716|  1|      0.010|
+|A3  |NGE       |Genotype |    4| -205.860| 419.720|  6.723|  1|      0.010|
+|A4  |ALT_PLANT |Genotype |    4|    9.295| -10.590|  0.000|  1|      1.000|
+|A4  |ALT_ESP   |Genotype |    4|   13.658| -19.316|  0.000|  1|      1.000|
+|A4  |COMPES    |Genotype |    4|  -65.282| 138.564|  6.803|  1|      0.009|
+|A4  |DIAMES    |Genotype |    4|  -83.220| 174.441|  0.235|  1|      0.628|
+|A4  |COMP_SAB  |Genotype |    4|  -76.511| 161.022|  4.359|  1|      0.037|
+|A4  |DIAM_SAB  |Genotype |    4|  -62.685| 133.371|  3.074|  1|      0.080|
+|A4  |MGE       |Genotype |    4| -174.257| 356.514|  0.095|  1|      0.758|
+|A4  |NFIL      |Genotype |    4|  -65.683| 139.366|  1.401|  1|      0.237|
+|A4  |MMG       |Genotype |    4| -183.409| 374.818|  1.755|  1|      0.185|
+|A4  |NGE       |Genotype |    4| -210.085| 428.170|  0.966|  1|      0.326|
+
+```r
+gmd(mod_gen_whithin, "vcomp") %>% print_tbl()
+```
+
+
+
+|ENV |Group    | ALT_PLANT| ALT_ESP| COMPES| DIAMES| COMP_SAB| DIAM_SAB|      MGE|  NFIL|      MMG|      NGE|
+|:---|:--------|---------:|-------:|------:|------:|--------:|--------:|--------:|-----:|--------:|--------:|
+|A1  |GEN      |     0.001|   0.004|  0.000|  1.756|    3.085|    0.068|  100.060| 1.139|  512.906|  524.620|
+|A1  |Residual |     0.015|   0.013|  1.443|  1.828|    2.050|    1.173|  296.826| 2.925| 1014.606| 3663.805|
+|A2  |GEN      |     0.155|   0.118|  1.205|  5.992|    5.698|    1.154| 1172.429| 1.137| 2941.365| 1682.787|
+|A2  |Residual |     0.013|   0.008|  0.734|  1.703|    1.043|    0.739|  252.595| 0.941|  673.583| 2014.021|
+|A3  |GEN      |     0.017|   0.005|  0.047|  5.369|    4.269|    0.240|  180.972| 1.181|  840.939| 1982.321|
+|A3  |Residual |     0.033|   0.034|  0.984|  2.430|    1.415|    0.634|  280.409| 1.271| 1018.430| 2398.781|
+|A4  |GEN      |     0.000|   0.000|  0.809|  0.398|    1.216|    0.474|   39.561| 0.375|  291.452|  944.826|
+|A4  |Residual |     0.028|   0.022|  0.969|  4.417|    2.101|    1.065|  717.405| 1.442|  967.158| 4595.334|

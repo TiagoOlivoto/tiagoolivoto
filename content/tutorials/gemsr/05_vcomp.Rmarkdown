@@ -19,13 +19,18 @@ weight: 6
 library(metan)
 library(rio)
 
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
 # dados
 df_g <- import("http://bit.ly/df_g", setclass = "tbl")
-print(df_g)
+inspect(df_g, verbose = FALSE) %>% print_tbl()
 
 ```
 
-## Modelo misto
+# Modelo misto
 A função `gamem()` pode ser usada para analisar experimentos únicos(experimentos unilaterais) usando um modelo de efeito misto de acordo com o seguinte modelo:
 
 $$
@@ -45,41 +50,46 @@ gen_mod <-
 
 A maneira mais fácil de obter os resultados do modelo acima é usando a função `gmd()`, ou seu *shortcut* `gmd()`.
 
-### Diagnósticos do modelo
+## Diagnósticos do modelo
 ```{r collapse = TRUE, fig.width=10}
 plot(gen_mod, type = "res") # padrão
 plot(gen_mod, type = "re") # padrão
 
 ```
 
-### Detalhes da análise
+## Detalhes da análise
 ```{r collapse = TRUE,}
-gmd(gen_mod, "details")
+details <- gmd(gen_mod, "details")
+print_tbl(details)
 ```
 
-### LRT
+## LRT
 ```{r collapse = TRUE,}
-gmd(gen_mod, "lrt") 
+lrt <- gmd(gen_mod, "lrt") 
+print_tbl(lrt)
 ```
 
-### Componentes de variância
+## Componentes de variância
 ```{r collapse = TRUE, fig.width=10}
-gmd(gen_mod, "vcomp")
+vcomp <- gmd(gen_mod, "vcomp")
+print_tbl(vcomp)
 plot(gen_mod, type = "vcomp")
 ```
 
 
 
-### Parâmetros genéticos
+## Parâmetros genéticos
 ```{r collapse = TRUE,}
-gmd(gen_mod, "genpar")
+genpar <- gmd(gen_mod, "genpar")
+print_tbl(genpar)
 ```
 
 
 
-### BLUPs preditos
+## BLUPs preditos
 ```{r collapse = TRUE,}
-gmd(gen_mod, "blupg")
+blupg <- gmd(gen_mod, "blupg")
+print_tbl(blupg)
 
 # plotar os BLUPS (default)
 plot_blup(gen_mod)
@@ -95,7 +105,7 @@ plot_blup(gen_mod,
 
 
 
-## Modelos mistos - dentro de ambientes
+# Modelos mistos - dentro de ambientes
 
 ```{r collapse = TRUE, message = FALSE, warning=FALSE}
 df_ge <- import("http://bit.ly/df_ge", setclass = "tbl")
@@ -106,6 +116,6 @@ mod_gen_whithin <-
           resp = everything(),
           by = ENV, verbose = FALSE)
 
-gmd(mod_gen_whithin, "lrt")
-gmd(mod_gen_whithin, "vcomp")
+gmd(mod_gen_whithin, "lrt") %>%  print_tbl()
+gmd(mod_gen_whithin, "vcomp") %>% print_tbl()
 ```

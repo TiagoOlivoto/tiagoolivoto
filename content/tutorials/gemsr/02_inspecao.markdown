@@ -14,34 +14,24 @@ weight: 3
 ---
 
 
-## Conjunto de dados
+# Conjunto de dados
 
 
 ```r
 library(metan)
 library(rio)
 
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
 # Dados "arrumados"
 df_tidy <- import("http://bit.ly/df_tidy", setclass = "tbl")
-print(df_tidy)
-## # A tibble: 114 x 13
-##    ENV   GEN   BLOCO ALT_PLANT ALT_ESP COMPES DIAMES COMP_SAB DIAM_SAB   MGE
-##    <chr> <chr> <chr>     <dbl>   <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl>
-##  1 AMB1  H10   I          0       1.64   16.7   54.0     31.7     17.4  194.
-##  2 AMB1  H10   II         2.79    1.71   14.9   52.7     32.0     15.5  176.
-##  3 AMB1  H10   III        2.72    1.51   16.7   52.7     30.4     17.5  207.
-##  4 AMB1  H11   I          2.75    1.51   17.4   51.7     30.6     18.0  217.
-##  5 AMB1  H11   II         2.72    1.56   16.7   47.2     28.7     17.2  181.
-##  6 AMB1  H11   III        2.77    1.67   15.8   47.9     27.6     16.4  166.
-##  7 AMB1  H12   I          2.73    1.54   14.9   47.5     28.2     15.5  161.
-##  8 AMB1  H12   II         2.56    1.56   15.7   49.9     29.8     16.2  188.
-##  9 AMB1  H12   III        2.79    1.53   15.0   52.7     31.4     15.2  193.
-## 10 AMB1  H13   I          2.74    1.6    14.6   54       32.5     15.1  205.
-## # ... with 104 more rows, and 3 more variables: NFIL <dbl>, MMG <chr>,
-## #   NGE <dbl>
 ```
 
-## Inspecionar dados
+
+# Inspecionar dados
 
 
 
@@ -71,14 +61,15 @@ inspect(df_tidy)
 ## 'find_outliers()' for more details.
 ## Warning: Zero values observed in variable(s) ALT_PLANT.
 
+
 # converter as três primeiras colunas para fator
 df_ok <- 
   df_tidy %>% 
   metan::as_factor(1:3)
-
 ```
 
-## Fragmentos de texto inesperados
+
+# Fragmentos de texto inesperados
 
 
 ```r
@@ -96,10 +87,9 @@ df_ok <-
   df_ok %>% 
   replace_string(MMG, pattern = "\\.{2}", replacement = ".") %>% 
   as_numeric(MMG)
-
 ```
 
-Substituir zeros por NA
+Substituir zeros por `NA`
 
 
 ```r
@@ -134,7 +124,7 @@ inspect(df_ok, plot = TRUE)
 
 <img src="/tutorials/gemsr/02_inspecao_files/figure-html/unnamed-chunk-4-1.png" width="960" />
 
-## Outliers
+# Outliers
 
 
 ```r
@@ -175,7 +165,6 @@ find_outliers(df_ok, NGE, plots = TRUE)
 
 # Corrigir valores
 df_ok[22, 13] <- 530.2
-
 
 # Exportar df_ok
 # export(df_ok, "df_ok.xlsx")

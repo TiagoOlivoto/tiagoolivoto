@@ -19,9 +19,14 @@ O `metan` fornece uma estrutura simples e intuitiva, compatível com o pipe, par
 library(metan)
 library(rio)
 
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
 # dados
 df <- import("http://bit.ly/df_ok", setclass = "tbl")
-print(df)
+inspect(df, verbose = FALSE) %>% print_tbl()
 ```
 
 Vamos começar com um exemplo muito simples (mas amplamente usado): calcular a média de uma variável numérica (digamos, MGE) do conjunto de dados `df`. Usando a função R base `stats::mean()`, a solução seria:
@@ -33,20 +38,21 @@ mean(df$MGE)
 Considere que agora queremos calcular o valor médio da MGE para cada nível do fator GEN. Em outras palavras, calcular o valor médio da MGE para cada genótipo. A solução usando `stats::aggregate()` é então:
 
 ```{r collapse = TRUE,}
-aggregate(MGE ~ GEN, data = df, FUN = mean)
+aggregate(MGE ~ GEN, data = df, FUN = mean) %>% print_tbl()
 
 ```
 
 # Estatísticas por níveis de um fator
 Usando a função `means_by()` a quantidade de código necessária é drasticamente reduzida. Para calcular a média geral para todas as variáveis numéricas de `df`, simplesmente usamos:
 ```{r collapse = TRUE,}
-(ov_mean <- means_by(df))
-
+ov_mean <- means_by(df)
+print_tbl(ov_mean)
 ```
 
 Para calcular os valores médios para cada nível do fator GEN, precisamos adicionar a variável de agrupamento `GEN` no argumento `...`
 ```{r collapse = TRUE,}
-(means_gen <- means_by(df, GEN))
+means_gen <- means_by(df, GEN)
+print_tbl(means_gen)
 
 ```
 
@@ -78,11 +84,11 @@ Outras funções úteis também são implementadas. Todos eles funcionam natural
  - `var_amo()`, `var_pop()` calcula a amostra e a variância populacional.
  - `valid_n()` Retorna o comprimento válido (não `NA`).
 
-Vamos mostrar alguns exemplos. Observe que [select helpers](https://tiagoolivoto.github.io/metan/articles/vignettes_helper.html#select-helpers) pode ser usado para selecionar variáveis com base em seus nomes/tipos.
+Vamos mostrar alguns exemplos. Observe que [select helpers](https://tiagoolivoto.github.io/metan/articles/vignettes_helper.html#select-helpers) pode ser usado para selecionar variáveis com base em seus nomes/tipos. O pacote metan apresenta um conjunto de select helpers que pode ser visto com `?metan::Select_helper`
 
 ```{r collapse = TRUE,}
 # Erro padrão da média para variáveis numéricas que contém (SAB)
-df %>% sem(contains("SAB"))
+df %>% sem(contains("SAB")) %>% print_tbl()
 
 
 # Intervalo de confiança 0,95 para a média
@@ -90,17 +96,19 @@ df %>% sem(contains("SAB"))
 # Agrupado por níveis de ENV
 df %>%
   group_by(ENV) %>%
-  ci_mean(width_greater_than(3))
+  ci_mean(width_greater_than(3)) %>% 
+  print_tbl()
 ```
 
 
 # A função wrapper `desc_stat()`
 
-Para calcular todas as estatísticas de uma vez, podemos usar `desc_stat()`. Esta é uma função wrapper em torno das anteriores e pode ser usada para calcular medidas de tendência central, posição e dispersão. Por padrão(`stats = "main"`), sete estatísticas (coeficiente de variação, máximo, média, mediana, mínimo, desvio padrão da amostra, erro padrão e intervalo de confiança da média) são calculados. Outros valores permitidos são `"all"` para mostrar todas as estatísticas, `"robust"` para mostrar estatísticas robustas, e `"quantil"` para mostrar estatísticas de quantis ou escolher uma (ou mais) estatísticas usando um vetor separado por vírgulas com os nomes das estatísticas, por exemplo, `stats = c("mean, cv")`. Também podemos usar `hist = TRUE` para criar um histograma para cada variável.
+Para calcular todas as estatísticas de uma vez, podemos usar `desc_stat()`. Esta é uma função wrapper em torno das anteriores e pode ser usada para calcular medidas de tendência central, posição e dispersão. Por padrão(`stats = "main"`), sete estatísticas (coeficiente de variação, máximo, média, mediana, mínimo, desvio padrão da amostra, erro padrão e intervalo de confiança da média) são calculados. Outros valores permitidos são `"all"` para mostrar todas as estatísticas, `"robust"` para mostrar estatísticas robustas, e `"quantile"` para mostrar estatísticas de quantis ou escolher uma (ou mais) estatísticas usando um vetor separado por vírgulas com os nomes das estatísticas, por exemplo, `stats = c("mean, cv")`. Também podemos usar `hist = TRUE` para criar um histograma para cada variável.
 
 ## Todas as estatísticas para todas as variáveis numéricas
 ```{r collapse = TRUE,, mensagem = FALSE, fig.height = 5, fig.width = 10, fig.align =" center "}
-(all <- desc_stat(df, stats = "all"))
+all <- desc_stat(df, stats = "all")
+print_tbl(all)
 ```
 
 
@@ -110,6 +118,7 @@ stat1 <-
   df %>% 
   desc_stat(ALT_ESP, ALT_PLANT, COMP_SAB,
             hist = TRUE)
+print_tbl(stat1)
 ```
 
 ## Estatísticas por níveis de fatores
@@ -127,12 +136,13 @@ stats_c <-
             contains("C"),
             stats = ("mean, se, cv, max, min, n, n.valid"),
             by = ENV)
+print_tbl(stats_c)
 ```
 
 Podemos converter os resultados acima em um formato *wide* usando a função `desc_wider()`
 
 ```{r collapse = TRUE,, mensagem = FALSE, fig.height = 5, fig.width = 5.5, fig.align =" center "}
-desc_wider(stats_c, mean)
+desc_wider(stats_c, mean) %>% print_tbl()
 ```
 
 Para calcular as estatísticas descritivas por mais de uma variável de agrupamento, é necessário passar os dados agrupados para o argumento `.data` com a função `group_by()`. Vamos calcular a média, o erro padrão da média e o tamanho da amostra para as variáveis `MGE` e` MMG` para todas as combinações dos fatores `ENV` e` GEN`.
@@ -143,7 +153,7 @@ stats_grp <-
   group_by(ENV, GEN) %>%
   desc_stat(MGE, MMG,
             stats = c("mean, se, n"))
-stats_grp
+print_tbl(stats_grp)
 
 
 ```
