@@ -245,6 +245,7 @@ Para citar o metan em publicações, utilize o artigo abaixo
 </div>
 
 
+
 No R, uma entrada BibTex para citações em documentos \\(\LaTeX\\) pode ser obtida com
 
 
@@ -326,21 +327,21 @@ Os seguintes conjuntos foram preparados considerando os dados multi-ambientes pa
 
 # <i class="fas fa-scroll"></i> Scripts
 
-Em breve...
+* <i class="fab fa-r-project fa-2x"></i> <a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/gemsr/scripts_gemsr_R.rar">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download scripts em formato .R</button>
+</a>
+
+* <i class="fab fa-markdown fa-2x"></i>" <a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/gemsr/scripts_gemsr_Rmd.rar">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download scripts em formato .Rmd</button>
+</a>
 
 
+</p>
+</p>
 
 # <i class="far fa-eye"></i> Take a look!
 
 <img src="https://raw.githubusercontent.com/TiagoOlivoto/pliman/master/man/figures/logo_pliman.svg" align="right" width="250" height="250"/>
-
-<!-- <!-- badges: start --> -->
-<!-- [![CRAN status](https://www.r-pkg.org/badges/version-ago/pliman)](https://CRAN.R-project.org/package=pliman) -->
-<!-- [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental-1) -->
-<!-- ![Downloads](http://cranlogs.r-pkg.org/badges/pliman) -->
-<!-- ![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/pliman) -->
-<!-- [![DOI](https://zenodo.org/badge/352844585.svg)](https://zenodo.org/badge/latestdoi/352844585) -->
-<!-- <!-- badges: end --> -->
 
 `pliman` (**pl**ant **im**age **an**alysis) é projetado para analisar imagens de plantas, especialmente relacionadas à análise de folhas. Você fornece paletas de cores, diz ao `pliman` o que cada uma representa e ele cuida dos detalhes. Índices de imagem também podem ser usados para segmentar imagens. O pacote irá ajudá-lo a:
 
