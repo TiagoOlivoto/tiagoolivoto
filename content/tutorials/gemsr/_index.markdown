@@ -374,3 +374,7 @@ Os seguintes conjuntos foram preparados considerando os dados multi-ambientes pa
    * **CompartilhaIgual** — Se você remixar, transformar, ou criar a partir do material, tem de distribuir as suas contribuições sob a mesma licença que o original.
 
    * **Sem restrições adicionais** — Você não pode aplicar termos jurídicos ou medidas de caráter tecnológico que restrinjam legalmente outros de fazerem algo que a licença permita.
+   
+# Questionário
+
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdQKkCKM63UV0_BQGPhBYBB7cIFTcbzDVuJMYp4tsi_g-x0cg/viewform?embedded=true" width="640" height="1185" frameborder="0" marginheight="0" marginwidth="0">Carregando…</iframe>
