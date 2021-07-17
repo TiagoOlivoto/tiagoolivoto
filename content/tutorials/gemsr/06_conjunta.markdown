@@ -121,7 +121,7 @@ Evaluating trait COMP_SAB |===================                   | 50% 00:00:01
 Evaluating trait DIAM_SAB |=======================               | 60% 00:00:02 
 Evaluating trait MGE |==============================             | 70% 00:00:02 
 Evaluating trait NFIL |==================================        | 80% 00:00:02 
-Evaluating trait MMG |=======================================    | 90% 00:00:03 
+Evaluating trait MMG |=======================================    | 90% 00:00:02 
 Evaluating trait NGE |===========================================| 100% 00:00:03 
 ## Method: REML/BLUP
 ## Random effects: GEN, GEN:ENV

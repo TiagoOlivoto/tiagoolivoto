@@ -636,7 +636,45 @@ pcoeff4 <-
 ## Weak multicollinearity. 
 ## Condition Number = 29.096
 ## You will probably have path coefficients close to being unbiased.
+
+
+# diagrama de trilha
+library(diagram)
+## Carregando pacotes exigidos: shape
+
+pcoeff5 <-
+  path_coeff(df_ge,
+             resp = MGE,
+             pred = c(MMG, COMPES, DIAMES, NGE))
+## Weak multicollinearity. 
+## Condition Number = 24.907
+## You will probably have path coefficients close to being unbiased.
+
+
+coeffs <- 
+  pcoeff5$Coefficients %>% 
+  remove_cols(linear) %>% 
+  round_cols(digits = 3)
+coeffs
+##           MMG COMPES DIAMES    NGE
+## MMG     0.721  0.007 -0.007 -0.047
+## COMPES  0.319  0.016 -0.004  0.338
+## DIAMES  0.463  0.006 -0.012  0.367
+## NGE    -0.047  0.008 -0.006  0.726
+
+plotmat(coeffs,
+        curve = 0,
+        box.size = 0.08,
+        box.prop = 0.5,
+        box.col = "gray90",
+        arr.type = "curved",
+        arr.pos = 0.35,
+        arr.lwd = 1,
+        arr.length = 0.4,
+        arr.width = 0.2)
 ```
+
+<img src="/tutorials/gemsr/11_biometricos_files/figure-html/unnamed-chunk-15-1.png" width="576" />
 
 
 # Correlações canônicas
@@ -814,6 +852,28 @@ cc2 <- can_corr(data_cc,
 ```
 
 
+## Gráfico de barras
+
+
+```r
+plot_bars(df_g,
+          x = GEN,
+          y = MMG,
+          lab.bar = 1:13)
+```
+
+<img src="/tutorials/gemsr/11_biometricos_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+
+```r
+plot_factbars(df_ge, ENV, GEN, resp = MMG)
+```
+
+```
+## Warning in RColorBrewer::brewer.pal(n, pal): n too large, allowed maximum for palette Spectral is 11
+## Returning the palette you asked for with that many colors
+```
+
+<img src="/tutorials/gemsr/11_biometricos_files/figure-html/unnamed-chunk-17-2.png" width="672" />
 
 
 

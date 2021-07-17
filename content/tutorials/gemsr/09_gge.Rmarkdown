@@ -290,6 +290,14 @@ t <- plot(gge_model,
 arrange_ggplot(s, t, tag_levels = list (c("s", "t")))
 ```
 
+# Genotype by trait biplot
+```{r}
+# GT biplot for all numeric variables
+mod <- gtb(df_ge, GEN, resp = everything())
+plot(mod)
+
+```
+
 
 
 [^1]: Yan, W., Kang, M. S., Ma, B., Woods, S., & Cornelius, P. L. (2007). GGE Biplot vs. AMMI analysis of genotype-by-environment data. Crop Science, 47(2), 641–653. https://doi.org/10.2135/cropsci2006.06.0374

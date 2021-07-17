@@ -69,9 +69,9 @@ Evaluating trait COMPES |============                            | 30% 00:00:00
 Evaluating trait DIAMES |================                        | 40% 00:00:00 
 Evaluating trait COMP_SAB |===================                   | 50% 00:00:00 
 Evaluating trait DIAM_SAB |=======================               | 60% 00:00:00 
-Evaluating trait MGE |==============================             | 70% 00:00:01 
-Evaluating trait NFIL |==================================        | 80% 00:00:01 
-Evaluating trait MMG |=======================================    | 90% 00:00:01 
+Evaluating trait MGE |==============================             | 70% 00:00:00 
+Evaluating trait NFIL |==================================        | 80% 00:00:00 
+Evaluating trait MMG |=======================================    | 90% 00:00:00 
 Evaluating trait NGE |===========================================| 100% 00:00:01 
 ## Method: REML/BLUP
 ## Random effects: GEN

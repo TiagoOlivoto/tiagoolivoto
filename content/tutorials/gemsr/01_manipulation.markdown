@@ -94,12 +94,12 @@ print_tbl(df)
 
 |Env   |gen   |Env_Gen     |       y|
 |:-----|:-----|:-----------|-------:|
-|ENV 1 |GEN1  |ENV 1.GEN1  | 307.925|
-|Env 1 |gen 2 |Env 1.gen 2 | 308.786|
-|Env1  |Gen.3 |Env1.Gen.3  | 289.453|
-|env1  |gen-4 |env1.gen-4  | 288.323|
-|Env.1 |Gen_5 |Env.1.Gen_5 | 291.504|
-|Env_1 |GEN_6 |Env_1.GEN_6 | 305.775|
+|ENV 1 |GEN1  |ENV 1.GEN1  | 306.839|
+|Env 1 |gen 2 |Env 1.gen 2 | 312.125|
+|Env1  |Gen.3 |Env1.Gen.3  | 301.605|
+|env1  |gen-4 |env1.gen-4  | 316.157|
+|Env.1 |Gen_5 |Env.1.Gen_5 | 283.590|
+|Env_1 |GEN_6 |Env_1.GEN_6 | 296.220|
 
 ```r
 
@@ -111,12 +111,12 @@ print_tbl(df)
 
 |Env   |gen   |Env_Gen     |       y|
 |:-----|:-----|:-----------|-------:|
-|ENV 1 |GEN1  |ENV 1.GEN1  | 307.925|
-|Env 1 |gen 2 |Env 1.gen 2 | 308.786|
-|Env1  |Gen.3 |Env1.Gen.3  | 289.453|
-|env1  |gen-4 |env1.gen-4  | 288.323|
-|Env.1 |Gen_5 |Env.1.Gen_5 | 291.504|
-|Env_1 |GEN_6 |Env_1.GEN_6 | 305.775|
+|ENV 1 |GEN1  |ENV 1.GEN1  | 306.839|
+|Env 1 |gen 2 |Env 1.gen 2 | 312.125|
+|Env1  |Gen.3 |Env1.Gen.3  | 301.605|
+|env1  |gen-4 |env1.gen-4  | 316.157|
+|Env.1 |Gen_5 |Env.1.Gen_5 | 283.590|
+|Env_1 |GEN_6 |Env_1.GEN_6 | 296.220|
 
 
 

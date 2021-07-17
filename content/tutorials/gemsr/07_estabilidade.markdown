@@ -728,8 +728,8 @@ stat_ge <- ge_stats(df_ge,
                     gen = GEN,
                     rep = BLOCO,
                     resp = c(MMG, MGE))
-## Evaluating trait MMG |======================                     | 50% 00:00:02 
-Evaluating trait MGE |===========================================| 100% 00:00:04 
+## Evaluating trait MMG |======================                     | 50% 00:00:03 
+Evaluating trait MGE |===========================================| 100% 00:00:05 
 # estatisticas
 gmd(stat_ge, "stats") %>% print_tbl()
 ## Class of the model: ge_stats

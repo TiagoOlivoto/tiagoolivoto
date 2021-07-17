@@ -229,12 +229,39 @@ print(pcoeff3$Models$Model_4)
 
 
 Também é possível calcular uma análise para cada nível de um determinado fator
-```{r collapse = TRUE,}
+```{r collapse = TRUE, fig.width=6}
 pcoeff4 <-
   path_coeff(df_ge,
              resp = MGE,
              pred = c(MMG, COMPES, DIAMES, NGE),
              by = ENV)
+
+
+# diagrama de trilha
+library(diagram)
+
+pcoeff5 <-
+  path_coeff(df_ge,
+             resp = MGE,
+             pred = c(MMG, COMPES, DIAMES, NGE))
+
+
+coeffs <- 
+  pcoeff5$Coefficients %>% 
+  remove_cols(linear) %>% 
+  round_cols(digits = 3)
+coeffs
+
+plotmat(coeffs,
+        curve = 0,
+        box.size = 0.08,
+        box.prop = 0.5,
+        box.col = "gray90",
+        arr.type = "curved",
+        arr.pos = 0.35,
+        arr.lwd = 1,
+        arr.length = 0.4,
+        arr.width = 0.2)
 ```
 
 
@@ -263,6 +290,16 @@ cc2 <- can_corr(data_cc,
 ```
 
 
+## Gráfico de barras
+
+```{r}
+plot_bars(df_g,
+          x = GEN,
+          y = MMG,
+          lab.bar = 1:13)
+
+plot_factbars(df_ge, ENV, GEN, resp = MMG)
+```
 
 
 

@@ -322,6 +322,16 @@ arrange_ggplot(s, t, tag_levels = list (c("s", "t")))
 
 <img src="/tutorials/gemsr/09_gge_files/figure-html/unnamed-chunk-12-1.png" width="960" />
 
+# Genotype by trait biplot
+
+```r
+# GT biplot for all numeric variables
+mod <- gtb(df_ge, GEN, resp = everything())
+plot(mod)
+```
+
+<img src="/tutorials/gemsr/09_gge_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+
 
 
 [^1]: Yan, W., Kang, M. S., Ma, B., Woods, S., & Cornelius, P. L. (2007). GGE Biplot vs. AMMI analysis of genotype-by-environment data. Crop Science, 47(2), 641–653. https://doi.org/10.2135/cropsci2006.06.0374
