@@ -1,0 +1,135 @@
+---
+title: Vento
+linktitle: "2. Vento"
+toc: true
+type: docs
+date: "2021/07/09"
+draft: false
+code_download: true
+menu:
+  climato:
+    parent: Agroclimatologia
+    weight: 3
+weight: 2
+---
+
+# Pacotes
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)  # manipulação de dados
+library(metan)
+library(ggradar)    # gráfico de radar
+library(rio)        # importação/exportação de dados
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, n = NULL, ...){
+  if(!missing(n)){
+    knitr::kable(head(table, n = n), booktabs = TRUE, digits = digits, ...)
+  } else{
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+  }
+}
+```
+
+
+# Velocidade média do vento 
+
+```{r}
+clima <- import("https://bit.ly/inmet_fred_2020")
+
+
+clima_long <-
+clima %>%
+  select(MES, VEL_VE, RAJ_VE) %>% 
+  pivot_longer(-MES)
+
+print_tbl(clima_long, n = 20)
+
+
+
+# confeccionar gráfico
+ggplot(clima_long, aes(MES, value, color = name, group = name )) +
+  stat_summary(geom = "point", 
+               fun = mean) +
+  stat_summary(geom = "line") + 
+  stat_summary(geom = "errorbar", width = 0.1) +
+  scale_color_manual(values = c("red", "blue"),
+                       labels = c("Rajada (m/s)",
+                                  "Velocidade do vento (m/s)"),
+                       guide = "legend") +
+  theme(panel.grid.minor = element_blank(),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 12)) + 
+  labs(title = "Velocidade média mensal do vento em 2020",
+       subtitle = "Estação INMET - UFSM-FW",
+       caption = "Elaboração: Prof. Tiago Olivoto",
+       x = "Mês do ano",
+       y = "Velocidade (m/s)")
+
+
+```
+
+
+
+# Velocidades máximas e mínimas - rajada
+
+```{r}
+vento_max_min <-
+  clima %>%
+  group_by(MES) %>% 
+  summarise(max = max(RAJ_VE, na.rm = TRUE),
+            mean = mean(RAJ_VE, na.rm = TRUE),
+            min = min(RAJ_VE, na.rm = TRUE)) %>% 
+  select(MES, max, min, mean) %>% 
+  pivot_longer(-MES)
+
+print_tbl(vento_max_min, n = 20)
+
+
+ggplot(vento_max_min, aes(factor(MES), value, color = name, group = name )) +
+  geom_point() + 
+  geom_line() + 
+  scale_color_manual(values = c("red", "green", "blue"),
+                     labels = c("Velocidade máxima (m/s)",
+                                "Velocidade média (m/s)",
+                                "Velocidade mínima (m/s)"),
+                     guide = "legend") + 
+  theme(panel.grid.minor = element_blank(),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 12)) + 
+  labs(title = "Médias mensais de rajadas de vento em 2020",
+       subtitle = "Estação INMET - UFSM-FW",
+       caption = "Elaboração: Prof. Tiago Olivoto",
+       x = "Mês do ano",
+       y = "Velocidade (m/s)")
+
+```
+
+
+
+# Direção do vento
+```{r}
+freq <- 
+  cut(clima$DIR_VE, breaks = seq(0, 360, by = 45)) %>% 
+  table() %>% 
+  as.data.frame() %>% 
+  set_names("Direção", "Dias") %>% 
+  mutate(Direção = paste0(seq(0, 315, by = 45)),
+         Percent = Dias / 8784 * 100) %>% 
+  remove_cols(Dias)
+
+print_tbl(freq)
+ 
+
+# criar um radar plot para mostrar a direção predominante
+# do vento
+ggradar(freq %>% transpose_df(),
+        values.radar = c("0%", "0%", "27.6%"),
+        grid.max = max(freq$Percent))
+
+
+```
+

@@ -1,0 +1,110 @@
+---
+title: Temperatura do ar
+linktitle: "1. Temperatura do ar"
+toc: true
+type: docs
+date: "2021/07/09"
+draft: false
+df_print: paged
+code_download: true
+menu:
+  climato:
+    parent: Agroclimatologia
+    weight: 2
+weight: 1
+---
+
+# Pacotes
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)  # manipulação de dados
+library(metan)
+library(rio)        # importação/exportação de dados
+
+# gerar tabelas html
+print_tbl <- function(table, digits = 3, n = NULL, ...){
+  if(!missing(n)){
+    knitr::kable(head(table, n = n), booktabs = TRUE, digits = digits, ...)
+  } else{
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+  }
+}
+```
+
+
+# Temperaturas médias mensais
+
+```{r}
+clima <- import("https://bit.ly/inmet_fred_2020")
+
+
+clima_medias <-
+clima %>%
+  means_by(MES) %>% 
+  select(MES, TEMP_MAX, TEMP_MIN) %>% 
+  pivot_longer(-MES)
+
+print_tbl(clima_medias, n = 20)
+
+
+
+# confeccionar gráfico
+ggplot(clima_medias, aes(MES, value, color = name, group = name )) +
+  geom_point() + 
+  geom_line() + 
+  scale_color_manual(values = c("red", "blue"),
+                       labels = c("Temperatura máxima (ºC)",
+                                  "Temperatura mínima (ºC)"),
+                       guide = "legend") +
+  theme(panel.grid.minor = element_blank(),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 12)) + 
+  labs(title = "Temperatura média mensal em 2020",
+       subtitle = "Estação INMET - UFSM-FW",
+       caption = "Elaboração: Prof. Tiago Olivoto",
+       x = "Mês do ano",
+       y = "Temperatura (ºC)")
+
+
+```
+
+
+
+# Temperaturas máximas e mínimas
+
+```{r}
+clima_max_min <-
+  clima %>%
+  group_by(MES) %>% 
+  summarise(max = max(TEMP_MAX, na.rm = TRUE),
+            min = min(TEMP_MIN, na.rm = TRUE),
+            mean = mean(TEMP_INST, na.rm = TRUE)) %>% 
+  select(MES, max, min, mean) %>% 
+  pivot_longer(-MES)
+
+print_tbl(clima_max_min, n = 20)
+
+
+ggplot(clima_max_min, aes(MES, value, color = name, group = name )) +
+  geom_point() + 
+  geom_line() + 
+  scale_color_manual(values = c("red", "green", "blue"),
+                     labels = c("Temperatura máxima (ºC)",
+                                "Temperatura média (ºC)",
+                                "Temperatura mínima (ºC)"),
+                     guide = "legend") + 
+  theme(panel.grid.minor = element_blank(),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 12)) + 
+  labs(title = "Temperaturas máximas, médias e mínimas em 2020",
+       subtitle = "Estação INMET - UFSM-FW",
+       caption = "Elaboração: Prof. Tiago Olivoto",
+       x = "Mês do ano",
+       y = "Temperatura (ºC)")
+```
+
+
+
