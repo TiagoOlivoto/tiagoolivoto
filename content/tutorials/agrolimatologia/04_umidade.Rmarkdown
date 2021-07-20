@@ -9,8 +9,8 @@ code_download: true
 menu:
   climato:
     parent: Agroclimatologia
-    weight: 4
-weight: 3
+    weight: 5
+weight: 4
 ---
 
 # Pacotes
