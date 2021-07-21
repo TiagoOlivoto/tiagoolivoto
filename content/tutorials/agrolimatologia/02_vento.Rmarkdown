@@ -33,7 +33,7 @@ print_tbl <- function(table, digits = 3, n = NULL, ...){
 
 # Velocidade média do vento 
 
-```{r}
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
 clima <- import("https://bit.ly/inmet_fred_2020")
 
 
@@ -74,7 +74,7 @@ ggplot(clima_long, aes(MES, value, color = name, group = name )) +
 
 # Velocidades máximas e mínimas - rajada
 
-```{r}
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
 vento_max_min <-
   clima %>%
   group_by(MES) %>% 
@@ -111,7 +111,7 @@ ggplot(vento_max_min, aes(factor(MES), value, color = name, group = name )) +
 
 
 # Direção do vento
-```{r}
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
 freq <- 
   cut(clima$DIR_VE, breaks = seq(0, 360, by = 45)) %>% 
   table() %>% 

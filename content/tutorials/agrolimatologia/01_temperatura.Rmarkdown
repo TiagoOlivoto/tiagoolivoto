@@ -33,7 +33,7 @@ print_tbl <- function(table, digits = 3, n = NULL, ...){
 
 # Temperaturas médias mensais
 
-```{r}
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
 clima <- import("https://bit.ly/inmet_fred_2020")
 
 
@@ -73,7 +73,7 @@ ggplot(clima_medias, aes(MES, value, color = name, group = name )) +
 
 # Temperaturas máximas e mínimas
 
-```{r}
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
 clima_max_min <-
   clima %>%
   group_by(MES) %>% 

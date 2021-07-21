@@ -73,6 +73,9 @@ print_tbl(clima_long, n = 20)
 |   1|RAJ_VE |   3.7|
 
 ```r
+
+
+
 # confeccionar gráfico
 ggplot(clima_long, aes(MES, value, color = name, group = name )) +
   stat_summary(geom = "point", 
@@ -93,24 +96,6 @@ ggplot(clima_long, aes(MES, value, color = name, group = name )) +
        caption = "Elaboração: Prof. Tiago Olivoto",
        x = "Mês do ano",
        y = "Velocidade (m/s)")
-```
-
-```
-## Warning: Removed 36 rows containing non-finite values (stat_summary).
-
-## Warning: Removed 36 rows containing non-finite values (stat_summary).
-```
-
-```
-## No summary function supplied, defaulting to `mean_se()`
-```
-
-```
-## Warning: Removed 36 rows containing non-finite values (stat_summary).
-```
-
-```
-## No summary function supplied, defaulting to `mean_se()`
 ```
 
 <img src="/tutorials/agrolimatologia/02_vento_files/figure-html/unnamed-chunk-2-1.png" width="672" />
@@ -159,6 +144,8 @@ print_tbl(vento_max_min, n = 20)
 |   7|min  |  0.000|
 
 ```r
+
+
 ggplot(vento_max_min, aes(factor(MES), value, color = name, group = name )) +
   geom_point() + 
   geom_line() + 
@@ -212,6 +199,8 @@ print_tbl(freq)
 |315     |  13.286|
 
 ```r
+ 
+
 # criar um radar plot para mostrar a direção predominante
 # do vento
 ggradar(freq %>% transpose_df(),

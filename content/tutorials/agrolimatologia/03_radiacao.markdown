@@ -44,19 +44,7 @@ clima %>%
   sum_by(DIA, MES) %>% 
   means_by(MES) %>% 
   select(MES, RADIAC)
-```
 
-```
-## Warning: NA values removed to compute the function. Use 'na.rm = TRUE' to
-## suppress this warning.
-```
-
-```
-## To remove rows with NA use `remove_rows_na()'. 
-## To remove columns with NA use `remove_cols_na()'.
-```
-
-```r
 ggplot(df_rad, aes(factor(MES), RADIAC, group = 1)) + 
   stat_summary(geom = "point", 
                fun = mean) +
@@ -73,10 +61,6 @@ ggplot(df_rad, aes(factor(MES), RADIAC, group = 1)) +
        y = expression(paste("Radiação solar em média da soma diária (KJ m"^-2~")")))
 ```
 
-```
-## No summary function supplied, defaulting to `mean_se()`
-```
-
 <img src="/tutorials/agrolimatologia/03_radiacao_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 
@@ -84,6 +68,7 @@ ggplot(df_rad, aes(factor(MES), RADIAC, group = 1)) +
 
 
 ```r
+
 #rad
 df_rad <- 
   clima %>% 
@@ -108,24 +93,6 @@ ggplot(df_rad, aes(HORA, RADIAC, color = factor(Mês), group = Mês)) +
        caption = "Elaboração - Olivoto 2021",
        x = "Hora do dia",
        y = expression(paste("Radiação média horária (KJ m"^-2~")")))
-```
-
-```
-## Warning: Removed 665 rows containing non-finite values (stat_summary).
-
-## Warning: Removed 665 rows containing non-finite values (stat_summary).
-```
-
-```
-## No summary function supplied, defaulting to `mean_se()`
-```
-
-```
-## Warning: Removed 665 rows containing non-finite values (stat_summary).
-```
-
-```
-## No summary function supplied, defaulting to `mean_se()`
 ```
 
 <img src="/tutorials/agrolimatologia/03_radiacao_files/figure-html/unnamed-chunk-3-1.png" width="672" />

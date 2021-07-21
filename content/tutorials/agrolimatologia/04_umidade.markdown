@@ -82,47 +82,6 @@ ggplot(clima) +
        x = "Hora do dia")
 ```
 
-```
-## Scale for 'colour' is already present. Adding another scale for 'colour',
-## which will replace the existing scale.
-```
-
-```
-## Warning: Removed 18 rows containing non-finite values (stat_summary).
-
-## Warning: Removed 18 rows containing non-finite values (stat_summary).
-```
-
-```
-## No summary function supplied, defaulting to `mean_se()`
-```
-
-```
-## Warning: Removed 18 rows containing non-finite values (stat_summary).
-```
-
-```
-## No summary function supplied, defaulting to `mean_se()`
-```
-
-```
-## Warning: Removed 18 rows containing non-finite values (stat_summary).
-
-## Warning: Removed 18 rows containing non-finite values (stat_summary).
-```
-
-```
-## No summary function supplied, defaulting to `mean_se()`
-```
-
-```
-## Warning: Removed 18 rows containing non-finite values (stat_summary).
-```
-
-```
-## No summary function supplied, defaulting to `mean_se()`
-```
-
 <img src="/tutorials/agrolimatologia/04_umidade_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 

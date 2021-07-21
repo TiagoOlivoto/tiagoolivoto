@@ -44,19 +44,7 @@ clima %>%
   means_by(MES) %>% 
   select(MES, TEMP_MAX, TEMP_MIN) %>% 
   pivot_longer(-MES)
-```
 
-```
-## Warning: NA values removed to compute the function. Use 'na.rm = TRUE' to
-## suppress this warning.
-```
-
-```
-## To remove rows with NA use `remove_rows_na()'. 
-## To remove columns with NA use `remove_cols_na()'.
-```
-
-```r
 print_tbl(clima_medias, n = 20)
 ```
 
@@ -86,6 +74,9 @@ print_tbl(clima_medias, n = 20)
 |  10|TEMP_MIN | 21.358|
 
 ```r
+
+
+
 # confeccionar gráfico
 ggplot(clima_medias, aes(MES, value, color = name, group = name )) +
   geom_point() + 
@@ -152,6 +143,8 @@ print_tbl(clima_max_min, n = 20)
 |   7|min  | -0.100|
 
 ```r
+
+
 ggplot(clima_max_min, aes(MES, value, color = name, group = name )) +
   geom_point() + 
   geom_line() + 

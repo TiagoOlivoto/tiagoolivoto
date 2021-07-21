@@ -37,7 +37,7 @@ print_tbl <- function(table, digits = 3, n = NULL, ...){
 
 O seguinte gráfico mostra a relação entre umidade e temperatura. Os dados representam a média horária considerando os 366 dias do ano de 2020.
 
-```{r}
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
 ggplot(clima) + 
   # UMIDADE
   stat_summary(aes(HORA, UM_INST, color = "blue"),

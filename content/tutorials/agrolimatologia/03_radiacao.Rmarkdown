@@ -36,7 +36,7 @@ print_tbl <- function(table, digits = 3, n = NULL, ...){
 
 # Radiação solar (média mensal)
 
-```{r}
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
 df_rad <- 
 clima %>% 
   sum_by(DIA, MES) %>% 
@@ -63,7 +63,7 @@ ggplot(df_rad, aes(factor(MES), RADIAC, group = 1)) +
 
 # Radiação solar em dois dias
 
-```{r}
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
 
 #rad
 df_rad <- 
