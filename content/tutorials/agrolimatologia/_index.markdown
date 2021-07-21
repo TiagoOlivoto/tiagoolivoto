@@ -1,7 +1,7 @@
 +++
 title = "Tutoriais Agroclimatologia [Português]"
 linktitle = "Tutoriais Agroclimatologia [Português]"
-summary = "Este material apresenta os scripts e gráficos confeccionados com o software R, que servem de apoio para as disciplinas de Agroclimatologia e Meteorologia, ofertadas pelo Departamento de Ciências Agronômicas e Ambientais da Universidade Federal de Santa Maria, Campus Frederico Westphalen - RS"
+summary = "Este material apresenta os scripts e gráficos confeccionados com o software R, que servem de apoio para as disciplinas de Agroclimatologia e Meteorologia e Climatologia, ofertadas pelo Departamento de Ciências Agronômicas e Ambientais da Universidade Federal de Santa Maria, Campus Frederico Westphalen - RS"
 date = "2021/07/19"
 lastmod = "2020/04/04"
 toc = true  # Show table of contents? true/false
@@ -63,12 +63,12 @@ knitr::kable(head(clima, n = 10), booktabs = TRUE, digits = 3)
 * RADIAC: Radiação (KJ m\\(^{-2}\\))
 * PRECIP: Precipitação pluviometrica (mm).
 
-<a href="https://bit.ly/inmet_fred_2020">
+<a href="https://bit.ly/inmet_fred_2020" target="_blank" rel="noopener">
   <button class="btn btn-success"><i class="fa fa-save"></i> Download inmet_fred_2020.csv</button>
 </a>
 
 
-<a href="http://bit.ly/inmet_fred_2020_xlsx">
+<a href="http://bit.ly/inmet_fred_2020_xlsx" target="_blank" rel="noopener">
   <button class="btn btn-success"><i class="fa fa-save"></i> Download inmet_fred_2020.xlsx</button>
 </a>
 

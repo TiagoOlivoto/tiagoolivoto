@@ -64,7 +64,9 @@ ggplot(df_rad, aes(factor(MES), RADIAC, group = 1)) +
 <img src="/tutorials/agrolimatologia/03_radiacao_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 
-# Radiação solar em dois dias
+# Radiação solar em dois meses
+
+O seguinte gráfico mostra a média horária da radiação solar em dois meses do ano (junho e dezembro).
 
 
 ```r

@@ -78,7 +78,7 @@ print_tbl(clima_medias, n = 20)
 
 
 # confeccionar gráfico
-ggplot(clima_medias, aes(MES, value, color = name, group = name )) +
+ggplot(clima_medias, aes(factor(MES), value, color = name, group = name )) +
   geom_point() + 
   geom_line() + 
   scale_color_manual(values = c("red", "blue"),
@@ -145,7 +145,7 @@ print_tbl(clima_max_min, n = 20)
 ```r
 
 
-ggplot(clima_max_min, aes(MES, value, color = name, group = name )) +
+ggplot(clima_max_min, aes(factor(MES), value, color = name, group = name )) +
   geom_point() + 
   geom_line() + 
   scale_color_manual(values = c("red", "green", "blue"),

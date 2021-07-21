@@ -47,7 +47,7 @@ print_tbl(clima_long, n = 20)
 
 
 # confeccionar gráfico
-ggplot(clima_long, aes(MES, value, color = name, group = name )) +
+ggplot(clima_long, aes(factor(MES), value, color = name, group = name )) +
   stat_summary(geom = "point", 
                fun = mean) +
   stat_summary(geom = "line") + 
