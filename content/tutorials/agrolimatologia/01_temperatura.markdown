@@ -101,6 +101,41 @@ ggplot(clima_medias, aes(factor(MES), value, color = name, group = name )) +
 
 
 
+# Temperaturas em dois dias
+
+```r
+df_temp <- 
+  clima %>% 
+  select(DATA, HORA, TEMP_INST) %>% 
+  subset(DATA %in% c("01/01/2020", "21/06/2020"))
+
+
+ggplot(df_temp, aes(HORA, TEMP_INST, color = factor(DATA), group = DATA)) + 
+  stat_summary(geom = "point", 
+               fun = mean) +
+  stat_summary(geom = "line") + 
+  stat_summary(geom = "errorbar", width = 0.5) +
+  theme(panel.grid.minor = element_blank(),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 12)) + 
+  scale_x_continuous(breaks = seq(0,24, by = 2)) + 
+  labs(title = "Temperatura horária em dois dias do ano",
+       subtitle = "Estação INMET - UFSM-FW",
+       caption = "Elaboração - Olivoto 2021",
+       x = "Hora do dia",
+       y = "Temperatura (ºC)")
+```
+
+```
+## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`
+```
+
+<img src="/tutorials/agrolimatologia/01_temperatura_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+
+
 # Temperaturas máximas e mínimas
 
 
@@ -165,7 +200,7 @@ ggplot(clima_max_min, aes(factor(MES), value, color = name, group = name )) +
        y = "Temperatura (ºC)")
 ```
 
-<img src="/tutorials/agrolimatologia/01_temperatura_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<img src="/tutorials/agrolimatologia/01_temperatura_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 
 

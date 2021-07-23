@@ -70,6 +70,7 @@ ggplot(clima_medias, aes(factor(MES), value, color = name, group = name )) +
 ```
 
 
+
 # Temperaturas em dois dias
 ```{r}
 df_temp <- 
