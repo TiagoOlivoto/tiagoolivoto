@@ -94,29 +94,29 @@ print_tbl(df)
 
 |Env   |gen   |Env_Gen     |       y|
 |:-----|:-----|:-----------|-------:|
-|ENV 1 |GEN1  |ENV 1.GEN1  | 306.839|
-|Env 1 |gen 2 |Env 1.gen 2 | 312.125|
-|Env1  |Gen.3 |Env1.Gen.3  | 301.605|
-|env1  |gen-4 |env1.gen-4  | 316.157|
-|Env.1 |Gen_5 |Env.1.Gen_5 | 283.590|
-|Env_1 |GEN_6 |Env_1.GEN_6 | 296.220|
+|ENV 1 |GEN1  |ENV 1.GEN1  | 288.213|
+|Env 1 |gen 2 |Env 1.gen 2 | 286.460|
+|Env1  |Gen.3 |Env1.Gen.3  | 291.560|
+|env1  |gen-4 |env1.gen-4  | 289.837|
+|Env.1 |Gen_5 |Env.1.Gen_5 | 302.320|
+|Env_1 |GEN_6 |Env_1.GEN_6 | 273.705|
 
 ```r
 
 df_tidy <- tidy_strings(df, sep = "")
-print_tbl(df)
+print_tbl(df_tidy)
 ```
 
 
 
-|Env   |gen   |Env_Gen     |       y|
-|:-----|:-----|:-----------|-------:|
-|ENV 1 |GEN1  |ENV 1.GEN1  | 306.839|
-|Env 1 |gen 2 |Env 1.gen 2 | 312.125|
-|Env1  |Gen.3 |Env1.Gen.3  | 301.605|
-|env1  |gen-4 |env1.gen-4  | 316.157|
-|Env.1 |Gen_5 |Env.1.Gen_5 | 283.590|
-|Env_1 |GEN_6 |Env_1.GEN_6 | 296.220|
+|Env  |gen  |Env_Gen  |       y|
+|:----|:----|:--------|-------:|
+|ENV1 |GEN1 |ENV1GEN1 | 288.213|
+|ENV1 |GEN2 |ENV1GEN2 | 286.460|
+|ENV1 |GEN3 |ENV1GEN3 | 291.560|
+|ENV1 |GEN4 |ENV1GEN4 | 289.837|
+|ENV1 |GEN5 |ENV1GEN5 | 302.320|
+|ENV1 |GEN6 |ENV1GEN6 | 273.705|
 
 
 

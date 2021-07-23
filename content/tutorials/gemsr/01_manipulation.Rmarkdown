@@ -78,7 +78,8 @@ df <- tibble(Env = messy_env,
 print_tbl(df)
 
 df_tidy <- tidy_strings(df, sep = "")
-print_tbl(df)
+print_tbl(df_tidy)
+
 ```
 
 
