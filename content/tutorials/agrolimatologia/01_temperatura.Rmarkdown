@@ -71,15 +71,16 @@ ggplot(clima_medias, aes(factor(MES), value, color = name, group = name )) +
 
 
 
+
 # Temperaturas em dois dias
 ```{r}
-df_temp <- 
+df_dias <- 
   clima %>% 
   select(DATA, HORA, TEMP_INST) %>% 
   subset(DATA %in% c("01/01/2020", "21/06/2020"))
 
 
-ggplot(df_temp, aes(HORA, TEMP_INST, color = factor(DATA), group = DATA)) + 
+ggplot(df_dias, aes(HORA, TEMP_INST, color = factor(DATA), group = DATA)) + 
   stat_summary(geom = "point", 
                fun = mean) +
   stat_summary(geom = "line") + 
