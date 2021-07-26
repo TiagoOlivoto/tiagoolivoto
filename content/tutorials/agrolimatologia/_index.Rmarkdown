@@ -28,11 +28,14 @@ library(rio)        # importação/exportação de dados
 
 # <i class="fas fa-database"></i> Conjuntos de dados
 
+---------------------------------
+
+
 O conjunto de dados em formato `.csv` formam obtidos do site do [Instituto Nacional de Meteorologia](https://tempo.inmet.gov.br/TabelaEstacoes/A001) - INMET. O arquivo apresenta dados horários do ano de 2020, obtidos na Estação Automática FREDERICO WESTPHALEN (A854), totalizando 8784 observações. Os dados são importados diretamente no software R com
 ```{r}
 clima <- import("https://bit.ly/inmet_fred_2020")
-# Primeiras 15 linhas
-knitr::kable(head(clima, n = 10), booktabs = TRUE, digits = 3)
+# Primeiras 5 linhas
+knitr::kable(head(clima, n = 5), booktabs = TRUE, digits = 3)
 ```
 
 
@@ -56,6 +59,48 @@ knitr::kable(head(clima, n = 10), booktabs = TRUE, digits = 3)
 <a href="http://bit.ly/inmet_fred_2020_xlsx" target="_blank" rel="noopener">
   <button class="btn btn-success"><i class="fa fa-save"></i> Download inmet_fred_2020.xlsx</button>
 </a>
+
+
+------------------------------------------
+
+
+
+O segundo conjunto de dados `inmet_pf_2020` apresenta dados da [Estação Convencional de Passo Fundo](https://bdmep.inmet.gov.br/) totalizando 984 observações. Os dados são importados diretamente no software R com
+```{r}
+clima_pf <- import("https://bit.ly/inmet_pf_2020")
+# Primeiras 5 linhas
+knitr::kable(head(clima_pf, n = 5), booktabs = TRUE, digits = 3)
+```
+
+DATA	HORA	PREC	P_EST	TBS	TBU	ES_TS	ES_TU	E	URA	DELTA_E	TPO	UA	US	R	Q
+
+
+
+* DATA: A data do ano.
+* HORA: A hora do dia.
+* PREC: Precipitação pluviometrica (mm).
+* P_EST: Pressão atmosférica na estação (hPa)
+* TBS e TBU: Temperatura em bulbo seco e úmido, respectivamente (ºC)
+* ES_TS e	* ES_TU: Pressão de saturação na temperatura de bulbo seco e úmido, respectivamente (hPa)
+* E: Pressão real do vapor d’água (hPa)
+* URA: Umidade relativa do ar (%)
+* DELTA_E: Déficit de saturação (hPa)
+* TPO: Temperatura no ponto de orvalho (ºC)
+* UA e US: Umidade absoluta e Umidade de saturação (g de vapor por m\\({-3}\\) de ar úmido)
+* R: Razão de mistura (g vapor / g ar seco)
+* Q: Umidade específica (g vapor / g ar úmido)
+
+
+<a href="https://bit.ly/inmet_pf_2020" target="_blank" rel="noopener">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download inmet_pf_2020.csv</button>
+</a>
+
+
+<a href="http://bit.ly/inmet_pf_2020_xlsx" target="_blank" rel="noopener">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download inmet_pf_2020.xlsx</button>
+</a>
+
+
 
 
 

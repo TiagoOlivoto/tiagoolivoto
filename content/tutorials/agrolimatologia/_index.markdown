@@ -27,28 +27,26 @@ library(rio)        # importação/exportação de dados
 
 # <i class="fas fa-database"></i> Conjuntos de dados
 
+---------------------------------
+
+
 O conjunto de dados em formato `.csv` formam obtidos do site do [Instituto Nacional de Meteorologia](https://tempo.inmet.gov.br/TabelaEstacoes/A001) - INMET. O arquivo apresenta dados horários do ano de 2020, obtidos na Estação Automática FREDERICO WESTPHALEN (A854), totalizando 8784 observações. Os dados são importados diretamente no software R com
 
 ```r
 clima <- import("https://bit.ly/inmet_fred_2020")
-# Primeiras 15 linhas
-knitr::kable(head(clima, n = 10), booktabs = TRUE, digits = 3)
+# Primeiras 5 linhas
+knitr::kable(head(clima, n = 5), booktabs = TRUE, digits = 3)
 ```
 
 
 
-|DATA       | DIA| MES| HORA| TEMP_INST| TEMP_MAX| TEMP_MIN| UM_INST| UM_MAX| UM_MIN| ORV_INST| ORV_MAX| ORV_MIN| PRESS_INST| PRESS_MAX| PRESS_MIN| VEL_VE| DIR_VE| RAJ_VE|  RADIAC| PRECIP|
-|:----------|---:|---:|----:|---------:|--------:|--------:|-------:|------:|------:|--------:|-------:|-------:|----------:|---------:|---------:|------:|------:|------:|-------:|------:|
-|01/01/2020 |   1|   1|    1|      21.5|     22.0|     21.5|      94|     94|     92|     20.6|    20.9|    20.3|      952.8|     952.8|     952.7|    0.0|    216|    2.2|      NA|      0|
-|01/01/2020 |   1|   1|    2|      21.0|     21.5|     21.0|      95|     95|     94|     20.2|    20.5|    20.2|      952.2|     952.8|     952.2|    0.0|    194|    0.5|      NA|      0|
-|01/01/2020 |   1|   1|    3|      20.8|     21.0|     20.7|      96|     96|     95|     20.1|    20.2|    19.9|      951.6|     952.2|     951.5|    0.0|    194|    0.0|      NA|      0|
-|01/01/2020 |   1|   1|    4|      20.8|     21.0|     20.8|      96|     96|     96|     20.0|    20.3|    20.0|      951.6|     951.7|     951.5|    0.0|    180|    0.0|      NA|      0|
-|01/01/2020 |   1|   1|    5|      21.1|     21.2|     20.8|      96|     96|     96|     20.3|    20.5|    20.0|      951.8|     951.9|     951.6|    0.0|    186|    0.0|      NA|      0|
-|01/01/2020 |   1|   1|    6|      21.2|     21.2|     21.0|      96|     96|     96|     20.5|    20.5|    20.3|      952.2|     952.2|     951.8|    0.1|    245|    0.8|    3.86|      0|
-|01/01/2020 |   1|   1|    7|      22.1|     22.1|     21.2|      94|     96|     94|     21.0|    21.2|    20.4|      952.5|     952.5|     952.2|    0.5|    175|    1.1|  164.36|      0|
-|01/01/2020 |   1|   1|    8|      23.6|     23.6|     22.1|      88|     94|     88|     21.5|    21.9|    21.0|      952.9|     953.0|     952.5|    0.3|      1|    1.8|  439.06|      0|
-|01/01/2020 |   1|   1|    9|      24.7|     24.8|     23.5|      82|     88|     81|     21.5|    21.6|    20.7|      953.0|     953.0|     952.7|    1.5|    353|    2.7| 1170.25|      0|
-|01/01/2020 |   1|   1|   10|      25.1|     25.3|     24.7|      81|     83|     79|     21.8|    22.0|    21.3|      953.2|     953.2|     952.7|    1.5|    250|    3.7|  795.01|      0|
+|DATA       | DIA| MES| HORA| TEMP_INST| TEMP_MAX| TEMP_MIN| UM_INST| UM_MAX| UM_MIN| ORV_INST| ORV_MAX| ORV_MIN| PRESS_INST| PRESS_MAX| PRESS_MIN| VEL_VE| DIR_VE| RAJ_VE| RADIAC| PRECIP|
+|:----------|---:|---:|----:|---------:|--------:|--------:|-------:|------:|------:|--------:|-------:|-------:|----------:|---------:|---------:|------:|------:|------:|------:|------:|
+|01/01/2020 |   1|   1|    1|      21.5|     22.0|     21.5|      94|     94|     92|     20.6|    20.9|    20.3|      952.8|     952.8|     952.7|      0|    216|    2.2|     NA|      0|
+|01/01/2020 |   1|   1|    2|      21.0|     21.5|     21.0|      95|     95|     94|     20.2|    20.5|    20.2|      952.2|     952.8|     952.2|      0|    194|    0.5|     NA|      0|
+|01/01/2020 |   1|   1|    3|      20.8|     21.0|     20.7|      96|     96|     95|     20.1|    20.2|    19.9|      951.6|     952.2|     951.5|      0|    194|    0.0|     NA|      0|
+|01/01/2020 |   1|   1|    4|      20.8|     21.0|     20.8|      96|     96|     96|     20.0|    20.3|    20.0|      951.6|     951.7|     951.5|      0|    180|    0.0|     NA|      0|
+|01/01/2020 |   1|   1|    5|      21.1|     21.2|     20.8|      96|     96|     96|     20.3|    20.5|    20.0|      951.8|     951.9|     951.6|      0|    186|    0.0|     NA|      0|
 
 
 * DATA: A data do ano.
@@ -71,6 +69,59 @@ knitr::kable(head(clima, n = 10), booktabs = TRUE, digits = 3)
 <a href="http://bit.ly/inmet_fred_2020_xlsx" target="_blank" rel="noopener">
   <button class="btn btn-success"><i class="fa fa-save"></i> Download inmet_fred_2020.xlsx</button>
 </a>
+
+
+------------------------------------------
+
+
+
+O segundo conjunto de dados `inmet_pf_2020` apresenta dados da [Estação Convencional de Passo Fundo](https://bdmep.inmet.gov.br/) totalizando 984 observações. Os dados são importados diretamente no software R com
+
+```r
+clima_pf <- import("https://bit.ly/inmet_pf_2020")
+# Primeiras 5 linhas
+knitr::kable(head(clima_pf, n = 5), booktabs = TRUE, digits = 3)
+```
+
+
+
+|DATA       | HORA| PREC| P_EST|  TBS|  TBU|  ES_TS|  ES_TU|      E|    URA| DELTA_E|    TPO|     UA|     US|     R|     Q|
+|:----------|----:|----:|-----:|----:|----:|------:|------:|------:|------:|-------:|------:|------:|------:|-----:|-----:|
+|01/01/2020 |    0| 13.4| 932.2| 21.6| 21.0| 25.800| 24.869| 24.383| 94.506|   1.417| 18.420| 17.927| 18.969| 0.017| 0.016|
+|01/01/2020 |   12|  0.0| 930.8| 23.1| 21.8| 28.263| 26.117| 25.064| 88.682|   3.199| 18.787| 18.335| 20.675| 0.017| 0.017|
+|01/01/2020 |   18|  2.5| 929.6| 24.6| 21.4| 30.929| 25.486| 22.894| 74.022|   8.035| 17.582| 16.663| 22.511| 0.016| 0.016|
+|02/01/2020 |    0|  6.7| 931.6| 22.7| 21.7| 27.587| 25.958| 25.148| 91.160|   2.439| 18.832| 18.421| 20.208| 0.017| 0.017|
+|02/01/2020 |   12|  0.0| 934.4| 19.5| 18.4| 22.668| 21.164| 20.273| 89.435|   2.395| 15.964| 15.012| 16.786| 0.014| 0.014|
+
+DATA	HORA	PREC	P_EST	TBS	TBU	ES_TS	ES_TU	E	URA	DELTA_E	TPO	UA	US	R	Q
+
+
+
+* DATA: A data do ano.
+* HORA: A hora do dia.
+* PREC: Precipitação pluviometrica (mm).
+* P_EST: Pressão atmosférica na estação (hPa)
+* TBS e TBU: Temperatura em bulbo seco e úmido, respectivamente (ºC)
+* ES_TS e	* ES_TU: Pressão de saturação na temperatura de bulbo seco e úmido, respectivamente (hPa)
+* E: Pressão real do vapor d’água (hPa)
+* URA: Umidade relativa do ar (%)
+* DELTA_E: Déficit de saturação (hPa)
+* TPO: Temperatura no ponto de orvalho (ºC)
+* UA e US: Umidade absoluta e Umidade de saturação (g de vapor por m\\({-3}\\) de ar úmido)
+* R: Razão de mistura (g vapor / g ar seco)
+* Q: Umidade específica (g vapor / g ar úmido)
+
+
+<a href="https://bit.ly/inmet_pf_2020" target="_blank" rel="noopener">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download inmet_pf_2020.csv</button>
+</a>
+
+
+<a href="http://bit.ly/inmet_pf_2020_xlsx" target="_blank" rel="noopener">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download inmet_pf_2020.xlsx</button>
+</a>
+
+
 
 
 
