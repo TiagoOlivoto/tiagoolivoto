@@ -85,7 +85,8 @@ ggplot(clima) +
 <img src="/tutorials/agrolimatologia/04_umidade_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 
-# 
+# Variáveis quantificadoras 
+
 
 ```r
 df_pf <- import("http://bit.ly/inmet_pf_2020")

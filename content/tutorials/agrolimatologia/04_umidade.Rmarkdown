@@ -83,7 +83,8 @@ ggplot(clima) +
 ```
 
 
-# 
+# Variáveis quantificadoras 
+
 ```{r}
 df_pf <- import("http://bit.ly/inmet_pf_2020")
 ```
