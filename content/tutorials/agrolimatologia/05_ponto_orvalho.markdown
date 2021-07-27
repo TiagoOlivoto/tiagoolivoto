@@ -52,22 +52,8 @@ ggplot(df_horas, aes(HORA, UM_INST, color = factor(DATA), group = DATA)) +
 
 <img src="/tutorials/agrolimatologia/05_ponto_orvalho_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
+
 # Média mensal da soma diária de horas com UR > 90%
-
-```r
-df
-```
-
-```
-## function (x, df1, df2, ncp, log = FALSE) 
-## {
-##     if (missing(ncp)) 
-##         .Call(C_df, x, df1, df2, log)
-##     else .Call(C_dnf, x, df1, df2, ncp, log)
-## }
-## <bytecode: 0x000000002b89e090>
-## <environment: namespace:stats>
-```
 
 ```r
 # número de horas com UR > 90%
@@ -76,8 +62,7 @@ clima_fred %>%
   select(DATA, HORA, MES, UM_INST) %>% 
   mutate(NHUR = ifelse(UM_INST > 90, 1, 0)) %>% 
   sum_by(DATA, MES) %>% 
-  select_cols(DATA, MES, NHUR) %>% 
-  means_by(MES)
+  select(DATA, MES, NHUR)
 ```
 
 ```
@@ -91,6 +76,50 @@ clima_fred %>%
 ```
 
 ```r
+knitr::kable(head(df_horas2, n = 12), booktabs = TRUE)
+```
+
+
+
+|DATA       | MES| NHUR|
+|:----------|---:|----:|
+|01/01/2020 |   1|   10|
+|01/02/2020 |   2|    7|
+|01/03/2020 |   3|    0|
+|01/04/2020 |   4|    0|
+|01/05/2020 |   5|    5|
+|01/06/2020 |   6|    9|
+|01/07/2020 |   7|    7|
+|01/08/2020 |   8|    0|
+|01/09/2020 |   9|    5|
+|01/10/2020 |  10|    0|
+|01/11/2020 |  11|    3|
+|01/12/2020 |  12|   10|
+
+```r
+df_horas2 <- means_by(df_horas2, MES)
+knitr::kable(df_horas2, booktabs = TRUE)
+```
+
+
+
+| MES|     NHUR|
+|---:|--------:|
+|   1| 4.516129|
+|   2| 4.344828|
+|   3| 1.774193|
+|   4| 3.566667|
+|   5| 7.322581|
+|   6| 7.800000|
+|   7| 6.548387|
+|   8| 3.225807|
+|   9| 4.100000|
+|  10| 2.290323|
+|  11| 3.766667|
+|  12| 4.000000|
+
+```r
+# gráfico
 ggplot(df_horas2, aes(factor(MES), NHUR)) + 
   geom_col() +
   geom_text(aes(label = round(NHUR, 2)),
@@ -112,10 +141,17 @@ ggplot(df_horas2, aes(factor(MES), NHUR)) +
 
 
 # Temperatura no ponto de orvalho
+A temperatura no ponto de orvalho (T\\(o\\)) considerando a temperatura do ar (t) e umidade relativa (ur) pode ser aproximada pela seguinte equação (https://pt.planetcalc.com/248/)
+
+
+$$
+T_{o}=\frac{b\left(\frac{a T}{b+t}+\ln ur \right)}{a-\left(\frac{a T}{b+t}+\ln ur\right)}
+$$
+Onde a = 17.27, b = 237.7, ln: logaritmo natural, \\(ur\\): umidade relativa do ar (de 0 a 1),
+
 
 ```r
-# Aproximação considerando a temperatura do ar (t) e umidade relativa (ur)
-# fórmula disponível em https://pt.planetcalc.com/248/
+# fórmula disponível
 get_tpo <- function(t, ur){
   a <- 17.27
   b <- 237.7
@@ -158,5 +194,4 @@ ggplot(df, aes(temp, ur)) +
 ```
 
 <img src="/tutorials/agrolimatologia/05_ponto_orvalho_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-
 
