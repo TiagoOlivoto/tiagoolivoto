@@ -86,6 +86,50 @@ ggplot(df_horas2, aes(factor(MES), NHUR)) +
 
 ```
 
+# Período de molhamento foliar vs doenças de plantas
+
+O gráfico desta seção apresenta a [área abaixo da curva do progresso da doença](https://www.apsnet.org/edcenter/disimpactmngmnt/topc/EcologyAndEpidemiologyInR/DiseaseProgress/Pages/AUDPC.aspx#:~:text=The%20area%20under%20the%20disease%20progress%20curve%20(%20AUDPC%20)%20is%20a,%2C%20locations%2C%20or%20management%20tactics.) (AACPD) em função da temperatura do ar e período de molhamento foliar.
+
+> Referência: JULIATTI, B. C. M.; POZZA, E. A.; JULIATTI, F. C. Severity of rust infection in soybean genotypes with partial resistance as a function of temperature and leaf wetness duration. Genetics and Molecular Research, 2021. v. 20, n. 2, p. gmr18781.
+
+<i class="fas fa-link"></i> Veja como [quantificar a área foliar doente](https://www.researchgate.net/publication/353021781_Measuring_plant_disease_severity_in_R_introducing_and_evaluating_the_pliman_package) usando imagens de folhas no pacote `pliman`.
+
+```{r}
+# modelo AACPD
+# x = temperatura (ºC)
+# y = molhamento foliar (h)
+get_audpc <- function(x, y){
+  204.95 * exp(-0.5 * ((( x - 23.39) / 2.74)^2 + (( y - 30.35) / 18.44)^2))
+}
+
+temp <- seq(15, 30, by = 0.1)
+mol <- seq(0, 36, by = 0.1)
+df <- 
+  expand_grid(temp, mol) %>% 
+  mutate(audpc = get_audpc(temp, mol))
+
+# criando o gráfico
+ggplot(df, aes(temp, mol, z = audpc, fill = audpc)) + 
+  geom_tile() +
+  scale_fill_gradient(low = "green", high = "red") +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  guides(fill = guide_colourbar(barheight = unit(8, "cm"),
+                                title = element_blank())) +
+  labs(title = "Área abaixo da curva do progresso da doença (P. pachyrhizi em soja)",
+       subtitle = "Função da temperatura e duração do período de molhamento foliar\nFonte: Adaptado de Juliatti et al. (2021) - https://bit.ly/3j6JVqS",
+       caption = "Elaboração: Prof. Tiago Olivoto",
+       x = "Temperatura do ar (ºC)",
+       y = "Número de horas com molhamento foliar") +
+  theme_metan() +
+  theme(legend.position = "right")
+
+
+```
+
+
+
+
 
 # Temperatura no ponto de orvalho
 A temperatura no ponto de orvalho (T\\(o\\)) considerando a temperatura do ar (t) e umidade relativa (ur) pode ser aproximada pela seguinte equação (https://pt.planetcalc.com/248/)
