@@ -2,7 +2,12 @@
 toc: true
 title: Toward an effective multivariate selection in biological experiments
 author: Tiago Olivoto
-date: '2020-11-23'
+date: '2021-19-21'
+url_source: https://github.com/TiagoOlivoto/metan/blob/master/R/mgidi.R
+url_code: https://bit.ly/3icfEHJ
+url_dataset: https://data.mendeley.com/datasets/p724jxkzmd/2
+url_pdf: https://academic.oup.com/bioinformatics/article/37/10/1383/5998663?guestAccessKey=79faf1a1-64a8-4ad5-bd72-0e5953e6a167
+url_preprint: https://www.biorxiv.org/content/10.1101/2020.07.23.217778v3
 slug: []
 categories:
   - metan

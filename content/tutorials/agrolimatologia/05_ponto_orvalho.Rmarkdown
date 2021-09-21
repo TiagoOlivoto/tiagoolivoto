@@ -142,6 +142,7 @@ Onde a = 17.27, b = 237.7, ln: logaritmo natural, \\(ur\\): umidade relativa do 
 
 ```{r}
 # fórmula disponível
+
 get_tpo <- function(t, ur){
   a <- 17.27
   b <- 237.7

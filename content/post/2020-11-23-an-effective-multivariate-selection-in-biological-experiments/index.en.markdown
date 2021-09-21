@@ -2,7 +2,12 @@
 toc: true
 title: Toward an effective multivariate selection in biological experiments
 author: Tiago Olivoto
-date: '2020-11-23'
+date: '2021-19-21'
+url_source: https://github.com/TiagoOlivoto/metan/blob/master/R/mgidi.R
+url_code: https://bit.ly/3icfEHJ
+url_dataset: https://data.mendeley.com/datasets/p724jxkzmd/2
+url_pdf: https://academic.oup.com/bioinformatics/article/37/10/1383/5998663?guestAccessKey=79faf1a1-64a8-4ad5-bd72-0e5953e6a167
+url_preprint: https://www.biorxiv.org/content/10.1101/2020.07.23.217778v3
 slug: []
 categories:
   - metan
@@ -88,13 +93,13 @@ library(metan)
 # Registered S3 method overwritten by 'GGally':
 #   method from   
 #   +.gg   ggplot2
-# |========================================================|
-# | Multi-Environment Trial Analysis (metan) v1.13.0       |
-# | Author: Tiago Olivoto                                  |
-# | Type 'citation('metan')' to know how to cite metan     |
-# | Type 'vignette('metan_start')' for a short tutorial    |
-# | Visit 'https://bit.ly/2TIq6JE' for a complete tutorial |
-# |========================================================|
+# |=========================================================|
+# | Multi-Environment Trial Analysis (metan) v1.15.0        |
+# | Author: Tiago Olivoto                                   |
+# | Type 'citation('metan')' to know how to cite metan      |
+# | Type 'vignette('metan_start')' for a short tutorial     |
+# | Visit 'https://bit.ly/pkgmetan' for a complete tutorial |
+# |=========================================================|
 data <-
   read.csv("https://bit.ly/2Z0A7FL", sep = ";") %>%
   as_factor(GEN, BLOCK) 

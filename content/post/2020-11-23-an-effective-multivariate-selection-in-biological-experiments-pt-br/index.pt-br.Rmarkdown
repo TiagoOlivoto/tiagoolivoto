@@ -2,7 +2,6 @@
 toc: true
 title: Em direção a uma seleção multivariada eficaz em experimentos biológicos
 author: Tiago Olivoto
-date: '2020-11-23'
 slug: []
 categories:
   - metan
@@ -16,6 +15,12 @@ subtitle: ''
 summary: 'Encontre mais detalhes sobre o índice MGIDI'
 authors: [Tiago Olivoto]
 lastmod: '2020-11-23T14:26:53-03:00'
+date: '2021-19-21'
+url_source: https://github.com/TiagoOlivoto/metan/blob/master/R/mgidi.R
+url_code: https://bit.ly/3icfEHJ
+url_dataset: https://data.mendeley.com/datasets/p724jxkzmd/2
+url_pdf: https://academic.oup.com/bioinformatics/article/37/10/1383/5998663?guestAccessKey=79faf1a1-64a8-4ad5-bd72-0e5953e6a167
+url_preprint: https://www.biorxiv.org/content/10.1101/2020.07.23.217778v3
 featured: no
 image:
   caption: ''

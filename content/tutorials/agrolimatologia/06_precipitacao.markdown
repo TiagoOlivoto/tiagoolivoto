@@ -1,0 +1,27 @@
+---
+title: Precipitação pluviométrica
+linktitle: "6. Precipitação pluviométrica"
+toc: true
+type: docs
+date: "2021/07/09"
+draft: false
+code_download: true
+menu:
+  climato:
+    parent: Agroclimatologia
+    weight: 7
+weight: 6
+---
+
+# Pacotes
+
+```r
+library(tidyverse)  # manipulação de dados
+library(metan)      # manipulação de dados 
+library(rio)        # importação/exportação de dados
+
+clima_fred <- import("https://bit.ly/inmet_fred_2020")
+```
+
+
+
