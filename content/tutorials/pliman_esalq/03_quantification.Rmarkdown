@@ -1,0 +1,173 @@
+---
+title: Fitopatometria
+linktitle: "3. Fitopatometria"
+toc: true
+type: docs
+date: "2021/09/28"
+draft: false
+df_print: paged
+code_download: true
+menu:
+  plimanesalq:
+    parent: pliman
+    weight: 4
+weight: 3
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_esalq/leaves")
+```
+
+# Diretório das imagens
+```{r eval=FALSE}
+# mudar de acordo com a pasta em seu computador
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_esalq/leaves")
+```
+
+
+# Severidade da doença
+## Utilizando paletas
+
+```{r doença1, fig.width = 12, fig.height = 3}
+library(pliman)
+img <- image_import("img_1.jpeg")
+h <- image_import("h_img1.png")
+d <- image_import("d_img1.png")
+b <- image_import("b_img1.png")
+image_combine(img, h, d, b, ncol = 4)
+```
+
+
+### Padrão da função
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE)
+```
+
+
+### Mostrando preenchimento das lesões
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE,
+                  show_contour = FALSE)
+```
+
+
+### Mostrando uma máscara
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE,
+                  show_contour = FALSE,
+                  show_original = FALSE)
+```
+
+
+### Segmentando as lesões
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE,
+                  show_contour = FALSE,
+                  segment = TRUE,
+                  show_segmentation = TRUE)
+```
+
+
+### Analisar as lesões
+```{r}
+feat <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE,
+                  show_contour = FALSE,
+                  segment = TRUE,
+                  show_segmentation = TRUE,
+                  show_features = TRUE)
+```
+
+
+### A little bit more!
+```{r}
+sev_img2 <- 
+  measure_disease(img = "img_2",
+                  img_healthy = "h_img2",
+                  img_symptoms = "d_img2",
+                  img_background = "b_img2",
+                  show_image = TRUE,
+                  show_contour = FALSE,
+                  col_background  = "black")
+```
+
+
+
+## Utilizando índices RGB
+Para identificar o melhor índice para segmentar a imagem do fundo e após as lesões da folha sadia, pode-se utilizar a função `image_segment_iter`. (OBS. somente funcionará em uma seção iterativa).
+
+
+```{r eval=FALSE}
+image_segment_iter(img)
+
+```
+
+Após escolhidos os índices, podemos utilizar os argumentos `index_lb` e `index_dh` para segmentação da folha e fundo | lesão e sadio, respectivamente.
+
+```{r}
+# após escolhidos os índices, utiliza
+sev_index <- 
+  measure_disease(img, 
+                  index_lb = "G",
+                  index_dh = "NGRDI",
+                  show_image = TRUE)
+```
+
+
+## Processamento em lote
+Para analisar diversas imagens de um diretório, utiliza-se o argumento `pattern`, para declarar um padrão de nomes de arquivos. Serão utilizadas 15 folhas de soja disponíveis no repositório  https://osf.io/4hbr6, um banco de dados de imagens de anotação de severidade de doenças de plantas. Obrigado a [Emerson M. Del Ponte](https://osf.io/jb6yd/) e seus colaboradores por manter este projeto disponível publicamente.
+
+```{r}
+
+system.time(
+sev_lote <- 
+  measure_disease(pattern = "soy",
+                  img_healthy = "h_s",
+                  img_symptoms = "d_s",
+                  img_background = "b_s",
+                  verbose = FALSE)
+)
+sev_lote
+```
+
+
+
+Para acelerar o tempo de processamento quando várias imagens estão disponíveis, pode-se utilizar o argumento `paralell`. Isto criará múltiplas seções R em segundo plano, sendo cada uma responsável pelo processamento de uma parte das imagens.
+
+```{r}
+system.time(
+sev_lote <- 
+  measure_disease(pattern = "soy",
+                  img_healthy = "h_s",
+                  img_symptoms = "d_s",
+                  img_background = "b_s",
+                  verbose = FALSE,
+                  parallel = TRUE)
+)
+sev_lote
+```
+
