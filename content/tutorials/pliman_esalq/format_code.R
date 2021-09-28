@@ -1,11 +1,11 @@
 
-idpedu::mergeRMDFiles(dir = "E:/Desktop/tiagoolivoto/content/tutorials/gemsr",
-                      title = "Scripts R - GEMS-R: metan", 
-                      files = list.files("E:/Desktop/tiagoolivoto/content/tutorials/gemsr",
+idpedu::mergeRMDFiles(dir = "E:/Desktop/tiagoolivoto/content/tutorials/pliman_esalq",
+                      title = "Scripts R - pliman", 
+                      files = list.files("E:/Desktop/tiagoolivoto/content/tutorials/pliman_esalq",
                                          pattern = "*.Rmarkdown",
                                          full.names = TRUE)[-1], 
-                      mergedFileName = "scripts_gemsr.Rmd")
+                      mergedFileName = "scripts_pliman.Rmd")
 
 
-knitr::purl("E:/Desktop/tiagoolivoto/content/tutorials/gemsr/scripts_gemsr.Rmd")
+knitr::purl("E:/Desktop/tiagoolivoto/content/tutorials/pliman_esalq/scripts_pliman.Rmd")
 

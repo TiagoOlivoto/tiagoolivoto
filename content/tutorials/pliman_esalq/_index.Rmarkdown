@@ -224,7 +224,12 @@ library(rio)        # importação/exportação de dados
 
 # <i class="fas fa-database"></i> Imagens e orientações
 
-Sugere-se que as imagens sejam baixadas (arquivo zip) e inseridas dentro da subpasta `imgs`, dentro do diretório padrão. Em meu exemplo, o diretório 
+Sugere-se que as imagens sejam baixadas e a pasta definida como diretório padrão. Em meu exemplo, setei o seguinte caminho como diretório padrão.
+
+```{r eval=FALSE}
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_esalq/leaves")
+```
+
 
 
 <a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_esalq/leaves.rar">
@@ -235,23 +240,15 @@ Sugere-se que as imagens sejam baixadas (arquivo zip) e inseridas dentro da subp
 
 # <i class="fas fa-scroll"></i> Scripts
 
-* <i class="fab fa-r-project fa-2x"></i> <a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/gemsr/scripts_gemsr_R.rar">
-<button class="btn btn-success"><i class="fa fa-save"></i> Download scripts em formato .R</button>
+<i class="fab fa-markdown fa-2x"></i> <a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_esalq/scripts.rar">
+<button class="btn btn-success"><i class="fa fa-save"></i> Download dos scripts</button>
 </a>
-
-* <i class="fab fa-markdown fa-2x"></i> <a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/gemsr/scripts_gemsr_Rmd.rar">
-<button class="btn btn-success"><i class="fa fa-save"></i> Download scripts em formato .Rmd</button>
-</a>
-
-
-</p>
-</p>
 
 <br>
 
 # <i class="fas fa-tv"></i> Slides
 
-Página com acesso aos slides <a href="https://tiagoolivoto.github.io/slides_R/slides/pliman_esalq/index.html#1"><i class="fas fa-external-link-alt"></i></a>
+Página para acesso aos slides <a href="https://tiagoolivoto.github.io/slides_R/slides/pliman_esalq/index.html#1"><i class="fas fa-external-link-alt"></i></a>
 
 ```{r echo=FALSE}
 knitr::include_url('https://tiagoolivoto.github.io/slides_R/slides/pliman_esalq')
