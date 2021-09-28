@@ -29,6 +29,10 @@ setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_esalq/leaves")
 
 
 ```r
+# gerar tabelas html
+print_tbl <- function(table,  digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
 library(pliman)
 ```
 
@@ -82,7 +86,7 @@ sev <-
 
 ```
 ##   healthy symptomatic
-##  76.56085    23.43915
+##  75.86151    24.13849
 ```
 
 
@@ -102,7 +106,7 @@ sev <-
 
 ```
 ##   healthy symptomatic
-##  75.59873    24.40127
+##  76.78864    23.21136
 ```
 
 
@@ -123,7 +127,7 @@ sev <-
 
 ```
 ##   healthy symptomatic
-##  75.28925    24.71075
+##  76.59556    23.40444
 ```
 
 
@@ -145,7 +149,7 @@ sev <-
 
 ```
 ##   healthy symptomatic
-##  75.55387    24.44613
+##  76.07694    23.92306
 ```
 
 
@@ -167,30 +171,75 @@ feat <-
 <img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 ```
-##   healthy symptomatic
-##  75.89289    24.10711
+##  healthy symptomatic
+##   75.625      24.375
+```
+
+```r
+print_tbl(feat$statistics)
+```
+
+
+
+|stat      |      value|
+|:---------|----------:|
+|n         |    412.000|
+|min_area  |     36.000|
+|mean_area |    450.502|
+|max_area  |   6664.000|
+|sd_area   |    584.490|
+|sum_area  | 185607.000|
+
+```r
+print_tbl(feat$shape[1:10, ])
+```
+
+
+
+| id|        x|       y| area| perimeter| radius_mean| radius_min| radius_max| radius_sd| radius_ratio| major_axis| eccentricity|  theta|
+|--:|--------:|-------:|----:|---------:|-----------:|----------:|----------:|---------:|------------:|----------:|------------:|------:|
+|  1| 1061.009| 274.681| 6664|       367|      46.853|     21.509|     68.537|    10.779|        3.186|    116.512|        0.675| -0.091|
+|  2| 1058.969| 361.470| 5457|       366|      41.103|     24.348|     53.966|     6.627|        2.216|     90.701|        0.420| -1.477|
+|  3|  461.585| 535.516| 6113|       404|      44.649|     24.678|     64.244|     8.967|        2.603|    112.833|        0.758| -0.170|
+|  4|  634.892| 690.333| 2840|       276|      30.600|     14.867|     44.739|     7.240|        3.009|     73.637|        0.623|  1.199|
+|  5|  773.889| 402.566| 1760|       168|      23.287|     18.290|     30.875|     2.855|        1.688|     54.099|        0.611|  1.057|
+|  6|  789.810| 304.597| 1543|       170|      21.929|     10.851|     29.622|     4.637|        2.730|     51.998|        0.541| -0.347|
+|  7|  810.856| 331.917| 1452|       161|      21.785|     12.562|     31.720|     5.177|        2.525|     58.797|        0.816| -0.121|
+|  8|  331.143| 534.896| 1217|       135|      19.408|     13.383|     25.057|     2.829|        1.872|     46.217|        0.653|  1.553|
+|  9| 1123.506| 351.704| 1998|       210|      25.201|     15.431|     35.190|     4.796|        2.280|     60.689|        0.652| -0.610|
+| 10| 1098.732| 482.138| 2208|       198|      26.837|     14.709|     39.704|     6.706|        2.699|     73.287|        0.824|  0.964|
+
+```r
+# corrigir as medidas (dpi = 100)
+feat_corrected <- get_measures(feat, dpi = 150)
 ```
 
 
 ### A little bit more!
 
 ```r
+# library(pliman)
 sev_img2 <- 
   measure_disease(img = "img_2",
                   img_healthy = "h_img2",
                   img_symptoms = "d_img2",
                   img_background = "b_img2",
-                  show_image = TRUE,
+                  show_image = FALSE,
                   show_contour = FALSE,
                   col_background  = "black")
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-7-1.png" width="672" />
-
 ```
 ##   healthy symptomatic
-##  91.71006    8.289937
+##  91.59298     8.40702
 ```
+
+```r
+imgs <- image_import(c("img_2.jpeg", "mask_im2.jpeg"))
+image_combine(imgs)
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
 
 
@@ -229,54 +278,74 @@ Para analisar diversas imagens de um diretório, utiliza-se o argumento `pattern
 
 ```r
 system.time(
-sev_lote <- 
-  measure_disease(pattern = "soy",
-                  img_healthy = "h_s",
-                  img_symptoms = "d_s",
-                  img_background = "b_s",
-                  verbose = FALSE)
+  sev_lote <- 
+    measure_disease(pattern = "soy",
+                    img_healthy = "h_s",
+                    img_symptoms = "d_s",
+                    img_background = "b_s",
+                    verbose = FALSE)
 )
 ```
 
 ```
 ##   usuário   sistema decorrido 
-##     13.72      0.66     14.42
+##     13.83      0.81     14.70
 ```
 
 ```r
-sev_lote
+print_tbl(sev_lote)
 ```
 
-```
-## $severity
-##       img  healthy symptomatic
-## 1   soy_1 92.44382    7.556183
-## 2  soy_10 84.89943   15.100569
-## 3  soy_11 16.26823   83.731769
-## 4  soy_12 65.95639   34.043610
-## 5  soy_13 76.02780   23.972199
-## 6  soy_14 62.62902   37.370982
-## 7  soy_15 60.37721   39.622786
-## 8  soy_16 43.91801   56.081993
-## 9  soy_17 79.72006   20.279940
-## 10 soy_18 54.59130   45.408695
-## 11 soy_19 89.02782   10.972181
-## 12  soy_2 67.69513   32.304874
-## 13 soy_20 52.00233   47.997673
-## 14  soy_3 59.90982   40.090181
-## 15  soy_4 41.66647   58.333535
-## 16  soy_5 82.67392   17.326077
-## 17  soy_6 76.41246   23.587537
-## 18  soy_7 75.72521   24.274789
-## 19  soy_8 70.02609   29.973914
-## 20  soy_9 51.89651   48.103488
-## 
-## $shape
-## NULL
-## 
-## $stats
-## NULL
-```
+
+
+<table class="kable_wrapper">
+<tbody>
+  <tr>
+   <td> 
+
+|img    | healthy| symptomatic|
+|:------|-------:|-----------:|
+|soy_1  |  92.775|       7.225|
+|soy_10 |  84.817|      15.183|
+|soy_11 |  16.272|      83.728|
+|soy_12 |  66.426|      33.574|
+|soy_13 |  78.987|      21.013|
+|soy_14 |  67.014|      32.986|
+|soy_15 |  59.034|      40.966|
+|soy_16 |  41.933|      58.067|
+|soy_17 |  77.087|      22.913|
+|soy_18 |  53.244|      46.756|
+|soy_19 |  86.296|      13.704|
+|soy_2  |  62.783|      37.217|
+|soy_20 |  51.108|      48.892|
+|soy_3  |  57.907|      42.093|
+|soy_4  |  47.077|      52.923|
+|soy_5  |  82.189|      17.811|
+|soy_6  |  72.604|      27.396|
+|soy_7  |  75.456|      24.544|
+|soy_8  |  69.705|      30.295|
+|soy_9  |  53.348|      46.652|
+
+ </td>
+   <td> 
+
+||
+||
+||
+||
+
+ </td>
+   <td> 
+
+||
+||
+||
+||
+
+ </td>
+  </tr>
+</tbody>
+</table>
 
 
 
@@ -285,53 +354,18 @@ Para acelerar o tempo de processamento quando várias imagens estão disponívei
 
 ```r
 system.time(
-sev_lote <- 
-  measure_disease(pattern = "soy",
-                  img_healthy = "h_s",
-                  img_symptoms = "d_s",
-                  img_background = "b_s",
-                  verbose = FALSE,
-                  parallel = TRUE)
+  sev_lote <- 
+    measure_disease(pattern = "soy",
+                    img_healthy = "h_s",
+                    img_symptoms = "d_s",
+                    img_background = "b_s",
+                    verbose = FALSE,
+                    parallel = TRUE)
 )
 ```
 
 ```
 ##   usuário   sistema decorrido 
-##      0.23      0.03      8.54
-```
-
-```r
-sev_lote
-```
-
-```
-## $severity
-##       img  healthy symptomatic
-## 1   soy_1 92.29352     7.70648
-## 2  soy_10 84.73562    15.26438
-## 3  soy_11 15.74749    84.25251
-## 4  soy_12 65.92660    34.07340
-## 5  soy_13 80.29746    19.70254
-## 6  soy_14 61.90905    38.09095
-## 7  soy_15 58.18944    41.81056
-## 8  soy_16 42.51483    57.48517
-## 9  soy_17 77.48612    22.51388
-## 10 soy_18 57.38100    42.61900
-## 11 soy_19 87.79691    12.20309
-## 12  soy_2 68.76875    31.23125
-## 13 soy_20 51.17884    48.82116
-## 14  soy_3 58.49024    41.50976
-## 15  soy_4 45.60417    54.39583
-## 16  soy_5 84.50501    15.49499
-## 17  soy_6 77.37214    22.62786
-## 18  soy_7 74.92604    25.07396
-## 19  soy_8 70.29779    29.70221
-## 20  soy_9 53.61876    46.38124
-## 
-## $shape
-## NULL
-## 
-## $stats
-## NULL
+##      0.25      0.02      8.97
 ```
 

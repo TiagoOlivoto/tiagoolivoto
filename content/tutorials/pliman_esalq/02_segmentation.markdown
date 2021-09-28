@@ -81,13 +81,13 @@ segmented <- image_segment(img, index = c("R, G, B, NR, NG, NB"))
 
 <img src="/tutorials/pliman_esalq/02_segmentation_files/figure-html/segmentação3-1.png" width="960" />
 
-Parece que o índice "G" proporcionou melhor segmentação. 
+Parece que o índice `"G"` proporcionou melhor segmentação. 
 
 
 
 # Produzindo uma imagem binária
 
-Também podemos produzir uma imagem binária com `image_binary()`. A título de curiosidade, usaremos os índices `" B "`(azul). Por padrão, `image_binary()` redimensiona a imagem para 30% do tamanho da imagem original para acelerar o tempo de computação. Use o argumento `resize = FALSE` para produzir uma imagem binária com o tamanho original.
+Também podemos produzir uma imagem binária com `image_binary()`. A título de curiosidade, usaremos os índices `"B"` (azul). Por padrão, `image_binary()` redimensiona a imagem para 30% do tamanho da imagem original para acelerar o tempo de computação. Use o argumento `resize = FALSE` para produzir uma imagem binária com o tamanho original.
 
 
 ```r

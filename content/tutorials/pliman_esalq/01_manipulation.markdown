@@ -36,173 +36,196 @@ plot(img)
 
 
 
-Para importar uma lista de imagens, o argumento `pattern` da função` image_import() `é usado. Todas as imagens que correspondem ao nome do padrão são importadas para uma lista.
+Para importar uma lista de imagens, o argumento `pattern` da função `image_import()` é usado. Todas as imagens que correspondem ao nome do padrão são importadas para uma lista.
 
 
 ```r
-soy_list <-
-  image_import(pattern = "soy_") # escolha o diretório do caminho
-names(soy_list)
+img_list <-
+  image_import(pattern = "img_")
+names(img_list)
 ```
 
 ```
-##  [1] "soy_1.jpg"  "soy_10.jpg" "soy_11.jpg" "soy_12.jpg" "soy_13.jpg"
-##  [6] "soy_14.jpg" "soy_15.jpg" "soy_16.jpg" "soy_17.jpg" "soy_18.jpg"
-## [11] "soy_19.jpg" "soy_2.jpg"  "soy_20.jpg" "soy_3.jpg"  "soy_4.jpg" 
-## [16] "soy_5.jpg"  "soy_6.jpg"  "soy_7.jpg"  "soy_8.jpg"  "soy_9.jpg"
+## [1] "img_1.jpeg" "img_2.jpeg"
 ```
 
 
 
-
-<!-- ## Exibindo imagens -->
-<!-- Imagens individuais são exibidas com `plot()`. Para combinar imagens, a função `image_combine()` é usada. Os usuários podem informar uma lista de objetos separados por vírgulas ou uma lista de objetos da classe `Image`. -->
-
-<!-- ```{r display1, fig.width = 12} -->
-<!-- # Imagens individuais -->
-<!-- plot(soy) -->
-
-<!-- ``` -->
+# Exibindo imagens
+Imagens individuais são exibidas com `plot()`. Para combinar imagens, a função `image_combine()` é usada. Os usuários podem informar uma lista de objetos separados por vírgulas ou uma lista de objetos da classe `Image`.
 
 
+```r
+# Imagens individuais
+plot(img)
+```
 
-<!-- ```{r display2, fig.width = 12} -->
-<!-- # Combine imagens -->
-<!-- image_combine(soy, soja2) -->
-
-<!-- # Combine imagens -->
-<!-- image_combine(soy_list) -->
-
-
-<!-- ``` -->
-
-
-<!-- ## Manipulando imagens -->
-
-
-<!-- `pliman` fornece um conjunto de funções` image _ *() `para realizar a manipulação de imagens e transformação de imagens exclusivas ou uma lista de imagens baseada no [pacote EBImage](https://www.bioconductor.org/packages/release/ bioc/vignettes/EBImage/inst/doc/EBImage-Introduction.html). -->
-
-<!-- ### Redimensionar uma imagem -->
-<!-- Às vezes, o redimensionamento de imagens de alta resolução é necessário para reduzir o tempo de processamento. A função `image_resize()` é usada para redimensionar uma imagem. O argumento `rel_size` pode ser usado para redimensionar a imagem por tamanho relativo. Por exemplo, definindo `rel_size = 50` para uma imagem de largura 1280 x 720, a nova imagem terá um tamanho de 640 x 360. Isso é útil para acelerar o tempo de análise, como aqueles calculados com` analyze_objects` e `measure_disease()`. -->
-
-<!-- ```{r manipulate1} -->
-<!-- dimensão_da_imagem(soja) -->
-<!-- soy_resized <- image_resize(soy, rel_size = 50) -->
-<!-- image_dimension(soy_resized) -->
-<!-- ``` -->
-
-
-<!-- ### Corta uma imagem -->
-<!-- Cortar imagens é útil para remover ruídos da borda da imagem, bem como para reduzir o tamanho das imagens antes do processamento. Para recortar uma imagem, a função `image_crop()` é usada. Os usuários precisam informar um vetor numérico indicando a faixa de pixels(`largura` e` altura`) que será mantida na imagem recortada. -->
-
-<!-- ```{r} -->
-<!-- crop1 <- -->
-<!--   image_crop(soja, -->
-<!--              largura = 170: 720, -->
-<!--              altura = 300: 650, -->
-<!--              plot = TRUE) -->
-<!-- ``` -->
-
-<!-- Se apenas `width` ou` height` forem informados, a imagem será recortada verticalmente ou horizontalmente. -->
-
-<!-- ```{r} -->
-<!-- colheita2 <- -->
-<!--   image_crop(soja, -->
-<!--              largura = 170: 720, -->
-<!--              plot = TRUE) -->
-<!-- ``` -->
-
-<!-- Se `width` e` height` estiverem faltando, um processo iterativo de corte da imagem é executado. -->
-
-<!-- ```{r eval = FALSE} -->
-<!-- # executa apenas em uma seção iterativa -->
-<!-- image_crop(soja) -->
-<!-- ``` -->
-
-
-<!-- Além disso, um processo de corte automatizado pode ser executado. Nesse caso, a imagem será cortada automaticamente na área de objetos com uma borda de cinco pixels por padrão. -->
-
-<!-- ```{r} -->
-<!-- auto_crop <- image_autocrop(soja, plot = TRUE) -->
-<!-- ``` -->
-
-
-<!-- A função `image_trim()` é usada para cortar pixels das bordas da imagem. -->
-
-
-<!-- ```{r manipulate2, fig.width = 10} -->
-<!-- # apara 100 pixels de todas as bordas -->
-<!-- soy_trim <- image_trim(soja, borda = 100, plot = TRUE) -->
-
-<!-- # O mesmo é alcançado com -->
-<!-- soy_trim2 <- -->
-<!--   image_trim(soja, -->
-<!--              top = 100, -->
-<!--              inferior = 100, -->
-<!--              esquerda = 100, -->
-<!--              direita = 100, -->
-<!--              plot = TRUE) -->
-
-<!-- # apara 200 pixels da parte superior e inferior -->
-<!-- soy_trim3 <- -->
-<!--   image_trim(soja, -->
-<!--              top = 200, -->
-<!--              inferior = 200, -->
-<!--              plot = TRUE) -->
-<!-- # apara para 5 pixels ao redor da área dos objetos -->
-
-<!-- ``` -->
+<img src="/tutorials/pliman_esalq/01_manipulation_files/figure-html/display1-1.png" width="1152" />
 
 
 
 
-<!-- ### Resolução da imagem(DPI) {#dpi} -->
-<!-- A função `dpi()` executa uma função interativa para calcular a resolução da imagem dada uma distância conhecida informada pelo usuário. Para calcular a resolução da imagem(dpi), o usuário deve usar o botão esquerdo do mouse para criar uma linha de distância conhecida. Isso pode ser feito, por exemplo, usando um modelo com distância conhecida na imagem(por exemplo, `leaves.JPG`). -->
+```r
+# Combine imagens
+image_combine(img_list)
+```
 
-<!-- ```{r eval = FALSE} -->
-<!-- # executado apenas em uma seção interativa -->
-<!-- folhas <- imagem_import("./ leaf_area/leaves.JPG") -->
-<!-- dpi(folhas) -->
-<!-- ``` -->
+<img src="/tutorials/pliman_esalq/01_manipulation_files/figure-html/display2-1.png" width="1152" />
 
 
-<!-- <iframe width = "760" height = "430" src = "https://www.youtube.com/embed/Rh10_pLgeng" title = "Player de vídeo do YouTube" frameborder = "0" allow = "acelerômetro; autoplay; área de transferência- gravação; mídia criptografada; giroscópio; imagem em imagem "allowfullscreen> </iframe> -->
+# Manipulando imagens
+
+
+`pliman` fornece um conjunto de funções `image_*()` para realizar a manipulação de imagens e transformação de imagens exclusivas ou uma lista de imagens baseada no [pacote EBImage](https://www.bioconductor.org/packages/release/bioc/vignettes/EBImage/inst/doc/EBImage-Introduction.html).
+
+## Redimensionar uma imagem
+Às vezes, o redimensionamento de imagens de alta resolução é necessário para reduzir o esforço computacional e tempo de processamento. A função `image_resize()` é usada para redimensionar uma imagem. O argumento `rel_size` pode ser usado para redimensionar a imagem por tamanho relativo. Por exemplo, definindo `rel_size = 50` para uma imagem de largura 1280 x 720, a nova imagem terá um tamanho de 640 x 360.
+
+
+```r
+image_dimension(img)
+```
+
+```
+## 
+## ----------------------
+## Image dimension
+## ----------------------
+## Width :  1600 
+## Height:  1062
+```
+
+```r
+img_resized <- image_resize(img, rel_size = 50)
+image_dimension(img_resized)
+```
+
+```
+## 
+## ----------------------
+## Image dimension
+## ----------------------
+## Width :  800 
+## Height:  531
+```
+
+
+## Cortar uma imagem
+Cortar imagens é útil para remover ruídos da borda da imagem, bem como para reduzir o tamanho das imagens antes do processamento. Para recortar uma imagem, a função `image_crop()` é usada. Os usuários precisam informar um vetor numérico indicando a faixa de pixels (`width` e `height`) que será mantida na imagem recortada.
+
+
+```r
+crop1 <-
+  image_crop(img,
+             width = 38:1530,
+             height = 168:874,
+             plot = TRUE)
+```
+
+<img src="/tutorials/pliman_esalq/01_manipulation_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+
+Se apenas `width` ou `height` forem informados, a imagem será recortada verticalmente ou horizontalmente.
+
+
+```r
+crop2 <-
+  image_crop(img,
+             width = 38:1530,
+             plot = TRUE)
+```
+
+<img src="/tutorials/pliman_esalq/01_manipulation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+
+Se `width` e `height` não forem declarados, um processo iterativo de corte da imagem é executado.
+
+
+```r
+# executa apenas em uma seção iterativa
+image_crop(img)
+```
+
+
+Além disso, um processo de corte automatizado pode ser executado. Nesse caso, a imagem será cortada automaticamente na área de objetos com uma borda de cinco pixels por padrão.
+
+
+```r
+auto_crop <- image_autocrop(img, plot = TRUE)
+```
+
+<img src="/tutorials/pliman_esalq/01_manipulation_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+
+
+A função `image_trim()` é usada para cortar pixels das bordas da imagem.
 
 
 
-<!-- ### Girar uma imagem -->
-<!-- `image_rotate()` é usado para girar a imagem no sentido horário pelo ângulo dado. -->
+```r
+# apara 100 pixels de todas as bordas
+img_trim <- image_trim(img, edge = 100, plot = TRUE)
 
-<!-- ```{r manipulate3} -->
-<!-- soy_rotated <- image_rotate(soja, ângulo = 45, plot = TRUE) -->
-<!-- ``` -->
+# O mesmo é alcançado com
+img_trim2 <-
+  image_trim(img,
+             top = 100,
+             bottom = 100,
+             left = 100,
+             right = 100,
+             plot = TRUE)
+```
 
+<img src="/tutorials/pliman_esalq/01_manipulation_files/figure-html/manipulate2-1.png" width="960" />
 
-<!-- ### Reflexão horizontal e vertical -->
-<!-- `image_hreflect()` e `image_vreflect()` executa reflexão vertical e horizontal de imagens, respectivamente. -->
+```r
+# apara 200 pixels da parte superior e inferior
+img_trim3 <-
+  image_trim(img,
+             top = 200,
+             bottom = 200,
+             plot = TRUE)
+```
 
-<!-- ```{r manipulate4, fig.width = 20} -->
-<!-- soy_hrefl <- image_hreflect(soja) -->
-<!-- soy_vrefl <- image_vreflect(soja) -->
-<!-- image_combine(soy, soy_hrefl, soy_vrefl, ncol = 3) -->
-<!-- ``` -->
-
-
-
-<!-- ### Conversão horizontal e vertical -->
-<!-- `image_horizontal()` e `image_vertical()` converte(se necessário) uma imagem em uma imagem horizontal ou vertical, respectivamente. -->
-
-<!-- ```{r manipulate5, fig.width = 20} -->
-<!-- soy_h <- imagem_horizontal(soja) -->
-<!-- soy_v <- imagem_vertical(soja) -->
-<!-- image_combine(soy, soy_h, soy_v, ncol = 3) -->
-
-<!-- ``` -->
+<img src="/tutorials/pliman_esalq/01_manipulation_files/figure-html/manipulate2-2.png" width="960" />
 
 
-<!-- ### Filtro, desfoque, contraste, dilatação e erosão -->
 
-<!-- ```{r manipulate6, fig.width = 10, -->
+
+## Resolução da imagem(DPI) {#dpi}
+A função `dpi()` executa uma função interativa para calcular a resolução da imagem dada uma distância conhecida informada pelo usuário. Para calcular a resolução da imagem(dpi), o usuário deve usar o botão esquerdo do mouse para criar uma linha de distância conhecida. Isso pode ser feito, por exemplo, usando um modelo com distância conhecida na imagem(por exemplo, `leaves.JPG`).
+
+
+```r
+# executado apenas em uma seção interativa
+rule <- image_import("rule.jpg", plot = TRUE)
+dpi(rule)
+```
+
+
+
+
+
+## Filtro, desfoque, contraste, dilatação e erosão
+
+
+```r
+img_filter <- image_filter(img)
+img_blur <- image_blur(img)
+img_contrast <- image_contrast(img)
+img_dilatation <- image_dilate(img)
+img_erosion <- image_erode(img)
+image_combine(img, img_filter, img_blur, img_contrast, img_dilatation, img_erosion)
+```
+
+<img src="/tutorials/pliman_esalq/01_manipulation_files/figure-html/manipulate6-1.png" width="960" />
+
+
+
+## Exportando imagens
+Para exportar imagens para o diretório atual, use a função `image_export()`. Se uma lista de imagens for exportada, as imagens serão salvas considerando o nome e a extensão presentes na lista. Se nenhuma extensão estiver presente, as imagens serão salvas como arquivos `* .jpg`.
+
+
+```r
+imagem_exportar(img, "img_exported.jpg")
+```
 
 
 

@@ -36,15 +36,14 @@ plot(img)
 
 
 
-Para importar uma lista de imagens, o argumento `pattern` da função` image_import() `é usado. Todas as imagens que correspondem ao nome do padrão são importadas para uma lista.
+Para importar uma lista de imagens, o argumento `pattern` da função `image_import()` é usado. Todas as imagens que correspondem ao nome do padrão são importadas para uma lista.
 
 ```{r import2}
 
 img_list <-
-  image_import(pattern = "img_") # escolha o diretório do caminho
+  image_import(pattern = "img_")
 names(img_list)
 ```
-
 
 
 
@@ -71,10 +70,10 @@ image_combine(img_list)
 # Manipulando imagens
 
 
-`pliman` fornece um conjunto de funções` image_*() `para realizar a manipulação de imagens e transformação de imagens exclusivas ou uma lista de imagens baseada no [pacote EBImage](https://www.bioconductor.org/packages/release/ bioc/vignettes/EBImage/inst/doc/EBImage-Introduction.html).
+`pliman` fornece um conjunto de funções `image_*()` para realizar a manipulação de imagens e transformação de imagens exclusivas ou uma lista de imagens baseada no [pacote EBImage](https://www.bioconductor.org/packages/release/bioc/vignettes/EBImage/inst/doc/EBImage-Introduction.html).
 
 ## Redimensionar uma imagem
-Às vezes, o redimensionamento de imagens de alta resolução é necessário para reduzir o tempo de processamento. A função `image_resize()` é usada para redimensionar uma imagem. O argumento `rel_size` pode ser usado para redimensionar a imagem por tamanho relativo. Por exemplo, definindo `rel_size = 50` para uma imagem de largura 1280 x 720, a nova imagem terá um tamanho de 640 x 360. Isso é útil para acelerar o tempo de análise, como aqueles calculados com` analyze_objects` e `measure_disease()`.
+Às vezes, o redimensionamento de imagens de alta resolução é necessário para reduzir o esforço computacional e tempo de processamento. A função `image_resize()` é usada para redimensionar uma imagem. O argumento `rel_size` pode ser usado para redimensionar a imagem por tamanho relativo. Por exemplo, definindo `rel_size = 50` para uma imagem de largura 1280 x 720, a nova imagem terá um tamanho de 640 x 360.
 
 ```{r manipulate1}
 image_dimension(img)
@@ -83,8 +82,8 @@ image_dimension(img_resized)
 ```
 
 
-## Corta uma imagem
-Cortar imagens é útil para remover ruídos da borda da imagem, bem como para reduzir o tamanho das imagens antes do processamento. Para recortar uma imagem, a função `image_crop()` é usada. Os usuários precisam informar um vetor numérico indicando a faixa de pixels(`largura` e` altura`) que será mantida na imagem recortada.
+## Cortar uma imagem
+Cortar imagens é útil para remover ruídos da borda da imagem, bem como para reduzir o tamanho das imagens antes do processamento. Para recortar uma imagem, a função `image_crop()` é usada. Os usuários precisam informar um vetor numérico indicando a faixa de pixels (`width` e `height`) que será mantida na imagem recortada.
 
 ```{r}
 crop1 <-
@@ -94,7 +93,7 @@ crop1 <-
              plot = TRUE)
 ```
 
-Se apenas `width` ou` height` forem informados, a imagem será recortada verticalmente ou horizontalmente.
+Se apenas `width` ou `height` forem informados, a imagem será recortada verticalmente ou horizontalmente.
 
 ```{r}
 crop2 <-
@@ -103,7 +102,7 @@ crop2 <-
              plot = TRUE)
 ```
 
-Se `width` e` height` estiverem faltando, um processo iterativo de corte da imagem é executado.
+Se `width` e `height` não forem declarados, um processo iterativo de corte da imagem é executado.
 
 ```{r eval = FALSE}
 # executa apenas em uma seção iterativa

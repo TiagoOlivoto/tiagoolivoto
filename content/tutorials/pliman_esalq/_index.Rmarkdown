@@ -186,7 +186,8 @@ Google Escolar
 * Obter os valores RGB para cada objeto em uma imagem;
 * Obter medidas de objetos;
 
-<a href="https://www.researchgate.net/publication/353021781_Measuring_plant_disease_severity_in_R_introducing_and_evaluating_the_pliman_package" target="_blank" rel="noopener"><img src="https://github.com/TiagoOlivoto/tiagoolivoto/blob/master/static/tutorials/pliman_esalq/paper_rg.png" width="1000" height="273"/></a>
+
+<a href="https://www.researchgate.net/publication/353021781_Measuring_plant_disease_severity_in_R_introducing_and_evaluating_the_pliman_package" target="_blank" rel="noopener"><img src="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_esalq/paper_rg.png" width="1000" height="273"/></a>
 
 
 
@@ -226,8 +227,8 @@ library(rio)        # importação/exportação de dados
 Sugere-se que as imagens sejam baixadas (arquivo zip) e inseridas dentro da subpasta `imgs`, dentro do diretório padrão. Em meu exemplo, o diretório 
 
 
- <a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_esalq/leaves.rar">
-  <button class="btn btn-success"><i class="fa fa-save"></i> Download das imagens df_g</button>
+<a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_esalq/leaves.rar">
+<button class="btn btn-success"><i class="fa fa-save"></i> Download das imagens</button>
 </a>
 
 
@@ -246,16 +247,16 @@ Sugere-se que as imagens sejam baixadas (arquivo zip) e inseridas dentro da subp
 </p>
 </p>
 
-
+<br>
 
 # <i class="fas fa-tv"></i> Slides
 
+Página com acesso aos slides <a href="https://tiagoolivoto.github.io/slides_R/slides/pliman_esalq/index.html#1"><i class="fas fa-external-link-alt"></i></a>
 
 ```{r echo=FALSE}
 knitr::include_url('https://tiagoolivoto.github.io/slides_R/slides/pliman_esalq')
 
 ```
-
 
 
 

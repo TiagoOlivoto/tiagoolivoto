@@ -29,6 +29,10 @@ setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_esalq/leaves")
 ## Utilizando paletas
 
 ```{r doença1, fig.width = 12, fig.height = 3}
+# gerar tabelas html
+print_tbl <- function(table,  digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
 library(pliman)
 img <- image_import("img_1.jpeg")
 h <- image_import("h_img1.png")
@@ -100,19 +104,31 @@ feat <-
                   segment = TRUE,
                   show_segmentation = TRUE,
                   show_features = TRUE)
+
+
+print_tbl(feat$statistics)
+print_tbl(feat$shape[1:10, ])
+
+# corrigir as medidas (dpi = 100)
+feat_corrected <- get_measures(feat, dpi = 150)
 ```
 
 
 ### A little bit more!
 ```{r}
+# library(pliman)
 sev_img2 <- 
   measure_disease(img = "img_2",
                   img_healthy = "h_img2",
                   img_symptoms = "d_img2",
                   img_background = "b_img2",
-                  show_image = TRUE,
+                  show_image = FALSE,
                   show_contour = FALSE,
                   col_background  = "black")
+
+
+imgs <- image_import(c("img_2.jpeg", "mask_im2.jpeg"))
+image_combine(imgs)
 ```
 
 
@@ -144,14 +160,14 @@ Para analisar diversas imagens de um diretório, utiliza-se o argumento `pattern
 ```{r}
 
 system.time(
-sev_lote <- 
-  measure_disease(pattern = "soy",
-                  img_healthy = "h_s",
-                  img_symptoms = "d_s",
-                  img_background = "b_s",
-                  verbose = FALSE)
+  sev_lote <- 
+    measure_disease(pattern = "soy",
+                    img_healthy = "h_s",
+                    img_symptoms = "d_s",
+                    img_background = "b_s",
+                    verbose = FALSE)
 )
-sev_lote
+print_tbl(sev_lote)
 ```
 
 
@@ -160,14 +176,13 @@ Para acelerar o tempo de processamento quando várias imagens estão disponívei
 
 ```{r}
 system.time(
-sev_lote <- 
-  measure_disease(pattern = "soy",
-                  img_healthy = "h_s",
-                  img_symptoms = "d_s",
-                  img_background = "b_s",
-                  verbose = FALSE,
-                  parallel = TRUE)
+  sev_lote <- 
+    measure_disease(pattern = "soy",
+                    img_healthy = "h_s",
+                    img_symptoms = "d_s",
+                    img_background = "b_s",
+                    verbose = FALSE,
+                    parallel = TRUE)
 )
-sev_lote
 ```
 
