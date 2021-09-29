@@ -4,7 +4,7 @@ knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman
 
 ## ----eval=FALSE------------------------------------------------------------------------
 ## # mudar de acordo com a pasta em seu computador
-## setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_esalq/leaves")
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_esalq/leaves")
 
 
 ## ----collapse = TRUE, message=FALSE, warning=FALSE-------------------------------------
@@ -13,6 +13,9 @@ library(pliman)
 img <- image_import("img_1.jpeg")
 plot(img)
 
+image_autocrop(img,
+             # rel_size = 10,
+             plot = TRUE)
 
 
 ## ----import2---------------------------------------------------------------------------
@@ -25,6 +28,7 @@ names(img_list)
 ## ----display1, fig.width = 12----------------------------------------------------------
 # Imagens individuais
 plot(img)
+
 
 
 

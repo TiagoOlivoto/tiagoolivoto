@@ -85,8 +85,8 @@ sev <-
 <img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 ```
-##   healthy symptomatic
-##  75.86151    24.13849
+##  healthy symptomatic
+##  76.8517     23.1483
 ```
 
 
@@ -105,8 +105,8 @@ sev <-
 <img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 ```
-##   healthy symptomatic
-##  76.78864    23.21136
+##  healthy symptomatic
+##  76.1517     23.8483
 ```
 
 
@@ -127,7 +127,7 @@ sev <-
 
 ```
 ##   healthy symptomatic
-##  76.59556    23.40444
+##  76.10242    23.89758
 ```
 
 
@@ -149,7 +149,7 @@ sev <-
 
 ```
 ##   healthy symptomatic
-##  76.07694    23.92306
+##  75.34814    24.65186
 ```
 
 
@@ -171,8 +171,8 @@ feat <-
 <img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 ```
-##  healthy symptomatic
-##   75.625      24.375
+##   healthy symptomatic
+##  76.21992    23.78008
 ```
 
 ```r
@@ -183,12 +183,12 @@ print_tbl(feat$statistics)
 
 |stat      |      value|
 |:---------|----------:|
-|n         |    412.000|
-|min_area  |     36.000|
-|mean_area |    450.502|
-|max_area  |   6664.000|
-|sd_area   |    584.490|
-|sum_area  | 185607.000|
+|n         |    421.000|
+|min_area  |     38.000|
+|mean_area |    428.629|
+|max_area  |   6567.000|
+|sd_area   |    555.531|
+|sum_area  | 180453.000|
 
 ```r
 print_tbl(feat$shape[1:10, ])
@@ -198,16 +198,16 @@ print_tbl(feat$shape[1:10, ])
 
 | id|        x|       y| area| perimeter| radius_mean| radius_min| radius_max| radius_sd| radius_ratio| major_axis| eccentricity|  theta|
 |--:|--------:|-------:|----:|---------:|-----------:|----------:|----------:|---------:|------------:|----------:|------------:|------:|
-|  1| 1061.009| 274.681| 6664|       367|      46.853|     21.509|     68.537|    10.779|        3.186|    116.512|        0.675| -0.091|
-|  2| 1058.969| 361.470| 5457|       366|      41.103|     24.348|     53.966|     6.627|        2.216|     90.701|        0.420| -1.477|
-|  3|  461.585| 535.516| 6113|       404|      44.649|     24.678|     64.244|     8.967|        2.603|    112.833|        0.758| -0.170|
-|  4|  634.892| 690.333| 2840|       276|      30.600|     14.867|     44.739|     7.240|        3.009|     73.637|        0.623|  1.199|
-|  5|  773.889| 402.566| 1760|       168|      23.287|     18.290|     30.875|     2.855|        1.688|     54.099|        0.611|  1.057|
-|  6|  789.810| 304.597| 1543|       170|      21.929|     10.851|     29.622|     4.637|        2.730|     51.998|        0.541| -0.347|
-|  7|  810.856| 331.917| 1452|       161|      21.785|     12.562|     31.720|     5.177|        2.525|     58.797|        0.816| -0.121|
-|  8|  331.143| 534.896| 1217|       135|      19.408|     13.383|     25.057|     2.829|        1.872|     46.217|        0.653|  1.553|
-|  9| 1123.506| 351.704| 1998|       210|      25.201|     15.431|     35.190|     4.796|        2.280|     60.689|        0.652| -0.610|
-| 10| 1098.732| 482.138| 2208|       198|      26.837|     14.709|     39.704|     6.706|        2.699|     73.287|        0.824|  0.964|
+|  1| 1061.385| 274.868| 6567|       365|      46.363|     21.773|     66.045|    10.403|        3.033|    114.965|        0.669| -0.118|
+|  2| 1058.867| 361.367| 5427|       372|      40.839|     23.612|     54.001|     6.893|        2.287|     90.780|        0.427| -1.436|
+|  3|  461.764| 535.753| 6137|       407|      44.913|     25.508|     63.974|     8.929|        2.508|    112.937|        0.756| -0.162|
+|  4|  773.987| 402.561| 1721|       165|      23.126|     18.302|     30.460|     2.873|        1.664|     53.659|        0.617|  1.048|
+|  5|  789.972| 304.759| 1511|       166|      21.808|     10.466|     30.033|     4.652|        2.870|     51.704|        0.554| -0.344|
+|  6|  810.650| 331.923| 1436|       160|      21.736|     12.541|     31.576|     5.103|        2.518|     58.237|        0.814| -0.121|
+|  7|  331.222| 535.192| 1206|       137|      19.319|     14.077|     24.791|     2.538|        1.761|     45.038|        0.614| -1.541|
+|  8| 1123.359| 351.868| 1976|       217|      25.283|     15.455|     36.424|     4.923|        2.357|     61.018|        0.664| -0.593|
+|  9| 1108.436| 494.512| 1084|       118|      18.350|     14.669|     24.597|     2.244|        1.677|     39.063|        0.320| -1.203|
+| 10| 1089.525| 470.107| 1111|       126|      18.584|      9.690|     24.293|     3.605|        2.507|     45.389|        0.657| -0.966|
 
 ```r
 # corrigir as medidas (dpi = 100)
@@ -231,7 +231,7 @@ sev_img2 <-
 
 ```
 ##   healthy symptomatic
-##  91.59298     8.40702
+##  91.52905    8.470947
 ```
 
 ```r
@@ -289,7 +289,7 @@ system.time(
 
 ```
 ##   usuário   sistema decorrido 
-##     13.83      0.81     14.70
+##     13.62      1.18     14.85
 ```
 
 ```r
@@ -305,26 +305,26 @@ print_tbl(sev_lote)
 
 |img    | healthy| symptomatic|
 |:------|-------:|-----------:|
-|soy_1  |  92.775|       7.225|
-|soy_10 |  84.817|      15.183|
-|soy_11 |  16.272|      83.728|
-|soy_12 |  66.426|      33.574|
-|soy_13 |  78.987|      21.013|
-|soy_14 |  67.014|      32.986|
-|soy_15 |  59.034|      40.966|
-|soy_16 |  41.933|      58.067|
-|soy_17 |  77.087|      22.913|
-|soy_18 |  53.244|      46.756|
-|soy_19 |  86.296|      13.704|
-|soy_2  |  62.783|      37.217|
-|soy_20 |  51.108|      48.892|
-|soy_3  |  57.907|      42.093|
-|soy_4  |  47.077|      52.923|
-|soy_5  |  82.189|      17.811|
-|soy_6  |  72.604|      27.396|
-|soy_7  |  75.456|      24.544|
-|soy_8  |  69.705|      30.295|
-|soy_9  |  53.348|      46.652|
+|soy_1  |  93.140|       6.860|
+|soy_10 |  84.781|      15.219|
+|soy_11 |  16.540|      83.460|
+|soy_12 |  65.323|      34.677|
+|soy_13 |  78.643|      21.357|
+|soy_14 |  65.178|      34.822|
+|soy_15 |  59.953|      40.047|
+|soy_16 |  45.870|      54.130|
+|soy_17 |  79.689|      20.311|
+|soy_18 |  54.754|      45.246|
+|soy_19 |  89.469|      10.531|
+|soy_2  |  63.073|      36.927|
+|soy_20 |  51.839|      48.161|
+|soy_3  |  59.296|      40.704|
+|soy_4  |  43.401|      56.599|
+|soy_5  |  84.160|      15.840|
+|soy_6  |  75.374|      24.626|
+|soy_7  |  75.166|      24.834|
+|soy_8  |  70.347|      29.653|
+|soy_9  |  53.218|      46.782|
 
  </td>
    <td> 
@@ -366,6 +366,88 @@ system.time(
 
 ```
 ##   usuário   sistema decorrido 
-##      0.25      0.02      8.97
+##      0.22      0.05      9.64
 ```
+
+
+
+## Desafios
+
+### Lesões com pouco contraste
+
+
+
+```r
+pepper <- image_import("pepper.png", plot = TRUE)
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+
+```r
+image_index(pepper, index = "all")
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-12-2.png" width="672" />
+
+### Fundos complexos
+
+```r
+img <- image_import("maize_1.png", plot = TRUE)
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+
+```r
+image_segment(img, index = "all")
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-2.png" width="672" />
+
+```r
+img <- image_import("maize_2.png", plot = TRUE)
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-3.png" width="672" />
+
+```r
+image_segment(img, index = "all")
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-4.png" width="672" />
+
+```r
+img2 <- image_crop(img,
+                   width = 959:32,
+                   height = 163:557,
+                   plot = TRUE)
+
+
+
+image_segment_iter(img2, 
+                   nseg = 2,
+                   index = c("R/(G+B)", "GLI"),
+                   invert = c(T, F),
+                   ncol = 3)
+```
+
+```
+##      image  pixels   percent
+## 1 original 1466240 100.00000
+## 2     seg1   72072   4.91543
+## 3     seg2   17214  23.88445
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-5.png" width="672" />
+
+```r
+img <- image_import("maize_3.png", plot = TRUE)
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-6.png" width="672" />
+
+```r
+image_segment(img, index = "all")
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-7.png" width="672" />
 

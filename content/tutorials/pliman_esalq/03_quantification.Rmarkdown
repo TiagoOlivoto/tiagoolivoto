@@ -186,3 +186,48 @@ system.time(
 )
 ```
 
+
+
+## Desafios
+
+### Lesões com pouco contraste
+
+
+```{r}
+pepper <- image_import("pepper.png", plot = TRUE)
+image_index(pepper, index = "all")
+```
+
+### Fundos complexos
+```{r}
+
+img <- image_import("maize_1.png", plot = TRUE)
+image_segment(img, index = "all")
+
+
+
+img <- image_import("maize_2.png", plot = TRUE)
+image_segment(img, index = "all")
+
+
+
+
+img2 <- image_crop(img,
+                   width = 959:32,
+                   height = 163:557,
+                   plot = TRUE)
+
+
+
+image_segment_iter(img2, 
+                   nseg = 2,
+                   index = c("R/(G+B)", "GLI"),
+                   invert = c(T, F),
+                   ncol = 3)
+
+
+img <- image_import("maize_3.png", plot = TRUE)
+image_segment(img, index = "all")
+
+```
+
