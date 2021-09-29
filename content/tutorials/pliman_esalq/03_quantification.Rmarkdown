@@ -218,7 +218,6 @@ img2 <- image_crop(img,
                    plot = TRUE)
 
 
-
 image_segment_iter(img2, 
                    nseg = 2,
                    index = c("R/(G+B)", "GLI"),
