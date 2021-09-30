@@ -200,7 +200,7 @@ install.packages ("pliman")
 
 ```
 
-Ou instale a versão de desenvolvimento do [GitHub](https://github.com/TiagoOlivoto/pliman) com:
+Ou instale a versão de desenvolvimento do [GitHub](https://github.com/TiagoOlivoto/pliman) (**recomendado**)
 
 ```{r, eval = FALSE}
 devtools::install_github ("TiagoOlivoto/pliman")

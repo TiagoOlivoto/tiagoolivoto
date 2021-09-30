@@ -4,21 +4,20 @@ knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman
 
 ## ----eval=FALSE---------------------------------------------------------------------------
 ## # mudar de acordo com a pasta em seu computador
-## setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_esalq/leaves")
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_esalq/leaves")
 
 
 ## ----collapse = TRUE, message=FALSE, warning=FALSE----------------------------------------
 
 library(pliman)  
-img <- image_import("img_1.jpeg")
+img <- image_import("img_1.jpeg", plot = TRUE)
 plot(img)
-
 
 
 ## ----import2------------------------------------------------------------------------------
 
 img_list <-
-  image_import(pattern = "img_")
+  image_import(img_pattern = "img_")
 names(img_list)
 
 
@@ -141,7 +140,7 @@ segmented <- image_segment(img, index = c("R, G, B, NR, NG, NB"))
 
 
 ## ----binary1, fig.width = 10, fig.height = 5----------------------------------------------
-binary <- image_binary(img)
+binary <- image_binary(img, index = "all")
 
 # tamanho de imagem original
 image_binary(img,
@@ -170,7 +169,7 @@ print_tbl <- function(table,  digits = 3, ...){
   knitr::kable(table, booktabs = TRUE, digits = digits, ...)
 }
 library(pliman)
-img <- image_import("img_1.jpeg")
+img <- image_import("img_21.jpeg")
 h <- image_import("h_img1.png")
 d <- image_import("d_img1.png")
 b <- image_import("b_img1.png")
@@ -217,6 +216,7 @@ sev <-
                   show_contour = FALSE,
                   segment = TRUE,
                   show_segmentation = TRUE)
+rio::export(sev[["severity"]], "severidade.xlsx")
 
 
 ## -----------------------------------------------------------------------------------------
@@ -226,10 +226,24 @@ feat <-
                   img_symptoms = d,
                   img_background = b,
                   show_image = TRUE,
-                  show_contour = FALSE,
+                  show_contour = TRUE,
                   segment = TRUE,
-                  show_segmentation = TRUE,
-                  show_features = TRUE)
+                  show_segmentation = FALSE,
+                  show_features = TRUE,
+                  # lesion_size = "large",
+                  tolerance = 1, # controla
+                  extension = 1)
+
+# calibração
+rule <- image_import("rule.jpg")
+plot(rule)
+dpi(rule)
+
+
+
+medidas <- get_measures(feat, dpi = 300)
+medidas2 <- get_measures(feat)
+
 
 
 print_tbl(feat$statistics)
@@ -248,10 +262,12 @@ sev_img2 <-
                   img_background = "b_img2",
                   show_image = FALSE,
                   show_contour = FALSE,
-                  col_background  = "black")
+                  save_image = TRUE, # salvar imagem processada
+                  col_background  = "black",
+                  col_lesions = "blue")
 
 
-imgs <- image_import(c("img_2.jpeg", "mask_im2.jpeg"))
+imgs <- image_import(c("img_2.jpeg", "proc_img_2.jpeg"))
 image_combine(imgs)
 
 
@@ -264,12 +280,13 @@ image_combine(imgs)
 # após escolhidos os índices, utiliza
 sev_index <- 
   measure_disease(img, 
-                  index_lb = "G",
+                  index_lb = "G", 
                   index_dh = "NGRDI",
                   show_image = TRUE)
 
 
 ## -----------------------------------------------------------------------------------------
+
 
 system.time(
   sev_lote <- 
@@ -277,7 +294,9 @@ system.time(
                     img_healthy = "h_s",
                     img_symptoms = "d_s",
                     img_background = "b_s",
-                    verbose = FALSE)
+                    verbose = FALSE,
+                    show_image = TRUE,
+                    show_contour = FALSE)
 )
 print_tbl(sev_lote)
 
@@ -290,9 +309,16 @@ system.time(
                     img_symptoms = "d_s",
                     img_background = "b_s",
                     verbose = FALSE,
-                    parallel = TRUE)
+                    parallel = TRUE,
+                    save_image = TRUE,
+                    show_contour = FALSE,
+                    dir_processed = "")
 )
 
+
+image_combine(
+  image_import(c("proc_soy_13.jpg", "soy_13.jpg"))
+)
 
 ## -----------------------------------------------------------------------------------------
 pepper <- image_import("pepper.png", plot = TRUE)
@@ -317,11 +343,13 @@ img2 <- image_crop(img,
                    height = 163:557,
                    plot = TRUE)
 
+image_segment(img2, index = "all")
 
 
-image_segment_iter(img2, 
+
+image_segment_iter(list(img2, img2), 
                    nseg = 2,
-                   index = c("R/(G+B)", "GLI"),
+                   index = c("NR", "GLI"),
                    invert = c(T, F),
                    ncol = 3)
 

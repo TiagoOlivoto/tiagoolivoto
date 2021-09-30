@@ -194,7 +194,7 @@ Instale a versão lançada do pliman do [CRAN](https://CRAN.R-project.org/packag
 install.packages ("pliman")
 ```
 
-Ou instale a versão de desenvolvimento do [GitHub](https://github.com/TiagoOlivoto/pliman) com:
+Ou instale a versão de desenvolvimento do [GitHub](https://github.com/TiagoOlivoto/pliman) (**recomendado**)
 
 
 ```r

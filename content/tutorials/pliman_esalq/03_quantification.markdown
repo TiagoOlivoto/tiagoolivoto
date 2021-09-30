@@ -85,8 +85,8 @@ sev <-
 <img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 ```
-##  healthy symptomatic
-##  76.8517     23.1483
+##   healthy symptomatic
+##  76.32428    23.67572
 ```
 
 
@@ -105,8 +105,8 @@ sev <-
 <img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 ```
-##  healthy symptomatic
-##  76.1517     23.8483
+##   healthy symptomatic
+##  75.52765    24.47235
 ```
 
 
@@ -127,7 +127,7 @@ sev <-
 
 ```
 ##   healthy symptomatic
-##  76.10242    23.89758
+##  75.71474    24.28526
 ```
 
 
@@ -140,16 +140,16 @@ sev <-
                   img_symptoms = d,
                   img_background = b,
                   show_image = TRUE,
-                  show_contour = FALSE,
-                  segment = TRUE,
-                  show_segmentation = TRUE)
+                  show_contour = FALSE, # não mostra os contornos
+                  segment = TRUE, # segmenta as lesões que se tocam por poucos pixeis
+                  show_segmentation = TRUE) # mostra as segmentações
 ```
 
 <img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 ```
 ##   healthy symptomatic
-##  75.34814    24.65186
+##  76.66014    23.33986
 ```
 
 
@@ -162,17 +162,16 @@ feat <-
                   img_symptoms = d,
                   img_background = b,
                   show_image = TRUE,
-                  show_contour = FALSE,
                   segment = TRUE,
-                  show_segmentation = TRUE,
-                  show_features = TRUE)
+                  show_features = TRUE, # computa características das lesões
+                  lesion_size = "medium") # padrão
 ```
 
 <img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 ```
 ##   healthy symptomatic
-##  76.21992    23.78008
+##  76.08522    23.91478
 ```
 
 ```r
@@ -183,12 +182,12 @@ print_tbl(feat$statistics)
 
 |stat      |      value|
 |:---------|----------:|
-|n         |    421.000|
-|min_area  |     38.000|
-|mean_area |    428.629|
-|max_area  |   6567.000|
-|sd_area   |    555.531|
-|sum_area  | 180453.000|
+|n         |    424.000|
+|min_area  |     35.000|
+|mean_area |    429.205|
+|max_area  |   6644.000|
+|sd_area   |    577.445|
+|sum_area  | 181983.000|
 
 ```r
 print_tbl(feat$shape[1:10, ])
@@ -198,20 +197,62 @@ print_tbl(feat$shape[1:10, ])
 
 | id|        x|       y| area| perimeter| radius_mean| radius_min| radius_max| radius_sd| radius_ratio| major_axis| eccentricity|  theta|
 |--:|--------:|-------:|----:|---------:|-----------:|----------:|----------:|---------:|------------:|----------:|------------:|------:|
-|  1| 1061.385| 274.868| 6567|       365|      46.363|     21.773|     66.045|    10.403|        3.033|    114.965|        0.669| -0.118|
-|  2| 1058.867| 361.367| 5427|       372|      40.839|     23.612|     54.001|     6.893|        2.287|     90.780|        0.427| -1.436|
-|  3|  461.764| 535.753| 6137|       407|      44.913|     25.508|     63.974|     8.929|        2.508|    112.937|        0.756| -0.162|
-|  4|  773.987| 402.561| 1721|       165|      23.126|     18.302|     30.460|     2.873|        1.664|     53.659|        0.617|  1.048|
-|  5|  789.972| 304.759| 1511|       166|      21.808|     10.466|     30.033|     4.652|        2.870|     51.704|        0.554| -0.344|
-|  6|  810.650| 331.923| 1436|       160|      21.736|     12.541|     31.576|     5.103|        2.518|     58.237|        0.814| -0.121|
-|  7|  331.222| 535.192| 1206|       137|      19.319|     14.077|     24.791|     2.538|        1.761|     45.038|        0.614| -1.541|
-|  8| 1123.359| 351.868| 1976|       217|      25.283|     15.455|     36.424|     4.923|        2.357|     61.018|        0.664| -0.593|
-|  9| 1108.436| 494.512| 1084|       118|      18.350|     14.669|     24.597|     2.244|        1.677|     39.063|        0.320| -1.203|
-| 10| 1089.525| 470.107| 1111|       126|      18.584|      9.690|     24.293|     3.605|        2.507|     45.389|        0.657| -0.966|
+|  1| 1060.298| 274.790| 6644|       399|      46.650|     19.960|     71.955|    11.549|        3.605|    118.041|        0.683| -0.047|
+|  2| 1058.626| 361.842| 5354|       362|      40.750|     25.442|     53.924|     6.355|        2.119|     89.904|        0.420| -1.512|
+|  3|  463.372| 536.354| 6297|       432|      45.609|     27.939|     61.951|     8.971|        2.217|    115.499|        0.765| -0.083|
+|  4|  635.068| 690.510| 2892|       290|      30.920|     15.833|     45.253|     6.987|        2.858|     73.518|        0.600|  1.256|
+|  5|  773.982| 402.086| 1768|       163|      23.417|     18.567|     30.553|     2.941|        1.646|     54.829|        0.637|  1.081|
+|  6|  800.030| 317.214| 2856|       271|      30.672|     14.397|     43.828|     7.355|        3.044|     82.335|        0.799|  0.738|
+|  7| 1123.307| 352.000| 2004|       211|      25.378|     15.157|     35.924|     4.673|        2.370|     61.036|        0.668| -0.601|
+|  8|  331.393| 535.152| 1187|       140|      19.208|     12.609|     24.671|     2.776|        1.957|     45.128|        0.626| -1.537|
+|  9| 1109.321| 496.102|  957|       114|      17.169|     13.063|     22.222|     2.110|        1.701|     38.183|        0.479| -0.586|
+| 10| 1091.068| 470.443| 1299|       154|      20.077|     11.530|     26.759|     3.733|        2.321|     47.547|        0.577| -1.130|
 
 ```r
-# corrigir as medidas (dpi = 100)
+# corrigir as medidas (dpi = 150)
 feat_corrected <- get_measures(feat, dpi = 150)
+```
+
+
+
+```r
+feat <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE,
+                  segment = TRUE,
+                  show_features = TRUE, # computa características das lesões
+                  lesion_size = "large") 
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+
+```
+##   healthy symptomatic
+##  75.93441    24.06559
+```
+
+O valor de `tolerance` define a tolerancia para segmentação de objetos que se encostam. Menores valores tendem a dividir objetos mais facilmente.
+
+
+```r
+feat <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE,
+                  segment = TRUE,
+                  tolerance  = 0.2) 
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+
+```
+##   healthy symptomatic
+##  76.12413    23.87587
 ```
 
 
@@ -231,7 +272,7 @@ sev_img2 <-
 
 ```
 ##   healthy symptomatic
-##  91.52905    8.470947
+##  91.58738    8.412622
 ```
 
 ```r
@@ -239,7 +280,29 @@ imgs <- image_import(c("img_2.jpeg", "mask_im2.jpeg"))
 image_combine(imgs)
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
+
+### Mais de uma folha
+
+```r
+sev_folhas <- 
+  measure_disease(img = "soy_21",
+                  img_healthy = "h_s",
+                  img_symptoms = "d_s",
+                  img_background = "b_s",
+                  show_image = TRUE,
+                  save_image = TRUE,
+                  show_contour = FALSE,
+                  col_background = "black")
+```
+
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+
+```
+##   healthy symptomatic
+##  70.15104    29.84896
+```
 
 
 
@@ -264,7 +327,7 @@ sev_index <-
                   show_image = TRUE)
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
 ```
 ##   healthy symptomatic
@@ -289,63 +352,44 @@ system.time(
 
 ```
 ##   usuário   sistema decorrido 
-##     13.62      1.18     14.85
+##     15.05      0.97     16.14
 ```
 
 ```r
-print_tbl(sev_lote)
+print_tbl(sev_lote$severity)
 ```
 
 
 
-<table class="kable_wrapper">
-<tbody>
-  <tr>
-   <td> 
+|img         | healthy| symptomatic|
+|:-----------|-------:|-----------:|
+|proc_soy_21 |  56.096|      43.904|
+|soy_1       |  92.473|       7.527|
+|soy_10      |  84.729|      15.271|
+|soy_11      |  15.779|      84.221|
+|soy_12      |  64.419|      35.581|
+|soy_13      |  78.416|      21.584|
+|soy_14      |  61.373|      38.627|
+|soy_15      |  60.489|      39.511|
+|soy_16      |  41.573|      58.427|
+|soy_17      |  78.194|      21.806|
+|soy_18      |  54.525|      45.475|
+|soy_19      |  87.727|      12.273|
+|soy_2       |  62.120|      37.880|
+|soy_20      |  51.608|      48.392|
+|soy_21      |  70.733|      29.267|
+|soy_3       |  59.113|      40.887|
+|soy_4       |  44.320|      55.680|
+|soy_5       |  83.497|      16.503|
+|soy_6       |  73.264|      26.736|
+|soy_7       |  76.791|      23.209|
+|soy_8       |  70.425|      29.575|
+|soy_9       |  57.430|      42.570|
 
-|img    | healthy| symptomatic|
-|:------|-------:|-----------:|
-|soy_1  |  93.140|       6.860|
-|soy_10 |  84.781|      15.219|
-|soy_11 |  16.540|      83.460|
-|soy_12 |  65.323|      34.677|
-|soy_13 |  78.643|      21.357|
-|soy_14 |  65.178|      34.822|
-|soy_15 |  59.953|      40.047|
-|soy_16 |  45.870|      54.130|
-|soy_17 |  79.689|      20.311|
-|soy_18 |  54.754|      45.246|
-|soy_19 |  89.469|      10.531|
-|soy_2  |  63.073|      36.927|
-|soy_20 |  51.839|      48.161|
-|soy_3  |  59.296|      40.704|
-|soy_4  |  43.401|      56.599|
-|soy_5  |  84.160|      15.840|
-|soy_6  |  75.374|      24.626|
-|soy_7  |  75.166|      24.834|
-|soy_8  |  70.347|      29.653|
-|soy_9  |  53.218|      46.782|
-
- </td>
-   <td> 
-
-||
-||
-||
-||
-
- </td>
-   <td> 
-
-||
-||
-||
-||
-
- </td>
-  </tr>
-</tbody>
-</table>
+```r
+# exporta os resultados
+# rio::export(sev_lote$severity, "severidade.xlsx")
+```
 
 
 
@@ -366,7 +410,7 @@ system.time(
 
 ```
 ##   usuário   sistema decorrido 
-##      0.22      0.05      9.64
+##      0.22      0.03     10.17
 ```
 
 
@@ -381,13 +425,13 @@ system.time(
 pepper <- image_import("pepper.png", plot = TRUE)
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-15-1.png" width="672" />
 
 ```r
 image_index(pepper, index = "all")
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-12-2.png" width="672" />
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-15-2.png" width="672" />
 
 ### Fundos complexos
 
@@ -395,25 +439,25 @@ image_index(pepper, index = "all")
 img <- image_import("maize_1.png", plot = TRUE)
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-16-1.png" width="672" />
 
 ```r
 image_segment(img, index = "all")
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-2.png" width="672" />
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-16-2.png" width="672" />
 
 ```r
 img <- image_import("maize_2.png", plot = TRUE)
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-3.png" width="672" />
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-16-3.png" width="672" />
 
 ```r
 image_segment(img, index = "all")
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-4.png" width="672" />
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-16-4.png" width="672" />
 
 ```r
 img2 <- image_crop(img,
@@ -422,12 +466,11 @@ img2 <- image_crop(img,
                    plot = TRUE)
 
 
-
 image_segment_iter(img2, 
-                   nseg = 2,
-                   index = c("R/(G+B)", "GLI"),
-                   invert = c(T, F),
-                   ncol = 3)
+                   nseg = 2, # define o número de segmentações
+                   index = c("R/(G+B)", "GLI"), # índices para primeira e segunda
+                   invert = c(T, F), # inverter a segmentação? (passa um vetor)
+                   ncol = 3) # número de colunas no plot
 ```
 
 ```
@@ -437,17 +480,17 @@ image_segment_iter(img2,
 ## 3     seg2   17214  23.88445
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-5.png" width="672" />
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-16-5.png" width="672" />
 
 ```r
 img <- image_import("maize_3.png", plot = TRUE)
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-6.png" width="672" />
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-16-6.png" width="672" />
 
 ```r
 image_segment(img, index = "all")
 ```
 
-<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-13-7.png" width="672" />
+<img src="/tutorials/pliman_esalq/03_quantification_files/figure-html/unnamed-chunk-16-7.png" width="672" />
 
