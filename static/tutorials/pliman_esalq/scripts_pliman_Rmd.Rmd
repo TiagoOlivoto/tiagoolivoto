@@ -322,9 +322,9 @@ sev <-
                   img_symptoms = d,
                   img_background = b,
                   show_image = TRUE,
-                  show_contour = FALSE,
-                  segment = TRUE,
-                  show_segmentation = TRUE)
+                  show_contour = FALSE, # não mostra os contornos
+                  segment = TRUE, # segmenta as lesões que se tocam por poucos pixeis
+                  show_segmentation = TRUE) # mostra as segmentações
 ```
 
 
@@ -336,17 +336,43 @@ feat <-
                   img_symptoms = d,
                   img_background = b,
                   show_image = TRUE,
-                  show_contour = FALSE,
                   segment = TRUE,
-                  show_segmentation = TRUE,
-                  show_features = TRUE)
-
-
+                  show_features = TRUE, # computa características das lesões
+                  lesion_size = "medium") # padrão
 print_tbl(feat$statistics)
 print_tbl(feat$shape[1:10, ])
 
-# corrigir as medidas (dpi = 100)
+# corrigir as medidas (dpi = 150)
 feat_corrected <- get_measures(feat, dpi = 150)
+
+```
+
+
+```{r}
+feat <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE,
+                  segment = TRUE,
+                  show_features = TRUE, # computa características das lesões
+                  lesion_size = "large") 
+
+```
+
+O valor de `tolerance` define a tolerancia para segmentação de objetos que se encostam. Menores valores tendem a dividir objetos mais facilmente.
+
+```{r}
+feat <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE,
+                  segment = TRUE,
+                  tolerance  = 0.2) 
+
 ```
 
 
@@ -365,6 +391,20 @@ sev_img2 <-
 
 imgs <- image_import(c("img_2.jpeg", "mask_im2.jpeg"))
 image_combine(imgs)
+```
+
+
+### Mais de uma folha
+```{r}
+sev_folhas <- 
+  measure_disease(img = "soy_21",
+                  img_healthy = "h_s",
+                  img_symptoms = "d_s",
+                  img_background = "b_s",
+                  show_image = TRUE,
+                  save_image = TRUE,
+                  show_contour = FALSE,
+                  col_background = "black")
 ```
 
 
@@ -403,7 +443,9 @@ system.time(
                     img_background = "b_s",
                     verbose = FALSE)
 )
-print_tbl(sev_lote)
+print_tbl(sev_lote$severity)
+# exporta os resultados
+# rio::export(sev_lote$severity, "severidade.xlsx")
 ```
 
 
@@ -454,12 +496,11 @@ img2 <- image_crop(img,
                    plot = TRUE)
 
 
-
 image_segment_iter(img2, 
-                   nseg = 2,
-                   index = c("R/(G+B)", "GLI"),
-                   invert = c(T, F),
-                   ncol = 3)
+                   nseg = 2, # define o número de segmentações
+                   index = c("R/(G+B)", "GLI"), # índices para primeira e segunda
+                   invert = c(T, F), # inverter a segmentação? (passa um vetor)
+                   ncol = 3) # número de colunas no plot
 
 
 img <- image_import("maize_3.png", plot = TRUE)
