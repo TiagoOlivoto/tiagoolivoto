@@ -35,13 +35,13 @@ img <- image_import("grains.jpg")
 
 
 
-Para importar uma lista de imagens, o argumento `pattern` da função `image_import()` é usado. Todas as imagens que correspondem ao nome do padrão são importadas para uma lista.
+Para importar uma lista de imagens, use um vetor de nomes de imagens, ou o argumento `pattern`. Neste último, todas as imagens que correspondem ao nome do padrão são importadas para uma lista.
 
 ```{r import2}
-img_list <- image_import(pattern = "maize_")
-str(img_list)
+img_list1 <- image_import(c("grains.jpg", "green.jpg"))
+img_list2 <- image_import(pattern = "maize_")
+str(img_list1)
 ```
-
 
 
 # Exibindo imagens

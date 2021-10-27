@@ -61,7 +61,7 @@ plot(indexes, type = "density")
 
 Os dois picos representam a folha (pico menor) e o fundo (pico maior). Quanto mais clara for a diferença entre esses picos, melhor será a segmentação da imagem.
 
-A função `image_segmentation()` é usada para segmentar imagens usando índices de imagem. Em nosso exemplo, usaremos os mesmos índices calculados abaixo para ver como a imagem é segmentada. A saída desta função pode ser usada como entrada na função `analyze_objects()`.
+A função `image_segment()` é usada para segmentar imagens usando índices de imagem. Em nosso exemplo, usaremos os mesmos índices calculados abaixo para ver como a imagem é segmentada. A saída desta função pode ser usada como entrada na função `analyze_objects()`.
 
 ```{r segmentação3, fig.width = 10, fig.height = 5}
 segmented <- image_segment(img, index = c("R, G, B, NR, NG, NB"))

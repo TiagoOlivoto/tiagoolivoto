@@ -7,7 +7,6 @@
 # mudar de acordo com a pasta em seu computador
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
 library(pliman)  
-
 img <- image_import("grains.jpg")
 
 
@@ -40,7 +39,7 @@ crop2 <-
              plot = TRUE)
 
 ## # executa apenas em uma seção iterativa
-image_crop(img)
+## image_crop(img)
 
 auto_crop <- image_autocrop(img, plot = TRUE)
 
@@ -90,6 +89,9 @@ image_combine(img,
 
 
 
+## knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
+
+
 ## # mudar de acordo com a pasta em seu computador
 ## setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
 
@@ -125,6 +127,8 @@ image_binary(img,
              invert = TRUE)
 
 
+
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
 
 ## # mudar de acordo com a pasta em seu computador
 ## setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
@@ -396,6 +400,8 @@ id1 <-
 plot(id1)
 
 
+
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
 
 ## # mudar de acordo com a pasta em seu computador
 ## setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
