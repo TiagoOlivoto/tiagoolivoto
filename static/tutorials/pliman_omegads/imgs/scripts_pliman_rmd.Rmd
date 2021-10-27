@@ -1,22 +1,10 @@
 ---
 title: Scripts R - pliman 
 ---
-##Aufgabe 1
-
-```{r include = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-```
-
-
-# Diretório das imagens
-```{r eval=FALSE}
-# mudar de acordo com a pasta em seu computador
-setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-```
-
-
-# Importar imagens
+# Importação e manipulação
+## Importar imagens
 ```{r collapse = TRUE, message=FALSE, warning=FALSE}
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
 library(pliman)  
 img <- image_import("grains.jpg")
 
@@ -27,13 +15,14 @@ img <- image_import("grains.jpg")
 Para importar uma lista de imagens, o argumento `pattern` da função `image_import()` é usado. Todas as imagens que correspondem ao nome do padrão são importadas para uma lista.
 
 ```{r import2}
-img_list <- image_import(pattern = "maize_")
-str(img_list)
+img_list1 <- image_import(c("grains.jpg", "green.jpg"))
+img_list2 <- image_import(pattern = "maize_")
+str(img_list1)
 ```
 
 
 
-# Exibindo imagens
+## Exibindo imagens
 Imagens individuais são exibidas com `plot()`. Para combinar imagens, a função `image_combine()` é usada. Os usuários podem informar uma lista de objetos separados por vírgulas ou uma lista de objetos da classe `Image`.
 
 ```{r display1, fig.width = 12}
@@ -47,7 +36,7 @@ plot(img)
 ```{r display2, fig.width = 15, fig.height=4}
 
 # Combine imagens
-image_combine(img_list, ncol = 3)
+image_combine(img_list1)
 
 
 ```
@@ -57,7 +46,7 @@ image_combine(img_list, ncol = 3)
 
 `pliman` fornece um conjunto de funções `image_*()` para realizar a manipulação de imagens e transformação de imagens exclusivas ou uma lista de imagens baseada no [pacote EBImage](https://www.bioconductor.org/packages/release/bioc/vignettes/EBImage/inst/doc/EBImage-Introduction.html).
 
-# Redimensionar uma imagem
+## Redimensionar uma imagem
 Às vezes, o redimensionamento de imagens de alta resolução é necessário para reduzir o esforço computacional e tempo de processamento. A função `image_resize()` é usada para redimensionar uma imagem. O argumento `rel_size` pode ser usado para redimensionar a imagem por tamanho relativo. Por exemplo, definindo `rel_size = 50` para uma imagem de largura 1280 x 720, a nova imagem terá um tamanho de 640 x 360.
 
 ```{r manipulate1}
@@ -67,7 +56,7 @@ image_dimension(img_resized)
 ```
 
 
-# Cortar uma imagem
+## Cortar uma imagem
 Cortar imagens é útil para remover ruídos da borda da imagem, bem como para reduzir o tamanho das imagens antes do processamento. Para recortar uma imagem, a função `image_crop()` é usada. Os usuários precisam informar um vetor numérico indicando a faixa de pixels (`width` e `height`) que será mantida na imagem recortada.
 
 ```{r}
@@ -131,7 +120,7 @@ img_trim3 <-
 
 
 
-# Resolução da imagem (DPI) {#dpi}
+## Resolução da imagem (DPI) {#dpi}
 A função `dpi()` executa uma função interativa para calcular a resolução da imagem dada uma distância conhecida informada pelo usuário. Para calcular a resolução da imagem(dpi), o usuário deve usar o botão esquerdo do mouse para criar uma linha de distância conhecida. Isso pode ser feito, por exemplo, usando um modelo com distância conhecida na imagem(por exemplo, `leaves.JPG`).
 
 ```{r eval = FALSE}
@@ -142,9 +131,7 @@ dpi(rule)
 
 
 
-
-
-# Filtro, desfoque, contraste, dilatação, erosão
+## Filtro, desfoque, contraste, dilatação, erosão
 
 ```{r manipulate6, fig.width = 10, fig.height = 20}
 img_filter <- image_filter(img)
@@ -167,7 +154,7 @@ image_combine(img,
 
 
 
-# Exportando imagens
+## Exportando imagens
 Para exportar imagens para o diretório atual, use a função `image_export()`. Se uma lista de imagens for exportada, as imagens serão salvas considerando o nome e a extensão presentes na lista. Se nenhuma extensão estiver presente, as imagens serão salvas como arquivos `* .jpg`.
 
 ```{r export, eval=FALSE}
@@ -176,24 +163,10 @@ image_export(img, "img_exported.jpg")
 
 
 
-```{r, echo=FALSE, eval=TRUE}
-```
-##Aufgabe 2
 
-```{rinclude = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-```
-
-# Diretório das imagens
-```{r eval=FALSE}
-# mudar de acordo com a pasta em seu computador
-setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-```
-
-
-# Importar imagens
+# Manipulação
+## Importar imagens
 ```{r collapse = TRUE, message=FALSE, warning=FALSE}
-library(pliman)  
 img <- image_import("grains.jpg")
 img <- image_resize(img, 50)
 plot(img)
@@ -201,7 +174,7 @@ plot(img)
 ```
 
 
-# Segmentação de imagem
+## Segmentação de imagem
 
 No `pliman`, as seguintes funções podem ser usadas para segmentar uma imagem.
 
@@ -237,7 +210,7 @@ Parece que o índice `"B"` e `"NB"` proporcionaram melhor segmentação.
 
 
 
-# Produzindo uma imagem binária
+## Produzindo uma imagem binária
 
 Também podemos produzir uma imagem binária com `image_binary()`. A título de curiosidade, usaremos os índices `"B"` (azul). Por padrão, `image_binary()` redimensiona a imagem para 30% do tamanho da imagem original para acelerar o tempo de computação. Use o argumento `resize = FALSE` para produzir uma imagem binária com o tamanho original.
 
@@ -256,19 +229,9 @@ image_binary(img,
              invert = TRUE)
 ```
 
-```{r, echo=FALSE, eval=TRUE}
-```
-##Aufgabe 3
 
-```{r include = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-```
 
-# Diretório das imagens
-```{r eval=FALSE}
-# mudar de acordo com a pasta em seu computador
-setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-```
+# Analizar objetos
 
 A função `analyze_objects()` pode ser usada para contar objetos em uma imagem. Vamos começar com um exemplo simples com a imagem `object_300dpi.png` disponível na [página GitHub](https://github.com/TiagoOlivoto/pliman/tree/master/inst/tmp_images). Para facilitar a importação de imagens desta pasta, uma função auxiliar `image_pliman()` é usada.
 
@@ -305,11 +268,8 @@ image_binary(img)
 ```
 
 
-
-# Analizar objetos
-
 ```{r, fig.width = 10, fig.height = 5}
-library(pliman)
+
 cont <- object_contour(img)
 img_res <-
   analyze_objects(img,
@@ -319,14 +279,14 @@ img_res <-
 
 
 
-# Ajustando as medidas do objeto
+## Ajustando as medidas do objeto
 
 Os resultados foram armazenados em `img_res`. Como não há escala declarada no exemplo acima, não temos ideia sobre a área real dos objetos em cm$^2$, apenas em pixels. Neste caso, usamos `get_measures()` para ajustar as medidas de pixels para unidades métricas.
 
 
 Existem duas formas principais de ajustar as medidas do objeto (de pixels a cm, por exemplo). O primeiro é declarar a área, perímetro ou raio conhecido de um determinado objeto. A medida para os outros objetos será então calculada por uma regra de três simples. A segunda é declarando uma resolução de imagem conhecida em dpi (pontos por polegada). Neste caso, perímetro, área e raio serão ajustados pelo dpi informado.
 
-## Declarando um valor conhecido
+### Declarando um valor conhecido
 
 Como conhecemos a área do quadrado maior (objeto 1), vamos ajustar a área dos outros objetos na imagem usando isso.
 
@@ -344,7 +304,7 @@ get_measures(img_res,
 O mesmo pode ser usado para ajustar as medidas com base no perímetro ou raio. Vamos ajustar o perímetro dos objetos pelo perímetro do objeto 2(20 cm).
 
 
-## Declarando a resolução da imagem
+### Declarando a resolução da imagem
 
 Se a resolução da imagem for conhecida, todas as medidas serão ajustadas de acordo com esta resolução. Vamos ver um exemplo numérico com `pixels_to_cm()`. Esta função converte o número de pixels (*px*) em cm, considerando a resolução da imagem em `dpi`, da seguinte forma: $cm = px \times(2,54 / dpi)$. Como sabemos o número de pixels do quadrado maior, seu perímetro em cm é dado por
 
@@ -363,16 +323,14 @@ pixels_to_cm(px = ls_px, dpi = 300)
 O perímetro do objeto 1 ajustado pela resolução da imagem é muito próximo do verdadeiro (40 cm). Abaixo, os valores de todas as medidas são ajustados declarando o argumento `dpi` em` get_measures()`.
 
 ```{r}
-get_measures(img_res, dpi = 300) %>% 
-  print_tbl()
-
+get_measures(img_res, dpi = 300)
 ```
 
 
 
 
 
-# Contando objetos
+## Contando objetos
 
 
 Aqui, contaremos os grãos na imagem `soybean_touch.jpg`. Esta imagem tem um fundo ciano e contém 30 grãos de soja que se tocam. A função `analyze_objects()` segmenta a imagem usando como padrão o índice azul normalizado, como segue $NB =(B /(R + G + B))$, onde *R*, *G* e *B* são as faixas vermelha, verde e azul. Os objetos são contados e os objetos segmentados são coloridos com permutações aleatórias.
@@ -385,8 +343,7 @@ soy <- image_pliman("soybean_touch.jpg")
 count <-
   analyze_objects(soy,
                   index = "NB") # padrão
-count$statistics %>% 
-  print_tbl()
+count$statistics 
 ```
 
 
@@ -414,8 +371,7 @@ count2 <-
 # Obtenha as medidas do objeto
 
 medidas <- get_measures(count)
-medidas %>% 
-  print_tbl()
+medidas 
 ```
 
 
@@ -454,7 +410,7 @@ analyze_objects(soy,
 
 
 
-# Forma de objetos
+## Forma de objetos
 
 
 
@@ -470,8 +426,7 @@ pot_meas <-
                   watershed = FALSE,
                   marker = "id",
                   show_chull = TRUE) # mostra o casco convex
-pot_meas$results %>% 
-  print_tbl()
+pot_meas$results
 
 ```
 
@@ -521,7 +476,6 @@ A função `object_contour()` retorna uma lista com os pontos de coordenadas par
 
 ```{r conv, fig.width = 10}
 conv <- conv_hull(cont)
-plot(batata)
 plot_contour(conv, col = "red", lwd = 3)
 
 ```
@@ -538,8 +492,6 @@ area
 
 
 ## Folhas como `ggplot2`
-
-
 
 ```{r maskpoly, fig.width = 8, fig.height=3, warning=FALSE, message=FALSE}
 
@@ -559,7 +511,7 @@ ggplot(df_cont, aes(X1, X2, group = objeto)) +
 ```
 
 
-# Processamento em lote
+## Processamento em lote
 
 Na análise de imagens, frequentemente é necessário processar mais de uma imagem. Por exemplo, no melhoramento de plantas, o número de grãos por planta (por exemplo, trigo) é frequentemente usado na seleção indireta de plantas de alto rendimento. No `pliman`, o processamento em lote pode ser feito quando o usuário declara o argumento `pattern`.
 
@@ -569,13 +521,12 @@ Para acelerar o tempo de processamento, especialmente para um grande número de 
 
 
 ```{r eval = FALSE}
-
 list_res <- analyze_objects(pattern = "img_sb")
 
 ```
 
 
-# Várias imagens da mesma amostra
+## Várias imagens da mesma amostra
 
 Se os usuários precisarem analisar várias imagens da mesma amostra, as imagens da mesma amostra devem compartilhar o mesmo prefixo de nome de arquivo, que é definido como a parte do nome do arquivo que precede o primeiro hífen (`-`) ou underscore (`_`). Então, ao usar `get_measures()`, as medidas das imagens de folhas chamadas, por exemplo, `F1-1.jpeg`,` F1_2.jpeg` e `F1-3.jpeg` serão combinadas em uma única imagem (`F1`), mostrado no objeto `merge`. Isso é útil, por exemplo, para analisar folhas grandes que precisam ser divididas em várias imagens ou várias folhas pertencentes à mesma amostra que não podem ser digitalizadas em uma imagem única.
 
@@ -617,23 +568,20 @@ Observe que o `merged_cor` é uma lista com três objetos:
 * `results`: um data frame que contém as medidas de cada objeto individual (neste caso, folha) de cada imagem analisada.
 
 ```{r merge3}
-merged_cor$results %>% 
-  print_tbl()
+merged_cor$results
 ```
 
 * `summary`: um data frame que contém o resumo dos resultados, contendo o número de objetos em cada imagem (`n`) a soma, média e desvio padrão da área de cada imagem, bem como o valor médio para todas as outras medidas (perímetro, raio, etc.)
 
 
 ```{r merge4}
-merged_cor$summary %>% 
-  print_tbl()
+merged_cor$summary
 ```
 
 * `merge`: um data frame que contém os resultados mesclados pelo prefixo da imagem. Observe que, neste caso, os resultados são apresentados por L1, L2, L3, L4 e L5.
 
 ```{r merge5}
-merged_cor$merge %>% 
-  print_tbl()
+merged_cor$merge
 ```
 
 O `area_sum` de img` L1` é a soma das duas folhas (uma em cada imagem)
@@ -681,12 +629,11 @@ p1 + p2 + p3 +
 
 
 
-# Valores RGB para cada objeto
+## Valores RGB para cada objeto
 
 Para obter a intensidade RGB de cada objeto de imagem, usamos o argumento `object_rgb = TRUE` na função `analyze_objects () `. Neste exemplo,
 
 ```{r rgb1, fig.width = 10, fig.height = 10}
-library(pliman)
 img <- image_import("green.jpg", plot = TRUE)
 # identifica o índice que melhor segmenta a imagem
 image_binary(img, index = "all")
@@ -759,7 +706,7 @@ ggplot(rgbs, aes(x = value)) +
 ```
 
 
-# Coordenadas de objetos
+## Coordenadas de objetos
 Os usuários podem obter as coordenadas para todos os objetos desejados com `object_coord()`. Quando o argumento `id` é definido como `NULL` (padrão), um retângulo delimitador é desenhado incluindo todos os objetos. Use `id = "all"` para obter as coordenadas de todos os objetos na imagem ou use um vetor numérico para indicar os objetos para calcular as coordenadas. Note que o argumento `watershed = FALSE` é usado para 
 
 
@@ -785,7 +732,7 @@ object_coord(folhas,
 
 
 
-# Isolando objetos
+## Isolando objetos
 
 Para isolar objetos, a função `object_isolate()` é usada. No exemplo a seguir, irei isolar o objeto 32 e definir uma borda de 5 pixels ao redor do objeto.
 
@@ -799,31 +746,12 @@ plot(id1)
 ```
 
 
-
-
-```{r, echo=FALSE, eval=TRUE}
-```
-##Aufgabe 4
-
-```{r include = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-```
-
-# Diretório das imagens
-```{r eval=FALSE}
-# mudar de acordo com a pasta em seu computador
-setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-```
-
+# Fitopatometria
 
 # Severidade de doenças
 ## Utilizando paletas
 
 ```{r doença1, fig.width = 12, fig.height = 3, collapse=TRUE}
-# gerar tabelas html
-print_tbl <- function(table,  digits = 3, ...){
-  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
-}
 library(pliman)
 library(tidyverse)
 
@@ -885,10 +813,8 @@ sev <-
                   show_segmentation = TRUE) # mostra as segmentações
 sev$severity
 
-sev$statistics %>% 
-  print_tbl()
-sev$shape[1:10, ] %>% 
-  print_tbl()
+sev$statistics
+sev$shape[1:10, ]
 ```
 
 
@@ -930,8 +856,7 @@ system.time(
                     img_background = "back",
                     show_image = FALSE)
 )
-sev_lote$severity %>% 
-  print_tbl()
+sev_lote$severity
 ```
 
 
@@ -988,7 +913,4 @@ image_segment_iter(img2,
                    invert = c(T, F), # inverter a segmentação? (passa um vetor)
                    ncol = 3) # número de colunas no plot
 
-```
-
-```{r, echo=FALSE, eval=TRUE}
 ```

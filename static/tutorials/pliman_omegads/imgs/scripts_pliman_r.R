@@ -1,17 +1,11 @@
-# Ômega Data Science | RBras | JP-RBras
-# Luzes, câmera, {pliman}! analisando imagens no software R
-# Prof. Dr. Tiago Olivoto
-# 27/10/2021
-
-
-# mudar de acordo com a pasta em seu computador
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
 library(pliman)  
 img <- image_import("grains.jpg")
 
 
-img_list <- image_import(pattern = "maize_")
-str(img_list)
+img_list1 <- image_import(c("grains.jpg", "green.jpg"))
+img_list2 <- image_import(pattern = "maize_")
+str(img_list1)
 
 # Imagens individuais
 plot(img)
@@ -19,7 +13,7 @@ plot(img)
 
 
 # Combine imagens
-image_combine(img_list, ncol = 3)
+image_combine(img_list1)
 
 
 
@@ -87,15 +81,6 @@ image_combine(img,
 
 ## image_export(img, "img_exported.jpg")
 
-
-
-## knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-
-
-## # mudar de acordo com a pasta em seu computador
-## setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-
-library(pliman)  
 img <- image_import("grains.jpg")
 img <- image_resize(img, 50)
 plot(img)
@@ -126,13 +111,6 @@ image_binary(img,
              resize = FALSE,
              invert = TRUE)
 
-
-
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-
-## # mudar de acordo com a pasta em seu computador
-## setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-
 # gerar tabelas html
 print_tbl <- function(table,  digits = 3, ...){
   knitr::kable(table, booktabs = TRUE, digits = digits, ...)
@@ -147,7 +125,7 @@ img <- image_pliman("objects_300dpi.jpg", plot = TRUE)
 image_binary(img)
 
 
-library(pliman)
+
 cont <- object_contour(img)
 img_res <-
   analyze_objects(img,
@@ -168,17 +146,14 @@ pixels_to_cm(px = ls_px, dpi = 300)
 
 
 
-get_measures(img_res, dpi = 300) %>% 
-  print_tbl()
-
+get_measures(img_res, dpi = 300)
 
 soy <- image_pliman("soybean_touch.jpg")
 
 count <-
   analyze_objects(soy,
                   index = "NB") # padrão
-count$statistics %>% 
-  print_tbl()
+count$statistics 
 
 
 count2 <-
@@ -194,8 +169,7 @@ count2 <-
 # Obtenha as medidas do objeto
 
 medidas <- get_measures(count)
-medidas %>% 
-  print_tbl()
+medidas 
 
 
 analyze_objects(soy, 
@@ -219,8 +193,7 @@ pot_meas <-
                   watershed = FALSE,
                   marker = "id",
                   show_chull = TRUE) # mostra o casco convex
-pot_meas$results %>% 
-  print_tbl()
+pot_meas$results
 
 
 cont <-
@@ -233,7 +206,6 @@ plot_contour(cont, col = "red", lwd = 3)
 
 
 conv <- conv_hull(cont)
-plot(batata)
 plot_contour(conv, col = "red", lwd = 3)
 
 
@@ -256,7 +228,6 @@ ggplot(df_cont, aes(X1, X2, group = objeto)) +
   theme_void() +
   theme(legend.position = "bottom")
 
-## 
 ## list_res <- analyze_objects(pattern = "img_sb")
 ## 
 
@@ -279,14 +250,11 @@ merged <-
 
 merged_cor <- get_measures(merged, dpi = 100)
 
-merged_cor$results %>% 
-  print_tbl()
+merged_cor$results
 
-merged_cor$summary %>% 
-  print_tbl()
+merged_cor$summary
 
-merged_cor$merge %>% 
-  print_tbl()
+merged_cor$merge
 
 sum(merged_cor$results$area[1:2])
 
@@ -320,7 +288,6 @@ p3 <-
 p1 + p2 + p3 +
   plot_layout(ncol = 3)
 
-library(pliman)
 img <- image_import("green.jpg", plot = TRUE)
 # identifica o índice que melhor segmenta a imagem
 image_binary(img, index = "all")
@@ -399,17 +366,6 @@ id1 <-
                  edge = 5)
 plot(id1)
 
-
-
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-
-## # mudar de acordo com a pasta em seu computador
-## setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-
-# gerar tabelas html
-print_tbl <- function(table,  digits = 3, ...){
-  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
-}
 library(pliman)
 library(tidyverse)
 
@@ -455,10 +411,8 @@ sev <-
                   show_segmentation = TRUE) # mostra as segmentações
 sev$severity
 
-sev$statistics %>% 
-  print_tbl()
-sev$shape[1:10, ] %>% 
-  print_tbl()
+sev$statistics
+sev$shape[1:10, ]
 
 ## img %>%
 ##   image_resize(50) %>%
@@ -481,8 +435,7 @@ system.time(
                     img_background = "back",
                     show_image = FALSE)
 )
-sev_lote$severity %>% 
-  print_tbl()
+sev_lote$severity
 
 system.time(
   sev_lote <- 
