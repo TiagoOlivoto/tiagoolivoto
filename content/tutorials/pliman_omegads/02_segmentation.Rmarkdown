@@ -15,7 +15,7 @@ menu:
 weight: 2
 ---
 
-```{r global_options, include = FALSE}
+```{rinclude = FALSE}
 knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
 ```
 

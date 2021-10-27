@@ -14,9 +14,10 @@ menu:
 weight: 1
 ---
 
-```{r global_options, include = FALSE}
+```{r include = FALSE}
 knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
 ```
+
 
 # Diretório das imagens
 ```{r eval=FALSE}
@@ -141,7 +142,7 @@ img_trim3 <-
 
 
 
-# Resolução da imagem(DPI) {#dpi}
+# Resolução da imagem (DPI) {#dpi}
 A função `dpi()` executa uma função interativa para calcular a resolução da imagem dada uma distância conhecida informada pelo usuário. Para calcular a resolução da imagem(dpi), o usuário deve usar o botão esquerdo do mouse para criar uma linha de distância conhecida. Isso pode ser feito, por exemplo, usando um modelo com distância conhecida na imagem(por exemplo, `leaves.JPG`).
 
 ```{r eval = FALSE}

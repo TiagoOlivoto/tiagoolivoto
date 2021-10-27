@@ -15,7 +15,7 @@ menu:
 weight: 3
 ---
 
-```{r global_options, include = FALSE}
+```{r include = FALSE}
 knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
 ```
 
@@ -101,7 +101,7 @@ O mesmo pode ser usado para ajustar as medidas com base no perímetro ou raio. V
 
 ## Declarando a resolução da imagem
 
-Se a resolução da imagem for conhecida, todas as medidas serão ajustadas de acordo com esta resolução. Vamos ver um exemplo numérico com `pixels_to_cm()`. Esta função converte o número de pixels (\(px\)) em cm, considerando a resolução da imagem em `dpi`, da seguinte forma: \(cm = px \times(2,54 / dpi)\). Como sabemos o número de pixels do quadrado maior, seu perímetro em cm é dado por
+Se a resolução da imagem for conhecida, todas as medidas serão ajustadas de acordo com esta resolução. Vamos ver um exemplo numérico com `pixels_to_cm()`. Esta função converte o número de pixels (*px*) em cm, considerando a resolução da imagem em `dpi`, da seguinte forma: $cm = px \times(2,54 / dpi)$. Como sabemos o número de pixels do quadrado maior, seu perímetro em cm é dado por
 
 
 
@@ -118,7 +118,8 @@ pixels_to_cm(px = ls_px, dpi = 300)
 O perímetro do objeto 1 ajustado pela resolução da imagem é muito próximo do verdadeiro (40 cm). Abaixo, os valores de todas as medidas são ajustados declarando o argumento `dpi` em` get_measures()`.
 
 ```{r}
-get_measures(img_res, dpi = 300)
+get_measures(img_res, dpi = 300) %>% 
+  print_tbl()
 
 ```
 
@@ -129,7 +130,7 @@ get_measures(img_res, dpi = 300)
 # Contando objetos
 
 
-Aqui, contaremos os grãos na imagem `soybean_touch.jpg`. Esta imagem tem um fundo ciano e contém 30 grãos de soja que se tocam. A função `analyze_objects()` segmenta a imagem usando como padrão o índice azul normalizado, como segue \(NB =(B /(R + G + B))\), onde *R*, *G* e *B* são as faixas vermelha, verde e azul. Os objetos são contados e os objetos segmentados são coloridos com permutações aleatórias.
+Aqui, contaremos os grãos na imagem `soybean_touch.jpg`. Esta imagem tem um fundo ciano e contém 30 grãos de soja que se tocam. A função `analyze_objects()` segmenta a imagem usando como padrão o índice azul normalizado, como segue $NB =(B /(R + G + B))$, onde *R*, *G* e *B* são as faixas vermelha, verde e azul. Os objetos são contados e os objetos segmentados são coloridos com permutações aleatórias.
 
 
 

@@ -56,7 +56,7 @@ library(patchwork)
 img <- image_pliman("objects_300dpi.jpg", plot = TRUE)
 ```
 
-<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 
 
@@ -76,7 +76,7 @@ Para contar os objetos na imagem usamos `analyze_objects()` e informamos a image
 image_binary(img)
 ```
 
-<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-3-1.png" width="960" />
+<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-4-1.png" width="960" />
 
 
 
@@ -88,7 +88,7 @@ library(pliman)
 cont <- object_contour(img)
 ```
 
-<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-4-1.png" width="960" />
+<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-5-1.png" width="960" />
 
 ```r
 img_res <-
@@ -97,7 +97,7 @@ img_res <-
                   index = "B") # use o índice azul para segmentar
 ```
 
-<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-4-2.png" width="960" />
+<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-5-2.png" width="960" />
 
 
 
@@ -156,7 +156,7 @@ O mesmo pode ser usado para ajustar as medidas com base no perímetro ou raio. V
 
 ## Declarando a resolução da imagem
 
-Se a resolução da imagem for conhecida, todas as medidas serão ajustadas de acordo com esta resolução. Vamos ver um exemplo numérico com `pixels_to_cm()`. Esta função converte o número de pixels (\(px\)) em cm, considerando a resolução da imagem em `dpi`, da seguinte forma: \(cm = px \times(2,54 / dpi)\). Como sabemos o número de pixels do quadrado maior, seu perímetro em cm é dado por
+Se a resolução da imagem for conhecida, todas as medidas serão ajustadas de acordo com esta resolução. Vamos ver um exemplo numérico com `pixels_to_cm()`. Esta função converte o número de pixels (*px*) em cm, considerando a resolução da imagem em `dpi`, da seguinte forma: `\(cm = px \times(2,54 / dpi)\)`. Como sabemos o número de pixels do quadrado maior, seu perímetro em cm é dado por
 
 
 
@@ -176,26 +176,18 @@ O perímetro do objeto 1 ajustado pela resolução da imagem é muito próximo d
 
 
 ```r
-get_measures(img_res, dpi = 300)
+get_measures(img_res, dpi = 300) %>% 
+  print_tbl()
 ```
 
-```
-##   id        x        y   area area_ch perimeter radius_mean radius_min
-## 1  1  669.000  798.000 99.982  99.813    39.920       5.732      4.994
-## 2  2 1737.502  453.000 24.996  24.911    19.947       2.864      2.491
-## 3  3 1737.590 1296.339  7.050   7.044     8.551       1.494      1.481
-## 4  4 1737.496  939.498  7.984   7.934    11.904       1.671      0.993
-##   radius_max radius_sd radius_ratio major_axis eccentricity theta solidity
-## 1      7.058    74.266        1.413     11.546        0.002 0.785    1.002
-## 2      3.528    37.117        1.416      5.778        0.058 1.571    1.003
-## 3      1.506     0.567        1.017      2.997        0.036 0.028    1.001
-## 4      2.224    49.872        2.239      4.614        0.866 0.000    1.006
-##   circularity
-## 1       0.788
-## 2       0.789
-## 3       1.212
-## 4       0.708
-```
+
+
+| id|        x|        y|   area| area_ch| perimeter| radius_mean| radius_min| radius_max| radius_sd| radius_ratio| major_axis| eccentricity| theta| solidity| circularity|
+|--:|--------:|--------:|------:|-------:|---------:|-----------:|----------:|----------:|---------:|------------:|----------:|------------:|-----:|--------:|-----------:|
+|  1|  669.000|  798.000| 99.982|  99.813|    39.920|       5.732|      4.994|      7.058|    74.266|        1.413|     11.546|        0.002| 0.785|    1.002|       0.788|
+|  2| 1737.502|  453.000| 24.996|  24.911|    19.947|       2.864|      2.491|      3.528|    37.117|        1.416|      5.778|        0.058| 1.571|    1.003|       0.789|
+|  3| 1737.590| 1296.339|  7.050|   7.044|     8.551|       1.494|      1.481|      1.506|     0.567|        1.017|      2.997|        0.036| 0.028|    1.001|       1.212|
+|  4| 1737.496|  939.498|  7.984|   7.934|    11.904|       1.671|      0.993|      2.224|    49.872|        2.239|      4.614|        0.866| 0.000|    1.006|       0.708|
 
 
 
@@ -204,7 +196,7 @@ get_measures(img_res, dpi = 300)
 # Contando objetos
 
 
-Aqui, contaremos os grãos na imagem `soybean_touch.jpg`. Esta imagem tem um fundo ciano e contém 30 grãos de soja que se tocam. A função `analyze_objects()` segmenta a imagem usando como padrão o índice azul normalizado, como segue \(NB =(B /(R + G + B))\), onde *R*, *G* e *B* são as faixas vermelha, verde e azul. Os objetos são contados e os objetos segmentados são coloridos com permutações aleatórias.
+Aqui, contaremos os grãos na imagem `soybean_touch.jpg`. Esta imagem tem um fundo ciano e contém 30 grãos de soja que se tocam. A função `analyze_objects()` segmenta a imagem usando como padrão o índice azul normalizado, como segue `\(NB =(B /(R + G + B))\)`, onde *R*, *G* e *B* são as faixas vermelha, verde e azul. Os objetos são contados e os objetos segmentados são coloridos com permutações aleatórias.
 
 
 
@@ -217,7 +209,7 @@ count <-
                   index = "NB") # padrão
 ```
 
-<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-8-1.png" width="960" />
+<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-9-1.png" width="960" />
 
 ```r
 count$statistics %>% 
@@ -252,7 +244,7 @@ count2 <-
                   index = "NB") # padrão
 ```
 
-<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-9-1.png" width="960" />
+<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-10-1.png" width="960" />
 
 
 
@@ -314,7 +306,7 @@ analyze_objects(soy,
                 lower_size = 2057.36)
 ```
 
-<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-11-1.png" width="960" />
+<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-12-1.png" width="960" />
 
 
 
@@ -331,7 +323,7 @@ analyze_objects(soy,
                 my_index = "B /(R + G + B)")
 ```
 
-<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-12-1.png" width="960" />
+<img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/unnamed-chunk-13-1.png" width="960" />
 
 
 
@@ -582,7 +574,7 @@ merged <-
 <img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/merge1-9.png" width="672" />
 
 ```
-## Processing image L4_3 |===================================       | 83% 00:00:02 
+## Processing image L4_3 |===================================       | 83% 00:00:03 
 ```
 
 <img src="/tutorials/pliman_omegads/03_analyze_objects_files/figure-html/merge1-10.png" width="672" />

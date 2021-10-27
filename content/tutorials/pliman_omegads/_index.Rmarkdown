@@ -12,7 +12,7 @@ weight = 1
 +++
 
 
-```{r global_options, include = FALSE}
+```{r include = FALSE}
 knitr::opts_chunk$set(cache = TRUE,
                       comment = "#",
                       fig.align = "center",
@@ -157,7 +157,6 @@ Google Escolar
 <img src="https://raw.githubusercontent.com/TiagoOlivoto/pliman/master/man/figures/logo_pliman.svg" align="right" width="250" height="250"/>
 
 {pliman} (**pl**ant **im**age **an**alysis) foi concebido para analisar (também) imagens de plantas, especialmente relacionadas à análise de folhas e sementes.  O pacote irá ajudá-lo a:
-
 * Mensurar a severidade de doenças foliares;
 * Contar o número de lesões;
 * Obter características da forma das lesões;
@@ -211,6 +210,7 @@ library(patchwork)  # organizar gráficos
 ```
 
 
+
 # <i class="fas fa-database"></i> Imagens, scripts e orientações
 
 Sugere-se que as imagens sejam baixadas e a pasta definida como diretório padrão. Em meu exemplo, setei o seguinte caminho como diretório padrão. O arquivo .zip contém as imagens e os scripts necessários para reproduzir o conteúdo do material.
@@ -230,12 +230,13 @@ setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
 
 # <i class="fas fa-tv"></i> Slides
 
-Página para acesso aos slides <a href="https://tiagoolivoto.github.io/slides_R/slides/pliman_esalq/index.html#1"><i class="fas fa-external-link-alt"></i></a>
+Página para acesso aos slides <a href="https://tiagoolivoto.github.io/slides_R/slides/pliman_omegads/index.html#1"><i class="fas fa-external-link-alt"></i></a>
 
 ```{r echo=FALSE}
-knitr::include_url('https://tiagoolivoto.github.io/slides_R/slides/pliman_esalq')
+knitr::include_url('https://tiagoolivoto.github.io/slides_R/slides/pliman_omegads/index.html#1')
 
 ```
+
 
 
 
