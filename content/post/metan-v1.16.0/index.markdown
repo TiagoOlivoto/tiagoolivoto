@@ -1,6 +1,6 @@
 ---
 toc: true
-title: metan 1.16.0 available now!
+title: metan 1.16.0 is now available!
 subtitle: ''
 summary: 'Find out the news in metan v1.16.0'
 author: Tiago Olivoto
@@ -196,8 +196,8 @@ model <-
       gen = GEN,
       rep = REP,
       resp = everything())
-# Evaluating trait GY |======================                      | 50% 00:00:00 
-Evaluating trait HM |============================================| 100% 00:00:01 
+# Evaluating trait GY |======================                      | 50% 00:00:01 
+Evaluating trait HM |============================================| 100% 00:00:02 
 # Method: REML/BLUP
 # Random effects: GEN, GEN:ENV
 # Fixed effects: ENV, REP(ENV)
@@ -298,7 +298,7 @@ ges <- ge_stats(data_ge2,
                 gen = GEN,
                 rep = REP,
                 resp = PH)
-# Evaluating trait PH |============================================| 100% 00:00:02 
+# Evaluating trait PH |============================================| 100% 00:00:03 
 stats <- gmd(ges)
 # Class of the model: ge_stats
 # Variable extracted: stats
