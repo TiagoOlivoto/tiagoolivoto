@@ -264,13 +264,13 @@ Para contar os objetos na imagem usamos `analyze_objects()` e informamos a image
 
 ```{r fig.width = 10, fig.height = 5}
 image_binary(img)
-
 ```
 
 
 ```{r, fig.width = 10, fig.height = 5}
 
 cont <- object_contour(img)
+
 img_res <-
   analyze_objects(img,
                   marker = "id",
@@ -336,7 +336,6 @@ get_measures(img_res, dpi = 300)
 Aqui, contaremos os grãos na imagem `soybean_touch.jpg`. Esta imagem tem um fundo ciano e contém 30 grãos de soja que se tocam. A função `analyze_objects()` segmenta a imagem usando como padrão o índice azul normalizado, como segue $NB =(B /(R + G + B))$, onde *R*, *G* e *B* são as faixas vermelha, verde e azul. Os objetos são contados e os objetos segmentados são coloridos com permutações aleatórias.
 
 
-
 ```{r, fig.width = 10, fig.height = 5}
 soy <- image_pliman("soybean_touch.jpg")
 
@@ -398,10 +397,13 @@ Os usuários também podem usar os argumentos `topn_*` para selecionar os  `n` o
 ```{r, fig.width = 10, fig.height = 5}
 
 analyze_objects(soy,
+                show_segmentation = TRUE,
+                # object_size = "small",
+                tolerance = 20,
                 marker = "id",
                 topn_lower = 5,
-                col_background = "blue",
-                my_index = "B /(R + G + B)")
+                # col_background = "blue",
+                my_index = "B / (R + G + B)")
 ```
 
 
@@ -631,7 +633,7 @@ p1 + p2 + p3 +
 
 ## Valores RGB para cada objeto
 
-Para obter a intensidade RGB de cada objeto de imagem, usamos o argumento `object_rgb = TRUE` na função `analyze_objects () `. Neste exemplo,
+Para obter a intensidade RGB de cada objeto de imagem, usamos o argumento `object_rgb = TRUE` na função `analyze_objects() `. Neste exemplo,
 
 ```{r rgb1, fig.width = 10, fig.height = 10}
 img <- image_import("green.jpg", plot = TRUE)
@@ -672,6 +674,7 @@ Quando existem muitos objetos, o argumento `parallel = TRUE` irá acelerar a ext
 
 ```{r rgb5, fig.width = 10}
 img2 <- image_import("vicia.jpg")
+plot(img2)
 vicia <-
   analyze_objects(img2,
                   index = "B",
@@ -679,8 +682,7 @@ vicia <-
                   show_image = FALSE,
                   parallel = TRUE)
 
-head(vicia$object_index) %>%
-  print_tbl()
+head(vicia$object_index)
 
 cont2 <-
   object_contour(img2,
@@ -906,7 +908,6 @@ img2 <- image_crop(img,
                    height = 163:557,
                    plot = TRUE)
 
-
 image_segment_iter(img2, 
                    nseg = 2, # define o número de segmentações
                    index = c("NR", "GLI"), # índices para primeira e segunda
@@ -914,3 +915,4 @@ image_segment_iter(img2,
                    ncol = 3) # número de colunas no plot
 
 ```
+

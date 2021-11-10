@@ -1,5 +1,6 @@
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
-library(pliman)  
+
+library(pliman) 
 img <- image_import("grains.jpg")
 
 
@@ -14,7 +15,6 @@ plot(img)
 
 # Combine imagens
 image_combine(img_list1)
-
 
 
 image_dimension(img)
@@ -33,9 +33,13 @@ crop2 <-
              plot = TRUE)
 
 ## # executa apenas em uma seção iterativa
-## image_crop(img)
+image_crop(img, plot = TRUE)
 
+plot(img)
 auto_crop <- image_autocrop(img, plot = TRUE)
+
+
+
 
 # apara 100 pixels de todas as bordas
 img_trim <- image_trim(img, edge = 50, plot = TRUE)
@@ -59,8 +63,8 @@ img_trim3 <-
 
 
 ## # executado apenas em uma seção interativa
-## rule <- image_import("rule.jpg", plot = TRUE)
-## dpi(rule)
+rule <- image_import("rule.jpg", plot = TRUE)
+dpi(rule)
 
 img_filter <- image_filter(img)
 img_blur <- image_blur(img)
@@ -77,9 +81,9 @@ image_combine(img,
               img_erosion,
               img_opening,
               img_closing,
-              ncol = 2)
+              ncol = 4)
 
-## image_export(img, "img_exported.jpg")
+image_export(img, "test/img_exported.jpg")
 
 img <- image_import("grains.jpg")
 img <- image_resize(img, 50)

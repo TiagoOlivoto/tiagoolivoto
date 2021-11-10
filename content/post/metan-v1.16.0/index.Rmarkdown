@@ -1,0 +1,250 @@
+---
+toc: true
+title: metan 1.16.0 available now!
+subtitle: ''
+summary: 'Find out the news in metan v1.16.0'
+author: Tiago Olivoto
+date: '2021-11-10'
+lastmod: '2021-11-10'
+url_source: https://github.com/TiagoOlivoto/metan
+url_project: https://olivoto.netlify.app/project/metan/
+url_code: https://doi.org/10.5281/zenodo.5666815
+doi: "10.1111/2041-210X.13384"
+categories:
+  - metan
+tags:
+  - AMMI
+  - data analysis
+  - data manipulation
+  - MTSI
+  - MPS
+  - MTMPS
+  - WSMP
+image:
+  placement: 2
+  caption: 'Image by jplenio from Pixabay'
+  preview_only: no
+featured: no
+---
+
+<script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"></script>
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(comment = "#", collapse = TRUE)
+
+```
+
+<i class="far fa-calendar-alt"></i> After almost four months since the last stable release, I'm so proud to announce that `metan` 1.16.0 is now on [CRAN](https://CRAN.R-project.org/package=metan). `metan` was first released on CRAN on 2020/01/14 and since there,  13 stable versions have been released regularly. This new version includes new features and bug corrections. In the last months, I've been receiving a lot of positive feedbacks and very useful suggestions to improve the package. Thanks to all!
+
+
+
+# Instalation
+```{r eval=FALSE}
+# The latest stable version is installed with
+install.packages("metan")
+
+# Or the development version from GitHub:
+# install.packages("devtools")
+devtools::install_github("TiagoOlivoto/metan")
+```
+
+
+# New features
+## AMMI indexes
+
+In this version, new AMMI-stability methods were included in `ammi_indexes()`.
+
+*  AMMI Based Stability Parameter (ASTAB) (Rao and Prabhakaran 2005)
+
+$$
+ASTAB = \sum_{n=1}^{N'}\lambda_{n}\gamma_{in}^{2}
+$$
+
+
+* AMMI Stability Index (ASI) (Jambhulkar et al. 2017)
+$$
+ASI = \sqrt{\left [PC_{1}^{2} \times \theta_{1}^{2} \right ]+\left[ PC_{2}^{2} \times \theta_{2}^{2} \right ]}
+$$
+
+
+* AMMI-stability value (ASV) (Purchase et al., 2000)
+$$
+ASV_{i}=\sqrt{\frac{SS_{IPCA1}}{SS_{IPCA2}}(\mathrm{IPC} \mathrm{A} 1)^{2}+(\mathrm{IPCA} 2)^{2}}
+$$
+
+
+* Sum Across Environments of Absolute Value of GEI Modelled by AMMI (AVAMGE) (Zali et al. 2012)
+$$
+AV_{(AMGE)} = \sum_{j=1}^{E} \sum_{n=1}^{N'} \left |\lambda_{n}\gamma_{in} \delta_{jn} \right |
+$$
+
+* Annicchiarico's D Parameter values (Da) (Annicchiarico 1997)
+$$
+D_{a} = \sqrt{\sum_{n=1}^{N'}(\lambda_{n}\gamma_{in})^2}
+$$
+
+* Zhang's D Parameter (Dz) (Zhang et al. 1998)
+$$
+D_{z} = \sqrt{\sum_{n=1}^{N'}\gamma_{in}^{2}}
+$$
+
+* Sums of the Averages of the Squared Eigenvector Values (EV) (Zobel 1994)
+$$
+EV = \sum_{n=1}^{N'}\frac{\gamma_{in}^2}{N'}
+$$
+
+* Stability Measure Based on Fitted AMMI Model (FA) (Raju 2002)
+$$
+FA = \sum_{n=1}^{N'}\lambda_{n}^{2}\gamma_{in}^{2}
+$$
+
+* Modified AMMI Stability Index (MASI) (Ajay et al. 2018)
+$$
+MASI = \sqrt{ \sum_{n=1}^{N'} PC_{n}^{2} \times \theta_{n}^{2}}
+$$
+
+* Modified AMMI Stability Value (MASV) (Ajay et al. 2019)
+$$
+MASV = \sqrt{\sum_{n=1}^{N'-1}\left (\frac{SSIPC_{n}}{SSIPC_{n+1}} \right ) \times (PC_{n})^2   + \left (PC_{N'}\right )^2}
+$$
+
+* Sums of the Absolute Value of the IPC Scores (SIPC) (Sneller et al. 1997)
+$$
+SIPC = \sum_{n=1}^{N'} | \lambda_{n}^{0.5}\gamma_{in}|
+$$
+
+* Absolute Value of the Relative Contribution of IPCs to the Interaction (Za) (Zali et al. 2012)
+$$
+Za = \sum_{i=1}^{N'} | \theta_{n}\gamma_{in} |
+$$
+
+* Weighted average of absolute scores (WAAS) (Olivoto et al. 2019)
+$$
+WAAS_i = \sum_{k = 1}^{p} |IPCA_{ik} \times \theta_{k}/ \sum_{k = 1}^{p}\theta_{k}
+$$
+
+
+For all the statistics, simultaneous selection indexes (SSI) are also
+computed by summation of the ranks of the stability and mean performance,
+Y_R, (Farshadfar, 2008).
+
+
+```{r}
+library(metan)
+model <-
+  performs_ammi(data_ge,
+                env = ENV,
+                gen = GEN,
+                rep = REP,
+                resp = c(GY, HM),
+                verbose = FALSE)
+model_indexes <- ammi_indexes(model)
+rbind_fill_id(model_indexes, .id = "TRAIT")
+```
+
+
+## Mean performance and stability
+It is now possible to perform the weighting process between mean performance and stability using a model computed with `mps()`. The main difference is that with `mps()` users can choose among several stability measures, different than `waasb()`. 
+
+```{r fig.cap="Genotype ranking according to different weights given for mean performance and stability. (a) WAASB x BLUP, (b) s2di x BLUE", fig.width=15, fig.height=5}
+# using the default values
+# WAASB for stability
+# BLUP for mean performance
+model <-
+  mps(data_ge,
+      env = ENV,
+      gen = GEN,
+      rep = REP,
+      resp = everything())
+model$mps_ind
+
+# Deviations from the Eberhart and Russell regression as stability measure
+# Best linear unbiased estimates (BLUE) as mean performance
+model2 <-
+  mps(data_ge,
+      env = ENV,
+      gen = GEN,
+      rep = REP,
+      resp = everything(),
+      performance = "blueg",
+      stability = "s2di")
+model2$mps_ind
+
+
+p1 <- wsmp(model) %>% plot()
+p2 <- wsmp(model2) %>% plot()
+arrange_ggplot(p1, p2)
+```
+
+
+## ge_stats
+`ge_stats()` now returns 
+```{r}
+ges <- ge_stats(data_ge2,
+                env = ENV,
+                gen = GEN,
+                rep = REP,
+                resp = PH)
+stats <- gmd(ges)
+stats
+```
+
+
+
+# Cheatsheet
+
+<a href="https://github.com/TiagoOlivoto/metan/raw/master/metan_cheat_sheet.pdf"><img src="https://raw.githubusercontent.com/TiagoOlivoto/metan/master/man/figures/metan_cheat_sheet.png" width="1280" height="720"/></a>
+
+
+# Citation
+
+To cite `metan` in your publications, please, use the official reference paper:
+> Olivoto, T., and Lúcio, A.D. (2020). metan: an R package for multi-environment
+trial analysis. Methods Ecol Evol. 11:783-789 doi:[10.1111/2041-210X.13384](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13384)
+
+A BibTeX entry for LaTeX users is
+
+``` r
+@Article{Olivoto2020,
+author = {Tiago Olivoto and Alessandro Dal'Col L{'{u}}cio},
+title = {metan: an R package for multi-environment trial analysis},
+journal = {Methods in Ecology and Evolution},
+volume = {11},
+number = {6},
+pages = {783-789},
+year = {2020},
+doi = {10.1111/2041-210X.13384},
+}
+```
+
+# References
+
+Rao AR, Prabhakaran VT (2005). “Use of AMMI in simultaneous selection of genotypes for yield and stability.” Journal of the Indian Society of Agricultural Statistics, 59, 76–82.
+
+Jambhulkar NN, Rath NC, Bose LK, Subudhi HN, Biswajit M, Lipi D, Meher J (2017). “Stability analysis for grain yield in rice in demonstrations conducted during rabi season in India.” Oryza, 54(2), 236–240. doi: 10.5958/2249-5266.2017.00030.3
+
+Purchase, J.L., H. Hatting, and C.S. van Deventer. 2000. Genotype × environment interaction of winter wheat (Triticum aestivum L.) in South Africa: II. Stability analysis of yield performance. South African J. Plant Soil 17(3): 101–107. doi: 10.1080/02571862.2000.10634878.
+
+Zali H, Farshadfar E, Sabaghpour SH, Karimizadeh R (2012). “Evaluation of genotype × environment interaction in chickpea using measures of stability from AMMI model.” Annals of Biological Research, 3(7), 3126–3136
+
+Annicchiarico P (1997). “Joint regression vs AMMI analysis of genotype-environment interactions for cereals in Italy.” Euphytica, 94(1), 53–62. doi: 10.1023/A:1002954824178
+
+Zhang Z, Lu C, Xiang Z (1998). “Analysis of variety stability based on AMMI model.” Acta Agronomica Sinica, 24(3), 304–309. http://zwxb.chinacrops.org/EN/Y1998/V24/I03/304.
+
+Zobel RW (1994). “Stress resistance and root systems.” In Proceedings of the Workshop on Adaptation of Plants to Soil Stress. 1-4 August, 1993. INTSORMIL Publication 94-2, 80–99. Institute of Agriculture and Natural Resources, University of Nebraska-Lincoln.
+
+Raju BMK (2002). “A study on AMMI model and its biplots.” Journal of the Indian Society of Agricultural Statistics, 55(3), 297–322.
+
+Ajay BC, Aravind J, Abdul Fiyaz R, Bera SK, Kumar N, Gangadhar K, Kona P (2018). “Modified AMMI Stability Index (MASI) for stability analysis.” ICAR-DGR Newsletter, 18, 4–5.
+
+Ajay BC, Aravind J, Fiyaz RA, Kumar N, Lal C, Gangadhar K, Kona P, Dagla MC, Bera SK (2019). “Rectification of modified AMMI stability value (MASV).” Indian Journal of Genetics and Plant Breeding (The), 79, 726–731
+
+Sneller CH, Kilgore-Norquest L, Dombek D (1997). “Repeatability of yield stability statistics in soybean.” Crop Science, 37(2), 383–390. doi: 10.2135/cropsci1997.0011183X003700020013x
+
+Zali H, Farshadfar E, Sabaghpour SH, Karimizadeh R (2012). “Evaluation of genotype × environment interaction in chickpea using measures of stability from AMMI model.” Annals of Biological Research, 3(7), 3126–3136.
+
+Olivoto T, LUcio ADC, Silva JAG, et al (2019) Mean Performance and Stability in Multi-Environment Trials I: Combining Features of AMMI and BLUP Techniques. Agron J 111:2949–2960. doi: 10.2134/agronj2019.03.0220
+
+
+
+
