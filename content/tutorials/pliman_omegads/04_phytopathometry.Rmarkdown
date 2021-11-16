@@ -9,20 +9,20 @@ draft: false
 df_print: paged
 code_download: true
 menu:
-  plimanomegads:
+  plimanip:
     parent: pliman
     weight: 5
 weight: 4
 ---
 
 ```{r include = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 # Diretório das imagens
 ```{r eval=FALSE}
 # mudar de acordo com a pasta em seu computador
-setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_omegads/imgs")
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
@@ -198,5 +198,45 @@ image_segment_iter(img2,
                    invert = c(T, F), # inverter a segmentação? (passa um vetor)
                    ncol = 3) # número de colunas no plot
 
+```
+
+# Número de ovos 
+O seguinte exemplo demonstra como contar o número de ovos em uma folha. A imagem foi obtida do pacote [ExpImage](https://rdrr.io/cran/ExpImage/f/vignettes/Contagem_de_objetos.Rmd). Para identificar os melhores índices para segmentação da folha/fundo e ovos/folha, a função `image_segment_iter()` é usada. 
+
+
+```{r eval=FALSE}
+ovos <- image_import("ovos.jpg", plot = TRUE)
+
+# funciona apenas em uma seção iterativa
+image_segment_iter(img, nseg = 2)
+
+```
+
+
+Após conhecer os índices, o número de ovos é computado com a função `measure_disease()`, indicando os índices para segmentação.
+
+```{r}
+ovos_cont <- 
+  measure_disease(ovos,
+                  index_lb = "HUE2",
+                  index_dh = "GRAY",
+                  invert = c(FALSE, TRUE),
+                  threshold = c("Otsu", 0.7),
+                  show_features = TRUE,
+                  show_segmentation = TRUE,
+                  show_contour = FALSE)
+ovos_cont$statistics
+
+
+ovos_cont <- 
+  measure_disease(ovos,
+                  index_lb = "HUE2",
+                  index_dh = "GRAY",
+                  invert = c(FALSE, TRUE),
+                  threshold = c("Otsu", 0.7),
+                  show_features = TRUE,
+                  show_contour = FALSE,
+                  col_lesions = "red",
+                  col_background = "black")
 ```
 

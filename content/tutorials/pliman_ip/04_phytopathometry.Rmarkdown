@@ -1,0 +1,245 @@
+---
+title: Fitopatometria
+linktitle: "4. Fitopatometria"
+toc: true
+type: docs
+date: "2021/11/25"
+lastmod: "2021/11/25"
+draft: false
+df_print: paged
+code_download: true
+menu:
+  plimanip:
+    parent: pliman
+    weight: 5
+weight: 4
+---
+
+```{r include = FALSE}
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
+```
+
+# Diretório das imagens
+```{r eval=FALSE}
+# mudar de acordo com a pasta em seu computador
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
+```
+
+
+# Severidade de doenças
+## Utilizando paletas
+
+```{r doença1, fig.width = 12, fig.height = 3, collapse=TRUE}
+# gerar tabelas html
+print_tbl <- function(table,  digits = 3, ...){
+  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+}
+library(pliman)
+library(tidyverse)
+
+img <- image_import("img_1.jpeg")
+h <- image_import("h_img1.png")
+d <- image_import("d_img1.png")
+b <- image_import("b_img1.png")
+image_combine(img, h, d, b, ncol = 4)
+```
+
+
+### Padrão da função
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE)
+```
+
+
+### Mostrando preenchimento das lesões
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE,
+                  show_contour = FALSE)
+```
+
+
+### Mostrando uma máscara
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE,
+                  show_contour = FALSE,
+                  show_original = FALSE)
+```
+
+
+### Segmentando e analizando lesões
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_image = TRUE,
+                  watershed = TRUE,
+                  show_contour = FALSE, # não mostra os contornos
+                  show_features = TRUE, # computa características das lesões
+                  show_segmentation = TRUE) # mostra as segmentações
+sev$severity
+
+sev$statistics %>% 
+  print_tbl()
+sev$shape[1:10, ] %>% 
+  print_tbl()
+```
+
+
+
+## Utilizando índices RGB
+Para identificar o melhor índice para segmentar a imagem do fundo e após as lesões da folha sadia, pode-se utilizar a função `image_segment_iter`. (OBS. somente funcionará em uma seção iterativa).
+
+
+```{r eval=FALSE}
+img %>% 
+  image_resize(50) %>% 
+  image_segment_iter(nseg = 2)
+
+```
+
+Após escolhidos os índices, podemos utilizar os argumentos `index_lb` e `index_dh` para segmentação da folha e fundo | lesão e sadio, respectivamente.
+
+```{r}
+# após escolhidos os índices, utiliza
+sev_index <- 
+  measure_disease(img, 
+                  index_lb = "G",
+                  index_dh = "NGRDI",
+                  threshold = c("Otsu", -0.05),
+                  show_image = TRUE)
+```
+
+
+
+## Processamento em lote
+Para analisar diversas imagens de um diretório, utiliza-se o argumento `pattern`, para declarar um padrão de nomes de arquivos. Serão utilizadas 20 folhas de soja disponíveis no repositório  https://osf.io/4hbr6, um banco de dados de imagens de anotação de severidade de doenças de plantas. Obrigado a [Emerson M. Del Ponte](https://osf.io/jb6yd/) e seus colaboradores por manter este projeto disponível publicamente.
+
+```{r}
+system.time(
+  sev_lote <- 
+    measure_disease(pattern = "soy",
+                    img_healthy = "healthy",
+                    img_symptoms = "disease",
+                    img_background = "back",
+                    show_image = FALSE)
+)
+sev_lote$severity %>% 
+  print_tbl()
+```
+
+
+Para acelerar o tempo de processamento quando várias imagens estão disponíveis, pode-se utilizar o argumento `paralell`. Isto criará múltiplas seções R em segundo plano, sendo cada uma responsável pelo processamento de uma parte das imagens.
+
+```{r}
+system.time(
+  sev_lote <- 
+    measure_disease(pattern = "soy",
+                    img_healthy = "healthy",
+                    img_symptoms = "disease",
+                    img_background = "back",
+                    show_image = FALSE,
+                    # save_image = TRUE,
+                    # dir_processed = "processed",
+                    # verbose = FALSE,
+                    parallel = TRUE)
+)
+```
+
+## Imagens processadas
+```{r fig.width=10, fig.height=10}
+imgs <- 
+  image_import(pattern = "proc_",
+               path = "processed",
+               plot = TRUE,
+               ncol = 5)
+```
+
+
+# Número de ovos 
+O seguinte exemplo demonstra como contar o número de ovos em uma folha. A imagem foi obtida do pacote [ExpImage](https://rdrr.io/cran/ExpImage/f/vignettes/Contagem_de_objetos.Rmd). Para identificar os melhores índices para segmentação da folha/fundo e ovos/folha, a função `image_segment_iter()` é usada. 
+
+
+```{r}
+ovos <- image_import("ovos.jpg", plot = TRUE)
+```
+
+```{r eval=FALSE}
+# funciona apenas em uma seção iterativa
+image_segment_iter(img, nseg = 2)
+
+```
+
+
+Após conhecer os índices, o número de ovos é computado com a função `measure_disease()`, indicando os índices para segmentação.
+
+```{r}
+ovos_cont <- 
+  measure_disease(ovos,
+                  index_lb = "HUE2",
+                  index_dh = "GRAY",
+                  invert = c(FALSE, TRUE),
+                  threshold = c("Otsu", 0.7),
+                  show_features = TRUE,
+                  show_segmentation = TRUE,
+                  show_contour = FALSE)
+ovos_cont$statistics
+
+
+ovos_cont <- 
+  measure_disease(ovos,
+                  index_lb = "HUE2",
+                  index_dh = "GRAY",
+                  invert = c(FALSE, TRUE),
+                  threshold = c("Otsu", 0.7),
+                  show_features = TRUE,
+                  show_contour = FALSE,
+                  col_lesions = "blue",
+                  col_background = "black")
+```
+
+
+
+# Desafios
+
+```{r}
+
+img <- image_import("maize_1.png", plot = TRUE)
+image_segment(img, index = "all")
+
+
+
+img <- image_import("maize_2.png", plot = TRUE)
+image_segment(img, index = "all")
+
+
+
+img2 <- image_crop(img,
+                   width = 959:32,
+                   height = 163:557,
+                   plot = TRUE)
+
+
+image_segment_iter(img2, 
+                   nseg = 2, # define o número de segmentações
+                   index = c("NR", "GLI"), # índices para primeira e segunda
+                   invert = c(T, F), # inverter a segmentação? (passa um vetor)
+                   ncol = 3) # número de colunas no plot
+
+```

@@ -9,7 +9,7 @@ draft: false
 df_print: paged
 code_download: true
 menu:
-  plimanomegads:
+  plimanip:
     parent: pliman
     weight: 4
 weight: 3
