@@ -64,11 +64,7 @@ image_binary(img)
 # Analizar objetos
 
 ```{r, fig.width = 10, fig.height = 5}
-cont <- object_contour(img)
-img_res <-
-  analyze_objects(img,
-                  marker = "id",
-                  index = "B") # use o índice azul para segmentar
+img_res <- analyze_objects(img, marker = "id")
 ```
 
 
@@ -115,10 +111,29 @@ pixels_to_cm(px = ls_px, dpi = 300)
 O perímetro do objeto 1 ajustado pela resolução da imagem é muito próximo do verdadeiro (40 cm). Abaixo, os valores de todas as medidas são ajustados declarando o argumento `dpi` em` get_measures()`.
 
 ```{r}
-get_measures(img_res, dpi = 300) %>% 
-  print_tbl()
+img_res_cor <- get_measures(img_res, dpi = 300)
+print_tbl(t(img_res_cor))
 
 ```
+
+
+## Entendendo as medidas
+
+```{r}
+object_contour(img) %>% # obtém o contorno dos objetos
+  poly_mass() %>% # computa o centro de massa e raios mínimo e máximo
+  plot_mass() # plota as medidas
+```
+
+* Quadrado maior:
+   - O diâmetro mínimo (a = 9,97) pode ser considerado como o lado do quadrado
+   
+   - O diâmetro máximo, dado por $a \sqrt{2}$ pode ser considerado a diagonal do quadrado ($9,97 \sqrt{2} = 14.099$ 
+```{r}
+t(img_res_cor)
+```
+
+
 
 
 # Contando objetos
@@ -130,9 +145,8 @@ Aqui, contaremos os grãos na imagem `soybean_touch.jpg`. Esta imagem tem um fun
 ```{r, fig.width = 12, fig.height = 6}
 soy <- image_pliman("soybean_touch.jpg")
 
-count <-
-  analyze_objects(soy,
-                  index = "NB") # padrão
+count <- analyze_objects(soy)
+
 count$statistics %>% 
   print_tbl()
 ```
@@ -149,8 +163,7 @@ count2 <-
                   show_contour = FALSE,
                   marker = "id",
                   show_segmentation = FALSE,
-                  col_background = "white",
-                  index = "NB") # padrão
+                  col_background = "white") # padrão
 
 ```
 
@@ -451,9 +464,18 @@ r1_meas <-
                   tolerance = 3,
                   lower_eccent = 0.95)
 r1_meas_cor <- get_measures(r1_meas, dpi = 150)
-r1_meas_cor
+# calcula a metade do perímetro
+r1_meas_cor$metade_perimetro <- r1_meas_cor$perimeter / 2
+
+# plota as medidas
 plot(roots)
-plot_measures(r1_meas_cor, measure = "diam_max")
+plot_measures(r1_meas_cor,
+              measure = "metade_perimetro",
+              hjust = 30,
+              col = "red")
+plot_measures(r1_meas_cor,
+              measure = "diam_max",
+              hjust = -30)
 ```
 
 
@@ -470,7 +492,7 @@ image_binary(img, index = "all")
 ```
 
 
-O índice `NB` (padrão) foi escolhido para segmentar os grãos do fundo. A média dos valores azuis será calculada declarando `object_index = "B"`.
+O índice `NB` (padrão) foi escolhido para segmentar os grãos do fundo. A média dos valores da banda verde será calculada declarando `object_index = "G"`.
 
 ```{r rgb2, fig.width = 10, fig.height = 10}
 soy_green <-
@@ -496,6 +518,17 @@ length(ids) / soy_green$statistics[1,2] * 100
 cont <- object_contour(img, show_image = FALSE)
 plot(img)
 plot_contour(cont, id = ids, col = "red")
+
+
+# somente na versao de desenvolvimento
+report <- report_index(soy_green, index = "G", cut_point = 0.5)
+ids <- report$ids
+
+plot(img)
+plot_measures(soy_green,
+              id = ids,
+              measure = "G",
+              col = "black")
 ```
 
 
@@ -528,8 +561,8 @@ plot_contour(cont2, id = ids2, col = "red")
 # cria gráfico de densidade dos valores RGB para as duas classes de grãos
 rgbs <-
   vicia$object_rgb %>%
-  mutate(type = ifelse(object %in% ids2, "Destacado", "Não destacado")) %>%
-  select(-object) %>%
+  mutate(type = ifelse(id %in% ids2, "Destacado", "Não destacado")) %>%
+  select(-id) %>%
   pivot_longer(-type) %>% 
   subset(name == "G")
 
@@ -543,6 +576,7 @@ ggplot(rgbs, aes(x = value)) +
 # Área foliar
 ## Uma imagem
 ```{r}
+folhas <- image_import(image = "leaves.jpg", plot = TRUE)
 af <-
   analyze_objects(folhas,
                   watershed = FALSE,

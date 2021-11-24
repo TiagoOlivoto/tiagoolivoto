@@ -93,6 +93,14 @@ Além disso, um processo de corte automatizado pode ser executado. Nesse caso, a
 
 ```{r}
 auto_crop <- image_autocrop(img, plot = TRUE)
+
+# um exemplo de corte em lote
+imgs_crop <- image_import(pattern = "crop_", plot = TRUE)
+cropped <- image_autocrop(imgs_crop)
+image_combine(cropped)
+
+# somente na versão de desenvolvimento
+image_export(cropped, prefix = "crop_")
 ```
 
 
@@ -156,7 +164,7 @@ image_combine(img,
               img_erosion,
               img_opening,
               img_closing,
-              ncol = 2)
+              ncol = 4)
 ```
 
 
@@ -175,13 +183,9 @@ image_export(img, "test/img_exported.jpg")
 # Segmentação de imagens
 
 
-```{r include = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
-```
-
-
 ## Diretório das imagens
 ```{r eval=FALSE}
+rm(list = ls())
 # mudar de acordo com a pasta em seu computador
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
@@ -219,7 +223,7 @@ plot(indexes)
 plot(indexes, type = "density")
 ```
 
-Os dois picos representam a folha (pico menor) e o fundo (pico maior). Quanto mais clara for a diferença entre esses picos, melhor será a segmentação da imagem.
+Os dois picos representam os grãos (pico menor) e o fundo (pico maior). Quanto mais clara for a diferença entre esses picos, melhor será a segmentação da imagem.
 
 A função `image_segment()` é usada para segmentar imagens usando índices de imagem. Em nosso exemplo, usaremos os mesmos índices calculados abaixo para ver como a imagem é segmentada. A saída desta função pode ser usada como entrada na função `analyze_objects()`.
 
@@ -255,12 +259,9 @@ image_binary(img,
 
 # Analizando objetos
 
-```{r include = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
-```
-
 ## Diretório das imagens
 ```{r eval=FALSE}
+rm(list = ls())
 # mudar de acordo com a pasta em seu computador
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
@@ -304,11 +305,7 @@ image_binary(img)
 ## Analizar objetos
 
 ```{r, fig.width = 10, fig.height = 5}
-cont <- object_contour(img)
-img_res <-
-  analyze_objects(img,
-                  marker = "id",
-                  index = "B") # use o índice azul para segmentar
+img_res <- analyze_objects(img, marker = "id")
 ```
 
 
@@ -355,10 +352,27 @@ pixels_to_cm(px = ls_px, dpi = 300)
 O perímetro do objeto 1 ajustado pela resolução da imagem é muito próximo do verdadeiro (40 cm). Abaixo, os valores de todas as medidas são ajustados declarando o argumento `dpi` em` get_measures()`.
 
 ```{r}
-get_measures(img_res, dpi = 300) %>% 
-  print_tbl()
+img_res_cor <- get_measures(img_res, dpi = 300)
+print_tbl(t(img_res_cor))
 
 ```
+
+## Entendendo as medidas
+
+```{r}
+object_contour(img) %>% # obtém o contorno dos objetos
+  poly_mass() %>% # computa o centro de massa e raios mínimo e máximo
+  plot_mass() # plota as medidas
+```
+
+* Quadrado maior:
+   - O diâmetro mínimo (a = 9,97) pode ser considerado como o lado do quadrado
+   
+   - O diâmetro máximo, dado por $a \sqrt{2}$ pode ser considerado a diagonal do quadrado ($9,97 \sqrt{2} = 14.099$ 
+```{r}
+t(img_res_cor)
+```
+
 
 
 ## Contando objetos
@@ -370,11 +384,9 @@ Aqui, contaremos os grãos na imagem `soybean_touch.jpg`. Esta imagem tem um fun
 ```{r, fig.width = 12, fig.height = 6}
 soy <- image_pliman("soybean_touch.jpg")
 
-count <-
-  analyze_objects(soy,
-                  index = "NB") # padrão
-count$statistics %>% 
-  print_tbl()
+count <- analyze_objects(soy)
+
+count$statistics 
 ```
 
 
@@ -389,8 +401,7 @@ count2 <-
                   show_contour = FALSE,
                   marker = "id",
                   show_segmentation = FALSE,
-                  col_background = "white",
-                  index = "NB") # padrão
+                  col_background = "white")
 
 ```
 
@@ -401,8 +412,7 @@ count2 <-
 # Obtenha as medidas do objeto
 
 medidas <- get_measures(count)
-medidas %>% 
-  print_tbl()
+medidas
 ```
 
 
@@ -500,8 +510,8 @@ system.time(
                     workers = 3)
 )
 
-list_res$count %>% print_tbl()
-list_res$results %>% print_tbl()
+list_res$count
+list_res$results
 ```
 
 
@@ -521,8 +531,7 @@ pot_meas <-
                   watershed = FALSE,
                   marker = "id",
                   show_chull = TRUE) # mostra o casco convex
-pot_meas$results %>% 
-  print_tbl()
+pot_meas$results
 
 ```
 
@@ -546,7 +555,7 @@ $$ solidez = area / area \\\_ch$$
 
 
 
-A circularidade é influenciada por serrilhas e saliências. A solidez é sensível a folhas com lóbulos profundos ou com pecíolo distinto e pode ser usada para distinguir folhas sem tais estruturas. Ao contrário da circularidade, não é muito sensível a serrilhas e saliências menores, uma vez que o casco convexo permanece praticamente inalterado.
+A circularidade é influenciada por serrilhas e saliências. A solidez é sensível a folhas com pecíolo distinto e pode ser usada para distinguir folhas sem tais estruturas. Ao contrário da circularidade, não é muito sensível a serrilhas e saliências menores, uma vez que o casco convexo permanece praticamente inalterado.
 
 ### Contorno do objeto
 
@@ -660,6 +669,7 @@ No exemplo a seguir, mostro como medir o comprimento da raiz de mudas de soja. A
 
 ```{r}
 roots <- image_import("root.jpg", plot = TRUE)
+image_index(roots, index = c("R, G, B"))
 
 r1_meas <- 
   analyze_objects(roots,
@@ -691,9 +701,18 @@ r1_meas <-
                   tolerance = 3,
                   lower_eccent = 0.95)
 r1_meas_cor <- get_measures(r1_meas, dpi = 150)
-r1_meas_cor
+# calcula a metade do perímetro
+r1_meas_cor$metade_perimetro <- r1_meas_cor$perimeter / 2
+
+# plota as medidas
 plot(roots)
-plot_measures(r1_meas_cor, measure = "diam_max")
+plot_measures(r1_meas_cor,
+              measure = "metade_perimetro",
+              hjust = 30,
+              col = "red")
+plot_measures(r1_meas_cor,
+              measure = "diam_max",
+              hjust = -30)
 ```
 
 
@@ -710,7 +729,7 @@ image_binary(img, index = "all")
 ```
 
 
-O índice `NB` (padrão) foi escolhido para segmentar os grãos do fundo. A média dos valores azuis será calculada declarando `object_index = "B"`.
+O índice `NB` (padrão) foi escolhido para segmentar os grãos do fundo. A média dos valores da banda verde será calculada declarando `object_index = "G"`.
 
 ```{r rgb2, fig.width = 10, fig.height = 10}
 soy_green <-
@@ -719,6 +738,7 @@ soy_green <-
                   marker_col = "black",
                   col_background = "white",
                   show_contour = FALSE)
+
 plot_measures(soy_green,
               measure = "G",
               col = "black")
@@ -736,15 +756,34 @@ length(ids) / soy_green$statistics[1,2] * 100
 cont <- object_contour(img, show_image = FALSE)
 plot(img)
 plot_contour(cont, id = ids, col = "red")
+
+plot_measures(soy_green,
+              measure = "G",
+              col = "black")
+
+# somente na versao de desenvolvimento
+report <- report_index(soy_green, index = "G", cut_point = 0.5)
+ids <- report$ids
+
+plot(img)
+plot_contour(cont, id = ids, col = "red")
+plot_measures(soy_green,
+              id = ids,
+              measure = "G",
+              col = "black")
+
 ```
 
 
 
 ### Grande número de objetos
+
 Quando existem muitos objetos, o argumento `parallel = TRUE` irá acelerar a extração dos valores RGB. No exemplo a seguir, uma imagem com 1343 grãos de *Vicia cracca* é analisada. Os índices `"R"` e `"R/G"` são computados. Os grãos com um valor médio de vermelho superior a 0,25 são destacados.
+
 
 ```{r rgb5, fig.width = 12, fig.height=10}
 img2 <- image_import("vicia.jpg")
+
 vicia <-
   analyze_objects(img2,
                   index = "B",
@@ -752,8 +791,7 @@ vicia <-
                   show_image = FALSE,
                   parallel = TRUE)
 
-head(vicia$object_index) %>%
-  print_tbl()
+head(vicia$object_index)
 
 cont2 <-
   object_contour(img2,
@@ -768,10 +806,10 @@ plot_contour(cont2, id = ids2, col = "red")
 # cria gráfico de densidade dos valores RGB para as duas classes de grãos
 rgbs <-
   vicia$object_rgb %>%
-  mutate(type = ifelse(object %in% ids2, "Destacado", "Não destacado")) %>%
-  select(-object) %>%
+  mutate(type = ifelse(id %in% ids2, "Destacado", "Não destacado")) %>%
+  select(-id) %>%
   pivot_longer(-type) %>% 
-  subset(name == "G")
+  subset(name == "R")
 
 ggplot(rgbs, aes(x = value)) +
   geom_density(fill = "green", alpha = 0.5) +
@@ -783,6 +821,8 @@ ggplot(rgbs, aes(x = value)) +
 ## Área foliar
 ### Uma imagem
 ```{r}
+folhas <- image_import(image = "leaves.jpg", plot = TRUE)
+
 af <-
   analyze_objects(folhas,
                   watershed = FALSE,
@@ -873,23 +913,20 @@ Observe que o `merged_cor` é uma lista com três objetos:
 * `results`: um data frame que contém as medidas de cada objeto individual (neste caso, folha) de cada imagem analisada.
 
 ```{r merge3}
-merged_cor$results %>% 
-  print_tbl()
+merged_cor$results
 ```
 
 * `summary`: um data frame que contém o resumo dos resultados, contendo o número de objetos em cada imagem (`n`) a soma, média e desvio padrão da área de cada imagem, bem como o valor médio para todas as outras medidas (perímetro, raio, etc.)
 
 
 ```{r merge4}
-merged_cor$summary %>% 
-  print_tbl()
+merged_cor$summary
 ```
 
 * `merge`: um data frame que contém os resultados mesclados pelo prefixo da imagem. Observe que, neste caso, os resultados são apresentados por L1, L2, L3, L4 e L5.
 
 ```{r merge5}
-merged_cor$merge %>% 
-  print_tbl()
+merged_cor$merge
 ```
 
 O `area_sum` de img` L1` é a soma das duas folhas (uma em cada imagem)
@@ -968,8 +1005,7 @@ sev <-
   measure_disease(img = img,
                   img_healthy = h,
                   img_symptoms = d,
-                  img_background = b,
-                  show_image = TRUE)
+                  img_background = b)
 ```
 
 
@@ -980,7 +1016,6 @@ sev <-
                   img_healthy = h,
                   img_symptoms = d,
                   img_background = b,
-                  show_image = TRUE,
                   show_contour = FALSE)
 ```
 
@@ -992,7 +1027,6 @@ sev <-
                   img_healthy = h,
                   img_symptoms = d,
                   img_background = b,
-                  show_image = TRUE,
                   show_contour = FALSE,
                   show_original = FALSE)
 ```
@@ -1005,17 +1039,14 @@ sev <-
                   img_healthy = h,
                   img_symptoms = d,
                   img_background = b,
-                  show_image = TRUE,
                   watershed = TRUE,
                   show_contour = FALSE, # não mostra os contornos
                   show_features = TRUE, # computa características das lesões
                   show_segmentation = TRUE) # mostra as segmentações
 sev$severity
 
-sev$statistics %>% 
-  print_tbl()
-sev$shape[1:10, ] %>% 
-  print_tbl()
+sev$statistics
+sev$shape %>% head()
 ```
 
 
@@ -1037,7 +1068,7 @@ Após escolhidos os índices, podemos utilizar os argumentos `index_lb` e `index
 # após escolhidos os índices, utiliza
 sev_index <- 
   measure_disease(img, 
-                  index_lb = "G",
+                  index_lb = "B",
                   index_dh = "NGRDI",
                   threshold = c("Otsu", -0.05),
                   show_image = TRUE)
@@ -1057,8 +1088,7 @@ system.time(
                     img_background = "back",
                     show_image = FALSE)
 )
-sev_lote$severity %>% 
-  print_tbl()
+sev_lote$severity
 ```
 
 
@@ -1096,7 +1126,7 @@ ovos <- image_import("ovos.jpg", plot = TRUE)
 
 ```{r eval=FALSE}
 # funciona apenas em uma seção iterativa
-image_segment_iter(img, nseg = 2)
+image_segment_iter(ovos, nseg = 2)
 
 ```
 
@@ -1126,8 +1156,16 @@ ovos_cont <-
                   show_contour = FALSE,
                   col_lesions = "blue",
                   col_background = "black")
+
+
+
 ```
 
+
+```{r eval=FALSE}
+# apenas na versão de desenvolvimento
+pick_count(ovos)
+```
 
 
 ## Desafios

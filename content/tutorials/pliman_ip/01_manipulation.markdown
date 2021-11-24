@@ -159,6 +159,25 @@ auto_crop <- image_autocrop(img, plot = TRUE)
 
 <img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
+```r
+# um exemplo de corte em lote
+imgs_crop <- image_import(pattern = "crop_", plot = TRUE)
+```
+
+<img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/unnamed-chunk-7-2.png" width="672" />
+
+```r
+cropped <- image_autocrop(imgs_crop)
+image_combine(cropped)
+```
+
+<img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/unnamed-chunk-7-3.png" width="672" />
+
+```r
+# somente na versão de desenvolvimento
+image_export(cropped, prefix = "c_", subfolder = "cropped")
+```
+
 
 A função `image_trim()` é usada para cortar pixels das bordas da imagem.
 
@@ -227,7 +246,7 @@ image_combine(img,
               img_erosion,
               img_opening,
               img_closing,
-              ncol = 2)
+              ncol = 4)
 ```
 
 <img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/manipulate6-1.png" width="960" />

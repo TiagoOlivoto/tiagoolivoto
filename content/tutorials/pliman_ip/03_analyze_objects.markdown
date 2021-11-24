@@ -85,19 +85,10 @@ image_binary(img)
 
 
 ```r
-cont <- object_contour(img)
+img_res <- analyze_objects(img, marker = "id")
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-5-1.png" width="960" />
-
-```r
-img_res <-
-  analyze_objects(img,
-                  marker = "id",
-                  index = "B") # use o índice azul para segmentar
-```
-
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-5-2.png" width="960" />
 
 
 
@@ -125,27 +116,27 @@ get_measures(img_res,
 ## object id: 1
 ## area     : 100
 ## -----------------------------------------
-## Total    : 140.037 
-## Average  : 35.009 
+## Total    : 139.985 
+## Average  : 34.996 
 ## -----------------------------------------
 ```
 
 ```
 ##   id        x        y    area area_ch perimeter radius_mean radius_min
-## 1  1  669.000  798.000 100.000  99.831    39.924       5.733      4.995
-## 2  2 1737.502  453.000  25.000  24.915    19.949       2.864      2.492
-## 3  3 1737.590 1296.339   7.051   7.046     8.552       1.494      1.481
-## 4  4 1737.496  939.498   7.986   7.935    11.905       1.671      0.994
+## 1  1  668.506  798.002 100.000  99.915    39.932       5.733      4.992
+## 2  2 1737.513  453.246  25.041  24.978    19.924       2.865      2.495
+## 3  3 1737.575 1296.331   7.023   7.015     8.504       1.491      1.483
+## 4  4 1737.972  939.503   7.922   7.880    11.886       1.666      0.986
 ##   radius_max radius_sd radius_ratio diam_mean diam_min diam_max major_axis
-## 1      7.059    74.266        1.413    11.465    9.989   14.118     11.547
-## 2      3.528    37.117        1.416     5.728    4.983    7.056      5.778
-## 3      1.506     0.567        1.017     2.989    2.963    3.013      2.997
-## 4      2.224    49.872        2.239     3.341    1.987    4.448      4.614
-##   minor_axis eccentricity theta solidity circularity
-## 1      0.098        0.002 0.785    1.002       0.788
-## 2      0.049        0.058 1.571    1.003       0.789
-## 3      0.025        0.036 0.028    1.001       1.212
-## 4      0.039        0.866 0.000    1.006       0.708
+## 1      7.062    74.203        1.415    11.466    9.983   14.124     11.552
+## 2      3.524    36.957        1.413     5.730    4.989    7.049      5.781
+## 3      1.502     0.398        1.012     2.983    2.967    3.003      2.991
+## 4      2.222    50.007        2.253     3.332    1.973    4.444      4.611
+##   minor_axis eccentricity  theta solidity circularity
+## 1      0.098        0.041  0.014    1.001       0.788
+## 2      0.049        0.041  1.539    1.003       0.793
+## 3      0.025        0.026 -1.490    1.001       1.220
+## 4      0.039        0.868  0.000    1.005       0.705
 ```
 
 
@@ -168,25 +159,88 @@ pixels_to_cm(px = ls_px, dpi = 300)
 ```
 
 ```
-## [1] 39.92033
+## [1] 39.878
 ```
 
 O perímetro do objeto 1 ajustado pela resolução da imagem é muito próximo do verdadeiro (40 cm). Abaixo, os valores de todas as medidas são ajustados declarando o argumento `dpi` em` get_measures()`.
 
 
 ```r
-get_measures(img_res, dpi = 300) %>% 
-  print_tbl()
+img_res_cor <- get_measures(img_res, dpi = 300)
+print_tbl(t(img_res_cor))
 ```
 
 
 
-| id|        x|        y|   area| area_ch| perimeter| radius_mean| radius_min| radius_max| radius_sd| radius_ratio| diam_mean| diam_min| diam_max| major_axis| minor_axis| eccentricity| theta| solidity| circularity|
-|--:|--------:|--------:|------:|-------:|---------:|-----------:|----------:|----------:|---------:|------------:|---------:|--------:|--------:|----------:|----------:|------------:|-----:|--------:|-----------:|
-|  1|  669.000|  798.000| 99.982|  99.813|    39.920|       5.732|      4.994|      7.058|    74.266|        1.413|    11.464|    9.989|   14.117|     11.546|      0.098|        0.002| 0.785|    1.002|       0.788|
-|  2| 1737.502|  453.000| 24.996|  24.911|    19.947|       2.864|      2.491|      3.528|    37.117|        1.416|     5.728|    4.983|    7.055|      5.778|      0.049|        0.058| 1.571|    1.003|       0.789|
-|  3| 1737.590| 1296.339|  7.050|   7.044|     8.551|       1.494|      1.481|      1.506|     0.567|        1.017|     2.988|    2.963|    3.013|      2.997|      0.025|        0.036| 0.028|    1.001|       1.212|
-|  4| 1737.496|  939.498|  7.984|   7.934|    11.904|       1.671|      0.993|      2.224|    49.872|        2.239|     3.341|    1.987|    4.448|      4.614|      0.039|        0.866| 0.000|    1.006|       0.708|
+|             |       1|        2|        3|        4|
+|:------------|-------:|--------:|--------:|--------:|
+|id           |   1.000|    2.000|    3.000|    4.000|
+|x            | 668.506| 1737.513| 1737.575| 1737.972|
+|y            | 798.002|  453.246| 1296.331|  939.503|
+|area         |  99.729|   24.973|    7.004|    7.900|
+|area_ch      |  99.644|   24.910|    6.996|    7.858|
+|perimeter    |  39.878|   19.897|    8.492|   11.870|
+|radius_mean  |   5.725|    2.861|    1.489|    1.664|
+|radius_min   |   4.985|    2.491|    1.481|    0.985|
+|radius_max   |   7.052|    3.520|    1.500|    2.219|
+|radius_sd    |  74.203|   36.957|    0.398|   50.007|
+|radius_ratio |   1.415|    1.413|    1.012|    2.253|
+|diam_mean    |  11.450|    5.722|    2.979|    3.327|
+|diam_min     |   9.970|    4.983|    2.963|    1.970|
+|diam_max     |  14.105|    7.039|    2.999|    4.438|
+|major_axis   |  11.536|    5.773|    2.987|    4.604|
+|minor_axis   |   0.098|    0.049|    0.025|    0.039|
+|eccentricity |   0.041|    0.041|    0.026|    0.868|
+|theta        |   0.014|    1.539|   -1.490|    0.000|
+|solidity     |   1.001|    1.003|    1.001|    1.005|
+|circularity  |   0.788|    0.793|    1.220|    0.705|
+
+
+## Entendendo as medidas
+
+
+```r
+object_contour(img) %>% # obtém o contorno dos objetos
+  poly_mass() %>% # computa o centro de massa e raios mínimo e máximo
+  plot_mass() # plota as medidas
+```
+
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
+* Quadrado maior:
+   - O diâmetro mínimo (a = 9,97) pode ser considerado como o lado do quadrado
+   
+   - O diâmetro máximo, dado por `\(a \sqrt{2}\)` pode ser considerado a diagonal do quadrado ($9,97 \sqrt{2} = 14.099$ 
+
+```r
+t(img_res_cor)
+```
+
+```
+##                    1        2        3        4
+## id             1.000    2.000    3.000    4.000
+## x            668.506 1737.513 1737.575 1737.972
+## y            798.002  453.246 1296.331  939.503
+## area          99.729   24.973    7.004    7.900
+## area_ch       99.644   24.910    6.996    7.858
+## perimeter     39.878   19.897    8.492   11.870
+## radius_mean    5.725    2.861    1.489    1.664
+## radius_min     4.985    2.491    1.481    0.985
+## radius_max     7.052    3.520    1.500    2.219
+## radius_sd     74.203   36.957    0.398   50.007
+## radius_ratio   1.415    1.413    1.012    2.253
+## diam_mean     11.450    5.722    2.979    3.327
+## diam_min       9.970    4.983    2.963    1.970
+## diam_max      14.105    7.039    2.999    4.438
+## major_axis    11.536    5.773    2.987    4.604
+## minor_axis     0.098    0.049    0.025    0.039
+## eccentricity   0.041    0.041    0.026    0.868
+## theta          0.014    1.539   -1.490    0.000
+## solidity       1.001    1.003    1.001    1.005
+## circularity    0.788    0.793    1.220    0.705
+```
+
+
 
 
 # Contando objetos
@@ -199,12 +253,10 @@ Aqui, contaremos os grãos na imagem `soybean_touch.jpg`. Esta imagem tem um fun
 ```r
 soy <- image_pliman("soybean_touch.jpg")
 
-count <-
-  analyze_objects(soy,
-                  index = "NB") # padrão
+count <- analyze_objects(soy)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-9-1.png" width="1152" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-11-1.png" width="1152" />
 
 ```r
 count$statistics %>% 
@@ -235,11 +287,10 @@ count2 <-
                   show_contour = FALSE,
                   marker = "id",
                   show_segmentation = FALSE,
-                  col_background = "white",
-                  index = "NB") # padrão
+                  col_background = "white") # padrão
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-10-1.png" width="1152" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-12-1.png" width="1152" />
 
 
 
@@ -301,7 +352,7 @@ analyze_objects(soy,
                 lower_size = 2057.36)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-12-1.png" width="1152" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-1.png" width="1152" />
 
 
 
@@ -318,7 +369,7 @@ analyze_objects(soy,
                 my_index = "B /(R + G + B)")
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-13-1.png" width="1152" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-15-1.png" width="1152" />
 
 
 # Coordenadas de objetos
@@ -450,73 +501,73 @@ system.time(
 ## Processing image img_sb_50_1 |===                                | 8% 00:00:00 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-1.png" width="672" />
 
 ```
 ## Processing image img_sb_50_10 |=====                             | 15% 00:00:00 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-2.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-2.png" width="672" />
 
 ```
 ## Processing image img_sb_50_11 |========                          | 23% 00:00:01 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-3.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-3.png" width="672" />
 
 ```
 ## Processing image img_sb_50_12 |==========                        | 31% 00:00:02 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-4.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-4.png" width="672" />
 
 ```
-## Processing image img_sb_50_13 |=============                     | 38% 00:00:02 
+## Processing image img_sb_50_13 |=============                     | 38% 00:00:03 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-5.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-5.png" width="672" />
 
 ```
-## Processing image img_sb_50_2 |================                   | 46% 00:00:03 
+## Processing image img_sb_50_2 |================                   | 46% 00:00:04 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-6.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-6.png" width="672" />
 
 ```
-## Processing image img_sb_50_3 |===================                | 54% 00:00:04 
+## Processing image img_sb_50_3 |===================                | 54% 00:00:05 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-7.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-7.png" width="672" />
 
 ```
 ## Processing image img_sb_50_4 |======================             | 62% 00:00:05 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-8.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-8.png" width="672" />
 
 ```
 ## Processing image img_sb_50_5 |========================           | 69% 00:00:06 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-9.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-9.png" width="672" />
 
 ```
 ## Processing image img_sb_50_6 |===========================        | 77% 00:00:07 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-10.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-10.png" width="672" />
 
 ```
 ## Processing image img_sb_50_7 |==============================     | 85% 00:00:08 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-11.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-11.png" width="672" />
 
 ```
 ## Processing image img_sb_50_8 |================================   | 92% 00:00:09 
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-12.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-12.png" width="672" />
 
 ```
 ## Processing image img_sb_50_9 |===================================| 100% 00:00:10 
@@ -545,11 +596,11 @@ system.time(
 ## Done!
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-14-13.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-13.png" width="672" />
 
 ```
 ##   usuário   sistema decorrido 
-##     10.70      0.50     11.25
+##     10.86      0.31     11.20
 ```
 
 ```r
@@ -593,7 +644,7 @@ system.time(
 
 ```
 ##   usuário   sistema decorrido 
-##      0.03      0.01      2.70
+##      0.04      0.04      2.56
 ```
 
 ```r
@@ -1469,7 +1520,7 @@ No exemplo a seguir, mostro como calcular o contorno do objeto, o centro de mass
 bean <- image_import("bean.jpg", plot = TRUE)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-15-1.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 ```r
 bean_meas <- 
@@ -1515,7 +1566,7 @@ plot_measures(bean_meas_cor, measure = "diam_min", vjust = 120)
 plot_measures(bean_meas_cor, measure = "diam_max", hjust = 180)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-15-2.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-17-2.png" width="672" />
 
 
 # Comprimento de raiz
@@ -1533,7 +1584,7 @@ r1_meas <-
                   invert = TRUE)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-16-1.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-18-1.png" width="672" />
 
 
 Observe que a segmentação *"watershed"* segmentou os objetos conectados em vários objetos pequenos. Podemos melhorar esta segmentação usando o argumento `tolerance` (algumas tentativas serão necessárias para encontrar um valor adequado).
@@ -1548,7 +1599,7 @@ r1_meas <-
                   tolerance = 3.5)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 
 Muito melhor, mas ainda não é o que procuramos. Observe que as raízes e os cotilédones foram selecionados. Podemos, no entanto, usar uma restrição na seleção de objetos que, neste caso, pode ser a excentricidade do objeto. Usando os argumentos `lower_eccent` os objetos podem ser selecionados em relação à sua excentricidade.
 
@@ -1563,46 +1614,25 @@ r1_meas <-
                   lower_eccent = 0.95)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-20-1.png" width="672" />
 
 ```r
 r1_meas_cor <- get_measures(r1_meas, dpi = 150)
-r1_meas_cor
-```
+# calcula a metade do perímetro
+r1_meas_cor$metade_perimetro <- r1_meas_cor$perimeter / 2
 
-```
-##    id       x       y  area area_ch perimeter radius_mean radius_min radius_max
-## 9   9 312.009 266.498 1.043   2.398    13.767       1.724      0.036      3.437
-## 10 10 450.269 243.773 0.772   1.941     9.991       1.239      0.087      2.472
-## 11 11  57.858 330.180 1.537   4.549    21.082       2.644      0.073      5.245
-## 12 12 617.316 260.123 0.758   2.752     9.533       1.228      0.230      2.388
-## 13 13 757.825 270.087 0.759   2.767     9.872       1.271      0.168      2.502
-## 14 14 151.126 277.761 0.956   4.834    13.716       1.738      0.152      3.445
-## 15 15 894.448 276.710 0.920   4.793    12.209       1.591      0.219      3.147
-##    radius_sd radius_ratio diam_mean diam_min diam_max major_axis minor_axis
-## 9     57.907       96.163     3.447    0.071    6.874      7.692      0.130
-## 10    40.175       28.514     2.478    0.173    4.944      5.459      0.092
-## 11    89.428       72.227     5.288    0.145   10.490     11.490      0.195
-## 12    37.410       10.379     2.456    0.460    4.775      5.128      0.087
-## 13    40.545       14.884     2.542    0.336    5.005      5.359      0.091
-## 14    56.376       22.646     3.477    0.304    6.889      7.566      0.128
-## 15    49.715       14.394     3.183    0.437    6.295      6.555      0.111
-##    eccentricity  theta solidity circularity
-## 9         0.999  1.535    0.435       0.069
-## 10        0.995  1.508    0.398       0.097
-## 11        0.999 -1.520    0.338       0.043
-## 12        0.977 -1.508    0.276       0.105
-## 13        0.987 -1.563    0.274       0.098
-## 14        0.990  1.518    0.198       0.064
-## 15        0.981  1.460    0.192       0.078
-```
-
-```r
+# plota as medidas
 plot(roots)
-plot_measures(r1_meas_cor, measure = "diam_max")
+plot_measures(r1_meas_cor,
+              measure = "metade_perimetro",
+              hjust = 30,
+              col = "red")
+plot_measures(r1_meas_cor,
+              measure = "diam_max",
+              hjust = -30)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-18-2.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-20-2.png" width="672" />
 
 
 
@@ -1625,7 +1655,7 @@ image_binary(img, index = "all")
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/rgb1-2.png" width="960" />
 
 
-O índice `NB` (padrão) foi escolhido para segmentar os grãos do fundo. A média dos valores azuis será calculada declarando `object_index = "B"`.
+O índice `NB` (padrão) foi escolhido para segmentar os grãos do fundo. A média dos valores da banda verde será calculada declarando `object_index = "G"`.
 
 
 ```r
@@ -1665,6 +1695,20 @@ plot_contour(cont, id = ids, col = "red")
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/rgb4-1.png" width="672" />
 
+```r
+# somente na versao de desenvolvimento
+report <- report_index(soy_green, index = "G", cut_point = 0.5)
+ids <- report$ids
+
+plot(img)
+plot_measures(soy_green,
+              id = ids,
+              measure = "G",
+              col = "black")
+```
+
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/rgb4-2.png" width="672" />
+
 
 
 ## Grande número de objetos
@@ -1686,14 +1730,14 @@ head(vicia$object_index) %>%
 
 
 
-| object|     R|     G|     B| R/(R+G+B)| G/(R+G+B)| B/(R+G+B)|   G/B|   R/B|   G/R| sqrt((R^2+G^2+B^2)/3)| sqrt((R*2+G*2+B*2)/3)| (R-G)/(R+G)| (2*G-R-B)/(2*G+R+B)| (2*R-G-B)/(G-B)| (G-R)/(G+R)| (G-B)/(G+B)| (R-B)/(R+B)| R+G+B| ((R+G+B)-3*B)/(R+G+B)| (G-R)/(G+R-B)| atan(2*(B-G-R)/30.5*(G-R))| atan(2*(R-G-R)/30.5*(G-B))|   B/G| R+G+B/3| 0.299*R + 0.587*G + 0.114*B| (25*(G-R)/(G+R-B)+1.25)| (max(R,G,B) - min(R,G,B)) / max(R,G,B)| (R-B)/R| 2*(R-G-B)/(G-B)| R**2/(B*G**3)|
-|------:|-----:|-----:|-----:|---------:|---------:|---------:|-----:|-----:|-----:|---------------------:|---------------------:|-----------:|-------------------:|---------------:|-----------:|-----------:|-----------:|-----:|---------------------:|-------------:|--------------------------:|--------------------------:|-----:|-------:|---------------------------:|-----------------------:|--------------------------------------:|-------:|---------------:|-------------:|
-|      1| 0.334| 0.336| 0.255|     0.354|     0.363|     0.282| 1.334| 1.325| 1.041|                 0.313|                 0.778|      -0.016|               0.066|            -Inf|       0.016|       0.132|       0.115| 0.925|                 0.153|  5.000000e-02|                          0|                     -0.002| 0.782|   0.755|                       0.326|            2.509000e+00|                                  0.912|   0.168|            -Inf|        13.233|
-|      2| 0.296| 0.298| 0.239|     0.348|     0.356|     0.296| 1.238| 1.225|   Inf|                 0.280|                 0.734|      -0.017|               0.050|            -Inf|       0.017|       0.097|       0.081| 0.833|                 0.111|           Inf|                          0|                     -0.001| 0.836|   0.673|                       0.290|                     Inf|                                  1.000|    -Inf|            -Inf|        19.327|
-|      3| 0.281| 0.289| 0.229|     0.348|     0.362|     0.290| 1.263| 1.223| 1.045|                 0.268|                 0.725|      -0.020|               0.062|            -Inf|       0.020|       0.112|       0.092| 0.799|                 0.130|  4.300000e-02|                          0|                     -0.001| 0.804|   0.646|                       0.280|            2.317000e+00|                                  0.898|   0.154|            -Inf|        15.999|
-|      4| 0.290| 0.300| 0.240|     0.345|     0.361|     0.294| 1.253| 1.207| 1.058|                 0.279|                 0.736|      -0.026|               0.061|            -Inf|       0.026|       0.106|       0.081| 0.831|                 0.118|  5.800000e-02|                          0|                     -0.001| 0.816|   0.671|                       0.290|            2.700000e+00|                                  0.892|   0.126|            -Inf|        16.655|
-|      5| 0.270| 0.301| 0.256|     0.319|     0.364|     0.317| 1.181| 1.060| 1.230|                 0.278|                 0.738|      -0.074|               0.068|            -Inf|       0.074|       0.076|       0.003| 0.827|                 0.049|  2.330000e-01|                          0|                     -0.001| 0.871|   0.657|                       0.287|            7.065000e+00|                                  0.977|  -0.129|            -Inf|        10.694|
-|      6| 0.154| 0.202| 0.246|     0.255|     0.335|     0.410| 0.825| 0.640| 1.531|                 0.206|                 0.630|      -0.147|               0.005|           3.018|       0.147|      -0.097|      -0.235| 0.603|                -0.229|  6.872053e+12|                          0|                      0.001| 1.220|   0.439|                       0.193|            1.718013e+14|                                  0.992|  -0.974|          14.723|        14.218|
+| id|     R|     G|     B| R/(R+G+B)| G/(R+G+B)| B/(R+G+B)|   G/B|   R/B|   G/R| sqrt((R^2+G^2+B^2)/3)| sqrt((R*2+G*2+B*2)/3)| (R-G)/(R+G)| (2*G-R-B)/(2*G+R+B)| (2*R-G-B)/(G-B)| (G-R)/(G+R)| (G-B)/(G+B)| (R-B)/(R+B)| R+G+B| ((R+G+B)-3*B)/(R+G+B)| (G-R)/(G+R-B)| atan(2*(B-G-R)/30.5*(G-R))| atan(2*(R-G-R)/30.5*(G-B))|   B/G| R+G+B/3| 0.299*R + 0.587*G + 0.114*B| (25*(G-R)/(G+R-B)+1.25)| (max(R,G,B) - min(R,G,B)) / max(R,G,B)| (R-B)/R| 2*(R-G-B)/(G-B)| R**2/(B*G**3)|
+|--:|-----:|-----:|-----:|---------:|---------:|---------:|-----:|-----:|-----:|---------------------:|---------------------:|-----------:|-------------------:|---------------:|-----------:|-----------:|-----------:|-----:|---------------------:|-------------:|--------------------------:|--------------------------:|-----:|-------:|---------------------------:|-----------------------:|--------------------------------------:|-------:|---------------:|-------------:|
+|  1| 0.334| 0.336| 0.255|     0.354|     0.363|     0.282| 1.334| 1.325| 1.041|                 0.313|                 0.778|      -0.016|               0.066|            -Inf|       0.016|       0.132|       0.115| 0.925|                 0.153|  5.000000e-02|                          0|                     -0.002| 0.782|   0.755|                       0.326|            2.509000e+00|                                  0.912|   0.168|            -Inf|        13.233|
+|  2| 0.296| 0.298| 0.239|     0.348|     0.356|     0.296| 1.238| 1.225|   Inf|                 0.280|                 0.734|      -0.017|               0.050|            -Inf|       0.017|       0.097|       0.081| 0.833|                 0.111|           Inf|                          0|                     -0.001| 0.836|   0.673|                       0.290|                     Inf|                                  1.000|    -Inf|            -Inf|        19.327|
+|  3| 0.281| 0.289| 0.229|     0.348|     0.362|     0.290| 1.263| 1.223| 1.045|                 0.268|                 0.725|      -0.020|               0.062|            -Inf|       0.020|       0.112|       0.092| 0.799|                 0.130|  4.300000e-02|                          0|                     -0.001| 0.804|   0.646|                       0.280|            2.317000e+00|                                  0.898|   0.154|            -Inf|        15.999|
+|  4| 0.290| 0.300| 0.240|     0.345|     0.361|     0.294| 1.253| 1.207| 1.058|                 0.279|                 0.736|      -0.026|               0.061|            -Inf|       0.026|       0.106|       0.081| 0.831|                 0.118|  5.800000e-02|                          0|                     -0.001| 0.816|   0.671|                       0.290|            2.700000e+00|                                  0.892|   0.126|            -Inf|        16.655|
+|  5| 0.270| 0.301| 0.256|     0.319|     0.364|     0.317| 1.181| 1.060| 1.230|                 0.278|                 0.738|      -0.074|               0.068|            -Inf|       0.074|       0.076|       0.003| 0.827|                 0.049|  2.330000e-01|                          0|                     -0.001| 0.871|   0.657|                       0.287|            7.065000e+00|                                  0.977|  -0.129|            -Inf|        10.694|
+|  6| 0.154| 0.202| 0.246|     0.255|     0.335|     0.410| 0.825| 0.640| 1.531|                 0.206|                 0.630|      -0.147|               0.005|           3.018|       0.147|      -0.097|      -0.235| 0.603|                -0.229|  6.872053e+12|                          0|                      0.001| 1.220|   0.439|                       0.193|            1.718013e+14|                                  0.992|  -0.974|          14.723|        14.218|
 
 ```r
 cont2 <-
@@ -1712,8 +1756,8 @@ plot_contour(cont2, id = ids2, col = "red")
 # cria gráfico de densidade dos valores RGB para as duas classes de grãos
 rgbs <-
   vicia$object_rgb %>%
-  mutate(type = ifelse(object %in% ids2, "Destacado", "Não destacado")) %>%
-  select(-object) %>%
+  mutate(type = ifelse(id %in% ids2, "Destacado", "Não destacado")) %>%
+  select(-id) %>%
   pivot_longer(-type) %>% 
   subset(name == "G")
 
@@ -1730,6 +1774,12 @@ ggplot(rgbs, aes(x = value)) +
 ## Uma imagem
 
 ```r
+folhas <- image_import(image = "leaves.jpg", plot = TRUE)
+```
+
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+
+```r
 af <-
   analyze_objects(folhas,
                   watershed = FALSE,
@@ -1740,7 +1790,7 @@ af_cor <- get_measures(af, dpi = 50.8)
 plot_measures(af_cor, measure = "area")
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-21-2.png" width="672" />
 
 
 ## Preenchendo 'buracos'
@@ -1751,7 +1801,7 @@ Um aspecto importante a se considerar é quando há a presença de 'buracos' nas
 holes <- image_import("holes.jpg", plot = TRUE)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-20-1.png" width="960" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-22-1.png" width="960" />
 
 ```r
 af <-
@@ -1784,7 +1834,7 @@ imgs <- image_import(pattern = "proc", path = tempdir())
 image_combine(imgs)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-20-2.png" width="960" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-22-2.png" width="960" />
 
 
 ## Várias imagens da mesma amostra
@@ -1881,7 +1931,7 @@ merged <-
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/merge1-9.png" width="672" />
 
 ```
-## Processing image L4_3 |===================================       | 83% 00:00:02 
+## Processing image L4_3 |===================================       | 83% 00:00:03 
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/merge1-10.png" width="672" />
@@ -1893,7 +1943,7 @@ merged <-
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/merge1-11.png" width="672" />
 
 ```
-## Processing image L5_2 |==========================================| 100% 00:00:03 
+## Processing image L5_2 |==========================================| 100% 00:00:04 
 ```
 
 ```

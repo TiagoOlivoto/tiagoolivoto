@@ -51,8 +51,7 @@ sev <-
   measure_disease(img = img,
                   img_healthy = h,
                   img_symptoms = d,
-                  img_background = b,
-                  show_image = TRUE)
+                  img_background = b)
 ```
 
 
@@ -63,7 +62,6 @@ sev <-
                   img_healthy = h,
                   img_symptoms = d,
                   img_background = b,
-                  show_image = TRUE,
                   show_contour = FALSE)
 ```
 
@@ -75,7 +73,6 @@ sev <-
                   img_healthy = h,
                   img_symptoms = d,
                   img_background = b,
-                  show_image = TRUE,
                   show_contour = FALSE,
                   show_original = FALSE)
 ```
@@ -88,7 +85,6 @@ sev <-
                   img_healthy = h,
                   img_symptoms = d,
                   img_background = b,
-                  show_image = TRUE,
                   watershed = TRUE,
                   show_contour = FALSE, # não mostra os contornos
                   show_features = TRUE, # computa características das lesões
@@ -212,6 +208,12 @@ ovos_cont <-
                   show_contour = FALSE,
                   col_lesions = "blue",
                   col_background = "black")
+```
+
+
+```{r eval=FALSE}
+# apenas na versão de desenvolvimento
+pick_count(ovos)
 ```
 
 

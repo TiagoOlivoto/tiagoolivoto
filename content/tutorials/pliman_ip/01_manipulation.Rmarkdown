@@ -111,6 +111,13 @@ Além disso, um processo de corte automatizado pode ser executado. Nesse caso, a
 
 ```{r}
 auto_crop <- image_autocrop(img, plot = TRUE)
+# um exemplo de corte em lote
+imgs_crop <- image_import(pattern = "crop_", plot = TRUE)
+cropped <- image_autocrop(imgs_crop)
+image_combine(cropped)
+
+# somente na versão de desenvolvimento
+image_export(cropped, prefix = "c_", subfolder = "cropped")
 ```
 
 
@@ -174,7 +181,7 @@ image_combine(img,
               img_erosion,
               img_opening,
               img_closing,
-              ncol = 2)
+              ncol = 4)
 ```
 
 
