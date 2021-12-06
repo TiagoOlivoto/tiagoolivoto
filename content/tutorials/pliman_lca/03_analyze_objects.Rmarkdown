@@ -4,25 +4,25 @@ linktitle: "3. Analizando objetos"
 toc: true
 type: docs
 date: "2021/11/25"
-lastmod: "2021/11/25"
+lastmod: "2021/12/11"
 draft: false
 df_print: paged
 code_download: true
 menu:
-  plimanip:
+  plimanlca:
     parent: pliman
     weight: 4
 weight: 3
 ---
 
 ```{r include = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_lca/imgs")
 ```
 
 # Diretório das imagens
 ```{r eval=FALSE}
 # mudar de acordo com a pasta em seu computador
-setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_lca/imgs")
 ```
 
 A função `analyze_objects()` pode ser usada para contar objetos em uma imagem. Vamos começar com um exemplo simples com a imagem `object_300dpi.png` disponível na [página GitHub](https://github.com/TiagoOlivoto/pliman/tree/master/inst/tmp_images). Para facilitar a importação de imagens desta pasta, uma função auxiliar `image_pliman()` é usada.
@@ -104,8 +104,6 @@ Se a resolução da imagem for conhecida, todas as medidas serão ajustadas de a
 ls_px <- img_res$results$perimeter[1]
 pixels_to_cm(px = ls_px, dpi = 300)
 
-
-
 ```
 
 O perímetro do objeto 1 ajustado pela resolução da imagem é muito próximo do verdadeiro (40 cm). Abaixo, os valores de todas as medidas são ajustados declarando o argumento `dpi` em` get_measures()`.
@@ -120,9 +118,9 @@ print_tbl(t(img_res_cor))
 ## Entendendo as medidas
 
 ```{r}
-object_contour(img) %>% # obtém o contorno dos objetos
-  poly_mass() %>% # computa o centro de massa e raios mínimo e máximo
-  plot_mass() # plota as medidas
+object_contour(img) %>%  # obtém o contorno dos objetos
+  poly_mass() %>%        # computa o centro de massa e raios mínimo e máximo
+  plot_mass()            # plota as medidas
 ```
 
 * Quadrado maior:
@@ -170,7 +168,6 @@ count2 <-
 
 
 ```{r}
-
 # Obtenha as medidas do objeto
 
 medidas <- get_measures(count)
@@ -259,6 +256,7 @@ Para acelerar o tempo de processamento, especialmente para um grande número de 
 
 
 ```{r}
+rm(list = ls())
 system.time(
   list_res <- analyze_objects(pattern = "img_sb")
 )
@@ -273,8 +271,12 @@ system.time(
                     workers = 3)
 )
 
-list_res$count %>% print_tbl()
-list_res$results %>% print_tbl()
+list_res$count %>% 
+  head() %>%  
+  print_tbl()
+list_res$results %>% 
+  head() %>% 
+  print_tbl()
 ```
 
 
@@ -286,7 +288,6 @@ A função `analyze_objects()` calcula uma gama de medidas que podem ser utiliza
 
 
 ```{r batata, fig.width = 10}
-
 batata <- image_pliman("potato_leaves.jpg", plot = TRUE)
 
 pot_meas <-
@@ -510,17 +511,6 @@ plot_measures(soy_green,
 Parece que grãos com valores médios de verde (G) inferiores a 0.5 podem ser consideradas sementes esverdeadas. Os usuários podem então trabalhar com esse recurso e adaptá-lo ao seu caso.
 
 ```{r rgb4}
-ids <- which(soy_green$object_index$G < 0.5)
-
-# proporção de esverdeados (%)
-length(ids) / soy_green$statistics[1,2] * 100
-
-cont <- object_contour(img, show_image = FALSE)
-plot(img)
-plot_contour(cont, id = ids, col = "red")
-
-
-# somente na versao de desenvolvimento
 report <- summary_index(soy_green, index = "G", cut_point = 0.5)
 ids <- report$ids
 
@@ -529,6 +519,8 @@ plot_measures(soy_green,
               id = ids,
               measure = "G",
               col = "black")
+cont <- object_contour(img, show_image = FALSE)
+plot_contour(cont, id = ids, col = "red")
 ```
 
 
@@ -711,7 +703,6 @@ p2 <-
   ggplot(df_leaf, aes(x = img, y = area)) +
   stat_summary(fun = sum,
                geom = "bar",
-               # fill = "white",
                col = "black") +
   labs(x = "Imagem", y = expression(Área~total~(cm^2)))
 

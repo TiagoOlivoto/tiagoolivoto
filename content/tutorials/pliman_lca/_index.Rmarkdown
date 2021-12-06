@@ -1,12 +1,12 @@
 +++
 title = "Luzes, câmera {pliman}! analisando imagens no software R [Português]"
-linktitle = "Apresentação do pacote {pliman}: analisando imagens no software R [Português]"
-summary = "Apresentação do pacote {pliman} no curso 'Análise de Imagens no R', organizado pela Image Pesquisas."
+linktitle = "Luzes, câmera {pliman}!"
+summary = "Apresentação do pacote {pliman} no curso organizado pelo grupo GEEA-UFMG do Instituto de Ciências Agrárias da Universidade Federal de Minas Gerais."
 date = "2021/11/25"
-lastmod = "2021/11/25"
+lastmod = "2021/12/11"
 toc = true  # Show table of contents? true/false
 type = "docs"  # Do not modify.
-[menu.plimanip]
+[menu.plimanlca]
 parent = "pliman"
 weight = 1
 +++
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(cache = TRUE,
                       comment = "#",
                       fig.align = "center",
                       collapse = TRUE)
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_lca/imgs")
 ```
 
 
@@ -29,7 +29,7 @@ knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman
 <div class="icon">
 <i class="far fa-calendar-alt fa-4x"></i>
 </div>
-Data<br>25/11/2021
+Data<br>11/12/2021
 </div>
 </div>
 
@@ -38,7 +38,7 @@ Data<br>25/11/2021
 <div class="icon">
 <i class="far fa-clock fa-4x"></i>
 </div>
-Duração<br> ~40 minutos
+Duração<br> Das 08:00 as 12:00
 </div>
 </div>
 
@@ -62,7 +62,6 @@ Software:<br> R e Rstudio
 </div>
 </div>
 </div>
-
 
 
 # <i class="fas fa-chalkboard-teacher"></i> Ministrante

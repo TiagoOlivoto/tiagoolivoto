@@ -1,24 +1,18 @@
 +++
 title = "Luzes, câmera {pliman}! analisando imagens no software R [Português]"
-linktitle = "Apresentação do pacote {pliman}: analisando imagens no software R [Português]"
-summary = "Apresentação do pacote {pliman} no curso 'Análise de Imagens no R', organizado pela Image Pesquisas."
+linktitle = "Luzes, câmera {pliman}!"
+summary = "Apresentação do pacote {pliman} no curso organizado pelo grupo GEEA-UFMG do Instituto de Ciências Agrárias da Universidade Federal de Minas Gerais."
 date = "2021/11/25"
-lastmod = "2021/11/25"
+lastmod = "2021/12/11"
 toc = true  # Show table of contents? true/false
 type = "docs"  # Do not modify.
-[menu.plimanip]
+[menu.plimanlca]
 parent = "pliman"
 weight = 1
 +++
 
 
-```{r include = FALSE}
-knitr::opts_chunk$set(cache = TRUE,
-                      comment = "#",
-                      fig.align = "center",
-                      collapse = TRUE)
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
-```
+
 
 
 <div class="container">
@@ -29,7 +23,7 @@ knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman
 <div class="icon">
 <i class="far fa-calendar-alt fa-4x"></i>
 </div>
-Data<br>25/11/2021
+Data<br>11/12/2021
 </div>
 </div>
 
@@ -38,7 +32,7 @@ Data<br>25/11/2021
 <div class="icon">
 <i class="far fa-clock fa-4x"></i>
 </div>
-Duração<br> ~40 minutos
+Duração<br> Das 08:00 as 12:00
 </div>
 </div>
 
@@ -62,7 +56,6 @@ Software:<br> R e Rstudio
 </div>
 </div>
 </div>
-
 
 
 # <i class="fas fa-chalkboard-teacher"></i> Ministrante
@@ -177,14 +170,16 @@ Google Escolar
 
 Instale a versão lançada do pliman do [CRAN](https://CRAN.R-project.org/package=pliman) com:
 
-```{r, eval = FALSE}
+
+```r
 install.packages ("pliman")
 
 ```
 
 Ou instale a versão de desenvolvimento do [GitHub](https://github.com/TiagoOlivoto/pliman)
 
-```{r, eval = FALSE}
+
+```r
 # instalação do github
 if(!require(devtools)){
   install.packages("devtools")
@@ -202,7 +197,8 @@ devtools::install_github ("TiagoOlivoto/pliman", build_vignettes = TRUE)
 
 # <i class="fas fa-box-open"></i> Pacotes necessários
 
-```{r warning=FALSE, message = FALSE}
+
+```r
 library(tidyverse)  # manipulação de dados
 library(pliman)     # análise de imagens
 library(patchwork)  # organizar gráficos
@@ -214,7 +210,8 @@ library(patchwork)  # organizar gráficos
 
 Sugere-se que as imagens sejam baixadas e a pasta definida como diretório padrão. Em meu exemplo, setei o seguinte caminho como diretório padrão. O arquivo .zip contém as imagens e os scripts necessários para reproduzir o conteúdo do material.
 
-```{r eval=FALSE}
+
+```r
 # mude de acordo com sua pasta
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
