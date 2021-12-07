@@ -69,13 +69,13 @@ img_res <- analyze_objects(img, marker = "id")
 
 
 
-# Ajustando as medidas do objeto
+## Ajustando as medidas do objeto
 
 Os resultados foram armazenados em `img_res`. Como não há escala declarada no exemplo acima, não temos ideia sobre a área real dos objetos em cm$^2$, apenas em pixels. Neste caso, usamos `get_measures()` para ajustar as medidas de pixels para unidades métricas.
 
 Existem duas formas principais de ajustar as medidas do objeto (de pixels a cm, por exemplo). O primeiro é declarar a área, perímetro ou raio conhecido de um determinado objeto. A medida para os outros objetos será então calculada por uma regra de três simples. A segunda é declarando uma resolução de imagem conhecida em dpi (pontos por polegada). Neste caso, perímetro, área e raio serão ajustados pelo dpi informado.
 
-## Declarando um valor conhecido
+### Declarando um valor conhecido
 
 Como conhecemos a área do quadrado maior (objeto 1), vamos ajustar a área dos outros objetos na imagem usando isso.
 
@@ -92,7 +92,7 @@ get_measures(img_res,
 O mesmo pode ser usado para ajustar as medidas com base no perímetro ou raio. Vamos ajustar o perímetro dos objetos pelo perímetro do objeto 2(20 cm).
 
 
-## Declarando a resolução da imagem
+### Declarando a resolução da imagem
 
 Se a resolução da imagem for conhecida, todas as medidas serão ajustadas de acordo com esta resolução. Vamos ver um exemplo numérico com `pixels_to_cm()`. Esta função converte o número de pixels (*px*) em cm, considerando a resolução da imagem em `dpi`, da seguinte forma: $cm = px \times(2,54 / dpi)$. Como sabemos o número de pixels do quadrado maior, seu perímetro em cm é dado por
 
@@ -124,9 +124,9 @@ object_contour(img) %>%  # obtém o contorno dos objetos
 ```
 
 * Quadrado maior:
-   - O diâmetro mínimo (a = 9,97) pode ser considerado como o lado do quadrado
-   
-   - O diâmetro máximo, dado por $a \sqrt{2}$ pode ser considerado a diagonal do quadrado ($9,97 \sqrt{2} = 14.099$ 
+- O diâmetro mínimo (a = 9,97) pode ser considerado como o lado do quadrado
+
+- O diâmetro máximo, dado por $a \sqrt{2}$ pode ser considerado a diagonal do quadrado ($9,97 \sqrt{2} = 14.099$ 
 ```{r}
 t(img_res_cor)
 ```
@@ -134,7 +134,7 @@ t(img_res_cor)
 
 
 
-# Contando objetos
+## Objetos médios
 
 Aqui, contaremos os grãos na imagem `soybean_touch.jpg`. Esta imagem tem um fundo ciano e contém 30 grãos de soja que se tocam. A função `analyze_objects()` segmenta a imagem usando como padrão o índice azul normalizado, como segue $NB =(B /(R + G + B))$, onde *R*, *G* e *B* são as faixas vermelha, verde e azul. Os objetos são contados e os objetos segmentados são coloridos com permutações aleatórias.
 
@@ -179,8 +179,6 @@ medidas %>%
 
 No exemplo a seguir, selecionaremos objetos com uma área acima da média de todos os objetos usando `lower_size = 2057,36`. Além disso, usaremos o argumento `show_original = FALSE` para mostrar os resultados como uma máscara.
 
-
-
 ```{r, fig.width = 12, fig.height = 6}
 
 analyze_objects(soy, 
@@ -196,7 +194,6 @@ Os usuários também podem usar os argumentos `topn_*` para selecionar os  `n` o
 
 
 ```{r, fig.width = 12, fig.height = 6}
-
 analyze_objects(soy,
                 marker = "id",
                 topn_lower = 5,
@@ -204,8 +201,41 @@ analyze_objects(soy,
                 my_index = "B /(R + G + B)")
 ```
 
+## Objetos grandes
+
+```{r}
+cob <- image_import("cob.jpg")
+
+# segmentação normal
+analyze_objects(cob, marker = "id")
+
+# ajustar o parâmetro object_size
+cob_res <- 
+  analyze_objects(cob,
+                  object_size = "large",
+                  marker = "id")
+
+
+```
+
+
+
+## Objetos pequenos
+```{r}
+wheat <- image_import("wheat.jpg")
+analyze_objects(wheat)
+
+vicia <- image_import("vicia2.jpg")
+analyze_objects(vicia,
+                index = "R",
+                marker = "point",
+                marker_col = "red",
+                show_contour = FALSE)
+```
+
 
 # Coordenadas de objetos
+
 Os usuários podem obter as coordenadas para todos os objetos desejados com `object_coord()`. Quando o argumento `id` é definido como `NULL` (padrão), um retângulo delimitador é desenhado incluindo todos os objetos. Use `id = "all"` para obter as coordenadas de todos os objetos na imagem ou use um vetor numérico para indicar os objetos para calcular as coordenadas. Note que o argumento `watershed = FALSE` é usado para 
 
 
@@ -256,7 +286,6 @@ Para acelerar o tempo de processamento, especialmente para um grande número de 
 
 
 ```{r}
-rm(list = ls())
 system.time(
   list_res <- analyze_objects(pattern = "img_sb")
 )
