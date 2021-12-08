@@ -142,15 +142,32 @@ system.time(
                     img_healthy = "healthy",
                     img_symptoms = "disease",
                     img_background = "back",
+                    save_image = TRUE,
+                    show_original = FALSE,
+                    dir_processed = "processed",
                     show_image = FALSE)
 )
 sev_lote$severity %>% 
   print_tbl()
 ```
 
+## Diagramas de área padrão
 
-Para acelerar o tempo de processamento quando várias imagens estão disponíveis, pode-se utilizar o argumento `paralell`. Isto criará múltiplas seções R em segundo plano, sendo cada uma responsável pelo processamento de uma parte das imagens.
 
+Os diagramas de área padrão (SAD) têm sido usados há muito tempo como uma ferramenta para auxiliar na estimativa da severidade de doenças de plantas, servindo como um modelo de referência padrão antes ou durante as avaliações.
+
+Dado um objeto calculado com `measure_disease()`, um SAD com `n` imagens contendo os respectivos valores de severidade é obtido com `sad()`.
+
+As folhas com menor e maior severidade sempre estarão no SAD. Se `n = 1`, a folha com a menor severidade será retornada. As outras são amostradas sequencialmente para obter as `n` imagens após a severidade ter sido ordenada em ordem crescente. Por exemplo, se houver 30 folhas e `n` for definido como 3, as folhas amostradas serão a 1ª, 15ª e 30ª com os menores valores de severidade.
+
+O SAD só pode ser calculado se um nome de padrão de imagem for usado no argumento `pattern` da função `measure_disease()`. Se as imagens forem salvas, as `n` imagens serão recuperadas do diretório `dir_processed` (diretório padrão por default). Caso contrário, a severidade será calculada novamente para gerar as imagens. Um SAD com 8 imagens do exemplo acima pode ser obtido facilmente com:
+
+```{r}
+sad(sev_lote, n = 4, ncol = 4)
+```
+
+
+## Processamento paralelo
 ```{r}
 system.time(
   sev_lote <- 
@@ -171,6 +188,27 @@ imgs <-
                path = "processed",
                plot = TRUE,
                ncol = 5)
+```
+
+
+
+
+## Um exemplo a mais
+```{r}
+# criar paletas 
+img <- image_import( "multiplas_02.jpeg")
+plot(img)
+back <- pick_palette(img)
+l <- pick_palette(img)
+d <- pick_palette(img)
+
+# usar as paletas na estimação de severidade
+sev <- 
+  measure_disease(pattern = "multip",
+                  img_healthy = l,
+                  img_symptoms = d,
+                  img_background = back,
+                  col_lesions = "red")
 ```
 
 

@@ -137,7 +137,7 @@ sev$severity
 
 ```
 ##    healthy symptomatic
-## 1 76.94278    23.05722
+## 1 76.58138    23.41862
 ```
 
 ```r
@@ -149,12 +149,12 @@ sev$statistics %>%
 
 |stat      |      value|
 |:---------|----------:|
-|n         |    431.000|
-|min_area  |     31.000|
-|mean_area |    406.283|
-|max_area  |   6586.000|
-|sd_area   |    552.724|
-|sum_area  | 175108.000|
+|n         |    423.000|
+|min_area  |     34.000|
+|mean_area |    420.877|
+|max_area  |   6592.000|
+|sd_area   |    557.426|
+|sum_area  | 178031.000|
 
 ```r
 sev$shape[1:10, ] %>% 
@@ -165,16 +165,16 @@ sev$shape[1:10, ] %>%
 
 | id|        x|       y| area| perimeter| radius_mean| radius_min| radius_max| radius_sd| radius_ratio| major_axis| eccentricity|  theta|
 |--:|--------:|-------:|----:|---------:|-----------:|----------:|----------:|---------:|------------:|----------:|------------:|------:|
-|  1| 1060.232| 274.701| 6586|       402|      46.434|     19.017|     71.723|    11.831|        3.771|    117.813|        0.684| -0.033|
-|  2| 1058.402| 361.558| 5244|       365|      40.401|     24.196|     53.301|     6.564|        2.203|     89.711|        0.443|  1.553|
-|  3|  463.460| 536.435| 6231|       429|      45.403|     26.881|     62.254|     9.001|        2.316|    115.024|        0.765| -0.086|
-|  4|  773.863| 402.433| 1732|       169|      23.187|     17.602|     30.820|     3.022|        1.751|     53.737|        0.611|  1.063|
-|  5|  800.065| 317.236| 2773|       258|      30.123|     14.828|     43.296|     7.232|        2.920|     81.593|        0.805|  0.727|
-|  6| 1122.574| 352.019| 1982|       209|      25.308|     15.513|     34.565|     4.717|        2.228|     61.117|        0.678| -0.538|
-|  7| 1090.445| 469.572| 1228|       139|      19.715|      9.936|     25.412|     3.898|        2.558|     48.558|        0.684| -1.114|
-|  8| 1108.853| 495.104| 1012|       112|      17.674|     14.540|     23.684|     2.117|        1.629|     38.382|        0.392| -0.923|
-|  9|  331.419| 535.005| 1199|       139|      19.248|     12.415|     24.727|     2.738|        1.992|     45.022|        0.612| -1.554|
-| 10|  788.480| 363.056| 1214|       163|      20.271|     12.088|     28.149|     4.072|        2.329|     50.513|        0.753| -1.145|
+|  1| 1060.759| 274.656| 6592|       385|      46.807|     21.130|     70.644|    10.855|        3.343|    116.358|        0.677| -0.068|
+|  2| 1058.470| 361.273| 5335|       363|      40.710|     24.592|     53.641|     6.786|        2.181|     90.550|        0.448| -1.504|
+|  3|  461.695| 535.697| 6037|       411|      44.672|     24.773|     64.053|     9.072|        2.586|    112.372|        0.759| -0.168|
+|  4|  773.982| 402.181| 1745|       171|      23.296|     18.712|     30.550|     2.914|        1.633|     54.073|        0.619|  1.082|
+|  5|  800.127| 317.512| 2838|       261|      30.424|     15.181|     44.009|     7.194|        2.899|     81.510|        0.795|  0.742|
+|  6| 1122.756| 352.077| 2009|       213|      25.567|     15.648|     36.258|     4.795|        2.317|     61.953|        0.685| -0.549|
+|  7|  331.139| 534.887| 1199|       138|      19.230|     12.897|     25.148|     2.783|        1.950|     45.567|        0.638|  1.554|
+|  8| 1089.955| 469.110| 1167|       136|      19.288|      9.131|     25.264|     3.997|        2.767|     47.929|        0.702| -1.031|
+|  9| 1108.350| 494.531| 1075|       114|      18.235|     15.001|     24.329|     2.096|        1.622|     38.755|        0.302| -1.160|
+| 10|  788.371| 363.518| 1178|       169|      19.889|     11.419|     27.569|     3.975|        2.414|     48.777|        0.718| -1.127|
 
 
 
@@ -217,36 +217,96 @@ system.time(
                     img_healthy = "healthy",
                     img_symptoms = "disease",
                     img_background = "back",
+                    save_image = TRUE,
+                    show_original = FALSE,
+                    dir_processed = "processed",
                     show_image = FALSE)
 )
 ```
 
 ```
 ## Processing image soy_1 |==                                       | 5% 00:00:00 
-Processing image soy_10 |====                                    | 10% 00:00:01 
-Processing image soy_11 |======                                  | 15% 00:00:01 
-Processing image soy_12 |========                                | 20% 00:00:02 
-Processing image soy_13 |==========                              | 25% 00:00:02 
-Processing image soy_14 |============                            | 30% 00:00:03 
-Processing image soy_15 |==============                          | 35% 00:00:04 
-Processing image soy_16 |================                        | 40% 00:00:04 
-Processing image soy_17 |==================                      | 45% 00:00:04 
-Processing image soy_18 |====================                    | 50% 00:00:06 
-Processing image soy_19 |======================                  | 55% 00:00:07 
-Processing image soy_2 |=========================                | 60% 00:00:08 
-Processing image soy_20 |==========================              | 65% 00:00:09 
-Processing image soy_3 |=============================            | 70% 00:00:10 
-Processing image soy_4 |===============================          | 75% 00:00:10 
-Processing image soy_5 |=================================        | 80% 00:00:11 
-Processing image soy_6 |===================================      | 85% 00:00:12 
-Processing image soy_7 |=====================================    | 90% 00:00:12 
-Processing image soy_8 |=======================================  | 95% 00:00:13 
-Processing image soy_9 |=========================================| 100% 00:00:14 
+```
+
+```
+## Processing image soy_10 |====                                    | 10% 00:00:02 
+```
+
+```
+## Processing image soy_11 |======                                  | 15% 00:00:03 
+```
+
+```
+## Processing image soy_12 |========                                | 20% 00:00:04 
+```
+
+```
+## Processing image soy_13 |==========                              | 25% 00:00:05 
+```
+
+```
+## Processing image soy_14 |============                            | 30% 00:00:07 
+```
+
+```
+## Processing image soy_15 |==============                          | 35% 00:00:09 
+```
+
+```
+## Processing image soy_16 |================                        | 40% 00:00:09 
+```
+
+```
+## Processing image soy_17 |==================                      | 45% 00:00:10 
+```
+
+```
+## Processing image soy_18 |====================                    | 50% 00:00:13 
+```
+
+```
+## Processing image soy_19 |======================                  | 55% 00:00:15 
+```
+
+```
+## Processing image soy_2 |=========================                | 60% 00:00:18 
+```
+
+```
+## Processing image soy_20 |==========================              | 65% 00:00:20 
+```
+
+```
+## Processing image soy_3 |=============================            | 70% 00:00:21 
+```
+
+```
+## Processing image soy_4 |===============================          | 75% 00:00:22 
+```
+
+```
+## Processing image soy_5 |=================================        | 80% 00:00:24 
+```
+
+```
+## Processing image soy_6 |===================================      | 85% 00:00:26 
+```
+
+```
+## Processing image soy_7 |=====================================    | 90% 00:00:27 
+```
+
+```
+## Processing image soy_8 |=======================================  | 95% 00:00:29 
+```
+
+```
+## Processing image soy_9 |=========================================| 100% 00:00:30 
 ```
 
 ```
 ##   usuário   sistema decorrido 
-##     14.17      0.84     15.03
+##     30.27      2.22     32.63
 ```
 
 ```r
@@ -258,30 +318,55 @@ sev_lote$severity %>%
 
 |img    | healthy| symptomatic|
 |:------|-------:|-----------:|
-|soy_1  |  92.980|       7.020|
-|soy_10 |  85.086|      14.914|
-|soy_11 |  15.287|      84.713|
-|soy_12 |  65.675|      34.325|
-|soy_13 |  79.436|      20.564|
-|soy_14 |  68.765|      31.235|
-|soy_15 |  60.066|      39.934|
-|soy_16 |  44.879|      55.121|
-|soy_17 |  77.000|      23.000|
-|soy_18 |  56.286|      43.714|
-|soy_19 |  87.647|      12.353|
-|soy_2  |  64.140|      35.860|
-|soy_20 |  52.792|      47.208|
-|soy_3  |  57.640|      42.360|
-|soy_4  |  48.146|      51.854|
-|soy_5  |  82.677|      17.323|
-|soy_6  |  77.367|      22.633|
-|soy_7  |  76.293|      23.707|
-|soy_8  |  70.127|      29.873|
-|soy_9  |  50.596|      49.404|
+|soy_1  |  92.459|       7.541|
+|soy_10 |  84.869|      15.131|
+|soy_11 |  17.192|      82.808|
+|soy_12 |  68.064|      31.936|
+|soy_13 |  76.217|      23.783|
+|soy_14 |  63.700|      36.300|
+|soy_15 |  58.540|      41.460|
+|soy_16 |  42.132|      57.868|
+|soy_17 |  79.962|      20.038|
+|soy_18 |  55.320|      44.680|
+|soy_19 |  88.891|      11.109|
+|soy_2  |  61.730|      38.270|
+|soy_20 |  52.238|      47.762|
+|soy_3  |  60.320|      39.680|
+|soy_4  |  47.685|      52.315|
+|soy_5  |  83.600|      16.400|
+|soy_6  |  75.351|      24.649|
+|soy_7  |  75.522|      24.478|
+|soy_8  |  70.589|      29.411|
+|soy_9  |  53.434|      46.566|
+
+## Diagramas de área padrão
 
 
-Para acelerar o tempo de processamento quando várias imagens estão disponíveis, pode-se utilizar o argumento `paralell`. Isto criará múltiplas seções R em segundo plano, sendo cada uma responsável pelo processamento de uma parte das imagens.
+Os diagramas de área padrão (SAD) têm sido usados há muito tempo como uma ferramenta para auxiliar na estimativa da severidade de doenças de plantas, servindo como um modelo de referência padrão antes ou durante as avaliações.
 
+Dado um objeto calculado com `measure_disease()`, um SAD com `n` imagens contendo os respectivos valores de severidade é obtido com `sad()`.
+
+As folhas com menor e maior severidade sempre estarão no SAD. Se `n = 1`, a folha com a menor severidade será retornada. As outras são amostradas sequencialmente para obter as `n` imagens após a severidade ter sido ordenada em ordem crescente. Por exemplo, se houver 30 folhas e `n` for definido como 3, as folhas amostradas serão a 1ª, 15ª e 30ª com os menores valores de severidade.
+
+O SAD só pode ser calculado se um nome de padrão de imagem for usado no argumento `pattern` da função `measure_disease()`. Se as imagens forem salvas, as `n` imagens serão recuperadas do diretório `dir_processed` (diretório padrão por default). Caso contrário, a severidade será calculada novamente para gerar as imagens. Um SAD com 8 imagens do exemplo acima pode ser obtido facilmente com:
+
+
+```r
+sad(sev_lote, n = 4, ncol = 4)
+```
+
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+
+```
+##       img  healthy symptomatic rank
+## 1   soy_1 92.45900    7.540998    1
+## 18  soy_7 75.52228   24.477722    7
+## 14  soy_3 60.31971   39.680294   13
+## 3  soy_11 17.19200   82.808002   20
+```
+
+
+## Processamento paralelo
 
 ```r
 system.time(
@@ -301,7 +386,7 @@ system.time(
 
 ```
 ##   usuário   sistema decorrido 
-##      0.23      0.02      7.95
+##      0.28      0.04     10.80
 ```
 
 
@@ -315,7 +400,64 @@ imgs <-
                ncol = 5)
 ```
 
-<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-12-1.png" width="960" />
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-13-1.png" width="960" />
+
+
+
+
+## Um exemplo a mais
+
+```r
+# criar paletas 
+img <- image_import( "multiplas_02.jpeg")
+plot(img)
+```
+
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+
+```r
+back <- pick_palette(img)
+l <- pick_palette(img)
+d <- pick_palette(img)
+
+# usar as paletas na estimação de severidade
+sev <- 
+  measure_disease(pattern = "multip",
+                  img_healthy = l,
+                  img_symptoms = d,
+                  img_background = back,
+                  col_lesions = "red")
+```
+
+```
+## Processing image multiplas_01 |=======                           | 20% 00:00:00 
+```
+
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-14-2.png" width="672" />
+
+```
+## Processing image multiplas_02 |==============                    | 40% 00:00:01 
+```
+
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-14-3.png" width="672" />
+
+```
+## Processing image multiplas_03 |====================              | 60% 00:00:02 
+```
+
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-14-4.png" width="672" />
+
+```
+## Processing image multiplas_04 |===========================       | 80% 00:00:03 
+```
+
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-14-5.png" width="672" />
+
+```
+## Processing image multiplas_05 |==================================| 100% 00:00:04 
+```
+
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-14-6.png" width="672" />
 
 
 # Número de ovos 
@@ -327,7 +469,7 @@ O seguinte exemplo demonstra como contar o número de ovos em uma folha. A image
 ovos <- image_import("ovos.jpg", plot = TRUE)
 ```
 
-<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-15-1.png" width="672" />
 
 
 ```r
@@ -351,7 +493,7 @@ ovos_cont <-
                   show_contour = FALSE)
 ```
 
-<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-15-1.png" width="672" />
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 ```r
 ovos_cont$statistics
@@ -380,7 +522,7 @@ ovos_cont <-
                   col_background = "black")
 ```
 
-<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-15-2.png" width="672" />
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-17-2.png" width="672" />
 
 
 
@@ -411,25 +553,25 @@ measure_disease_iter(img)
 img <- image_import("maize_1.png", plot = TRUE)
 ```
 
-<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-20-1.png" width="672" />
 
 ```r
 image_segment(img, index = "all")
 ```
 
-<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-18-2.png" width="672" />
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-20-2.png" width="672" />
 
 ```r
 img <- image_import("maize_2.png", plot = TRUE)
 ```
 
-<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-18-3.png" width="672" />
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-20-3.png" width="672" />
 
 ```r
 image_segment(img, index = "all")
 ```
 
-<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-18-4.png" width="672" />
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-20-4.png" width="672" />
 
 ```r
 img2 <- image_crop(img,
@@ -452,4 +594,4 @@ image_segment_iter(img2,
 ## 3     seg2   17325  23.05481
 ```
 
-<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-18-5.png" width="672" />
+<img src="/tutorials/pliman_lca/04_phytopathometry_files/figure-html/unnamed-chunk-20-5.png" width="672" />
