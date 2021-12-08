@@ -163,7 +163,7 @@ Google Escolar
 * Plotar medidas de objetos.
 
 
-<a href="https://www.researchgate.net/publication/353021781_Measuring_plant_disease_severity_in_R_introducing_and_evaluating_the_pliman_package" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/tutorials/pliman_omegads/paper_pliman.png" width="1000" height="273"/></a>
+<a href="https://www.researchgate.net/publication/353021781_Measuring_plant_disease_severity_in_R_introducing_and_evaluating_the_pliman_package" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/tutorials/pliman_lca/paper_pliman.png" width="1000" height="273"/></a>
 
 
 # <i class="fas fa-tools"></i> Instalação
@@ -213,11 +213,11 @@ Sugere-se que as imagens sejam baixadas e a pasta definida como diretório padr�
 
 ```r
 # mude de acordo com sua pasta
-setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_lca/imgs")
 ```
 
 
-<a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_ip/pliman_ip.rar">
+<a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_lca/pliman_lca.rar">
 <button class="btn btn-success"><i class="fa fa-save"></i> Download do material</button>
 </a>
 <br>
