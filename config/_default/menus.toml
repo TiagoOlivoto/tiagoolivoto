@@ -36,10 +36,15 @@
   url = "#talks"
   weight = 6
   
+[[main]]
+  name = "Classes"
+  url = "classes"
+  weight = 7
+  
 #------------------------------
 [[main]] 
     name = "Publications"
-    weight = 7
+    weight = 8
 
 [[main]]
     parent = "Publications"
@@ -58,6 +63,6 @@
 [[main]]
   name = "Contact"
   url = "#contact"
-  weight = 8
+  weight = 9
 
 
