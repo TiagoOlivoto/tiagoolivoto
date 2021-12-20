@@ -1,0 +1,103 @@
+---
+toc: true
+title: Sequential path analysis with {metan} R package
+subtitle: ''
+summary: 'The new function path_analysis_seq() in {metan} can performs a sequential path analysis, a path analysis with two sets of predictors.'
+author: Tiago Olivoto
+date: '2021-12-19'
+lastmod: '2021-12-19'
+url_source: https://github.com/TiagoOlivoto/pliman
+url_code: https://doi.org/10.5281/zenodo.5666820
+# doi: "10.1111/2041-210X.13384"
+links:
+- icon: twitter
+  icon_pack: fab
+  name: Follow
+  url: https://twitter.com/tolivoto
+categories:
+  - metan
+tags:
+  - path analysis
+  - correlation
+  - plant breeding
+  - collinearity
+  - metan
+image:
+  placement: 2
+  caption: 'Image by TanteTati from Pixabay'
+  preview_only: no
+featured: no
+math: true
+---
+
+<script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"></script>
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(comment = "#", collapse = TRUE)
+
+```
+
+
+Studying relationships among crop traits is crucial for the understanding of complex biological systems that occur in plants. Some traits develop earlier in ontogeny and affect other traits that develop later. Therefore, a sequential path analysis should be a better option to study cause-and-effect relationships where one trait affects another trait.
+
+<i class="far fa-calendar-alt"></i> For a long time, it was on my radar to implement an option to perform sequential path analysis in `metan`. The final push into this topic was done during [Gabrielle Lombardi](https://www.linkedin.com/in/gabriellelombardi/?originalSubdomain=br)'s doctoral thesis defense, where I was participating as a member of the examination committee. Gabrielli used metan for most of her analysis and has been questioned why the sequential path analysis was done with other software. Since metan has a function to perform path analysis, I realized that it should be not so laborious to implement a routine for sequential path analysis; and here we are; better late than never! 
+
+The function to implement path analysis in {metan} is [`path_analysis_seq()`](https://tiagoolivoto.github.io/metan/reference/path_coeff.html). To use this function, the development version of `metan` must be installed.
+
+# Instalation
+
+```{r eval=FALSE}
+devtools::install_github("TiagoOlivoto/pliman")
+```
+
+
+# A numerical example.
+
+In this short post, I'll use the data `data_ge2()`, a data set for a maize multi-environment trial, as a motivating example. The BLUPs for the genotype-environment interaction will be used in the path analysis in two ways. The first will consider the analysis across environments. In the second, a sequential path analysis will be performed within each environment. 
+
+To construct the sequential model, KW (kernel weight per ear) will be used as a the dependent trait. The first set of predictors will be TKW, NKE, and NKR. The second set of predictors will be the plant- and ear-related traits PH, EH, EL, ED, CL, and CD.
+
+```{r}
+library(metan)
+str(data_ge2)
+```
+
+## Across environments
+```{r}
+mod1 <- 
+  path_coeff_seq(data_ge2,
+             resp = KW,
+             chain_1 = c(TKW, NKE, NKR),
+             chain_2 = c(PH, EH, EL, ED, CL, CD))
+
+# Coefficients for the primary traits and response
+plot(mod1$resp_fc)
+
+# Coefficients for the secondary traits and response
+plot(mod1$resp_sc)
+
+
+# contribution to the total effects through primary traits
+gmd(mod1) %>% round_cols(digits = 3)
+```
+
+
+## within environments
+To perform the path analysis for each level of a factor (or combination of factors), we can use the argument `by`. In this case, I'll compute the model above for each environment in `data_ge2`.
+
+```{r}
+mod2 <- 
+  path_coeff_seq(data_ge2,
+             resp = KW,
+             chain_1 = c(TKW, NKE, NKR),
+             chain_2 = c(PH, EH, EL, ED, CL, CD),
+             by = ENV,
+             verbose = FALSE)
+
+
+# contribution to the total effects through primary traits
+gmd(mod2) %>% round_cols(digits = 3)
+```
+
+That's all!
+
