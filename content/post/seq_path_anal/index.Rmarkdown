@@ -40,7 +40,7 @@ knitr::opts_chunk$set(comment = "#", collapse = TRUE)
 
 Studying relationships among crop traits is crucial for the understanding of complex biological systems that occur in plants. Some traits develop earlier in ontogeny and affect other traits that develop later. Therefore, a sequential path analysis should be a better option to study cause-and-effect relationships where one trait affects another trait.
 
-<i class="far fa-calendar-alt"></i> For a long time, it was on my radar to implement an option to perform sequential path analysis in `metan`. The final push into this topic was done during [Gabrielle Lombardi](https://www.linkedin.com/in/gabriellelombardi/?originalSubdomain=br)'s doctoral thesis defense, where I was participating as a member of the examination committee. Gabrielli used metan for most of her analysis and has been questioned why the sequential path analysis was done with other software. Since metan has a function to perform path analysis, I realized that it should be not so laborious to implement a routine for sequential path analysis; and here we are; better late than never! 
+<i class="far fa-calendar-alt"></i> For a long time, it was on my radar to implement an option to perform sequential path analysis in `metan`. The final push into this topic was given during [Gabrielle Lombardi](https://www.linkedin.com/in/gabriellelombardi/?originalSubdomain=br)'s doctoral thesis defense, where I was participating as a member of the examination committee. Gabrielli used metan for most of her analysis and has been questioned why the sequential path analysis was done with other software. Since metan has a function to perform path analysis, I realized that it should be not so laborious to implement a routine for sequential path analysis; and here we are; better late than never! 
 
 The function to implement path analysis in {metan} is [`path_analysis_seq()`](https://tiagoolivoto.github.io/metan/reference/path_coeff.html). To use this function, the development version of `metan` must be installed.
 
@@ -55,20 +55,27 @@ devtools::install_github("TiagoOlivoto/pliman")
 
 In this short post, I'll use the data `data_ge2()`, a data set for a maize multi-environment trial, as a motivating example. The BLUPs for the genotype-environment interaction will be used in the path analysis in two ways. The first will consider the analysis across environments. In the second, a sequential path analysis will be performed within each environment. 
 
-To construct the sequential model, KW (kernel weight per ear) will be used as a the dependent trait. The first set of predictors will be TKW, NKE, and NKR. The second set of predictors will be the plant- and ear-related traits PH, EH, EL, ED, CL, and CD.
+To construct the sequential model, KW (kernel weight per ear) will be used as the dependent trait. The first set of predictors will be TKW, NKE, and NKR. The second set of predictors will be the plant- and ear-related traits PH, EH, EL, ED, CL, and CD.
 
 ```{r}
 library(metan)
 str(data_ge2)
+blups <- 
+  gamem_met(data_ge2,
+            env = ENV,
+            gen = GEN,
+            rep = REP,
+            resp = everything()) %>% 
+  gmd(what = "blupge")
 ```
 
 ## Across environments
 ```{r}
 mod1 <- 
-  path_coeff_seq(data_ge2,
-             resp = KW,
-             chain_1 = c(TKW, NKE, NKR),
-             chain_2 = c(PH, EH, EL, ED, CL, CD))
+  path_coeff_seq(blups,
+                 resp = KW,
+                 chain_1 = c(TKW, NKE, NKR),
+                 chain_2 = c(PH, EH, EL, ED, CL, CD))
 
 # Coefficients for the primary traits and response
 plot(mod1$resp_fc)
@@ -87,12 +94,12 @@ To perform the path analysis for each level of a factor (or combination of facto
 
 ```{r}
 mod2 <- 
-  path_coeff_seq(data_ge2,
-             resp = KW,
-             chain_1 = c(TKW, NKE, NKR),
-             chain_2 = c(PH, EH, EL, ED, CL, CD),
-             by = ENV,
-             verbose = FALSE)
+  path_coeff_seq(blups,
+                 resp = KW,
+                 chain_1 = c(TKW, NKE, NKR),
+                 chain_2 = c(PH, EH, EL, ED, CL, CD),
+                 by = ENV,
+                 verbose = FALSE)
 
 
 # contribution to the total effects through primary traits
