@@ -56,7 +56,6 @@ A planilha, bem como as orientações para uso são encontradas neste [repositó
 Um arquivo .zip chamado `"lattes-master.zip"` será baixado. Sugiro ao usuário descompactar este arquivo e renomear a pasta para `"lattes"`. Dentro desta pasta o usuário encontrará a planilha bem como um arquivo .txt com instruções. Sugiro salvar a pasta em seu computador, em uma unidade onde serão armazenados os arquivos (ex. `"E:/Documents/lattes"`).
 
 
-
 # Apresentação
 
 Ao abrir a planilha, o usuário irá encontrar a seguinte tela 
