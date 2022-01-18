@@ -23,9 +23,10 @@ interests:
 - Statistics
 name: Tiago Olivoto
 organizations:
-- name: UFSM
-  url: "https://www.ufsm.br/unidades-universitarias/frederico-westphalen/"
-role: Professor
+- name: UFSC
+  url: "https://ufsc.br/"
+role: Adjunct Professor
+
 social:
 - icon: envelope
   icon_pack: fas
@@ -72,8 +73,10 @@ user_groups:
 - Visitors
 ---
 
-I completed my **Ph.D. in Agronomy** at [Federal University of Santa Maria](https://www.ufsm.br/). My main research interests are related to Plant Breeding and Experimental Statistics, with emphasis on the development of methods for stability analysis in plant breeding trials. I'm an active member of the [International Biometric Society (IBS)](https://www.biometricsociety.org/home), [American Society of Agronomy (ASA)](https://www.agronomy.org/), [Crop Science Society of America (CSSA)](https://www.crops.org/) and [Soil Science Society of America (SSSA)](https://www.soils.org/). I'm also a member of the Young Researchers Committee of the [Brazilian Region of the International Biometric Society](http://www.rbras.org.br/?q=pt-br), (JP-RBras) representing the states of RS, SC, and PR.
+I am Adjunct Professor at [Department of Plant Sciences](https://fit.ufsc.br/) at [Federal University of Santa Catarina](https://ufsc.br/) (UFSC, 2022 - today). My main research interests are related to Plant Breeding and Experimental Statistics, with emphasis on the development of methods for stability analysis in plant breeding trials.
+
+I'm an active member of the [International Biometric Society (IBS)](https://www.biometricsociety.org/home), and [Brazilian Society of Plant Breeding (SBMP)](http://www.sbmp.org.br/). I'm also a member of the Young Researchers Committee of the [Brazilian Region of the International Biometric Society](http://www.rbras.org.br/?q=pt-br), (JP-RBras) representing the states of RS, SC, and PR.
 
 In my [CV](http://lattes.cnpq.br/2432360896340086), the most frequent terms in the context of scientific production are analysis of multi-environment trials, multivariate indexes, confidence interval for correlation, design of experiments, indirect selection, genotype-vs-environment interaction, mixed models, and genetic parameters. 
 
-I have some experience with well-known statistical software such as SAS, SPSS, Statistica, GEA-R, and Gênes, but since my Ph.D. I have dedicated my efforts to R programming. I've been working on the development of the [R package metan](https://tiagoolivoto.github.io/metan/), designed for checking, manipulating, summarizing, analyzing and plotting multi-environment trial data.
+I have some experience with well-known statistical software such as SAS, SPSS, Statistica, GEA-R, and Gênes, but since my Ph.D. I have dedicated my efforts to R programming. I've been working on the development of the R packages [metan](https://tiagoolivoto.github.io/metan/), designed for checking, manipulating, summarizing, analyzing, and plotting multi-environment trial data, and [pliman](https://bit.ly/pliman), designed for analyzing plant images.

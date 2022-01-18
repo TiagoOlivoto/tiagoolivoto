@@ -70,6 +70,20 @@ date_format = "Jan 2006"
   company_url = "https://www.ufsm.br/unidades-universitarias/frederico-westphalen/"
   location = "Frederico Westphalen - RS"
   date_start = "2021-06-09"
-  date_end = ""
+  date_end = "2022-01-10"
   description = """Professor"""
+  
+[[experience]]
+  title = "Adjunct Professor"
+  company = "UFSC"
+  company_url = "https://ufsc.br/"
+  location = "Florianópolis - SC"
+  date_start = "2022-01-12"
+  date_end = ""
+  description = """ Responsibilities include:
+  * Teaching
+  * Researching
+  * University Extension
+  """
+  
 +++
