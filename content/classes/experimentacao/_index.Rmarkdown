@@ -1,0 +1,101 @@
++++
+title = "Tutoriais Bioestatística e Experimentação Agrícola [Português]"
+linktitle = "Tutoriais Bioestatística e Experimentação Agrícola [Português]"
+summary = "Este material apresenta os scripts e gráficos confeccionados com o software R, que servem de apoio para a disciplina FIT5306 - Bioestatística e Experimentação Agrícola, ofertadas pelo Departamento de Fitotecnia da Universidade Federal de Santa Catarina (UFSC)"
+date = "2022/02/07"
+lastmod = "2022/02/07"
+toc = true  # Show table of contents? true/false
+type = "docs"  # Do not modify.
+[menu.experimentacao]
+    parent = "Experimentação"
+    weight = 1
++++
+
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(cache = TRUE, comment = "#", fig.align = "center", collapse = TRUE)
+```
+
+
+# <i class="fas fa-box-open"></i> Pacotes necessários
+
+```{r warning=FALSE, message = FALSE}
+library(tidyverse)  # manipulação de dados
+library(metan)      # estatísticas descritivas
+library(rio)        # importação/exportação de dados
+library(emmeans)    # comparação de médias
+library(AgroR)      # casualização e ANOVA
+```
+
+
+# <i class="fas fa-database"></i> Conjuntos de dados
+
+---------------------------------
+
+O conjunto de dados `dados_biost_exp.xlsx` contém dados que podem ser utilizados para aplicação prática dos conteúdos trabalhados na disciplina. O arquivo contém as seguintes planilhas:
+
+* `DIC-DBC`: dados de área foliar (AF) e matéria seca de planta (MST) de plantas de chicória avaliadas em diferentes níveis de radiação solar (50%, 70% e 100%). O experimento foi conduzido em delineamento de blocos completos casualizados, com quatro repetições.
+
+* `EFEITOS`: Os efeitos de tratamento e erro (delineamento inteiramente casualizado) para os dados da planilha `DIC-DBC`.
+
+* `DIC-DBC-ANOVA`: análise de variância nos delineamentos DIC e DBC, para efeitos de comparação, dos dados da planilha `DIC-DBC`.
+
+* `QUALI`: Dados do rendimento de grãos (RG) de 10 híbridos de milho avaliados em um delineamento de blocos completos casualizados, com quatro repetições.
+
+* `QUANTI_LINEAR`:  Dados do rendimento de grãos (RG) de um híbrido de milho sob diferentes doses de nitrogênio, avaliados em um delineamento de blocos completos casualizados, com quatro repetições. O conjunto apresenta um comportamento linear.
+
+* `QUANTI_LINEAR`:  Dados do rendimento de grãos (RG) de um híbrido de milho sob diferentes doses de nitrogênio, avaliados em um delineamento de blocos completos casualizados, com quatro repetições. O conjunto apresenta um comportamento linear.
+
+* `QUANTI_QUADRÁTICA`:  Dados do rendimento de grãos (RG) de um híbrido de milho sob diferentes doses de nitrogênio, avaliados em um delineamento de blocos completos casualizados, com quatro repetições. O conjunto apresenta um comportamento quadrático.
+
+* `maize`: Dados de um ensaio multi-ambientes onde 13 híbridos de milho foram avaliados em quatro localidades, sendo que em cada localidade um delineamento de blocos completos casualizados com três repetições foi utilizado. São apresentados dados de sete caracteres quantitativos avaliados em cinco plantas aleatoriamente escolhidas em cada parcela.
+
+
+As seguintes planilhas contém dados de experimentos bifatoriais com diferentes combinações de fatores qualitativos e quantitativos na presença de interação significativa e não significativa. Em todos os exemplos, é utilizado o delineamento de blocos completos casualizados. Os cinco conjuntos de dados serão detalhados a seguir.
+
+* `FAT1_SI`: Fator 1 **qualitativo** (fontes de nitrogênio), com três níveis; Fator 2 **qualitativo** (híbridos), com três níveis, **com interação significativa**.
+* `FAT1_CI`: Fator 1 **qualitativo** (dias de avaliação), com três níveis; Fator 2 **qualitativo** (radiação solar), com três níveis, **sem interação significativa**. 
+* `FAT2_SI`: Fator 1 **qualitativo** (híbridos), com dois níveis; Fator 2 **quantitativo** (doses de N), com cinco níveis, **sem interação significativa**.
+* `FAT2_CI`: Fator 1 **qualitativo** (híbridos), com dois níveis; Fator 2 **quantitativo** (doses de N), com cinco níveis, **com interação significativa**.
+* `FAT3`: Fator 1 **quantitativo** (doses de N), com quatro níveis; Fator 2 **quantitativo** (doses de K), com cinco níveis, **com interação significativa**.
+
+
+Planilhas específicas podem ser baixadas diretamente no software R, utilizando o argumento `sheet` da função `import()` do pacote `rio`.
+
+```{r}
+url <- "http://bit.ly/df_biostat_exp"
+df_biostat <- import(url, sheet = "DIC-DBC")
+glimpse(df_biostat)
+```
+
+Para baixar o arquivo `.xlsx`, utilize o botão abaixo.
+
+<a href="http://bit.ly/df_biostat_exp" target="_blank" rel="noopener">
+  <button class="btn btn-success"><i class="fa fa-save"></i> Download dados_biost_exp.xlsx</button>
+</a>
+
+
+------------------------------------------
+
+
+
+
+
+
+# <i class="fab fa-creative-commons"></i> Licença
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener"><img alt="Licença Creative Commons" style="border-width:0" src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/img/gemsr/license.jpg" width="300" height="214" /></a><br />Este conteúdo está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons - Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional</a>. O resumo legível da licença afirma que você tem o direito de:
+
+<i class="fas fa-check"></i> **Compartilhar** — copiar e redistribuir o material em qualquer suporte ou formato
+
+<i class="fas fa-check"></i>**Adaptar** — remixar, transformar, e criar a partir do material
+
+<i class="fas fa-check"></i>**Atribuição** — Você deve dar o crédito apropriado, prover um link para a licença e indicar se mudanças foram feitas. Você deve fazê-lo em qualquer circunstância razoável, mas de nenhuma maneira que sugira que o licenciante apoia você ou o seu uso.
+
+<i class="fas fa-check"></i>**De acordo com os termos seguintes**
+
+   * **Não Comercial** — Você não pode usar o material para fins comerciais.
+
+   * **CompartilhaIgual** — Se você remixar, transformar, ou criar a partir do material, tem de distribuir as suas contribuições sob a mesma licença que o original.
+
+   * **Sem restrições adicionais** — Você não pode aplicar termos jurídicos ou medidas de caráter tecnológico que restrinjam legalmente outros de fazerem algo que a licença permita.
