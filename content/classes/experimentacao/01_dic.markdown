@@ -3,7 +3,7 @@ title: ANOVA - DIC
 linktitle: "1. ANOVA - DIC"
 toc: true
 type: docs
-date: "2021/07/09"
+date: "2022/02/07"
 draft: false
 df_print: paged
 code_download: true

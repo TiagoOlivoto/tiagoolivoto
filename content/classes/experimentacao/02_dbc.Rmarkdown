@@ -22,6 +22,7 @@ library(metan)      # estatísticas descritivas
 library(rio)        # importação/exportação de dados
 library(emmeans)    # comparação de médias
 library(AgroR)      # casualização e ANOVA
+library(ExpDes.pt)
 
 ```
 
@@ -174,4 +175,32 @@ with(df_dbc,
      DBC(RAD, REP, MST))
 
 ```
+
+
+
+# Notas da aula prática
+```{r}
+url <- "http://bit.ly/df_biostat_exp"
+df_af <- import(url, sheet = "DIC-DBC")
+df_af <- as_factor(df_af, 1:2)
+
+tabela <- 
+  df_af %>% 
+  make_mat(RAD, REP, AF_M2) %>% 
+  row_col_sum()
+
+tabela
+
+# ExpDes
+with(df_af, dbc(RAD, REP, AF_M2))
+
+
+# AgroR
+with(df_af, DBC(RAD, REP, AF_M2))
+
+
+# AgroR - DIC
+with(df_af, DIC(RAD, AF_M2))
+```
+
 

@@ -23,6 +23,7 @@ library(metan)      # estatísticas descritivas
 library(rio)        # importação/exportação de dados
 library(emmeans)    # comparação de médias
 library(AgroR)      # casualização e ANOVA
+library(ExpDes.pt)
 ```
 
 
@@ -110,13 +111,14 @@ A função `inspect` do pacote `metan` é utilizada para inspecionar o conjunto 
 
 ```r
 inspect(df_dbc, plot = TRUE)
-## # A tibble: 4 x 9
-##   Variable Class   Missing Levels Valid_n    Min Median    Max Outlier
-##   <chr>    <chr>   <chr>   <chr>    <int>  <dbl>  <dbl>  <dbl>   <dbl>
-## 1 RAD      factor  No      3           12   NA     NA     NA        NA
-## 2 REP      factor  No      4           12   NA     NA     NA        NA
-## 3 AF       numeric No      -           12 3648.  5287.  6118.        0
-## 4 MST      numeric No      -           12   10.7   13.6   16.9       0
+## # A tibble: 5 x 9
+##   Variable Class   Missing Levels Valid_n     Min  Median     Max Outlier
+##   <chr>    <chr>   <chr>   <chr>    <int>   <dbl>   <dbl>   <dbl>   <dbl>
+## 1 RAD      factor  No      3           12   NA      NA      NA         NA
+## 2 REP      factor  No      4           12   NA      NA      NA         NA
+## 3 AF       numeric No      -           12 3648.   5287.   6118.         0
+## 4 AF_M2    numeric No      -           12    3.65    5.28    6.12       0
+## 5 MST      numeric No      -           12   10.7    13.6    16.9        0
 ```
 
 <img src="/classes/experimentacao/02_dbc_files/figure-html/unnamed-chunk-5-1.png" width="672" />
@@ -129,11 +131,12 @@ A função `desc_stat()` do pacote `metan` computa estatísticas descritivas par
 
 ```r
 desc_stat(df_dbc)
-## # A tibble: 2 x 9
-##   variable    cv    max   mean median    min sd.amo      se     ci
-##   <chr>    <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>   <dbl>  <dbl>
-## 1 AF        14.7 6118.  5144.  5287.  3648.  755.   218.    479.  
-## 2 MST       16.0   16.9   13.7   13.6   10.7   2.20   0.634   1.40
+## # A tibble: 3 x 9
+##   variable    cv     max    mean  median     min  sd.amo      se      ci
+##   <chr>    <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+## 1 AF        14.7 6118.   5144.   5287.   3648.   755.    218.    479.   
+## 2 AF_M2     14.6    6.12    5.14    5.28    3.65   0.753   0.217   0.478
+## 3 MST       16.0   16.9    13.7    13.6    10.7    2.20    0.634   1.40
 ```
 
 
@@ -267,4 +270,242 @@ with(df_dbc,
 ```
 
 <img src="/classes/experimentacao/02_dbc_files/figure-html/unnamed-chunk-9-2.png" width="672" />
+
+
+
+# Notas da aula prática
+
+```r
+url <- "http://bit.ly/df_biostat_exp"
+df_af <- import(url, sheet = "DIC-DBC")
+df_af <- as_factor(df_af, 1:2)
+
+tabela <- 
+  df_af %>% 
+  make_mat(RAD, REP, AF_M2) %>% 
+  row_col_sum()
+
+tabela
+```
+
+```
+##              1     2     3     4 row_sums
+## 50        5.02  3.65  3.93  4.71    17.31
+## 70        6.12  5.61  5.11  4.98    21.82
+## 100       5.46  5.55  5.72  5.87    22.60
+## col_sums 16.60 14.81 14.76 15.56    61.73
+```
+
+```r
+# ExpDes
+with(df_af, dbc(RAD, REP, AF_M2))
+```
+
+```
+## ------------------------------------------------------------------------
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##            GL     SQ      QM     Fc   Pr>Fc
+## Tratamento  2 4.0777 2.03886 8.6546 0.01706
+## Bloco       3 0.7397 0.24656 1.0466 0.43768
+## Residuo     6 1.4135 0.23558               
+## Total      11 6.2309                       
+## ------------------------------------------------------------------------
+## CV = 9.44 %
+## 
+## ------------------------------------------------------------------------
+## Teste de normalidade dos residuos 
+## valor-p:  0.03513576 
+## ATENCAO: a 5% de significancia, os residuos nao podem ser considerados normais!
+## ------------------------------------------------------------------------
+## 
+## ------------------------------------------------------------------------
+## Teste de homogeneidade de variancia 
+## valor-p:  0.9731437 
+## De acordo com o teste de oneillmathews a 5% de significancia, as variancias podem ser consideradas homogeneas.
+## ------------------------------------------------------------------------
+## 
+## Teste de Tukey
+## ------------------------------------------------------------------------
+## Grupos Tratamentos Medias
+## a 	 100 	 5.65 
+## a 	 70 	 5.455 
+##  b 	 50 	 4.3275 
+## ------------------------------------------------------------------------
+```
+
+```r
+# AgroR
+with(df_af, DBC(RAD, REP, AF_M2))
+```
+
+```
+## 
+## -----------------------------------------------------------------
+## Normality of errors
+## -----------------------------------------------------------------
+##                          Method Statistic    p.value
+##  Shapiro-Wilk normality test(W) 0.8484538 0.03513576
+```
+
+```
+## As the calculated p-value is less than the 5% significance level, H0 is rejected. Therefore, errors do not follow a normal distribution
+```
+
+```
+## 
+## -----------------------------------------------------------------
+## Homogeneity of Variances
+## -----------------------------------------------------------------
+##                               Method   Statistic   p.value
+##  Bartlett test(Bartlett's K-squared) 0.003188021 0.9984073
+```
+
+```
+## As the calculated p-value is greater than the 5% significance level, hypothesis H0 is not rejected. Therefore, the variances can be considered homogeneous
+```
+
+```
+## 
+## -----------------------------------------------------------------
+## Independence from errors
+## -----------------------------------------------------------------
+##                  Method Statistic    p.value
+##  Durbin-Watson test(DW)  1.327161 0.06425358
+```
+
+```
+## As the calculated p-value is greater than the 5% significance level, hypothesis H0 is not rejected. Therefore, errors can be considered independent
+```
+
+```
+## 
+## -----------------------------------------------------------------
+## Additional Information
+## -----------------------------------------------------------------
+## 
+## CV (%) =  9.44
+## R-squared =  0.81
+## Mean =  5.1442
+## Median =  5.285
+## Possible outliers =  No discrepant point
+## 
+## -----------------------------------------------------------------
+## Analysis of Variance
+## -----------------------------------------------------------------
+##           Df    Sum Sq   Mean.Sq  F value      Pr(F)
+## trat       2 4.0777167 2.0388583 8.654612 0.01705573
+## bloco      3 0.7396917 0.2465639 1.046622 0.43767865
+## Residuals  6 1.4134833 0.2355806
+```
+
+```
+## As the calculated p-value, it is less than the 5% significance level. The hypothesis H0 of equality of means is rejected. Therefore, at least two treatments differ
+```
+
+```
+## 
+## -----------------------------------------------------------------
+## Multiple Comparison Test
+## -----------------------------------------------------------------
+##       resp groups
+## 100 5.6500      a
+## 70  5.4550      a
+## 50  4.3275      b
+```
+
+```
+## 
+## Your analysis is not valid, suggests using a non-parametric 
+## test and try to transform the data
+```
+
+<img src="/classes/experimentacao/02_dbc_files/figure-html/unnamed-chunk-10-1.png" width="672" /><img src="/classes/experimentacao/02_dbc_files/figure-html/unnamed-chunk-10-2.png" width="672" />
+
+```r
+# AgroR - DIC
+with(df_af, DIC(RAD, AF_M2))
+```
+
+```
+## 
+## -----------------------------------------------------------------
+## Normality of errors
+## -----------------------------------------------------------------
+##                          Method Statistic   p.value
+##  Shapiro-Wilk normality test(W) 0.9615261 0.8053778
+```
+
+```
+## As the calculated p-value is greater than the 5% significance level, hypothesis H0 is not rejected. Therefore, errors can be considered normal
+```
+
+```
+## 
+## -----------------------------------------------------------------
+## Homogeneity of Variances
+## -----------------------------------------------------------------
+##                               Method Statistic   p.value
+##  Bartlett test(Bartlett's K-squared)  3.411877 0.1816019
+```
+
+```
+## As the calculated p-value is greater than the 5% significance level,hypothesis H0 is not rejected. Therefore, the variances can be considered homogeneous
+```
+
+```
+## 
+## -----------------------------------------------------------------
+## Independence from errors
+## -----------------------------------------------------------------
+##                  Method Statistic  p.value
+##  Durbin-Watson test(DW)  1.537837 0.056558
+```
+
+```
+## As the calculated p-value is greater than the 5% significance level, hypothesis H0 is not rejected. Therefore, errors can be considered independent
+```
+
+```
+## 
+## -----------------------------------------------------------------
+## Additional Information
+## -----------------------------------------------------------------
+## 
+## CV (%) =  9.51
+## R-squared =  0.89
+## Mean =  5.1442
+## Median =  5.285
+## Possible outliers =  No discrepant point
+## 
+## -----------------------------------------------------------------
+## Analysis of Variance
+## -----------------------------------------------------------------
+##           Df   Sum Sq   Mean.Sq  F value       Pr(F)
+## trat       2 4.077717 2.0388583 8.522171 0.008382645
+## Residuals  9 2.153175 0.2392417
+```
+
+```
+## As the calculated p-value, it is less than the 5% significance level.The hypothesis H0 of equality of means is rejected. Therefore, at least two treatments differ
+```
+
+```
+## 
+## 
+## -----------------------------------------------------------------
+## Multiple Comparison Test
+## -----------------------------------------------------------------
+##       resp groups
+## 100 5.6500      a
+## 70  5.4550      a
+## 50  4.3275      b
+```
+
+```
+## 
+```
+
+<img src="/classes/experimentacao/02_dbc_files/figure-html/unnamed-chunk-10-3.png" width="672" /><img src="/classes/experimentacao/02_dbc_files/figure-html/unnamed-chunk-10-4.png" width="672" />
+
 
