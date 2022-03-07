@@ -888,19 +888,19 @@ df_cobsoja
 ```
 
 ```
-## # A tibble: 32 x 8
-##    ESPECIE     NITROGENIO REP      MR    NL   NGL   MMG    RG
-##    <fct>       <fct>      <fct> <dbl> <dbl> <dbl> <dbl> <dbl>
-##  1 Aveia Preta Sem N      R1     15    30    2.25   180 3547.
-##  2 Aveia Preta Sem N      R2     14.6  40.8  2.55   190 4117.
-##  3 Aveia Preta Sem N      R3     13.2  34.6  2.6    170 3381.
-##  4 Aveia Preta Sem N      R4     13    37.6  2.52   160 3733.
-##  5 Centeio     Sem N      R1     15.2  38.6  2.15   180 3819.
-##  6 Centeio     Sem N      R2     13    40.6  2.1    170 1739.
-##  7 Centeio     Sem N      R3     14.4  37.6  2.48   180 3928.
-##  8 Centeio     Sem N      R4     13    38    2.39   150 3339.
-##  9 Triticale   Sem N      R1     13.6  35.6  2.46   210 4400 
-## 10 Triticale   Sem N      R2     13.6  32.2  2.42   200 4378.
+## # A tibble: 32 x 7
+##    ESPECIE     NITROGENIO REP      NL   NGL   MMG    RG
+##    <fct>       <fct>      <fct> <dbl> <dbl> <dbl> <dbl>
+##  1 Aveia Preta Sem N      R1     30    2.25   180 3547.
+##  2 Aveia Preta Sem N      R2     40.8  2.55   190 4117.
+##  3 Aveia Preta Sem N      R3     34.6  2.6    170 3381.
+##  4 Aveia Preta Sem N      R4     37.6  2.52   160 3733.
+##  5 Centeio     Sem N      R1     38.6  2.15   180 3819.
+##  6 Centeio     Sem N      R2     40.6  2.1    170 1739.
+##  7 Centeio     Sem N      R3     37.6  2.48   180 3928.
+##  8 Centeio     Sem N      R4     38    2.39   150 3339.
+##  9 Triticale   Sem N      R1     35.6  2.46   210 4400 
+## 10 Triticale   Sem N      R2     32.2  2.42   200 4378.
 ## # ... with 22 more rows
 ```
 
@@ -914,14 +914,13 @@ desc_stat(df_cobsoja, stats = c("min, mean, max"))
 ```
 
 ```
-## # A tibble: 5 x 4
+## # A tibble: 4 x 4
 ##   variable    min    mean     max
 ##   <chr>     <dbl>   <dbl>   <dbl>
 ## 1 MMG      150     178.    210   
-## 2 MR        10      14.5    17   
-## 3 NGL        1.97    2.43    2.82
-## 4 NL        22.6    38.6    53.2 
-## 5 RG       675    3288.   4861.
+## 2 NGL        1.97    2.43    2.82
+## 3 NL        22.6    38.6    53.2 
+## 4 RG       675    3288.   4861.
 ```
 
 
@@ -1318,3 +1317,470 @@ plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
 ```
 
 <img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-31-1.png" width="672" />
+
+
+
+
+## Doses de Nitrogênio x híbridos de milho
+
+### Sem interação significativa
+
+O conjunto de dados utilizado neste exemplo será o **FAT2\_SI**. Como já de conhecimento prévio, a interação não é significativa neste exemplo.
+
+
+```r
+library(rio) # importar e exportar arquivos
+library(ExpDes.pt) # fazer anova
+library(metan) # gráficos
+library(tidyverse) # manipulação de dados e gráficos
+
+# dados
+url <- "http://bit.ly/df_biostat_exp"
+FAT2_SI <- import(url, sheet = "FAT2_SI", setclass = "tbl")
+FAT2_SI
+```
+
+```
+## # A tibble: 40 x 4
+##    BLOCO HIBRIDO DOSEN    RG
+##    <dbl> <chr>   <dbl> <dbl>
+##  1     1 NUPEC_1     0  6.9 
+##  2     1 NUPEC_2     0  6.68
+##  3     2 NUPEC_1     0  7   
+##  4     2 NUPEC_2     0  6.65
+##  5     3 NUPEC_1     0  6.95
+##  6     3 NUPEC_2     0  6.83
+##  7     4 NUPEC_1     0  7.03
+##  8     4 NUPEC_2     0  6.76
+##  9     1 NUPEC_1    25  7.44
+## 10     1 NUPEC_2    25  7.14
+## # ... with 30 more rows
+```
+
+
+A função `fat2.rdb()`é utilizada neste exemplo. Como o fator DOSEN é quantitativo, precisamos informar isto no argumento `quali` da função.
+
+
+```r
+with(FAT2_SI, 
+     fat2.dbc(fator1 =  HIBRIDO,
+              fator2 =  DOSEN,
+              bloco = BLOCO,
+              resp =  RG,
+              quali = c(TRUE, FALSE),
+              fac.names = c("HIBRIDO", "DOSE")))
+```
+
+Como a interação não foi significativa, proceder-se-a a comparação de médias dos dois híbridos considerando a média de todas as doses de nitrogênio, e o ajuste de apenas uma regressão para os dois híbridos. Como o grau do polinômio significativo foi quadrático, declararmos `fit = 2` na função `plot_lines()` do pacote `metan`.
+
+
+```r
+h <- plot_bars(FAT2_SI, HIBRIDO, RG,
+                 width.bar = 0.5,
+                 lab.bar = c("a", "b"))
+d <- plot_lines(FAT2_SI, DOSEN, RG,
+                fit = 2,
+                col = FALSE,
+                xlab = "Doses de nitrogênio",
+                ylab = "Rendimento de grãos (Mg/ha)") +
+     geom_text(aes(0, 6.5, label=(paste(expression("y = 6,8326 + 0,0012x - 0,0003x"^2*"  R" ^2*" = 0,99 ")))),
+               hjust = 0,
+               col = "black",
+               parse = TRUE) 
+arrange_ggplot(h, d, tag_levels = list(c("h", "d")), widths = c(1, 3))
+```
+
+<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-34-1.png" width="960" style="display: block; margin: auto;" />
+
+
+
+### Com interação significativa
+
+O conjunto de dados utilizado neste exemplo será o **FAT2\_CI**. Neste exemplo já sabe-se que a interação híbrido x dose de N é significativa.
+
+
+```r
+# dados
+url <- "http://bit.ly/df_biostat_exp"
+FAT2_CI <- import(url, sheet = "FAT2_CI", setclass = "tbl")
+FAT2_CI
+```
+
+```
+## # A tibble: 40 x 4
+##    BLOCO HIBRIDO DOSEN    RG
+##    <dbl> <chr>   <dbl> <dbl>
+##  1     1 NUPEC_1     0 11.2 
+##  2     1 NUPEC_1    25 12.4 
+##  3     1 NUPEC_1    50 13   
+##  4     1 NUPEC_1    75 12.5 
+##  5     1 NUPEC_1   100 11.4 
+##  6     1 NUPEC_2     0  9.22
+##  7     1 NUPEC_2    25  9.70
+##  8     1 NUPEC_2    50 10.1 
+##  9     1 NUPEC_2    75 10.9 
+## 10     1 NUPEC_2   100 11.4 
+## # ... with 30 more rows
+```
+
+
+
+```r
+with(FAT2_CI, 
+     fat2.dbc(fator1 =  HIBRIDO,
+     fator2 =  DOSEN,
+     bloco = BLOCO,
+     resp =  RG,
+     quali = c(TRUE, FALSE),
+     fac.names = c("HIBRIDO", "DOSE")))
+## ------------------------------------------------------------------------
+## Legenda:
+## FATOR 1:  HIBRIDO 
+## FATOR 2:  DOSE 
+## ------------------------------------------------------------------------
+## 
+## 
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##              GL     SQ QM      Fc   Pr>Fc
+## Bloco         3  0.119  3    1.29 0.29725
+## HIBRIDO       1 40.076  6 1306.48 0.00000
+## DOSE          4  8.436  4   68.75 0.00000
+## HIBRIDO*DOSE  4  9.814  5   79.98 0.00000
+## Residuo      27  0.828  2                
+## Total        39 59.272  1                
+## ------------------------------------------------------------------------
+## CV = 1.56 %
+## 
+## ------------------------------------------------------------------------
+## Teste de normalidade dos residuos (Shapiro-Wilk)
+## valor-p:  0.03477145 
+## ATENCAO: a 5% de significancia, os residuos nao podem ser considerados normais!
+## ------------------------------------------------------------------------
+## 
+## 
+## 
+## Interacao significativa: desdobrando a interacao
+## ------------------------------------------------------------------------
+## 
+## Desdobrando  HIBRIDO  dentro de cada nivel de  DOSE 
+## ------------------------------------------------------------------------
+## ------------------------------------------------------------------------
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##                  GL       SQ       QM       Fc  Pr.Fc
+## Bloco             3  0.11891  0.03964   1.2921 0.2972
+## DOSE              4  8.43556  2.10889  68.7499      0
+## HIBRIDO:DOSE 0    1 11.10618 11.10618 362.0622      0
+## HIBRIDO:DOSE 25   1 14.34872 14.34872 467.7692      0
+## HIBRIDO:DOSE 50   1 17.81448 17.81448  580.753      0
+## HIBRIDO:DOSE 75   1  6.55582  6.55582 213.7201      0
+## HIBRIDO:DOSE 100  1  0.06444  0.06444   2.1008 0.1587
+## Residuo          27  0.82822  0.03067                
+## Total            39 59.27234  1.51980                
+## ------------------------------------------------------------------------
+## 
+## 
+## 
+##  HIBRIDO  dentro do nivel  0  de  DOSE 
+## ------------------------------------------------------------------------
+## Teste de Tukey
+## ------------------------------------------------------------------------
+## Grupos Tratamentos Medias
+## a 	 NUPEC_1 	 11.56 
+##  b 	 NUPEC_2 	 9.2035 
+## ------------------------------------------------------------------------
+## 
+## 
+##  HIBRIDO  dentro do nivel  25  de  DOSE 
+## ------------------------------------------------------------------------
+## Teste de Tukey
+## ------------------------------------------------------------------------
+## Grupos Tratamentos Medias
+## a 	 NUPEC_1 	 12.595 
+##  b 	 NUPEC_2 	 9.9165 
+## ------------------------------------------------------------------------
+## 
+## 
+##  HIBRIDO  dentro do nivel  50  de  DOSE 
+## ------------------------------------------------------------------------
+## Teste de Tukey
+## ------------------------------------------------------------------------
+## Grupos Tratamentos Medias
+## a 	 NUPEC_1 	 12.935 
+##  b 	 NUPEC_2 	 9.9505 
+## ------------------------------------------------------------------------
+## 
+## 
+##  HIBRIDO  dentro do nivel  75  de  DOSE 
+## ------------------------------------------------------------------------
+## Teste de Tukey
+## ------------------------------------------------------------------------
+## Grupos Tratamentos Medias
+## a 	 NUPEC_1 	 12.625 
+##  b 	 NUPEC_2 	 10.8145 
+## ------------------------------------------------------------------------
+## 
+## 
+##  HIBRIDO  dentro do nivel  100  de  DOSE 
+## 
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##    Niveis  Medias
+## 1 NUPEC_1 11.5465
+## 2 NUPEC_2 11.3670
+## ------------------------------------------------------------------------
+## 
+## 
+## 
+## Desdobrando  DOSE  dentro de cada nivel de  HIBRIDO 
+## ------------------------------------------------------------------------
+## ------------------------------------------------------------------------
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##                      GL       SQ       QM        Fc  Pr.Fc
+## Bloco                 3  0.11891  0.03964    1.2921 0.2972
+## HIBRIDO               1 40.07604 40.07604 1306.4809      0
+## DOSE:HIBRIDO NUPEC_1  4  6.79944  1.69986   55.4156      0
+## DOSE:HIBRIDO NUPEC_2  4 11.44973  2.86243   93.3155      0
+## Residuo              27  0.82822  0.03067                 
+## Total                39 59.27234  1.51980                 
+## ------------------------------------------------------------------------
+## 
+## 
+## 
+##  DOSE  dentro do nivel  NUPEC_1  de  HIBRIDO 
+## ------------------------------------------------------------------------
+## Ajuste de modelos polinomiais de regressao
+## ------------------------------------------------------------------------
+## 
+## Modelo Linear
+## ==========================================
+##    Estimativa Erro.padrao    tc    valor.p
+## ------------------------------------------
+## b0  12.2517     0.0678    180.6175    0   
+## b1  0.00001     0.0011     0.0108  0.9914 
+## ------------------------------------------
+## 
+## R2 do modelo linear
+## --------
+## 0.000001
+## --------
+## 
+## Analise de variancia do modelo linear
+## ===================================================
+##                      GL   SQ     QM    Fc   valor.p
+## ---------------------------------------------------
+## Efeito linear        1    0      0      0   0.99144
+## Desvios de Regressao 3  6.7994 2.2665 73.89    0   
+## Residuos             27 0.8282 0.0307              
+## ---------------------------------------------------
+## ------------------------------------------------------------------------
+## 
+## Modelo quadratico
+## ==========================================
+##    Estimativa Erro.padrao    tc    valor.p
+## ------------------------------------------
+## b0  11.5550     0.0824    140.2044    0   
+## b1   0.0557     0.0039    14.2760     0   
+## b2  -0.0006     0.00004   -14.8843    0   
+## ------------------------------------------
+## 
+## R2 do modelo quadratico
+## --------
+## 0.999458
+## --------
+## 
+## Analise de variancia do modelo quadratico
+## ====================================================
+##                      GL   SQ     QM     Fc   valor.p
+## ----------------------------------------------------
+## Efeito linear        1    0      0      0    0.99144
+## Efeito quadratico    1  6.7958 6.7958 221.54    0   
+## Desvios de Regressao 2  0.0037 0.0018  0.06  0.94178
+## Residuos             27 0.8282 0.0307               
+## ----------------------------------------------------
+## ------------------------------------------------------------------------
+## 
+## Modelo cubico
+## ==========================================
+##    Estimativa Erro.padrao    tc    valor.p
+## ------------------------------------------
+## b0  11.5623     0.0869    132.9870    0   
+## b1   0.0536     0.0088     6.0633     0   
+## b2  -0.0005     0.0002    -2.2190  0.0351 
+## b3 -0.000000       0      -0.2654  0.7927 
+## ------------------------------------------
+## 
+## R2 do modelo cubico
+## --------
+## 0.999775
+## --------
+## 
+## Analise de variancia do modelo cubico
+## ====================================================
+##                      GL   SQ     QM     Fc   valor.p
+## ----------------------------------------------------
+## Efeito linear        1    0      0      0    0.99144
+## Efeito quadratico    1  6.7958 6.7958 221.54    0   
+## Efeito cubico        1  0.0022 0.0022  0.07  0.79271
+## Desvios de Regressao 1  0.0015 0.0015  0.05  0.82509
+## Residuos             27 0.8282 0.0307               
+## ----------------------------------------------------
+## ------------------------------------------------------------------------
+## 
+## 
+##  DOSE  dentro do nivel  NUPEC_2  de  HIBRIDO 
+## ------------------------------------------------------------------------
+## Ajuste de modelos polinomiais de regressao
+## ------------------------------------------------------------------------
+## 
+## Modelo Linear
+## ==========================================
+##    Estimativa Erro.padrao    tc    valor.p
+## ------------------------------------------
+## b0   9.2054     0.0678    135.7082    0   
+## b1   0.0209     0.0011    18.8680     0   
+## ------------------------------------------
+## 
+## R2 do modelo linear
+## --------
+## 0.953756
+## --------
+## 
+## Analise de variancia do modelo linear
+## ====================================================
+##                      GL   SQ      QM     Fc  valor.p
+## ----------------------------------------------------
+## Efeito linear        1  10.9202 10.9202 356     0   
+## Desvios de Regressao 3  0.5295  0.1765  5.75 0.00354
+## Residuos             27 0.8282  0.0307              
+## ----------------------------------------------------
+## ------------------------------------------------------------------------
+## 
+## Modelo quadratico
+## ==========================================
+##    Estimativa Erro.padrao    tc    valor.p
+## ------------------------------------------
+## b0   9.2781     0.0824    112.5776    0   
+## b1   0.0151     0.0039     3.8624  0.0006 
+## b2   0.0001     0.00004    1.5534  0.1320 
+## ------------------------------------------
+## 
+## R2 do modelo quadratico
+## --------
+## 0.960221
+## --------
+## 
+## Analise de variancia do modelo quadratico
+## ====================================================
+##                      GL   SQ      QM     Fc  valor.p
+## ----------------------------------------------------
+## Efeito linear        1  10.9202 10.9202 356     0   
+## Efeito quadratico    1  0.0740  0.0740  2.41 0.13196
+## Desvios de Regressao 2  0.4555  0.2277  7.42 0.0027 
+## Residuos             27 0.8282  0.0307              
+## ----------------------------------------------------
+## ------------------------------------------------------------------------
+## 
+## Modelo cubico
+## ==========================================
+##    Estimativa Erro.padrao    tc    valor.p
+## ------------------------------------------
+## b0   9.2414     0.0869    106.2918    0   
+## b1   0.0256     0.0088     2.8956  0.0074 
+## b2  -0.0002     0.0002    -1.0496  0.3032 
+## b3  0.000002       0       1.3271  0.1956 
+## ------------------------------------------
+## 
+## R2 do modelo cubico
+## --------
+## 0.964939
+## --------
+## 
+## Analise de variancia do modelo cubico
+## =====================================================
+##                      GL   SQ      QM     Fc   valor.p
+## -----------------------------------------------------
+## Efeito linear        1  10.9202 10.9202  356     0   
+## Efeito quadratico    1  0.0740  0.0740  2.41  0.13196
+## Efeito cubico        1  0.0540  0.0540  1.76  0.1956 
+## Desvios de Regressao 1  0.4014  0.4014  13.09 0.00121
+## Residuos             27 0.8282  0.0307               
+## -----------------------------------------------------
+## ------------------------------------------------------------------------
+```
+
+A análise de indicou efeitos significativos tanto para os efeitos principais, quanto para a interação. Assim, as análises complementares realizadas foram (i) a comparação das médias pelo teste Tukey em cada nível da dose de N; e (ii) uma regressão polinomial ajustada para cada híbrido. Por padrão, o máximo grau do polinômio ajustado é 3 (modelo cúbico).
+
+-   Comparação das médias dos híbridos em cada dose de nitrogênio.
+
+As comparações de médias são apresentadas como saída da função `fat2.dbc()` após a análise de variância. Neste momento, utilizaremos a função `plot_factbars()` pacote `metan`\*\* para plotar as médias dos híbridos em cada dose de nitrogênio. A apresentação gráfica de resultados, mesmo considerando médias, é uma alternativa interessante à tabela, pois permite uma interpretação mais clara e intuitiva dos resultados.
+
+
+```r
+plot_factbars(FAT2_CI, DOSEN, HIBRIDO,
+              resp = RG,
+              xlab = "Doses de nitrogênio",
+              ylab = expression(paste("Rendimento de grãos (Mg ha"^-1,")")),
+              palette = "Greys",
+              lab.bar = c("a", "b", # 0
+                          "a", "b", # 25
+                          "a", "b", # 50
+                          "a", "b", # 75
+                          "a", "a")) # 100
+```
+
+<div class="figure" style="text-align: center">
+<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-37-1.png" alt="Gráfico das médias dos híbridos em cada dose de nitrogênio." width="672" />
+<p class="caption">Figure 1: Gráfico das médias dos híbridos em cada dose de nitrogênio.</p>
+</div>
+
+-   Ajuste de regressão para cada híbrido
+
+No exemplo anterior, apresentamos as médias dos híbridos em cada dose de nitrogênio. Agora, criaremos um gráfico com o grau do polinômio significativo ajustado de cada híbrido. O grau a ser ajustado deve ser identificado na saída da ANOVA \indt{ANOVA}. Para fins didáticos apresento as equações que serão utilizadas.
+
+NUPEC\_1: modelo quadrático \$y = 11,555 + 0,05575\times x -0,0005574\times x^2, R^2 = 0.999\$
+
+NUPEC\_2: modelo linear \$y = 9,2054 + 0,0209\times x, R^2 = 0.986\$
+
+Utilizando uma equação, é possível estimar a produtividade para uma dose de nitrogênio específica não testada, desde que ela esteja dentro do intervalo estudado. Para isto, basta substituir o *x* na equação pela dose a ser testada. Por exemplo, para estimar qual seria a produtividade do híbrido *NUPEC\_2* se tivéssemos aplicado 60 kg de N ha\$^{-1}\$ basta resolver: \$y = 9,2054 + 0,0209\times 60\$, resultando em \$y \approx 10.5\$ Mg ha\$^{-1}\$. A interpretação deste resultado, no entanto, deve ser cautelosa. Inconscientemente, concluiríamos que a produtividade do híbrido aumentaria 0,0209 Mg ha$^{-1}$ a cada kg de nitrogênio aplicado por hectare. Este fato, no entanto, não é observado na prática. Por exemplo, a produtividade não irá aumentar infinitamente a medida em que se aumenta a dose de nitrogênio aplicado. A única conclusão válida, neste caso, é que a produtividade aumenta linearmente até 100 kg de N ha$^{-1}$. Este resultado se deu em virtude de as doses testadas não terem sido o suficiente para identificar um outro comportamento na variável testada. Nestes casos, indica-se para estudos futuros aumentar o número de doses. Quando não se conhece o intervalo de dose em que a variável em estudo apresenta uma resposta explicável, estudos pilotos podem ser realizados. Neste caso, testar-se-iam o mesmo número de tratamentos (número de doses), no entanto com um intervalo maior entre as doses (por exemplo, 0, 100, 200, 300 e 400 kg de N ha$^{-1}$. Possivelmente, nesta amplitude, o comportamento da produtividade não seria linear, pois em uma determinada dose, a produtividade estabilizaria.
+
+
+Semelhante ao exemplo das médias nas doses de nitrogênio, utilizaremos a função `plot_factlines()` para plotar, agora, uma regressão \indt{regressão} ajustada para cada híbrido. Os argumentos a serem informados são os seguintes: `.data`, o conjunto de dados (neste caso *FAT2\_CI*); `x` e `y`, as colunas dos dados correspondentes aos eixos x e y do gráfico, respectivamente; `group` a coluna que contém os níveis dos fatores em que as regressões serão ajustadas; `fit` um vetor de comprimento igual ao número de níveis da coluna informada em `group`. O número indicado em cada posição do vetor, corresponde ao grau do polinômio ajustado (máximo grau ajustado = 4). Em nosso exemplo, utilizaremos `fit = c(2, 1)` para ajustar uma regressão quadrática para o híbrido *NUPEC\_1* e uma regressão linear para o híbrido *NUPEC\_2*.
+
+
+```r
+plot_factlines(FAT2_CI, DOSEN, RG,
+               group = HIBRIDO,
+               fit = c(2, 1))
+```
+
+<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-38-1.png" width="672" />
+
+Observando-se a figura acima, é possível identificar o comportamento quadrático da variável resposta do híbrido *NUPEC\_1*. Para estes híbridos, houve um incremento positivo na produtividade até um ponto, posteriormente observa-se que a produtividade tendeu a reduzir. Uma explicação biológica para esta redução seria que o excesso de nitrogênio aplicado proporcionou um alto vigor vegetativo as plantas, podendo ter ocorrido competição entre as plantas por água, luz e outros nutrientes, ou até mesmo tombamento das plantas. O ponto em X (dose) em que a produtividade é máxima é chamado de máxima eficiência técnica (MET) e pode ser estimado por:
+
+$$
+MET = \frac{{ - {\beta _1}}}{{2 \times {\beta _2}}}
+$$
+
+Substituindo com os parâmetros estimados, temos: $$
+MET = \frac{{ - 0,05575}}{{2 \times  -0,0005574}} = 50
+$$
+Logo, a dose que proporciona a máxima produtividade para o híbrido *NUPEC\_1* é aproximadamente 50 kg de N ha$^{-1}$. Assim para sabermos qual é esta produtividade estimada, basta substituir o *x* da equação por 50, resultando em \$y_{máx}\$ = 12,949 Mg ha$^{-1}$.
+
+Outro ponto importante que é possível de estimar utilizando uma equação de segundo grau, é a máxima eficiência econômica (MEE), ou seja, a dose máxima, neste caso de nitrogênio, em que é possível aplicar obtendo-se lucro. Este ponto é importante, pois a partir de uma certa dose, os incrementos em produtividade não compensariam o preço pago pelo nitrogênio aplicado. Este ponto pode ser facilmente estimado por:
+
+$$
+MEE = MET + \frac{u}{{2 \times \beta_2 \times m}}
+$$
+
+onde *u* e *m* são os preços do nitrogênio e do milho em grão, respectivamente, na mesma unidade utilizada para a estimativa da equação (neste caso, preço do nitrogênio por kg e preço do milho por tonelada). Considerando o preço de custo do nitrogênio como R 1,35 por kg e o preço de venda do milho a 600,00 por tonelada, substituindo-se na formula obtém-se:
+
+$$
+MEE = 50 + \frac{{1.35}}{{2 \times (-0,0005574) \times 600}} \approx 48
+$$
+
+Assim, a dose máxima de nitrogênio que em que os incrementos de produtividade são lucrativos é de \$\approx 48\$ Kg ha$^{-1}$.
+
+

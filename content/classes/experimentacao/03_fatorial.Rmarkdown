@@ -587,3 +587,146 @@ plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
               xlab = "Espécie",
               ylab = "RG (kg/ha)")
 ```
+
+
+
+
+## Doses de Nitrogênio x híbridos de milho
+
+### Sem interação significativa
+
+O conjunto de dados utilizado neste exemplo será o **FAT2\_SI**. Como já de conhecimento prévio, a interação não é significativa neste exemplo.
+
+```{r}
+library(rio) # importar e exportar arquivos
+library(ExpDes.pt) # fazer anova
+library(metan) # gráficos
+library(tidyverse) # manipulação de dados e gráficos
+
+# dados
+url <- "http://bit.ly/df_biostat_exp"
+FAT2_SI <- import(url, sheet = "FAT2_SI", setclass = "tbl")
+FAT2_SI
+```
+
+
+A função `fat2.rdb()`é utilizada neste exemplo. Como o fator DOSEN é quantitativo, precisamos informar isto no argumento `quali` da função.
+
+```{r warning = FALSE, message = FALSE, collapse = TRUE, results="hide"}
+with(FAT2_SI, 
+     fat2.dbc(fator1 =  HIBRIDO,
+              fator2 =  DOSEN,
+              bloco = BLOCO,
+              resp =  RG,
+              quali = c(TRUE, FALSE),
+              fac.names = c("HIBRIDO", "DOSE")))
+```
+
+Como a interação não foi significativa, proceder-se-a a comparação de médias dos dois híbridos considerando a média de todas as doses de nitrogênio, e o ajuste de apenas uma regressão para os dois híbridos. Como o grau do polinômio significativo foi quadrático, declararmos `fit = 2` na função `plot_lines()` do pacote `metan`.
+
+```{r warning = FALSE, message = FALSE, fig.width = 10, fig.height=5, fig.align="center"}
+h <- plot_bars(FAT2_SI, HIBRIDO, RG,
+                 width.bar = 0.5,
+                 lab.bar = c("a", "b"))
+d <- plot_lines(FAT2_SI, DOSEN, RG,
+                fit = 2,
+                col = FALSE,
+                xlab = "Doses de nitrogênio",
+                ylab = "Rendimento de grãos (Mg/ha)") +
+     geom_text(aes(0, 6.5, label=(paste(expression("y = 6,8326 + 0,0012x - 0,0003x"^2*"  R" ^2*" = 0,99 ")))),
+               hjust = 0,
+               col = "black",
+               parse = TRUE) 
+arrange_ggplot(h, d, tag_levels = list(c("h", "d")), widths = c(1, 3))
+```
+
+
+
+### Com interação significativa
+
+O conjunto de dados utilizado neste exemplo será o **FAT2\_CI**. Neste exemplo já sabe-se que a interação híbrido x dose de N é significativa.
+
+```{r}
+# dados
+url <- "http://bit.ly/df_biostat_exp"
+FAT2_CI <- import(url, sheet = "FAT2_CI", setclass = "tbl")
+FAT2_CI
+```
+
+
+```{r warning = FALSE, message = FALSE, collapse = TRUE}
+with(FAT2_CI, 
+     fat2.dbc(fator1 =  HIBRIDO,
+     fator2 =  DOSEN,
+     bloco = BLOCO,
+     resp =  RG,
+     quali = c(TRUE, FALSE),
+     fac.names = c("HIBRIDO", "DOSE")))
+```
+
+A análise de indicou efeitos significativos tanto para os efeitos principais, quanto para a interação. Assim, as análises complementares realizadas foram (i) a comparação das médias pelo teste Tukey em cada nível da dose de N; e (ii) uma regressão polinomial ajustada para cada híbrido. Por padrão, o máximo grau do polinômio ajustado é 3 (modelo cúbico).
+
+-   Comparação das médias dos híbridos em cada dose de nitrogênio.
+
+As comparações de médias são apresentadas como saída da função `fat2.dbc()` após a análise de variância. Neste momento, utilizaremos a função `plot_factbars()` pacote `metan`\*\* para plotar as médias dos híbridos em cada dose de nitrogênio. A apresentação gráfica de resultados, mesmo considerando médias, é uma alternativa interessante à tabela, pois permite uma interpretação mais clara e intuitiva dos resultados.
+
+```{r warning = FALSE, message = FALSE, fig.cap = "Gráfico das médias dos híbridos em cada dose de nitrogênio.", fig.align="center", fig.height=4, fig.width=7}
+plot_factbars(FAT2_CI, DOSEN, HIBRIDO,
+              resp = RG,
+              xlab = "Doses de nitrogênio",
+              ylab = expression(paste("Rendimento de grãos (Mg ha"^-1,")")),
+              palette = "Greys",
+              lab.bar = c("a", "b", # 0
+                          "a", "b", # 25
+                          "a", "b", # 50
+                          "a", "b", # 75
+                          "a", "a")) # 100
+
+
+```
+
+-   Ajuste de regressão para cada híbrido
+
+No exemplo anterior, apresentamos as médias dos híbridos em cada dose de nitrogênio. Agora, criaremos um gráfico com o grau do polinômio significativo ajustado de cada híbrido. O grau a ser ajustado deve ser identificado na saída da ANOVA \indt{ANOVA}. Para fins didáticos apresento as equações que serão utilizadas.
+
+NUPEC\_1: modelo quadrático \$y = 11,555 + 0,05575\times x -0,0005574\times x^2, R^2 = 0.999\$
+
+NUPEC\_2: modelo linear \$y = 9,2054 + 0,0209\times x, R^2 = 0.986\$
+
+Utilizando uma equação, é possível estimar a produtividade para uma dose de nitrogênio específica não testada, desde que ela esteja dentro do intervalo estudado. Para isto, basta substituir o *x* na equação pela dose a ser testada. Por exemplo, para estimar qual seria a produtividade do híbrido *NUPEC\_2* se tivéssemos aplicado 60 kg de N ha\$^{-1}\$ basta resolver: \$y = 9,2054 + 0,0209\times 60\$, resultando em \$y \approx 10.5\$ Mg ha\$^{-1}\$. A interpretação deste resultado, no entanto, deve ser cautelosa. Inconscientemente, concluiríamos que a produtividade do híbrido aumentaria 0,0209 Mg ha$^{-1}$ a cada kg de nitrogênio aplicado por hectare. Este fato, no entanto, não é observado na prática. Por exemplo, a produtividade não irá aumentar infinitamente a medida em que se aumenta a dose de nitrogênio aplicado. A única conclusão válida, neste caso, é que a produtividade aumenta linearmente até 100 kg de N ha$^{-1}$. Este resultado se deu em virtude de as doses testadas não terem sido o suficiente para identificar um outro comportamento na variável testada. Nestes casos, indica-se para estudos futuros aumentar o número de doses. Quando não se conhece o intervalo de dose em que a variável em estudo apresenta uma resposta explicável, estudos pilotos podem ser realizados. Neste caso, testar-se-iam o mesmo número de tratamentos (número de doses), no entanto com um intervalo maior entre as doses (por exemplo, 0, 100, 200, 300 e 400 kg de N ha$^{-1}$. Possivelmente, nesta amplitude, o comportamento da produtividade não seria linear, pois em uma determinada dose, a produtividade estabilizaria.
+
+
+Semelhante ao exemplo das médias nas doses de nitrogênio, utilizaremos a função `plot_factlines()` para plotar, agora, uma regressão \indt{regressão} ajustada para cada híbrido. Os argumentos a serem informados são os seguintes: `.data`, o conjunto de dados (neste caso *FAT2\_CI*); `x` e `y`, as colunas dos dados correspondentes aos eixos x e y do gráfico, respectivamente; `group` a coluna que contém os níveis dos fatores em que as regressões serão ajustadas; `fit` um vetor de comprimento igual ao número de níveis da coluna informada em `group`. O número indicado em cada posição do vetor, corresponde ao grau do polinômio ajustado (máximo grau ajustado = 4). Em nosso exemplo, utilizaremos `fit = c(2, 1)` para ajustar uma regressão quadrática para o híbrido *NUPEC\_1* e uma regressão linear para o híbrido *NUPEC\_2*.
+
+```{r}
+plot_factlines(FAT2_CI, DOSEN, RG,
+               group = HIBRIDO,
+               fit = c(2, 1))
+```
+
+Observando-se a figura acima, é possível identificar o comportamento quadrático da variável resposta do híbrido *NUPEC\_1*. Para estes híbridos, houve um incremento positivo na produtividade até um ponto, posteriormente observa-se que a produtividade tendeu a reduzir. Uma explicação biológica para esta redução seria que o excesso de nitrogênio aplicado proporcionou um alto vigor vegetativo as plantas, podendo ter ocorrido competição entre as plantas por água, luz e outros nutrientes, ou até mesmo tombamento das plantas. O ponto em X (dose) em que a produtividade é máxima é chamado de máxima eficiência técnica (MET) e pode ser estimado por:
+
+$$
+MET = \frac{{ - {\beta _1}}}{{2 \times {\beta _2}}}
+$$
+
+Substituindo com os parâmetros estimados, temos: $$
+MET = \frac{{ - 0,05575}}{{2 \times  -0,0005574}} = 50
+$$
+Logo, a dose que proporciona a máxima produtividade para o híbrido *NUPEC\_1* é aproximadamente 50 kg de N ha$^{-1}$. Assim para sabermos qual é esta produtividade estimada, basta substituir o *x* da equação por 50, resultando em \$y_{máx}\$ = 12,949 Mg ha$^{-1}$.
+
+Outro ponto importante que é possível de estimar utilizando uma equação de segundo grau, é a máxima eficiência econômica (MEE), ou seja, a dose máxima, neste caso de nitrogênio, em que é possível aplicar obtendo-se lucro. Este ponto é importante, pois a partir de uma certa dose, os incrementos em produtividade não compensariam o preço pago pelo nitrogênio aplicado. Este ponto pode ser facilmente estimado por:
+
+$$
+MEE = MET + \frac{u}{{2 \times \beta_2 \times m}}
+$$
+
+onde *u* e *m* são os preços do nitrogênio e do milho em grão, respectivamente, na mesma unidade utilizada para a estimativa da equação (neste caso, preço do nitrogênio por kg e preço do milho por tonelada). Considerando o preço de custo do nitrogênio como R 1,35 por kg e o preço de venda do milho a 600,00 por tonelada, substituindo-se na formula obtém-se:
+
+$$
+MEE = 50 + \frac{{1.35}}{{2 \times (-0,0005574) \times 600}} \approx 48
+$$
+
+Assim, a dose máxima de nitrogênio que em que os incrementos de produtividade são lucrativos é de \$\approx 48\$ Kg ha$^{-1}$.
+
+
