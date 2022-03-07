@@ -503,3 +503,818 @@ with(df_fat,
 ## S- 79.0 bA 74.2 aA 77.5 bA
 ```
 
+
+# Exemplos de experimentos fatoriais
+## Coberturas de solo e doses de nitrogênio (efeito na massa de cobertura de inverno) {#experimento1}
+
+O delineamento experimental utilizado foi o delineamento de blocos casualizados com parcelas subdivididas em esquema fatorial 4x2 com quatro repetições. quatro espécies: aveia preta cv. BRS 139 (Neblina), com densidade de 120 kg ha$^{-1}$ de semente; triticale cv. BRS SATURNO, com densidade de 160 kg ha$^{-1}$ de semente e centeio cv. BRS PROGRESSO, com densidade de 160 kg ha$^{-1}$ de semente, além do pousio, com presença de diferentes plantas que se desenvolvem nesta época (três espécies de gramíneas); com dois manejos de nitrogênio (com ou sem N em cobertuta). Os tratamentos foram alocados na área experimental em formato de parcelas subdivididas. Na parcela principal foram alocadas as espécies nas subparcela o manejo de nitrogênio. Nas parcelas que receberam N utilizou-se como fonte a ureia (45% de N) na dose de 100 kg ha$^{-1}$.
+
+### Pacotes e dados
+Assumindo que todos estão instalados, é só carregar com
+
+
+```r
+library(rio) # importar e exportar arquivos
+library(ExpDes.pt) # fazer anova
+```
+
+```
+## Warning: package 'ExpDes.pt' was built under R version 4.1.1
+```
+
+```r
+library(metan) # gráficos
+library(tidyverse) # manipulação de dados e gráficos
+
+# dados
+url <- "http://bit.ly/df_biostat_exp"
+df_cobmassa <- import(url, sheet = "COBERTURA_N_MASSA", setclass = "tbl")
+df_cobmassa <- as_factor(df_cobmassa, 1:3)
+
+# Apenas para mostrar a estrutura dos dados
+df_cobmassa
+```
+
+```
+## # A tibble: 32 x 6
+##    NITROGENIO ESPECIE     REP       MV    MS   MSR
+##    <fct>      <fct>       <fct>  <dbl> <dbl> <dbl>
+##  1 Sem N      Aveia Preta 1     17939. 3640.  53.2
+##  2 Sem N      Aveia Preta 2     20738. 4190. 709. 
+##  3 Sem N      Aveia Preta 3     37780  6958. 688  
+##  4 Sem N      Aveia Preta 4     15448  3055.  98  
+##  5 Sem N      Centeio     1     30836. 7001. 347. 
+##  6 Sem N      Centeio     2     22246  5540  246. 
+##  7 Sem N      Centeio     3     12422  3330. 169. 
+##  8 Sem N      Centeio     4     15220. 3797. 213. 
+##  9 Sem N      Triticale   1     14700. 2989. 268. 
+## 10 Sem N      Triticale   2     19146. 3652. 399. 
+## # ... with 22 more rows
+```
+
+
+
+### Estatistica descritiva
+
+
+
+```r
+desc_stat(df_cobmassa, stats = c("min, mean, max"))
+```
+
+```
+## # A tibble: 3 x 4
+##   variable    min   mean    max
+##   <chr>     <dbl>  <dbl>  <dbl>
+## 1 MS       1576.   5053.  7573.
+## 2 MSR        53.2   373.   738 
+## 3 MV       6413.  25210. 45076.
+```
+
+
+
+### ANOVA {#modanova}
+
+
+O modelo considerado para este exemplo de parcela subdivididas é o seguinte
+
+
+$$
+{y_{ijk}} = {\rm{ }}\mu {\rm{ }} + {\rm{ }}\mathop \alpha \nolimits_i + \mathop \beta \nolimits_{k} + \mathop \eta \nolimits_{ik}  +\mathop \tau \nolimits_j  + \mathop {(\alpha \tau )}\nolimits_{ij}  + {\rm{ }}\mathop \varepsilon \nolimits_{ijk}
+$$
+
+onde \${y_{ijk}}\$ é a variável resposta observada; \$\mu\$ é a média geral; \$\mathop \alpha \nolimits_i\$ é o efeito do \$i\$-ésimo nível do fator espécie de cobertura ; \$\mathop \beta \nolimits_{k}\$ é o efeito do bloco \$k\$; \$\mathop \eta \nolimits_{ik}\$ é o erro de parcela, mais conhecido como erro a; \$\mathop \tau \nolimits_j\$ é o efeito do \$j\$-ésimo nível do fator nitrogênio; \$\mathop {(\alpha \tau )}\nolimits_{ij}\$ é o efeito da interação do \$i\$-ésimo nível do fator espécie com o \$j\$-ésimo nível do fator nitrogênio; e \$\mathop \varepsilon \nolimits_{ijk}\$ é o erro da subparcela, mais conhecido como erro b.
+
+
+#### Massa verde (MV) por ha
+
+**ANOVA** 
+
+```r
+with(df_cobmassa,
+     psub2.dbc(fator1 = ESPECIE,
+               fator2 = NITROGENIO,
+               bloco = REP,
+               resp = MV,
+               fac.names = c("ESPECIE", "NITROGENIO"))
+)
+```
+
+```
+## ------------------------------------------------------------------------
+## Legenda:
+## FATOR 1 (parcela):  ESPECIE 
+## FATOR 2 (subparcela):  NITROGENIO 
+## ------------------------------------------------------------------------
+## 
+## ------------------------------------------------------------------------
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##                    GL         SQ        QM      Fc  Pr(>Fc)    
+## ESPECIE             3  416543558 138847853  1.2283 0.354965    
+## Bloco               3   77123097  25707699  0.2274 0.875004    
+## Erro a              9 1017377902 113041989                     
+## NITROGENIO          1  743336547 743336547 20.7774 0.000657 ***
+## ESPECIE*NITROGENIO  3   86334790  28778264  0.8044 0.515204    
+## Erro b             12  429314110  35776176                     
+## Total              31 2770030005                               
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## ------------------------------------------------------------------------
+## CV 1 = 42.17338 %
+## CV 2 = 23.72551 %
+## 
+## Interacao nao significativa: analisando os efeitos simples
+## ------------------------------------------------------------------------
+## ESPECIE
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##        Niveis   Medias
+## 1 Aveia Preta 30469.15
+## 2     Centeio 24084.35
+## 3      Pousio 20441.70
+## 4   Triticale 25846.80
+## ------------------------------------------------------------------------
+## NITROGENIO
+## Teste de Tukey
+## ------------------------------------------------------------------------
+## Grupos Tratamentos Medias
+## a 	 Com N 	 30030.17 
+##  b 	 Sem N 	 20390.83 
+## ------------------------------------------------------------------------
+```
+
+
+**GRÁFICO**
+
+Como somente foi observado efeito significativo para o fator nitrogênio, prossegue-se com a comparação de médias para o efeito de N, conforme resultado do Teste Tukey acima. Neste gráfico, as barras mostram a média e as barras de erro, o erro padrão da média. Apenas para apresentação, incluo também a média do fator cobertura de solo, sem as letras pois o seu efeito não foi significativo, segundo a ANOVA.
+
+
+
+```r
+pn_mv <- 
+plot_bars(df_cobmassa,
+          x = NITROGENIO,
+          y = MV,
+          lab.bar = c("a", "b"),
+          xlab = "Aplicação de Nitrogênio (N)",
+          ylab = "Matéria verde (kg/ha)")
+
+pcob_mv <- 
+  plot_bars(df_cobmassa,
+            x = ESPECIE,
+            y = MV,
+            xlab = "Espécies",
+            ylab = "Matéria verde (kg/ha)") +
+  geom_hline(yintercept = mean(df_cobmassa$MV))
+
+# organiza os gráficos
+arrange_ggplot(pn_mv, pcob_mv)
+```
+
+<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-17-1.png" width="960" />
+
+
+
+
+
+#### Massa seca (MS) por ha
+
+**ANOVA** 
+
+```r
+with(df_cobmassa,
+     psub2.dbc(fator1 = ESPECIE,
+               fator2 = NITROGENIO,
+               bloco = REP,
+               resp = MS,
+               fac.names = c("ESPECIE", "NITROGENIO"))
+)
+```
+
+```
+## ------------------------------------------------------------------------
+## Legenda:
+## FATOR 1 (parcela):  ESPECIE 
+## FATOR 2 (subparcela):  NITROGENIO 
+## ------------------------------------------------------------------------
+## 
+## ------------------------------------------------------------------------
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##                    GL       SQ       QM     Fc Pr(>Fc)  
+## ESPECIE             3 11614132  3871377 1.0190 0.42877  
+## Bloco               3  1466451   488817 0.1287 0.94066  
+## Erro a              9 34191281  3799031                 
+## NITROGENIO          1 14139498 14139498 8.1851 0.01433 *
+## ESPECIE*NITROGENIO  3  1476172   492057 0.2848 0.83542  
+## Erro b             12 20729720  1727477                 
+## Total              31 83617255                          
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## ------------------------------------------------------------------------
+## CV 1 = 38.57428 %
+## CV 2 = 26.01163 %
+## 
+## Interacao nao significativa: analisando os efeitos simples
+## ------------------------------------------------------------------------
+## ESPECIE
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##        Niveis  Medias
+## 1 Aveia Preta 5402.25
+## 2     Centeio 5647.55
+## 3      Pousio 4065.85
+## 4   Triticale 5095.85
+## ------------------------------------------------------------------------
+## NITROGENIO
+## Teste de Tukey
+## ------------------------------------------------------------------------
+## Grupos Tratamentos Medias
+## a 	 Com N 	 5717.6 
+##  b 	 Sem N 	 4388.15 
+## ------------------------------------------------------------------------
+```
+
+
+**GRÁFICO**
+
+Como somente foi observado efeito significativo para o fator nitrogênio, prossegue-se com a comparação de médias para o efeito de N, conforme resultado do Teste Tukey acima. Apenas para apresentação, incluo também a média do fator cobertura de solo, sem as letras pois o seu efeito não foi significativo, segundo a ANOVA.
+
+
+
+```r
+pn_ms <- 
+  plot_bars(df_cobmassa,
+            x = NITROGENIO,
+            y = MS,
+            lab.bar = c("a", "b"),
+            xlab = "Aplicação de Nitrogênio (N)",
+            ylab = "Matéria seca (kg/ha)")
+
+pcob_ms <- 
+  plot_bars(df_cobmassa,
+            x = ESPECIE,
+            y = MS,
+            xlab = "Espécies",
+            ylab = "Matéria seca (kg/ha)") +
+  geom_hline(yintercept = mean(df_cobmassa$MS))
+
+# organiza os gráficos
+arrange_ggplot(pn_ms, pcob_ms)
+```
+
+<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-19-1.png" width="960" />
+
+
+
+
+
+
+
+#### Massa seca de raiz (MSR) por ha
+
+**ANOVA** 
+
+```r
+with(df_cobmassa,
+     psub2.dbc(fator1 = ESPECIE,
+               fator2 = NITROGENIO,
+               bloco = REP,
+               resp = MSR,
+               fac.names = c("ESPECIE", "NITROGENIO"))
+)
+```
+
+```
+## ------------------------------------------------------------------------
+## Legenda:
+## FATOR 1 (parcela):  ESPECIE 
+## FATOR 2 (subparcela):  NITROGENIO 
+## ------------------------------------------------------------------------
+## 
+## ------------------------------------------------------------------------
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##                    GL      SQ     QM      Fc  Pr(>Fc)    
+## ESPECIE             3  160868  53623  0.9543 0.454941    
+## Bloco               3  217735  72578  1.2916 0.335534    
+## Erro a              9  505724  56192                     
+## NITROGENIO          1  141512 141512 21.4205 0.000582 ***
+## ESPECIE*NITROGENIO  3   44728  14909  2.2568 0.134138    
+## Erro b             12   79277   6606                     
+## Total              31 1149844                            
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## ------------------------------------------------------------------------
+## CV 1 = 63.48783 %
+## CV 2 = 21.76891 %
+## 
+## Interacao nao significativa: analisando os efeitos simples
+## ------------------------------------------------------------------------
+## ESPECIE
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##        Niveis Medias
+## 1 Aveia Preta  405.7
+## 2     Centeio  365.6
+## 3      Pousio  264.4
+## 4   Triticale  457.8
+## ------------------------------------------------------------------------
+## NITROGENIO
+## Teste de Tukey
+## ------------------------------------------------------------------------
+## Grupos Tratamentos Medias
+## a 	 Com N 	 439.875 
+##  b 	 Sem N 	 306.875 
+## ------------------------------------------------------------------------
+```
+
+
+**GRÁFICO**
+
+Como somente foi observado efeito significativo para o fator nitrogênio, prossegue-se com a comparação de médias para o efeito de N, conforme resultado do Teste Tukey acima. Apenas para apresentação, incluo também a média do fator cobertura de solo, sem as letras pois o seu efeito não foi significativo, segundo a ANOVA.
+
+
+
+```r
+pn_msr <- 
+  plot_bars(df_cobmassa,
+            x = NITROGENIO,
+            y = MSR,
+            lab.bar = c("a", "b"),
+            xlab = "Aplicação de Nitrogênio (N)",
+            ylab = "Massa seca de raiz (kg/ha)")
+
+pcob_msr <- 
+  plot_bars(df_cobmassa,
+            x = ESPECIE,
+            y = MSR,
+            xlab = "Espécies",
+            ylab = "Massa seca de raiz (kg/ha)") +
+  geom_hline(yintercept = mean(df_cobmassa$MSR))
+
+# organiza os gráficos
+arrange_ggplot(pn_msr, pcob_msr)
+```
+
+<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-21-1.png" width="960" />
+
+
+
+
+
+
+
+## Coberturas de solo e doses de nitrogênio (efeito na cultura da soja)
+Os tratamentos e delineamentos são descritos no [exemplo anterior](#experimento1). Aqui, são analisados os dados observados na cultura da soja, semeada na resteva de cada tratamento (combinação de N e espécies de cobertura) 
+
+### Pacotes e dados
+Assumindo que todos estão instalados, é só carregar com
+
+```r
+library(rio) # importar e exportar arquivos
+library(ExpDes.pt) # fazer anova
+library(metan) # gráficos
+library(tidyverse) # manipulação de dados e gráficos
+
+# dados
+url <- "http://bit.ly/df_biostat_exp"
+df_cobsoja <- import(url, sheet = "COBERTURA_N_SOJA", setclass = "tbl")
+df_cobsoja <- as_factor(df_cobsoja, 1:3)
+
+# Apenas para mostrar a estrutura dos dados
+df_cobsoja
+```
+
+```
+## # A tibble: 32 x 8
+##    ESPECIE     NITROGENIO REP      MR    NL   NGL   MMG    RG
+##    <fct>       <fct>      <fct> <dbl> <dbl> <dbl> <dbl> <dbl>
+##  1 Aveia Preta Sem N      R1     15    30    2.25   180 3547.
+##  2 Aveia Preta Sem N      R2     14.6  40.8  2.55   190 4117.
+##  3 Aveia Preta Sem N      R3     13.2  34.6  2.6    170 3381.
+##  4 Aveia Preta Sem N      R4     13    37.6  2.52   160 3733.
+##  5 Centeio     Sem N      R1     15.2  38.6  2.15   180 3819.
+##  6 Centeio     Sem N      R2     13    40.6  2.1    170 1739.
+##  7 Centeio     Sem N      R3     14.4  37.6  2.48   180 3928.
+##  8 Centeio     Sem N      R4     13    38    2.39   150 3339.
+##  9 Triticale   Sem N      R1     13.6  35.6  2.46   210 4400 
+## 10 Triticale   Sem N      R2     13.6  32.2  2.42   200 4378.
+## # ... with 22 more rows
+```
+
+
+### Estatistica descritiva
+
+
+
+```r
+desc_stat(df_cobsoja, stats = c("min, mean, max"))
+```
+
+```
+## # A tibble: 5 x 4
+##   variable    min    mean     max
+##   <chr>     <dbl>   <dbl>   <dbl>
+## 1 MMG      150     178.    210   
+## 2 MR        10      14.5    17   
+## 3 NGL        1.97    2.43    2.82
+## 4 NL        22.6    38.6    53.2 
+## 5 RG       675    3288.   4861.
+```
+
+
+
+### ANOVA
+O modelo considerado é descrito no [exemplo anterior](#modanova).
+
+#### Variável número de legumes por planta (NL)
+
+**ANOVA** 
+
+```r
+with(df_cobsoja,
+     fat2.dbc(fator1 = ESPECIE,
+              fator2 = NITROGENIO,
+              bloco = REP,
+              resp = NL,
+              fac.names = c("ESPECIE", "NITROGENIO"))
+)
+```
+
+```
+## ------------------------------------------------------------------------
+## Legenda:
+## FATOR 1:  ESPECIE 
+## FATOR 2:  NITROGENIO 
+## ------------------------------------------------------------------------
+## 
+## 
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##                    GL      SQ QM     Fc   Pr>Fc
+## Bloco               3   18.72  6 0.1640 0.91940
+## ESPECIE             3  148.99  5 1.3051 0.29904
+## NITROGENIO          1    2.76  3 0.0726 0.79027
+## ESPECIE*NITROGENIO  3  430.67  2 3.7724 0.02607
+## Residuo            21  799.15  4               
+## Total              31 1400.30  1               
+## ------------------------------------------------------------------------
+## CV = 16 %
+## 
+## ------------------------------------------------------------------------
+## Teste de normalidade dos residuos (Shapiro-Wilk)
+## valor-p:  0.5520582 
+## De acordo com o teste de Shapiro-Wilk a 5% de significancia, os residuos podem ser considerados normais.
+## ------------------------------------------------------------------------
+## 
+## 
+## 
+## Interacao significativa: desdobrando a interacao
+## ------------------------------------------------------------------------
+## 
+## Desdobrando  ESPECIE  dentro de cada nivel de  NITROGENIO 
+## ------------------------------------------------------------------------
+## ------------------------------------------------------------------------
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##                          GL         SQ        QM     Fc  Pr.Fc
+## Bloco                     3   18.72375   6.24125  0.164 0.9194
+## NITROGENIO                1    2.76125   2.76125 0.0726 0.7903
+## ESPECIE:NITROGENIO Com N  3  513.04000 171.01333 4.4939 0.0138
+## ESPECIE:NITROGENIO Sem N  3   66.62750  22.20917 0.5836 0.6323
+## Residuo                  21  799.14625  38.05458              
+## Total                    31 1400.29875  45.17093              
+## ------------------------------------------------------------------------
+## 
+## 
+## 
+##  ESPECIE  dentro do nivel  Com N  de  NITROGENIO 
+## ------------------------------------------------------------------------
+## Teste de Tukey
+## ------------------------------------------------------------------------
+## Grupos Tratamentos Medias
+## a 	 1 	 44.65 
+## a 	 2 	 43.55 
+## ab 	 4 	 36.55 
+##  b 	 3 	 30.65 
+## ------------------------------------------------------------------------
+## 
+## 
+##  ESPECIE  dentro do nivel  Sem N  de  NITROGENIO 
+## 
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##   Niveis Medias
+## 1      1  35.75
+## 2      2  38.70
+## 3      3  41.30
+## 4      4  37.30
+## ------------------------------------------------------------------------
+## 
+## 
+## 
+## Desdobrando  NITROGENIO  dentro de cada nivel de  ESPECIE 
+## ------------------------------------------------------------------------
+## ------------------------------------------------------------------------
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##                                GL         SQ        QM     Fc  Pr.Fc
+## Bloco                           3   18.72375   6.24125  0.164 0.9194
+## ESPECIE                         3  148.99375  49.66458 1.3051  0.299
+## NITROGENIO:ESPECIE Aveia Preta  1  158.42000 158.42000  4.163 0.0541
+## NITROGENIO:ESPECIE Centeio      1   47.04500  47.04500 1.2363 0.2788
+## NITROGENIO:ESPECIE Pousio       1  226.84500 226.84500  5.961 0.0236
+## NITROGENIO:ESPECIE Triticale    1    1.12500   1.12500 0.0296 0.8651
+## Residuo                        21  799.14625  38.05458              
+## Total                          31 1400.29875  45.17093              
+## ------------------------------------------------------------------------
+## 
+## 
+## 
+##  NITROGENIO  dentro do nivel  Aveia Preta  de  ESPECIE 
+## 
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##   Niveis Medias
+## 1      1  44.65
+## 2      2  35.75
+## ------------------------------------------------------------------------
+## 
+## 
+##  NITROGENIO  dentro do nivel  Centeio  de  ESPECIE 
+## 
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##   Niveis Medias
+## 1      1  43.55
+## 2      2  38.70
+## ------------------------------------------------------------------------
+## 
+## 
+##  NITROGENIO  dentro do nivel  Pousio  de  ESPECIE 
+## ------------------------------------------------------------------------
+## Teste de Tukey
+## ------------------------------------------------------------------------
+## Grupos Tratamentos Medias
+## a 	 2 	 41.3 
+##  b 	 1 	 30.65 
+## ------------------------------------------------------------------------
+## 
+## 
+##  NITROGENIO  dentro do nivel  Triticale  de  ESPECIE 
+## 
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##   Niveis Medias
+## 1      1  36.55
+## 2      2  37.30
+## ------------------------------------------------------------------------
+```
+
+**GRÁFICO**
+
+Como não a houve diferença para os efeitos principais (ESPECIE E NITROGÊNIO) mas deu interação entre estes fatores, vamos apresentar um gráfico mostrando essa interação. No gráfico, letras maiúsculas comparam as espécies dentro de cada manejo de N e minúsculas comparam o manejo de N dentro de cada espécie. As barras mostram a média e as barras de erro, o erro padrão da média.
+
+
+```r
+plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
+              resp = NL,
+              lab.bar = c("Aa", "Aa", "Aa", "Aa", "Bb", "Aa", "ABa", "Aa"),
+              y.expand = 0.1,
+              xlab = "Espécie",
+              ylab = "Número de legumes por planta")
+```
+
+<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+
+
+
+
+
+#### Variável número de grãos por legume (NGL)
+
+**ANOVA** 
+
+```r
+with(df_cobsoja,
+     fat2.dbc(fator1 = ESPECIE,
+              fator2 = NITROGENIO,
+              bloco = REP,
+              resp = NGL,
+              fac.names = c("ESPECIE", "NITROGENIO"))
+)
+```
+
+```
+## ------------------------------------------------------------------------
+## Legenda:
+## FATOR 1:  ESPECIE 
+## FATOR 2:  NITROGENIO 
+## ------------------------------------------------------------------------
+## 
+## 
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##                    GL      SQ QM     Fc    Pr>Fc
+## Bloco               3 0.19640  5 2.3475 0.101764
+## ESPECIE             3 0.14872  4 1.7776 0.182257
+## NITROGENIO          1 0.08405  6 3.0138 0.097208
+## ESPECIE*NITROGENIO  3 0.14872  3 1.7776 0.182257
+## Residuo            21 0.58565  2                
+## Total              31 1.16355  1                
+## ------------------------------------------------------------------------
+## CV = 6.88 %
+## 
+## ------------------------------------------------------------------------
+## Teste de normalidade dos residuos (Shapiro-Wilk)
+## valor-p:  0.3640228 
+## De acordo com o teste de Shapiro-Wilk a 5% de significancia, os residuos podem ser considerados normais.
+## ------------------------------------------------------------------------
+## 
+## Interacao nao significativa: analisando os efeitos simples
+## ------------------------------------------------------------------------
+## ESPECIE
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##        Niveis  Medias
+## 1 Aveia Preta 2.42250
+## 2     Centeio 2.32875
+## 3      Pousio 2.44375
+## 4   Triticale 2.52000
+## ------------------------------------------------------------------------
+## NITROGENIO
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##   Niveis Medias
+## 1  Com N 2.4800
+## 2  Sem N 2.3775
+## ------------------------------------------------------------------------
+```
+
+> COMO NÃO DEU DIFERENÇA SIGNIFICATIVA PARA NENHUM FATOR, PODE-SE APENAS APRESENTAR O GRÁFICO, MAS SEM DISCUTIR DIFERENÇAS ENTRE OS TRATAMENTOS/N
+
+
+
+```r
+plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
+              resp = NGL,
+              y.expand = 0.1,
+              xlab = "Espécie",
+              ylab = "Número de grãos por legume")
+```
+
+<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+
+
+
+#### Variável massa de mil grãos (MMG)
+
+**ANOVA** 
+
+```r
+with(df_cobsoja,
+     fat2.dbc(fator1 = ESPECIE,
+              fator2 = NITROGENIO,
+              bloco = REP,
+              resp = MMG,
+              fac.names = c("ESPECIE", "NITROGENIO"))
+)
+```
+
+```
+## ------------------------------------------------------------------------
+## Legenda:
+## FATOR 1:  ESPECIE 
+## FATOR 2:  NITROGENIO 
+## ------------------------------------------------------------------------
+## 
+## 
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##                    GL     SQ QM     Fc   Pr>Fc
+## Bloco               3 3409.4  2 6.5107 0.00275
+## ESPECIE             3 1309.4  5 2.5004 0.08733
+## NITROGENIO          1   28.1  4 0.1611 0.69218
+## ESPECIE*NITROGENIO  3  209.4  6 0.3998 0.75454
+## Residuo            21 3665.6  3               
+## Total              31 8621.9  1               
+## ------------------------------------------------------------------------
+## CV = 7.4 %
+## 
+## ------------------------------------------------------------------------
+## Teste de normalidade dos residuos (Shapiro-Wilk)
+## valor-p:  0.858878 
+## De acordo com o teste de Shapiro-Wilk a 5% de significancia, os residuos podem ser considerados normais.
+## ------------------------------------------------------------------------
+## 
+## Interacao nao significativa: analisando os efeitos simples
+## ------------------------------------------------------------------------
+## ESPECIE
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##        Niveis Medias
+## 1 Aveia Preta 176.25
+## 2     Centeio 171.25
+## 3      Pousio 188.75
+## 4   Triticale 177.50
+## ------------------------------------------------------------------------
+## NITROGENIO
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##   Niveis  Medias
+## 1  Com N 177.500
+## 2  Sem N 179.375
+## ------------------------------------------------------------------------
+```
+
+> COMO NÃO DEU DIFERENÇA SIGNIFICATIVA PARA NENHUM FATOR, PODE-SE APENAS APRESENTAR O GRÁFICO, MAS SEM DISCUTIR DIFERENÇAS ENTRE OS TRATAMENTOS/N
+
+
+
+```r
+plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
+              resp = MMG,
+              y.expand = 0.1,
+              xlab = "Espécie",
+              ylab = "Massa de mil grãos (g)")
+```
+
+<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+
+
+#### Variável RG
+
+**ANOVA** 
+
+```r
+with(df_cobsoja,
+     fat2.dbc(fator1 = ESPECIE,
+              fator2 = NITROGENIO,
+              bloco = REP,
+              resp = RG,
+              fac.names = c("ESPECIE", "NITROGENIO"))
+)
+```
+
+```
+## ------------------------------------------------------------------------
+## Legenda:
+## FATOR 1:  ESPECIE 
+## FATOR 2:  NITROGENIO 
+## ------------------------------------------------------------------------
+## 
+## 
+## Quadro da analise de variancia
+## ------------------------------------------------------------------------
+##                    GL       SQ QM      Fc   Pr>Fc
+## Bloco               3  9602221  4 1.97873 0.14806
+## ESPECIE             3   219192  6 0.04517 0.98689
+## NITROGENIO          1   461200  5 0.28512 0.59897
+## ESPECIE*NITROGENIO  3  3950128  2 0.81400 0.50045
+## Residuo            21 33969089  3                
+## Total              31 48201830  1                
+## ------------------------------------------------------------------------
+## CV = 38.68 %
+## 
+## ------------------------------------------------------------------------
+## Teste de normalidade dos residuos (Shapiro-Wilk)
+## valor-p:  0.1875762 
+## De acordo com o teste de Shapiro-Wilk a 5% de significancia, os residuos podem ser considerados normais.
+## ------------------------------------------------------------------------
+## 
+## Interacao nao significativa: analisando os efeitos simples
+## ------------------------------------------------------------------------
+## ESPECIE
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##        Niveis   Medias
+## 1 Aveia Preta 3368.403
+## 2     Centeio 3305.556
+## 3      Pousio 3150.000
+## 4   Triticale 3327.778
+## ------------------------------------------------------------------------
+## NITROGENIO
+## De acordo com o teste F, as medias desse fator sao estatisticamente iguais.
+## ------------------------------------------------------------------------
+##   Niveis   Medias
+## 1  Com N 3167.882
+## 2  Sem N 3407.986
+## ------------------------------------------------------------------------
+```
+
+
+> COMO NÃO DEU DIFERENÇA SIGNIFICATIVA PARA NENHUM FATOR, PODE-SE APENAS APRESENTAR O GRÁFICO, MAS SEM DISCUTIR DIFERENÇAS ENTRE OS TRATAMENTOS/N
+
+
+
+```r
+plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
+              resp = RG,
+              y.expand = 0.1,
+              xlab = "Espécie",
+              ylab = "RG (kg/ha)")
+```
+
+<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-31-1.png" width="672" />

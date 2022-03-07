@@ -1,7 +1,7 @@
 +++
 title = "Tutoriais Bioestatística e Experimentação Agrícola [Português]"
 linktitle = "Tutoriais Bioestatística e Experimentação Agrícola [Português]"
-summary = "Este material apresenta os scripts e gráficos confeccionados com o software R, que servem de apoio para a disciplina FIT5306 - Bioestatística e Experimentação Agrícola, ofertadas pelo Departamento de Fitotecnia da Universidade Federal de Santa Catarina (UFSC)"
+summary = "Este material apresenta os scripts e gráficos confeccionados com o software R, que servem de apoio para a disciplina FIT5306 - Bioestatística e Experimentação Agrícola, ofertada pelo Departamento de Fitotecnia da Universidade Federal de Santa Catarina (UFSC)"
 date = "2022/02/07"
 lastmod = "2022/02/07"
 toc = true  # Show table of contents? true/false
@@ -32,6 +32,20 @@ library(AgroR)      # casualização e ANOVA
 ---------------------------------
 
 O conjunto de dados `dados_biost_exp.xlsx` contém dados que podem ser utilizados para aplicação prática dos conteúdos trabalhados na disciplina. O arquivo contém as seguintes planilhas:
+
+* `REG_DATA`: dados sem repetição (**hipotéticos**) do RG observados em diferentes doses de Nitrogênio.
+* `REG_ANALISE`: Análise de regressão linear de primeiro grau dos dados `REG_DATA`.
+* `REG_DEL_DATA`: dados com repetições do rendimento de grãos observados em diferentes doses de Nitrogênio.
+* `REG_DEL_ANALISE`: Análise de regressão dos dados ``REG_DEL_DATA`.
+* `CORRELACAO_DATA`: dados de altura de planta (AP) e altura da espiga (AE) observados em 10 plantas de milho.
+* `CORRELACAO_ANALISE`: Análise de correlação para os dados `CORRELACAO_DATA`.
+
+* `COBERTURA_N_MASSA`: dados de um experimento bifatorial com dois níveis de nitrogênio (com e sem) e quatro níveis de plantas de cobertura (aveia preta, centeio, triticale e pousio), conduzido em um DBC com quatro repetições. Foram avaliados a matéria verde (MV) e matéria seca (MS) das plantas, bem como a matéria seca de raiz (MSR).
+
+* `COBERTURA_N_SOJA`: Com os mesmos tratamentos apresentados em `COBERTURA_N_MASSA`, o experimento avaliou caracteres morfológicos e o rendimento de grãos de soja cultivada na resteva das respectivas coberturas de solo. Foram avaliados o número de legumes por planta (NL), número de grãos por legume (NGL), massa de mil grãos (MMG) e o rendimento de grãos (RG).
+
+
+> Os dados `COBERTURA_N_MASSA` e `COBERTURA_N_SOJA` foram obtidos em um trabalho conduzido em grupo no Centro Universitário Unideau, tendo como participantes os alunos Bernardo Pinheiro Busatta, Tiago Jonatan Fochesatto, Diogo Andre Ody, Gustavo Peretti e Paulo Sérgio Trevisol.
 
 * `DIC-DBC`: dados de área foliar (AF) e matéria seca de planta (MST) de plantas de chicória avaliadas em diferentes níveis de radiação solar (50%, 70% e 100%). O experimento foi conduzido em delineamento de blocos completos casualizados, com quatro repetições.
 

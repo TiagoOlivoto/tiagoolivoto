@@ -247,3 +247,343 @@ with(df_fat,
 
 ```
 
+
+# Exemplos de experimentos fatoriais
+## Coberturas de solo e doses de nitrogênio (efeito na massa de cobertura de inverno) {#experimento1}
+
+O delineamento experimental utilizado foi o delineamento de blocos casualizados com parcelas subdivididas em esquema fatorial 4x2 com quatro repetições. quatro espécies: aveia preta cv. BRS 139 (Neblina), com densidade de 120 kg ha$^{-1}$ de semente; triticale cv. BRS SATURNO, com densidade de 160 kg ha$^{-1}$ de semente e centeio cv. BRS PROGRESSO, com densidade de 160 kg ha$^{-1}$ de semente, além do pousio, com presença de diferentes plantas que se desenvolvem nesta época (três espécies de gramíneas); com dois manejos de nitrogênio (com ou sem N em cobertuta). Os tratamentos foram alocados na área experimental em formato de parcelas subdivididas. Na parcela principal foram alocadas as espécies nas subparcela o manejo de nitrogênio. Nas parcelas que receberam N utilizou-se como fonte a ureia (45% de N) na dose de 100 kg ha$^{-1}$.
+
+### Pacotes e dados
+Assumindo que todos estão instalados, é só carregar com
+
+```{r}
+library(rio) # importar e exportar arquivos
+library(ExpDes.pt) # fazer anova
+library(metan) # gráficos
+library(tidyverse) # manipulação de dados e gráficos
+
+# dados
+url <- "http://bit.ly/df_biostat_exp"
+df_cobmassa <- import(url, sheet = "COBERTURA_N_MASSA", setclass = "tbl")
+df_cobmassa <- as_factor(df_cobmassa, 1:3)
+
+# Apenas para mostrar a estrutura dos dados
+df_cobmassa
+```
+
+
+
+### Estatistica descritiva
+
+
+```{r}
+desc_stat(df_cobmassa, stats = c("min, mean, max"))
+```
+
+
+
+### ANOVA {#modanova}
+
+
+O modelo considerado para este exemplo de parcela subdivididas é o seguinte
+
+
+$$
+{y_{ijk}} = {\rm{ }}\mu {\rm{ }} + {\rm{ }}\mathop \alpha \nolimits_i + \mathop \beta \nolimits_{k} + \mathop \eta \nolimits_{ik}  +\mathop \tau \nolimits_j  + \mathop {(\alpha \tau )}\nolimits_{ij}  + {\rm{ }}\mathop \varepsilon \nolimits_{ijk}
+$$
+
+onde \${y_{ijk}}\$ é a variável resposta observada; \$\mu\$ é a média geral; \$\mathop \alpha \nolimits_i\$ é o efeito do \$i\$-ésimo nível do fator espécie de cobertura ; \$\mathop \beta \nolimits_{k}\$ é o efeito do bloco \$k\$; \$\mathop \eta \nolimits_{ik}\$ é o erro de parcela, mais conhecido como erro a; \$\mathop \tau \nolimits_j\$ é o efeito do \$j\$-ésimo nível do fator nitrogênio; \$\mathop {(\alpha \tau )}\nolimits_{ij}\$ é o efeito da interação do \$i\$-ésimo nível do fator espécie com o \$j\$-ésimo nível do fator nitrogênio; e \$\mathop \varepsilon \nolimits_{ijk}\$ é o erro da subparcela, mais conhecido como erro b.
+
+
+#### Massa verde (MV) por ha
+
+**ANOVA** 
+```{r}
+with(df_cobmassa,
+     psub2.dbc(fator1 = ESPECIE,
+               fator2 = NITROGENIO,
+               bloco = REP,
+               resp = MV,
+               fac.names = c("ESPECIE", "NITROGENIO"))
+)
+
+```
+
+
+**GRÁFICO**
+
+Como somente foi observado efeito significativo para o fator nitrogênio, prossegue-se com a comparação de médias para o efeito de N, conforme resultado do Teste Tukey acima. Neste gráfico, as barras mostram a média e as barras de erro, o erro padrão da média. Apenas para apresentação, incluo também a média do fator cobertura de solo, sem as letras pois o seu efeito não foi significativo, segundo a ANOVA.
+
+
+```{r fig.width=10, fig.height=4}
+pn_mv <- 
+plot_bars(df_cobmassa,
+          x = NITROGENIO,
+          y = MV,
+          lab.bar = c("a", "b"),
+          xlab = "Aplicação de Nitrogênio (N)",
+          ylab = "Matéria verde (kg/ha)")
+
+pcob_mv <- 
+  plot_bars(df_cobmassa,
+            x = ESPECIE,
+            y = MV,
+            xlab = "Espécies",
+            ylab = "Matéria verde (kg/ha)") +
+  geom_hline(yintercept = mean(df_cobmassa$MV))
+
+# organiza os gráficos
+arrange_ggplot(pn_mv, pcob_mv)
+```
+
+
+
+
+
+#### Massa seca (MS) por ha
+
+**ANOVA** 
+```{r}
+with(df_cobmassa,
+     psub2.dbc(fator1 = ESPECIE,
+               fator2 = NITROGENIO,
+               bloco = REP,
+               resp = MS,
+               fac.names = c("ESPECIE", "NITROGENIO"))
+)
+
+```
+
+
+**GRÁFICO**
+
+Como somente foi observado efeito significativo para o fator nitrogênio, prossegue-se com a comparação de médias para o efeito de N, conforme resultado do Teste Tukey acima. Apenas para apresentação, incluo também a média do fator cobertura de solo, sem as letras pois o seu efeito não foi significativo, segundo a ANOVA.
+
+
+```{r fig.width=10, fig.height=4}
+pn_ms <- 
+  plot_bars(df_cobmassa,
+            x = NITROGENIO,
+            y = MS,
+            lab.bar = c("a", "b"),
+            xlab = "Aplicação de Nitrogênio (N)",
+            ylab = "Matéria seca (kg/ha)")
+
+pcob_ms <- 
+  plot_bars(df_cobmassa,
+            x = ESPECIE,
+            y = MS,
+            xlab = "Espécies",
+            ylab = "Matéria seca (kg/ha)") +
+  geom_hline(yintercept = mean(df_cobmassa$MS))
+
+# organiza os gráficos
+arrange_ggplot(pn_ms, pcob_ms)
+```
+
+
+
+
+
+
+
+#### Massa seca de raiz (MSR) por ha
+
+**ANOVA** 
+```{r}
+with(df_cobmassa,
+     psub2.dbc(fator1 = ESPECIE,
+               fator2 = NITROGENIO,
+               bloco = REP,
+               resp = MSR,
+               fac.names = c("ESPECIE", "NITROGENIO"))
+)
+
+```
+
+
+**GRÁFICO**
+
+Como somente foi observado efeito significativo para o fator nitrogênio, prossegue-se com a comparação de médias para o efeito de N, conforme resultado do Teste Tukey acima. Apenas para apresentação, incluo também a média do fator cobertura de solo, sem as letras pois o seu efeito não foi significativo, segundo a ANOVA.
+
+
+```{r fig.width=10, fig.height=4}
+pn_msr <- 
+  plot_bars(df_cobmassa,
+            x = NITROGENIO,
+            y = MSR,
+            lab.bar = c("a", "b"),
+            xlab = "Aplicação de Nitrogênio (N)",
+            ylab = "Massa seca de raiz (kg/ha)")
+
+pcob_msr <- 
+  plot_bars(df_cobmassa,
+            x = ESPECIE,
+            y = MSR,
+            xlab = "Espécies",
+            ylab = "Massa seca de raiz (kg/ha)") +
+  geom_hline(yintercept = mean(df_cobmassa$MSR))
+
+# organiza os gráficos
+arrange_ggplot(pn_msr, pcob_msr)
+```
+
+
+
+
+
+
+
+## Coberturas de solo e doses de nitrogênio (efeito na cultura da soja)
+Os tratamentos e delineamentos são descritos no [exemplo anterior](#experimento1). Aqui, são analisados os dados observados na cultura da soja, semeada na resteva de cada tratamento (combinação de N e espécies de cobertura) 
+
+### Pacotes e dados
+Assumindo que todos estão instalados, é só carregar com
+```{r}
+library(rio) # importar e exportar arquivos
+library(ExpDes.pt) # fazer anova
+library(metan) # gráficos
+library(tidyverse) # manipulação de dados e gráficos
+
+# dados
+url <- "http://bit.ly/df_biostat_exp"
+df_cobsoja <- import(url, sheet = "COBERTURA_N_SOJA", setclass = "tbl")
+df_cobsoja <- as_factor(df_cobsoja, 1:3)
+
+# Apenas para mostrar a estrutura dos dados
+df_cobsoja
+
+```
+
+
+### Estatistica descritiva
+
+
+```{r}
+desc_stat(df_cobsoja, stats = c("min, mean, max"))
+```
+
+
+
+### ANOVA
+O modelo considerado é descrito no [exemplo anterior](#modanova).
+
+#### Variável número de legumes por planta (NL)
+
+**ANOVA** 
+```{r}
+with(df_cobsoja,
+     fat2.dbc(fator1 = ESPECIE,
+              fator2 = NITROGENIO,
+              bloco = REP,
+              resp = NL,
+              fac.names = c("ESPECIE", "NITROGENIO"))
+)
+
+```
+
+**GRÁFICO**
+
+Como não a houve diferença para os efeitos principais (ESPECIE E NITROGÊNIO) mas deu interação entre estes fatores, vamos apresentar um gráfico mostrando essa interação. No gráfico, letras maiúsculas comparam as espécies dentro de cada manejo de N e minúsculas comparam o manejo de N dentro de cada espécie. As barras mostram a média e as barras de erro, o erro padrão da média.
+
+```{r}
+
+plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
+              resp = NL,
+              lab.bar = c("Aa", "Aa", "Aa", "Aa", "Bb", "Aa", "ABa", "Aa"),
+              y.expand = 0.1,
+              xlab = "Espécie",
+              ylab = "Número de legumes por planta")
+
+
+```
+
+
+
+
+
+#### Variável número de grãos por legume (NGL)
+
+**ANOVA** 
+```{r}
+with(df_cobsoja,
+     fat2.dbc(fator1 = ESPECIE,
+              fator2 = NITROGENIO,
+              bloco = REP,
+              resp = NGL,
+              fac.names = c("ESPECIE", "NITROGENIO"))
+)
+
+```
+
+> COMO NÃO DEU DIFERENÇA SIGNIFICATIVA PARA NENHUM FATOR, PODE-SE APENAS APRESENTAR O GRÁFICO, MAS SEM DISCUTIR DIFERENÇAS ENTRE OS TRATAMENTOS/N
+
+
+```{r}
+
+plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
+              resp = NGL,
+              y.expand = 0.1,
+              xlab = "Espécie",
+              ylab = "Número de grãos por legume")
+
+
+```
+
+
+
+#### Variável massa de mil grãos (MMG)
+
+**ANOVA** 
+```{r}
+with(df_cobsoja,
+     fat2.dbc(fator1 = ESPECIE,
+              fator2 = NITROGENIO,
+              bloco = REP,
+              resp = MMG,
+              fac.names = c("ESPECIE", "NITROGENIO"))
+)
+
+```
+
+> COMO NÃO DEU DIFERENÇA SIGNIFICATIVA PARA NENHUM FATOR, PODE-SE APENAS APRESENTAR O GRÁFICO, MAS SEM DISCUTIR DIFERENÇAS ENTRE OS TRATAMENTOS/N
+
+
+```{r}
+
+plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
+              resp = MMG,
+              y.expand = 0.1,
+              xlab = "Espécie",
+              ylab = "Massa de mil grãos (g)")
+
+
+```
+
+
+#### Variável RG
+
+**ANOVA** 
+```{r}
+with(df_cobsoja,
+     fat2.dbc(fator1 = ESPECIE,
+              fator2 = NITROGENIO,
+              bloco = REP,
+              resp = RG,
+              fac.names = c("ESPECIE", "NITROGENIO"))
+)
+
+```
+
+
+> COMO NÃO DEU DIFERENÇA SIGNIFICATIVA PARA NENHUM FATOR, PODE-SE APENAS APRESENTAR O GRÁFICO, MAS SEM DISCUTIR DIFERENÇAS ENTRE OS TRATAMENTOS/N
+
+
+```{r}
+
+plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
+              resp = RG,
+              y.expand = 0.1,
+              xlab = "Espécie",
+              ylab = "RG (kg/ha)")
+```
