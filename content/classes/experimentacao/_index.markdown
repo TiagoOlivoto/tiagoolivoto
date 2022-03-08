@@ -36,7 +36,10 @@ O conjunto de dados `dados_biost_exp.xlsx` contém dados que podem ser utilizado
 * `REG_DATA`: dados sem repetição (**hipotéticos**) do RG observados em diferentes doses de Nitrogênio.
 * `REG_ANALISE`: Análise de regressão linear de primeiro grau dos dados `REG_DATA`.
 * `REG_DEL_DATA`: dados com repetições do rendimento de grãos observados em diferentes doses de Nitrogênio.
-* `REG_DEL_ANALISE`: Análise de regressão dos dados ``REG_DEL_DATA`.
+* `REG_DEL_ANALISE`: Análise de regressão dos dados `REG_DEL_DATA`.
+* `REG_PRATICA`: dados referente a uma amostra de tamanho n = 11, na qual se aplicou CO2 em diferentes concentrações em folhas de trigo (X). A quantidade de C02 absorvida (Y) em cm3 / dm2 / hora foi avaliada. Esse exemplo foi apresentado por Ferreira (2009)[^1].
+* `REG_PRATICA_ANALISE`: Análise de regressão dos dados `REG_PRATICA`.
+* `COR_DATA_DENSIDADE`: Dois métodos de mensurar a densidade média da madeira (g /cm\$^3\$) em *Eucalyptus grandis* foram aplicados a uma amostra de n = 13 árvores. O primeiro método (X) é determinado utilizando um paquímetro e uma sonda Pressler de 0,5 cm na região da árvore determinada no diâmetro à altura do peito (DAP). A segunda, variável (Y) também foi mensurada no DAP utilizando cortes transversais no tronco. Esse exemplo foi apresentado por Ferreira (2009)[^1].
 * `CORRELACAO_DATA`: dados de altura de planta (AP) e altura da espiga (AE) observados em 10 plantas de milho.
 * `CORRELACAO_ANALISE`: Análise de correlação para os dados `CORRELACAO_DATA`.
 
@@ -119,3 +122,6 @@ Para baixar o arquivo `.xlsx`, utilize o botão abaixo.
    * **CompartilhaIgual** — Se você remixar, transformar, ou criar a partir do material, tem de distribuir as suas contribuições sob a mesma licença que o original.
 
    * **Sem restrições adicionais** — Você não pode aplicar termos jurídicos ou medidas de caráter tecnológico que restrinjam legalmente outros de fazerem algo que a licença permita.
+
+
+[^1]: FERREIRA, D. F. **Estatistica Basica**. 2. ed. Viçosa, MG.: UFV, 2009

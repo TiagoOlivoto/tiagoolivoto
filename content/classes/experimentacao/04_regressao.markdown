@@ -482,3 +482,383 @@ corr_plot(df_maize)
 
 <img src="/classes/experimentacao/04_regressao_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
+
+# Notas da aula prática
+Os dados utilizados referem-se a uma amostra de tamanho n = 11, na qual se aplicou CO2 em diferentes concentrações em folhas de trigo (X). A quantidade de C02 absorvida (Y) em cm3 / dm2 / hora foi avaliada.
+
+## Regressão
+### Dados
+> Neste exemplo, será utilizado Os dados referente a uma amostra de tamanho n = 11, na qual se aplicou CO2 em diferentes concentrações em folhas de trigo (X). A quantidade de C02 absorvida (Y) em cm3 / dm2 / hora foi avaliada. Esse exemplo foi apresentado por Ferreira (2009)[^1]
+
+
+
+```r
+url <- "http://bit.ly/df_biostat_exp"
+df_co2 <- import(url, sheet = "REG_PRATICA", setclass = "tbl")
+
+(x <- df_co2$x)
+```
+
+```
+##  [1]  75 100 100 120 130 130 160 190 200 240 250
+```
+
+```r
+(y <- df_co2$y)
+```
+
+```
+##  [1] 0.00 0.65 0.50 1.00 0.95 1.30 1.80 2.80 2.50 4.30 4.50
+```
+
+```r
+(n <- length(x))
+```
+
+```
+## [1] 11
+```
+
+```r
+(mx <- mean(x))
+```
+
+```
+## [1] 154.0909
+```
+
+```r
+(my <- mean(y))
+```
+
+```
+## [1] 1.845455
+```
+
+
+### Método dos mínimos quadrados
+
+```r
+(xy <- x * y)
+```
+
+```
+##  [1]    0.0   65.0   50.0  120.0  123.5  169.0  288.0  532.0  500.0 1032.0
+## [11] 1125.0
+```
+
+```r
+(x2 <- x ^ 2)
+```
+
+```
+##  [1]  5625 10000 10000 14400 16900 16900 25600 36100 40000 57600 62500
+```
+
+```r
+(y2 <- y ^ 2)
+```
+
+```
+##  [1]  0.0000  0.4225  0.2500  1.0000  0.9025  1.6900  3.2400  7.8400  6.2500
+## [10] 18.4900 20.2500
+```
+
+```r
+(sxy <- sum(xy) - (sum(x) * sum(y) / n))
+```
+
+```
+## [1] 876.4545
+```
+
+```r
+(sx <- sum(x2) - sum(x) ^ 2 / n)
+```
+
+```
+## [1] 34440.91
+```
+
+```r
+(sy <- sum(y2) - sum(y) ^ 2 / n)
+```
+
+```
+## [1] 22.87227
+```
+
+```r
+(b1 <- sxy / sx)
+```
+
+```
+## [1] 0.02544807
+```
+
+```r
+(b0 <- my - b1 * mx)
+```
+
+```
+## [1] -2.075861
+```
+
+```r
+## somas de quadrados
+(sqtotal <- sy)
+```
+
+```
+## [1] 22.87227
+```
+
+```r
+(sqreg <- sxy ^ 2 / sx)
+```
+
+```
+## [1] 22.30407
+```
+
+```r
+(sqres <- sqtotal - sqreg)
+```
+
+```
+## [1] 0.5681992
+```
+
+```r
+(R2 <- sqreg / sqtotal)
+```
+
+```
+## [1] 0.9751577
+```
+
+### Função `lm`
+
+Utilizando a função `lm`, o modelo acima é ajustado facilmente, com:
+
+```r
+mod <- lm(y ~ x)
+summary(mod)
+```
+
+```
+## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.51375 -0.08687  0.04073  0.17416  0.26833 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -2.075861   0.221956  -9.353 6.23e-06 ***
+## x            0.025448   0.001354  18.796 1.57e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.2513 on 9 degrees of freedom
+## Multiple R-squared:  0.9752,	Adjusted R-squared:  0.9724 
+## F-statistic: 353.3 on 1 and 9 DF,  p-value: 1.569e-08
+```
+
+### Valores preditos
+Para obter os valores preditos, precisamos considerar os parâmetros estimados da regressão linear, substituindo o *x* pelos valores observados de x. Felizmente, a vetorização proporcionada pelo R, nos facilita este procedimento, bastando realizar o seguinte comando
+
+
+```r
+(pred <- b0 + b1 * x)
+```
+
+```
+##  [1] -0.1672562  0.4689455  0.4689455  0.9779068  1.2323875  1.2323875
+##  [7]  1.9958295  2.7592715  3.0137521  4.0316748  4.2861555
+```
+
+Os valores preditos também podem ser obtidos com a função `predict()`, informando o modelo ajustado
+
+
+```r
+(pred2 <- predict(mod))
+```
+
+```
+##          1          2          3          4          5          6          7 
+## -0.1672562  0.4689455  0.4689455  0.9779068  1.2323875  1.2323875  1.9958295 
+##          8          9         10         11 
+##  2.7592715  3.0137521  4.0316748  4.2861555
+```
+
+### Residuais
+Os resíduos são obtidos pela diferença entre os valores observados e os preditos pelo modelo ajustado. Para isso, utilizamos o seguinte comando:
+
+```r
+(res <- y - pred)
+```
+
+```
+##  [1]  0.16725617  0.18105451  0.03105451  0.02209318 -0.28238749  0.06761251
+##  [7] -0.19582948  0.04072852 -0.51375214  0.26832519  0.21384453
+```
+
+Apenas para fins de comprovação, observe que a soma de quadrado do resíduo obtida anteriormente pode ser calculada agora como:
+
+```r
+(sqres2 <- sum(res ^ 2))
+```
+
+```
+## [1] 0.5681992
+```
+
+A função `residuals()` também pode ser utilizada para oter os resíduos de um modelo ajustado.
+
+```r
+(res2 <- residuals(mod))
+```
+
+```
+##           1           2           3           4           5           6 
+##  0.16725617  0.18105451  0.03105451  0.02209318 -0.28238749  0.06761251 
+##           7           8           9          10          11 
+## -0.19582948  0.04072852 -0.51375214  0.26832519  0.21384453
+```
+
+### Gráfico
+Para confecção do gráfico de regressão, será utilizado o pacote `ggplot2`
+
+
+```r
+# gráfico base
+ggplot(df_co2, aes(x, y)) +
+  geom_point(size = 4, color = "red") +
+  labs(x = "CO2 aplicado",
+       y = "CO2 absorvido") +
+  geom_segment(aes(x = x, y = y, xend = x, yend = fitted(mod))) +
+  geom_smooth(se = FALSE, method = "lm")
+```
+
+```
+## `geom_smooth()` using formula 'y ~ x'
+```
+
+<img src="/classes/experimentacao/04_regressao_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+
+
+## Correlação
+### Dados
+> Dois métodos de mensurar a densidade média da madeira (g /cm\$^3\$) em *Eucalyptus grandis* foram aplicados a uma amostra de n = 13 árvores. O primeiro método (X) é determinado utilizando um paquímetro e uma sonda Pressler de 0,5 cm na região da árvore determinada no diâmetro à altura do peito (DAP). A segunda, variável (Y) também foi mensurada no DAP utilizando cortes transversais no tronco. Esse exemplo foi apresentado por Ferreira (2009)[^1]
+
+
+```r
+url <- "http://bit.ly/df_biostat_exp"
+df_densidade <- import(url, sheet = "COR_DATA_DENSIDADE", setclass = "tbl")
+
+x <- df_densidade$X
+y <- df_densidade$Y
+n <- length(x)
+```
+
+### método dos mínimos quadrados
+
+```r
+xy <- x * y
+x2 <- x ^ 2
+y2 <- y ^ 2
+
+(sxy <- sum(xy) - (sum(x) * sum(y) / n))
+```
+
+```
+## [1] 0.01744508
+```
+
+```r
+(sx <- sum(x2) - sum(x) ^ 2 / n)
+```
+
+```
+## [1] 0.01682323
+```
+
+```r
+(sy <- sum(y2) - sum(y) ^ 2 / n)
+```
+
+```
+## [1] 0.02286369
+```
+
+```r
+(r <- sxy / sqrt(sx * sy))
+```
+
+```
+## [1] 0.8894981
+```
+
+```r
+(tcal <- r * (sqrt((n - 2) / (1 - r ^ 2))))
+```
+
+```
+## [1] 6.456292
+```
+
+```r
+(ttab <- abs(qt(0.025, df = 11)))
+```
+
+```
+## [1] 2.200985
+```
+
+```r
+tcal > ttab
+```
+
+```
+## [1] TRUE
+```
+
+### Função `cor()`
+
+Para computar o coeficiente de correlação de Pearson, utilizamos a função `cor()`, indicando o vetor x e y, ou um data.frame com variáveis numéricas. Neste último caso, uma matriz de correlação é retornada.
+
+```r
+cor(x, y)
+```
+
+```
+## [1] 0.8894981
+```
+
+Para realizar o teste de hipótese, utiliza-se a função `cor.test()`.
+
+
+```r
+cor.test(x, y)
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  x and y
+## t = 6.4563, df = 11, p-value = 4.701e-05
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.6638811 0.9667022
+## sample estimates:
+##       cor 
+## 0.8894981
+```
+
+
+
+[^1]: FERREIRA, D. F. **Estatistica Basica**. 2. ed. Viçosa, MG.: UFV, 2009

@@ -334,3 +334,144 @@ cor(df_maize)
 corr_plot(df_maize)
 ```
 
+
+# Notas da aula prática
+Os dados utilizados referem-se a uma amostra de tamanho n = 11, na qual se aplicou CO2 em diferentes concentrações em folhas de trigo (X). A quantidade de C02 absorvida (Y) em cm3 / dm2 / hora foi avaliada.
+
+## Regressão
+### Dados
+> Neste exemplo, será utilizado Os dados referente a uma amostra de tamanho n = 11, na qual se aplicou CO2 em diferentes concentrações em folhas de trigo (X). A quantidade de C02 absorvida (Y) em cm3 / dm2 / hora foi avaliada. Esse exemplo foi apresentado por Ferreira (2009)[^1]
+
+
+```{r}
+url <- "http://bit.ly/df_biostat_exp"
+df_co2 <- import(url, sheet = "REG_PRATICA", setclass = "tbl")
+
+(x <- df_co2$x)
+(y <- df_co2$y)
+(n <- length(x))
+(mx <- mean(x))
+(my <- mean(y))
+```
+
+
+### Método dos mínimos quadrados
+```{r}
+(xy <- x * y)
+(x2 <- x ^ 2)
+(y2 <- y ^ 2)
+
+(sxy <- sum(xy) - (sum(x) * sum(y) / n))
+(sx <- sum(x2) - sum(x) ^ 2 / n)
+(sy <- sum(y2) - sum(y) ^ 2 / n)
+
+(b1 <- sxy / sx)
+(b0 <- my - b1 * mx)
+
+## somas de quadrados
+(sqtotal <- sy)
+(sqreg <- sxy ^ 2 / sx)
+(sqres <- sqtotal - sqreg)
+(R2 <- sqreg / sqtotal)
+```
+
+### Função `lm`
+
+Utilizando a função `lm`, o modelo acima é ajustado facilmente, com:
+```{r}
+mod <- lm(y ~ x)
+summary(mod)
+```
+
+### Valores preditos
+Para obter os valores preditos, precisamos considerar os parâmetros estimados da regressão linear, substituindo o *x* pelos valores observados de x. Felizmente, a vetorização proporcionada pelo R, nos facilita este procedimento, bastando realizar o seguinte comando
+
+```{r}
+(pred <- b0 + b1 * x)
+```
+
+Os valores preditos também podem ser obtidos com a função `predict()`, informando o modelo ajustado
+
+```{r}
+(pred2 <- predict(mod))
+```
+
+### Residuais
+Os resíduos são obtidos pela diferença entre os valores observados e os preditos pelo modelo ajustado. Para isso, utilizamos o seguinte comando:
+```{r}
+(res <- y - pred)
+
+```
+
+Apenas para fins de comprovação, observe que a soma de quadrado do resíduo obtida anteriormente pode ser calculada agora como:
+```{r}
+(sqres2 <- sum(res ^ 2))
+```
+
+A função `residuals()` também pode ser utilizada para oter os resíduos de um modelo ajustado.
+```{r}
+(res2 <- residuals(mod))
+```
+
+### Gráfico
+Para confecção do gráfico de regressão, será utilizado o pacote `ggplot2`
+
+```{r}
+# gráfico base
+ggplot(df_co2, aes(x, y)) +
+  geom_point(size = 4, color = "red") +
+  labs(x = "CO2 aplicado",
+       y = "CO2 absorvido") +
+  geom_segment(aes(x = x, y = y, xend = x, yend = fitted(mod))) +
+  geom_smooth(se = FALSE, method = "lm")
+```
+
+
+## Correlação
+### Dados
+> Dois métodos de mensurar a densidade média da madeira (g /cm\$^3\$) em *Eucalyptus grandis* foram aplicados a uma amostra de n = 13 árvores. O primeiro método (X) é determinado utilizando um paquímetro e uma sonda Pressler de 0,5 cm na região da árvore determinada no diâmetro à altura do peito (DAP). A segunda, variável (Y) também foi mensurada no DAP utilizando cortes transversais no tronco. Esse exemplo foi apresentado por Ferreira (2009)[^1]
+
+```{r}
+url <- "http://bit.ly/df_biostat_exp"
+df_densidade <- import(url, sheet = "COR_DATA_DENSIDADE", setclass = "tbl")
+
+x <- df_densidade$X
+y <- df_densidade$Y
+n <- length(x)
+
+```
+
+### método dos mínimos quadrados
+```{r}
+xy <- x * y
+x2 <- x ^ 2
+y2 <- y ^ 2
+
+(sxy <- sum(xy) - (sum(x) * sum(y) / n))
+(sx <- sum(x2) - sum(x) ^ 2 / n)
+(sy <- sum(y2) - sum(y) ^ 2 / n)
+
+(r <- sxy / sqrt(sx * sy))
+
+(tcal <- r * (sqrt((n - 2) / (1 - r ^ 2))))
+(ttab <- abs(qt(0.025, df = 11)))
+tcal > ttab
+
+```
+
+### Função `cor()`
+
+Para computar o coeficiente de correlação de Pearson, utilizamos a função `cor()`, indicando o vetor x e y, ou um data.frame com variáveis numéricas. Neste último caso, uma matriz de correlação é retornada.
+```{r}
+cor(x, y)
+```
+
+Para realizar o teste de hipótese, utiliza-se a função `cor.test()`.
+
+```{r}
+cor.test(x, y)
+```
+
+
+
+[^1]: FERREIRA, D. F. **Estatistica Basica**. 2. ed. Viçosa, MG.: UFV, 2009
