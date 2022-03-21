@@ -412,8 +412,8 @@ De posse das informações, um gráfico elaborado, que deveria ser apresentado e
 ```r
 p1 +
   labs(title = "Equação quadrática",
-subtitle = "Trigângulo e cículo representam os pontos de MME e MET, respectivamente",
-caption = "MME = Máxima eficiência econômica\n MET = máxima eficiência técnica") +
+       subtitle = "Trigângulo e cículo representam os pontos de MME e MET, respectivamente",
+       caption = "MME = Máxima eficiência econômica\n MET = máxima eficiência técnica") +
   # Linhas e ponto da MET
   geom_segment(aes(x = x_met, y = pred_met, xend = x_met, yend = 6.7)) +
   geom_segment(aes(x = 0, y = pred_met, xend = x_met, yend = pred_met)) +
@@ -424,15 +424,15 @@ caption = "MME = Máxima eficiência econômica\n MET = máxima eficiência téc
   geom_point(aes(x = x_mee, y = rg_mee), shape = 17, size = 3, color = "blue") +
   # Equação no gráfico
   geom_text(aes(0, 7.9,
-label=(
-  paste(
-    expression("y = 7.075 + 0.007184x - 2,071e"^{-5}*"x"^2*"  R" ^2*" = 0,938 "))
-)
-),
-hjust = 0,
-size = 5,
-col = "black",
-parse = TRUE) 
+                label=(
+                  paste(
+                    expression("y = 7.075 + 0.007184x - 2,071e"^{-5}*"x"^2*"  R" ^2*" = 0,938 "))
+                )
+  ),
+  hjust = 0,
+  size = 5,
+  col = "black",
+  parse = TRUE) 
 ```
 
 <img src="/classes/experimentacao/04_regressao_files/figure-html/unnamed-chunk-9-1.png" width="672" />
@@ -860,5 +860,535 @@ cor.test(x, y)
 ```
 
 
+# Exercício resolvido
+## Correlação
+### Dados
+> Neste exemplo, serão utilizados dados referentes ao número de grãos (NGRA) e massa de grãos (MGRA) observados em 15 espigas de milho (n = 15).
+
+
+
+```r
+url <- "http://bit.ly/df_biostat_exp"
+cor_ex <- import(url, sheet = "COR_EXERCICIO", setclass = "tbl")
+
+(x <- cor_ex$NGRA)
+```
+
+```
+##  [1] 519 522 624 670 518 547 670 546 444 611 557 702 443 430 481
+```
+
+```r
+(y <- cor_ex$MGRA)
+```
+
+```
+##  [1] 173.5 213.5 221.1 261.5 220.1 177.8 250.8 192.0 193.5 255.6 245.9 207.4
+## [13] 185.3 166.6 202.4
+```
+
+```r
+(n <- length(x))
+```
+
+```
+## [1] 15
+```
+
+
+### Método dos mínimos quadrados
+
+```r
+(xy <- x * y)
+```
+
+```
+##  [1]  90046.5 111447.0 137966.4 175205.0 114011.8  97256.6 168036.0 104832.0
+##  [9]  85914.0 156171.6 136966.3 145594.8  82087.9  71638.0  97354.4
+```
+
+```r
+(x2 <- x ^ 2)
+```
+
+```
+##  [1] 269361 272484 389376 448900 268324 299209 448900 298116 197136 373321
+## [11] 310249 492804 196249 184900 231361
+```
+
+```r
+(y2 <- y ^ 2)
+```
+
+```
+##  [1] 30102.25 45582.25 48885.21 68382.25 48444.01 31612.84 62900.64 36864.00
+##  [9] 37442.25 65331.36 60466.81 43014.76 34336.09 27755.56 40965.76
+```
+
+```r
+# soma de xy
+(somxy <- sum(xy))
+```
+
+```
+## [1] 1774528
+```
+
+```r
+# soma de x
+(somx <- sum(x))
+```
+
+```
+## [1] 8284
+```
+
+```r
+# soma de y
+(somy <- sum(y))
+```
+
+```
+## [1] 3167
+```
+
+```r
+# soma de x2
+(somx2 <- sum(x2))
+```
+
+```
+## [1] 4680690
+```
+
+```r
+# soma de y2
+(somy2 <- sum(y2))
+```
+
+```
+## [1] 682086
+```
+
+```r
+# adiciona as colunas nos dados originais usando mutate()
+cor_ex <- 
+  mutate(cor_ex,
+         xy = xy,
+         x2 = x2,
+         y2 = y2)
+data.frame(cor_ex)
+```
+
+```
+##    NGRA  MGRA       xy     x2       y2
+## 1   519 173.5  90046.5 269361 30102.25
+## 2   522 213.5 111447.0 272484 45582.25
+## 3   624 221.1 137966.4 389376 48885.21
+## 4   670 261.5 175205.0 448900 68382.25
+## 5   518 220.1 114011.8 268324 48444.01
+## 6   547 177.8  97256.6 299209 31612.84
+## 7   670 250.8 168036.0 448900 62900.64
+## 8   546 192.0 104832.0 298116 36864.00
+## 9   444 193.5  85914.0 197136 37442.25
+## 10  611 255.6 156171.6 373321 65331.36
+## 11  557 245.9 136966.3 310249 60466.81
+## 12  702 207.4 145594.8 492804 43014.76
+## 13  443 185.3  82087.9 196249 34336.09
+## 14  430 166.6  71638.0 184900 27755.56
+## 15  481 202.4  97354.4 231361 40965.76
+```
+
+```r
+# soma de produtos xy
+(sxy <- somxy - (somx * somy / n))
+```
+
+```
+## [1] 25499.77
+```
+
+```r
+# soma de quadrados de x
+(sx <- somx2 - somx ^ 2 / n)
+```
+
+```
+## [1] 105712.9
+```
+
+```r
+# soma de quadrados de y
+(sy <- somy2 - somy ^ 2 / n)
+```
+
+```
+## [1] 13426.77
+```
+
+```r
+# coeficiente de correlaçao
+(r <- sxy / (sqrt(sx * sy)))
+```
+
+```
+## [1] 0.6768405
+```
+
+```r
+# t calculado
+(tc <- r * sqrt((n - 2) / (1 - r ^ 2)))
+```
+
+```
+## [1] 3.315153
+```
+
+```r
+# t tabelado (cauda direita) = 2.16
+# como é bicaudal, considera-se 0.05 / 2
+qt(0.025, df = 13, lower.tail = FALSE)
+```
+
+```
+## [1] 2.160369
+```
+
+### Função cor e cor.test()
+
+```r
+# somente calcula o r
+cor(x, y)
+```
+
+```
+## [1] 0.6768405
+```
+
+```r
+# computa o r e realiza o teste de hipótese
+cor.test(x, y)
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  x and y
+## t = 3.3152, df = 13, p-value = 0.005583
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.2519252 0.8829624
+## sample estimates:
+##       cor 
+## 0.6768405
+```
+
+
+## Regressão
+### Dados
+> Neste exemplo, serão utilizados dados de produtividade de grãos de milho (Kg /ha) de acordo com diferentes doses de dejeto suíno (m3/ha) aplicadas na cultura do milho[^2].
+
+
+
+```r
+url <- "http://bit.ly/df_biostat_exp"
+reg_ex <- import(url, sheet = "REG_EXERCICIO", setclass = "tbl")
+
+(x <- reg_ex$DOSE)
+```
+
+```
+## [1] 20 30 40 50
+```
+
+```r
+(y <- reg_ex$RG)
+```
+
+```
+## [1] 7088 7372 8284 8324
+```
+
+```r
+# número de amostras
+(n <- length(x))
+```
+
+```
+## [1] 4
+```
+
+```r
+# médias 
+(mx <- mean(x))
+```
+
+```
+## [1] 35
+```
+
+```r
+(my <- mean(y))
+```
+
+```
+## [1] 7767
+```
+
+
+### Método dos mínimos quadrados
+
+```r
+# x vezes y
+(xy <- x * y)
+```
+
+```
+## [1] 141760 221160 331360 416200
+```
+
+```r
+# x ao quadrado
+(x2 <- x ^ 2)
+```
+
+```
+## [1]  400  900 1600 2500
+```
+
+```r
+# y ao quadrado
+(y2 <- y ^ 2)
+```
+
+```
+## [1] 50239744 54346384 68624656 69288976
+```
+
+```r
+# soma de xy
+(somxy <- sum(xy))
+```
+
+```
+## [1] 1110480
+```
+
+```r
+# soma de x
+(somx <- sum(x))
+```
+
+```
+## [1] 140
+```
+
+```r
+# soma de y
+(somy <- sum(y))
+```
+
+```
+## [1] 31068
+```
+
+```r
+# soma de x2
+(somx2 <- sum(x2))
+```
+
+```
+## [1] 5400
+```
+
+```r
+# soma de y2
+(somy2 <- sum(y2))
+```
+
+```
+## [1] 242499760
+```
+
+```r
+# soma de produtos xy
+(sxy <- somxy - (somx * somy / n))
+```
+
+```
+## [1] 23100
+```
+
+```r
+# soma de quadrados de x
+(sx <- somx2 - somx ^ 2 / n)
+```
+
+```
+## [1] 500
+```
+
+```r
+# soma de quadrados de y
+(sy <- somy2 - somy ^ 2 / n)
+```
+
+```
+## [1] 1194604
+```
+
+```r
+# b1
+(b1 <- sxy / sx)
+```
+
+```
+## [1] 46.2
+```
+
+```r
+# b0
+(b0 <- my - mx * b1)
+```
+
+```
+## [1] 6150
+```
+
+```r
+# equação: y = 6150 + 46,2x
+
+# y predito com x = 35
+(yx35 <- b0 + b1 * 35)
+```
+
+```
+## [1] 7767
+```
+
+```r
+################## SOMAS DE QUADRADOS DA REGRESSÃO E R2 ############
+# soma de quadrado total
+(sqt <- sy)
+```
+
+```
+## [1] 1194604
+```
+
+```r
+# soma de quadrados da regressão
+(sqreg <- sxy ^ 2 / (sx))
+```
+
+```
+## [1] 1067220
+```
+
+```r
+# soma de quadrados do resíduo
+(sqres <- sqt - sqreg)
+```
+
+```
+## [1] 127384
+```
+
+```r
+# coeficiente de determinação
+R2 <- sqreg / sqt
+```
+
+### Utilizando a função lm()
+
+
+```r
+reg <- lm(y ~ x)
+
+# coeficientes e R2
+summary(reg)
+```
+
+```
+## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Residuals:
+##    1    2    3    4 
+##   14 -164  286 -136 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)   
+## (Intercept)  6150.00     414.69  14.830  0.00452 **
+## x              46.20      11.29   4.093  0.05482 . 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 252.4 on 2 degrees of freedom
+## Multiple R-squared:  0.8934,	Adjusted R-squared:  0.8401 
+## F-statistic: 16.76 on 1 and 2 DF,  p-value: 0.05482
+```
+
+```r
+# anova
+anova(reg)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: y
+##           Df  Sum Sq Mean Sq F value  Pr(>F)  
+## x          1 1067220 1067220  16.756 0.05482 .
+## Residuals  2  127384   63692                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+### Gráfico
+
+```r
+library(ggpmisc) # adiciona a equação no gráfico
+```
+
+```
+## Carregando pacotes exigidos: ggpp
+```
+
+```
+## 
+## Attaching package: 'ggpp'
+```
+
+```
+## The following object is masked from 'package:ggplot2':
+## 
+##     annotate
+```
+
+```r
+ggplot(reg_ex, aes(DOSE, RG)) +
+  geom_smooth(se = FALSE, method = "lm") +
+  geom_segment(aes(x = 35, y = 7000, xend = 35, yend = yx35)) +
+  geom_segment(aes(x = 18, y = yx35, xend = 35, yend = yx35)) +
+  geom_point(aes(x = 35, y = yx35), color = "red", size = 4) +
+  geom_point(size = 4, color = "blue") + 
+  stat_poly_eq(formula = y ~ x,
+               aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")),
+               coef.digits = 5) +
+  labs(x = "Dose de dejeto (m3/ha)",
+       y = "Rendimento de grãos (kg/ha)")
+```
+
+```
+## `geom_smooth()` using formula 'y ~ x'
+```
+
+<img src="/classes/experimentacao/04_regressao_files/figure-html/unnamed-chunk-30-1.png" width="672" />
+
 
 [^1]: FERREIRA, D. F. **Estatistica Basica**. 2. ed. Viçosa, MG.: UFV, 2009
+[^2]: https://periodicos.uem.br/ojs/index.php/ActaSciTechnol/article/download/5312/5312/

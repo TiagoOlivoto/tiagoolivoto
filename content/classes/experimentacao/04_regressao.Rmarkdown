@@ -15,7 +15,7 @@ weight: 4
 ---
 
 # Pacotes
-```{r collapse = TRUE, message=FALSE, warning=FALSE}
+```{r collapse = FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(metan)      # estatísticas descritivas
 library(rio)        # importação/exportação de dados
@@ -287,8 +287,8 @@ De posse das informações, um gráfico elaborado, que deveria ser apresentado e
 ```{r}
 p1 +
   labs(title = "Equação quadrática",
-subtitle = "Trigângulo e cículo representam os pontos de MME e MET, respectivamente",
-caption = "MME = Máxima eficiência econômica\n MET = máxima eficiência técnica") +
+       subtitle = "Trigângulo e cículo representam os pontos de MME e MET, respectivamente",
+       caption = "MME = Máxima eficiência econômica\n MET = máxima eficiência técnica") +
   # Linhas e ponto da MET
   geom_segment(aes(x = x_met, y = pred_met, xend = x_met, yend = 6.7)) +
   geom_segment(aes(x = 0, y = pred_met, xend = x_met, yend = pred_met)) +
@@ -299,15 +299,15 @@ caption = "MME = Máxima eficiência econômica\n MET = máxima eficiência téc
   geom_point(aes(x = x_mee, y = rg_mee), shape = 17, size = 3, color = "blue") +
   # Equação no gráfico
   geom_text(aes(0, 7.9,
-label=(
-  paste(
-    expression("y = 7.075 + 0.007184x - 2,071e"^{-5}*"x"^2*"  R" ^2*" = 0,938 "))
-)
-),
-hjust = 0,
-size = 5,
-col = "black",
-parse = TRUE) 
+                label=(
+                  paste(
+                    expression("y = 7.075 + 0.007184x - 2,071e"^{-5}*"x"^2*"  R" ^2*" = 0,938 "))
+                )
+  ),
+  hjust = 0,
+  size = 5,
+  col = "black",
+  parse = TRUE) 
 
 ```
 
@@ -473,5 +473,196 @@ cor.test(x, y)
 ```
 
 
+# Exercício resolvido
+## Correlação
+### Dados
+> Neste exemplo, serão utilizados dados referentes ao número de grãos (NGRA) e massa de grãos (MGRA) observados em 15 espigas de milho (n = 15).
+
+
+```{r}
+url <- "http://bit.ly/df_biostat_exp"
+cor_ex <- import(url, sheet = "COR_EXERCICIO", setclass = "tbl")
+
+(x <- cor_ex$NGRA)
+(y <- cor_ex$MGRA)
+(n <- length(x))
+```
+
+
+### Método dos mínimos quadrados
+```{r}
+(xy <- x * y)
+(x2 <- x ^ 2)
+(y2 <- y ^ 2)
+
+# soma de xy
+(somxy <- sum(xy))
+
+# soma de x
+(somx <- sum(x))
+
+# soma de y
+(somy <- sum(y))
+
+# soma de x2
+(somx2 <- sum(x2))
+
+# soma de y2
+(somy2 <- sum(y2))
+
+# adiciona as colunas nos dados originais usando mutate()
+cor_ex <- 
+  mutate(cor_ex,
+         xy = xy,
+         x2 = x2,
+         y2 = y2)
+data.frame(cor_ex)
+
+
+# soma de produtos xy
+(sxy <- somxy - (somx * somy / n))
+
+# soma de quadrados de x
+(sx <- somx2 - somx ^ 2 / n)
+
+# soma de quadrados de y
+(sy <- somy2 - somy ^ 2 / n)
+
+# coeficiente de correlaçao
+(r <- sxy / (sqrt(sx * sy)))
+
+
+# t calculado
+(tc <- r * sqrt((n - 2) / (1 - r ^ 2)))
+
+# t tabelado (cauda direita) = 2.16
+# como é bicaudal, considera-se 0.05 / 2
+qt(0.025, df = 13, lower.tail = FALSE)
+
+
+```
+
+### Função cor e cor.test()
+```{r}
+# somente calcula o r
+cor(x, y)
+
+
+# computa o r e realiza o teste de hipótese
+cor.test(x, y)
+```
+
+
+## Regressão
+### Dados
+> Neste exemplo, serão utilizados dados de produtividade de grãos de milho (Kg /ha) de acordo com diferentes doses de dejeto suíno (m3/ha) aplicadas na cultura do milho[^2].
+
+
+```{r}
+url <- "http://bit.ly/df_biostat_exp"
+reg_ex <- import(url, sheet = "REG_EXERCICIO", setclass = "tbl")
+
+(x <- reg_ex$DOSE)
+(y <- reg_ex$RG)
+# número de amostras
+(n <- length(x))
+# médias 
+(mx <- mean(x))
+(my <- mean(y))
+```
+
+
+### Método dos mínimos quadrados
+```{r}
+# x vezes y
+(xy <- x * y)
+
+# x ao quadrado
+(x2 <- x ^ 2)
+
+# y ao quadrado
+(y2 <- y ^ 2)
+
+# soma de xy
+(somxy <- sum(xy))
+
+# soma de x
+(somx <- sum(x))
+
+# soma de y
+(somy <- sum(y))
+
+# soma de x2
+(somx2 <- sum(x2))
+
+# soma de y2
+(somy2 <- sum(y2))
+
+# soma de produtos xy
+(sxy <- somxy - (somx * somy / n))
+
+# soma de quadrados de x
+(sx <- somx2 - somx ^ 2 / n)
+
+# soma de quadrados de y
+(sy <- somy2 - somy ^ 2 / n)
+
+# b1
+(b1 <- sxy / sx)
+
+# b0
+(b0 <- my - mx * b1)
+
+# equação: y = 6150 + 46,2x
+
+# y predito com x = 35
+(yx35 <- b0 + b1 * 35)
+
+
+################## SOMAS DE QUADRADOS DA REGRESSÃO E R2 ############
+# soma de quadrado total
+(sqt <- sy)
+
+# soma de quadrados da regressão
+(sqreg <- sxy ^ 2 / (sx))
+
+# soma de quadrados do resíduo
+(sqres <- sqt - sqreg)
+
+# coeficiente de determinação
+R2 <- sqreg / sqt
+```
+
+### Utilizando a função lm()
+
+```{r}
+reg <- lm(y ~ x)
+
+# coeficientes e R2
+summary(reg)
+
+# anova
+anova(reg)
+
+```
+
+
+### Gráfico
+```{r}
+library(ggpmisc) # adiciona a equação no gráfico
+ggplot(reg_ex, aes(DOSE, RG)) +
+  geom_smooth(se = FALSE, method = "lm") +
+  geom_segment(aes(x = 35, y = 7000, xend = 35, yend = yx35)) +
+  geom_segment(aes(x = 18, y = yx35, xend = 35, yend = yx35)) +
+  geom_point(aes(x = 35, y = yx35), color = "red", size = 4) +
+  geom_point(size = 4, color = "blue") + 
+  stat_poly_eq(formula = y ~ x,
+               aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")),
+               coef.digits = 5) +
+  labs(x = "Dose de dejeto (m3/ha)",
+       y = "Rendimento de grãos (kg/ha)")
+```
+
 
 [^1]: FERREIRA, D. F. **Estatistica Basica**. 2. ed. Viçosa, MG.: UFV, 2009
+[^2]: https://periodicos.uem.br/ojs/index.php/ActaSciTechnol/article/download/5312/5312/
