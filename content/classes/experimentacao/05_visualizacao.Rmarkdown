@@ -15,6 +15,7 @@ weight: 5
 ---
 
 # Pacotes
+
 ```{r collapse=TRUE}
 library(tidyverse)
 library(metan)   
@@ -23,12 +24,13 @@ library(rio)
 
 # Introdução
 
->"O gráfico simples trouxe mais informações à mente do analista de dados do que qualquer outro dispositivo." --- John Tukey
-
+> "O gráfico simples trouxe mais informações à mente do analista de dados do que qualquer outro dispositivo." --- John Tukey
 
 ## O pacote `ggplot2`
 
-O  `ggplot2` é um pacote R para produção de gráficos que diferentemente da maioria dos outros pacotes, apresenta uma profunda gramática baseada no livro *The grammar of graphics* (Wilkinson 2005)[^1]. Os gráficos originados em `ggplot2` são baseados em camadas, e cada gráfico tem três componentes chave: `data`, os dados de onde o gráfico será criado; `aes()` (*aesthetic mappings*), que controla o mapeamento estético e as propriedades visuais do gráfico; e ao menos uma camada que irá descrever como cada observação será renderizada. Camadas são usualmente criadas utilizando uma função `geom_()`.
+O `ggplot2` é um pacote R para produção de gráficos que diferentemente da maioria dos outros pacotes, apresenta uma profunda gramática baseada no livro *The grammar of graphics* (Wilkinson 2005)[^1]. Os gráficos originados em `ggplot2` são baseados em camadas, e cada gráfico tem três componentes chave: `data`, os dados de onde o gráfico será criado; `aes()` (*aesthetic mappings*), que controla o mapeamento estético e as propriedades visuais do gráfico; e ao menos uma camada que irá descrever como cada observação será renderizada. Camadas são usualmente criadas utilizando uma função `geom_()`.
+
+[^1]: WICKHAM, H. **Ggplot2 : elegant graphics for data analysis**. \[S.l.\]: Springer, 2009.
 
 ## Meu primeiro gráfico em `ggplot2`
 
@@ -41,7 +43,6 @@ df <- as_factor(df, DAP, SOM)
 str(df)
 ```
 
-
 ## As camadas de um gráfico `ggplot2`
 
 No `ggplot2`, os gráficos são construídos camada por camada (ou, *layers*, em inglês). Neste exemplo, vamos confeccionar um gráfico onde o eixo `x` será representado pela variável `MST` e o eixo `y` pela variável `AF`.
@@ -52,14 +53,13 @@ p1 <- ggplot(df, aes(x = MST, y = AF)) +
 
 ```
 
-Este comando criou um gráfico e armazenou no objeto `p1`, que será plotado posteriormente. Observe que o primeiro argumento da função é o data frame onde nossos dados foram armazenados. A função `aes()` descreve como as variáveis são mapeadas (neste caso `MST` no eixo `x` e `AF` no eixo `y`). A função `geom_point()` definiu que a forma geométrica a ser utilizada é baseada em pontos, gerando, assim, um gráfico de dispersão. Isto é tudo que precisa ser feito para a confecção de um gráfico simples. 
+Este comando criou um gráfico e armazenou no objeto `p1`, que será plotado posteriormente. Observe que o primeiro argumento da função é o data frame onde nossos dados foram armazenados. A função `aes()` descreve como as variáveis são mapeadas (neste caso `MST` no eixo `x` e `AF` no eixo `y`). A função `geom_point()` definiu que a forma geométrica a ser utilizada é baseada em pontos, gerando, assim, um gráfico de dispersão. Isto é tudo que precisa ser feito para a confecção de um gráfico simples.
 
 ## Aesthetics (estética)
 
->"O maior valor de uma imagem é quando ela nos obriga a perceber o que nunca esperamos ver." --- John Tukey
+> "O maior valor de uma imagem é quando ela nos obriga a perceber o que nunca esperamos ver." --- John Tukey
 
 Alterar a estética dos gráficos `ggplot2` é uma tarefa relativamente simples. No gráfico anterior, os valores do `MST` e `MST` foram plotados sem nenhum tipo de mapeamento estético. Digamos que marcadores com diferentes cores para cada ambiente poderia nos ajudar a compreender melhor o padrão presente em nossos dados. Vamos confeccionar este gráfico.
-
 
 ```{r message = FALSE, warning = FALSE, fig.width = 8, fig.height = 3, fig.align = "center", fig.cap = "Gráfico de dispersão padrão (p1) e com pontos mapeados por cores para cada nível do fator 'DAP' (p2)."}
 p2 <- 
@@ -80,13 +80,11 @@ arrange_ggplot(p1, p2, p3,
                tag_levels = list(c("p1", "p2", "p3")))
 ```
 
-
 ## Facet (facetas)
 
 Mapeando os diferentes níveis de `DAP` para diferentes cores, incluímos em um único gráfico os dados de todos os dias após o plantio. Mas, e se nosso objetivo fosse realizar um gráfico para cada dia? O `ggplot2` tem uma poderosa ferramenta para isto: as funções `facet_`. Ao utilizar estas funções, o conjunto de dados é subdividido e um gráfico é construído para cada um destes subconjuntos. Vamos ver como elas podem nos ajudar em nosso problema.
 
-
-```{r message = FALSE, warning = FALSE,fig.width=10, fig.height=4, fig.cap = "Um panel para cada nível da variável DAP"}
+```{r message = FALSE, warning = FALSE,fig.width=10, fig.height=4, fig.cap = "Um painel para cada nível da variável DAP"}
 fac1 <- ggplot(df, aes(x = MST, y = AF)) +
   geom_point() +
   facet_wrap(~ DAP)
@@ -97,7 +95,7 @@ Neste exemplo, um gráfico completamente diferente do anterior é gerado com ape
 
 ## Theme (temas)
 
-Cada gráfico criado com a função `ggplot()` tem um tema padrão. *Tema*, aqui, é toda propriedade relacionada ao aspecto visual do gráfico, que não foi definida na função `aes()`e que pode ser modificada utilizando a função  `theme()`(veja `?theme`). O `ggplot2` já conta com alguns temas personalizados para facilitar nosso trabalho. Considerando o exemplo anterior, vamos utilizar a função `theme_bw()` (preto e branco) e a função `theme()` para modificar as propriedades visuais do gráfico.
+Cada gráfico criado com a função `ggplot()` tem um tema padrão. *Tema*, aqui, é toda propriedade relacionada ao aspecto visual do gráfico, que não foi definida na função `aes()` e que pode ser modificada utilizando a função `theme()` (veja `?theme`). O `ggplot2` já conta com alguns temas personalizados para facilitar nosso trabalho. Considerando o exemplo anterior, vamos utilizar a função `theme_bw()` (preto e branco) e a função `theme()` para modificar as propriedades visuais do gráfico.
 
 ```{r message = FALSE, warning = FALSE, fig.width = 8, fig.height = 3.5, fig.align = "center", fig.cap = "Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) "}
 fac2 <- ggplot(df, aes(x = MST, y = AF)) +
@@ -122,9 +120,7 @@ arrange_ggplot(fac1, fac2, tag_levels = list(c("f1", "f2")))
 
 ```
 
-
 Os argumentos inseridos dentro das função `theme()` modificaram a aparência do nosso gráfico. Inúmeros outros argumentos são disponíveis, fazendo com que os gráficos originados sejam completamente personalizáveis. Digamos que precisamos confeccionar diversos gráficos e gostaríamos de manter o mesmo tema do gráfico acima. Seria exaustivo e desinteressante informar cada vez estes argumentos para cada gráfico, não? Felizmente, outra poderosa ferramenta proporcionada pelo `ggplot2` é a possibilidade de confeccionarmos nossos próprios temas. Para isto, vamos executar o seguinte comando para criar um tema personalizado (`my_theme()`). Este tema pode então ser aplicado como uma camada adicional a cada gráfico que confecionarmos. Para evitar a necessidade da inclusão deste tema em cada gráfico gerado, iremos definir este tema como padrão utilizando a função `theme_set()`.
-
 
 ```{r message = FALSE, warning = FALSE, fig.width = 5, fig.height = 4.5, fig.align = "center"}
 my_theme <- function () {
@@ -140,46 +136,115 @@ theme_set(my_theme())
 
 ```
 
-
 ## Geoms (geometria)
 
 As funções `geom_` definem qual forma geométrica será utilizada para a visualização dos dados no gráfico. Até agora, utilizamos a função `geom_point()`para construir gráficos de dispersão. Basicamente, qualquer outro tipo de gráfico pode ser criado dependendo da função `geom_` utilizada. Dentre as diversas disponíveis no pacote `ggplot2` as funções `geom_` mais utilizadas são:
 
-* `geom_abline()`: para retas definidas por um intercepto e uma inclinação;
-* `geom_hline()`: para retas horizontais definidas por um intercept `y`;
-* `geom_vline()`: para retas verticais definidas por um intercept `x`;
-* `geom_boxplot()`: para boxplots;
-* `geom_histogram()`: para histogramas de frequência;
-* `geom_smooth()`: ajusta uma função para o conjunto de dados e mostra uma banda de confiança;
-* `geom_density()`: para densidades;
-* `geom_area()`: para áreas;
-* `geom_bar()`: para barras;
-* `geom_errorbar()` para barras de erro; 
+-   `geom_abline()`: para retas definidas por um intercepto e uma inclinação;
+-   `geom_hline()`: para retas horizontais definidas por um intercept `y`;
+-   `geom_vline()`: para retas verticais definidas por um intercept `x`;
+-   `geom_boxplot()`: para boxplots;
+-   `geom_histogram()`: para histogramas de frequência;
+-   `geom_smooth()`: ajusta uma função para o conjunto de dados e mostra uma banda de confiança;
+-   `geom_density()`: para densidades;
+-   `geom_area()`: para áreas;
+-   `geom_bar()`: para barras;
+-   `geom_errorbar()` para barras de erro;
 
 Deste ponto em diante, vamos confeccionar alguns exemplos utilizando algumas destas funções (ou combinações destas funções) incluindo argumentos de mapeamento de estética e temas vistos até agora.
 
+### Linhas horizontais, verticais e diagonais
+
+Três importantes geometrias são apresentadas a seguir:
+
+1.   `geom_hline()` adiciona uma linha horizontal definida por um intercepto em `y`
+
+2.  `geom_vline()` adiciona uma linha vertical definida por um intercepto em `x`.
+
+3.  `geom_abline()` adiciona uma linha diagonal definida por um intercepto e uma inclinação.
+
+
+```{r fig.width=10, fig.height=3}
+g1 <- 
+  ggplot(df, aes(MST, AF)) +
+  geom_point()
+
+# adiciona linhas diagonais
+g2 <- 
+  g1 +
+  geom_hline(yintercept = 4100, color = "blue") +
+  geom_vline(xintercept = 16, color = "red")
+
+
+# adiciona linhas horizontais e verticais
+g3 <- 
+  g1 +
+  geom_abline(intercept = 900, slope = 150, color = "red") +
+  geom_abline(intercept = 800, slope = 250, color = "blue") +
+  geom_abline(intercept = 700, slope = 350, color = "green")
+
+
+arrange_ggplot(g1, g2, g3,
+               tag_levels = list(c("g1", "g2", "g3")))
+```
+
+### Regressão linear de primeiro grau
 
 ```{r message = FALSE, warning = FALSE, fig.width = 10, fig.height = 4, fig.align = "center", fig.cap = "Gráfico de dispersão, combinando pontos e linhas de regressão."}
 
-s1 <- 
+l1 <- 
   ggplot(df, aes(x = MST, y = AF)) +
   geom_point() +
-  geom_smooth(method = "lm", se = F)+ # estima uma regressão linear
+  geom_smooth(method = "lm", se = FALSE) + # estima uma regressão linear
   labs(x = "Matéria seca total (g)",
        y = "Área foliar (cm2)")
 
-s2 <- 
+l2 <- 
   ggplot(df, aes(x = MST, y = AF, colour = DAP)) +
   geom_point() +
   geom_smooth(method = "lm", se = F)+
   labs(x = "Matéria seca total (g)",
        y = "Área foliar (cm2)")
 
-arrange_ggplot(s1, s2,
+arrange_ggplot(l1, l2,
                tag_levels = list(c("s1", "s2")),
                widths = c(1, 1.2))
 
 ```
+
+### Regressão linear polinomial
+
+Para confeccionar um gráfico de regressão polinomial, além do argumento `method = "lm"` (linear model), precisa-se incluir no argumento `formula` a formula utilizada, neste caso, definida utilizando `poly()` (polinomial).
+```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 3, fig.align = "center", fig.cap = "Gráfico de dispersão combinado com inclusão de curvas ajustadas."}
+#### Polinômio de segundo grau
+dado_reg = tibble(dose = c(15,20,25,30,35,40),
+                  prod = c(65,70,73,75,69,62))
+q1 <- 
+  ggplot(dado_reg, aes(dose, prod))+
+  geom_point()+
+  stat_smooth(method = "lm",
+              formula = "y ~ poly(x, 1)",
+              se = FALSE)
+q2 <-  
+  q1 + 
+  stat_smooth(method = "lm",
+              formula = "y ~ poly(x, 2)",
+              linetype = "dashed",
+              color = "red",
+              se = FALSE)
+
+arrange_ggplot(q1, q2, tag_levels = list(c("l1", "l2")))
+```
+
+Utilizando a função `plot_lines()` do pacote metan, um gráfico semelhante pode ser criado com
+
+```{r}
+plot_lines(dado_reg, 
+           x = dose,
+           y = prod,
+           fit = 2)
+```
+
 
 ### Gráficos do tipo boxplot
 
@@ -198,9 +263,7 @@ box2 <-
 arrange_ggplot(box1, box2, tag_levels = list(c("b1", "b2")))
 ```
 
-
-Seis estatísticas são mostradas neste boxplot. A mediana (linha horizontal), a média (ponto) as caixas inferior e superior correspondem ao primeiro e terceiro quartil (percentis 25 e 75, respectivamente). A linha vertical superior se estende da caixa até o maior valor, não maior que $1,5 \times {IQR}$ (onde IQR é a amplitude interquartílica). A linha vertical inferior se estende da caixa até o menor valor, de no máximo, $1,5 \times {IQR}$. Dados além das linhas horizontais podem ser considerados *outliers*.
-
+Seis estatísticas são mostradas neste boxplot. A mediana (linha horizontal), a média (ponto) as caixas inferior e superior correspondem ao primeiro e terceiro quartil (percentis 25 e 75, respectivamente). A linha vertical superior se estende da caixa até o maior valor, não maior que \$1,5 \times {IQR}\$ (onde IQR é a amplitude interquartílica). A linha vertical inferior se estende da caixa até o menor valor, de no máximo, \$1,5 \times {IQR}\$. Dados além das linhas horizontais podem ser considerados *outliers*.
 
 ### Gráficos do tipo histograma
 
@@ -209,10 +272,12 @@ Seis estatísticas são mostradas neste boxplot. A mediana (linha horizontal), a
 url <- "http://bit.ly/df_biostat_exp"
 df_maize <- import(url, sheet = "maize")
 
-h1 <- ggplot(df_maize, aes(x = APLA)) +
+h1 <- 
+  ggplot(df_maize, aes(x = APLA)) +
   geom_histogram()
 
-h2 <- ggplot(df_maize, aes(x = APLA)) +
+h2 <- 
+  ggplot(df_maize, aes(x = APLA)) +
   geom_histogram(aes(y = ..density..),
                  color = "black",
                  fill = "gray",
@@ -230,11 +295,9 @@ arrange_ggplot(h1, h2,
                tag_levels = list(c("h1", "h2")))
 ```
 
-No histograma (h), a linha vermelha representa a estimativa da função de probabilidade normal. Para isto, a escala do eixo `y` foi mudada de contagem para densidade.
-
+No histograma (h2), a linha vermelha representa a estimativa da função de probabilidade normal. Para isto, a escala do eixo `y` foi mudada de contagem para densidade.
 
 ### Gráficos do tipo barra
-
 
 ```{r message = FALSE, warning = FALSE, fig.width = 10, fig.height = 3, fig.align = "center", fig.cap = "Gráfico do tipo barras, com mapeamento estético e barras de erro."}
 
@@ -242,7 +305,8 @@ bar1 <-
   ggplot(df, aes(x = DAP, y = MST)) +
   geom_bar(stat = "summary",
            fun = mean,
-           position = "dodge")
+           position = "dodge") +
+  scale_y_continuous(limits = c(0, 17)) # define os limites de y
 
 bar2 <- 
   ggplot(df, aes(x = DAP, y = MST, fill = SOM)) +
@@ -254,19 +318,27 @@ bar2 <-
   stat_summary(fun.data = mean_se,
                geom = "errorbar",
                width = 0.2,
-               position = position_dodge(0.8))
+               position = position_dodge(0.8)) +
+  scale_y_continuous(limits = c(0, 17))  # define os limites de y
 
 arrange_ggplot(bar1, bar2,
                widths = c(0.6, 1.2),
                tag_levels = list(c("bar1", "bar2")))
 ```
 
-A afirmação de que um gráfico `ggplot2` é feito em camadas fica mais evidente aqui. No gráfico p1, as barras representam as médias geral dos híbridos em nosso conjunto de dados. No segundo gráfico, um novo argumento visto (`fill = SOM`). Isto informa que as barras devem ser coloridas para cada nível do fator `SOM`. A função `stat_summary()`, também vista pela primeira vez aqui, foi utilizada no segundo gráfico para substituir a função `geom_bar()`. Com isto, foi possível incluir as médias (`fun = mean` e  `geom = "bar`), bem como as barras de erro (`fun.data = mean_se` e `geom = "errorbar"`).
+A afirmação de que um gráfico `ggplot2` é feito em camadas fica mais evidente aqui. No gráfico `bar1`, as barras representam as médias geral da MST em cada dia após o plantio. No segundo gráfico, um novo argumento visto (`fill = SOM`). Isto informa que as barras devem ser coloridas para cada nível do fator `SOM`. A função `stat_summary()`, também vista pela primeira vez aqui, foi utilizada no segundo gráfico para substituir a função `geom_bar()`. Com isto, foi possível incluir as médias (`fun = mean` e `geom = "bar`), bem como as barras de erro (`fun.data = mean_se` e `geom = "errorbar"`).
 
-Utilizando a função `plot_factbars()` do pacote metan, um gráfico semelhante pode ser criado com
-```{r fig.height=4}
-metan1 <- plot_bars(df, DAP, MST)
-metan2 <- plot_factbars(df, DAP, SOM, resp = MST)
+Utilizando a função `plot_factbars()` do pacote metan, um gráfico semelhante pode ser criado com as funções `plot_bars()` e `plot_factbars()`
+
+```{r fig.height=4, fig.width=10}
+metan1 <- plot_bars(df,
+                    x = DAP,
+                    y = MST,
+                    y.lim = c(0, 17),
+                    lab.bar = c("c", "b", "a"))
+metan2 <- plot_factbars(df, DAP, SOM,
+                        resp = MST,
+                        y.lim = c(0, 17))
 
 arrange_ggplot(metan1, metan2,
                widths = c(0.6, 1.2),
@@ -274,41 +346,4 @@ arrange_ggplot(metan1, metan2,
 ```
 
 
-
-### Gráficos de dispersão com linhas de valores preditos
-
-```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 3, fig.align = "center", fig.cap = "Gráfico de dispersão combinado com inclusão de curvas ajustadas."}
-#### Polinômio de segundo grau
-dado_reg = tibble(dose = c(15,20,25,30,35,40),
-                  prod = c(65,70,73,75,69,62))
-l1 <- 
-  ggplot(dado_reg, aes(dose, prod))+
-  geom_point()+
-  stat_smooth(method = "lm",
-              # formula = "y ~ poly(x, 1)",
-              se = FALSE)
-l2 <-  
-  l1 + 
-  stat_smooth(method = "lm",
-              formula = "y ~ poly(x, 2)",
-              linetype = "dashed",
-              color = "red",
-              se = FALSE)
-
-arrange_ggplot(l1, l2, tag_levels = list(c("l1", "l2")))
-```
-
-
-Utilizando a função `plot_lines()` do pacote metan, um gráfico semelhante pode ser criado com
-```{r}
-plot_lines(dado_reg, 
-           x = dose,
-           y = prod,
-           fit = 2)
-```
-
-
 # Referências
-
-[^1]: WICKHAM, H. **Ggplot2 : elegant graphics for data analysis**. [S.l.]: Springer, 2009.
-[^2]: WILKINSON, L. **The grammar of graphics**. [S.l.]: Springer, 2005.
