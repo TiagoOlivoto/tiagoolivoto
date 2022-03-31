@@ -321,6 +321,29 @@ system.time(
 
 
 
+No próximo exemplo, são analisadas oito folhas de tomateiro. As imagens são salvas em um arquivo temporário e posteriormente importadas.
+```{r fig.width=8}
+dir <- tempdir()
+
+sev_tomate <- 
+  measure_disease(pattern = "tomate_",
+                  img_healthy = "tom_h",
+                  img_symptoms = "tom_s",
+                  img_background = "tom_b",
+                  col_lesions = "red",
+                  show_contour = FALSE,
+                  save_image = TRUE,
+                  dir_processed = dir,
+                  parallel = TRUE)
+a <- 
+  image_import(pattern = "proc_",
+               path = dir,
+               plot = TRUE,
+               ncol = 4)
+```
+
+
+
 ## Várias imagens da mesma amostra
 
 Se os usuários precisarem analisar várias imagens da mesma amostra, as imagens da mesma amostra devem compartilhar o mesmo prefixo de nome de arquivo, que é definido como a parte do nome do arquivo que precede o primeiro hífen (`-`) ou underscore (`_`). 
