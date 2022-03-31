@@ -1,0 +1,261 @@
++++
+title = "Pacote R pliman: Fitopatometria [Português]"
+linktitle = "Pacote R pliman: Fitopatometria [Português]"
+summary = "A quantificação de doenças de plantas por meio de imagens tem se tornado uma prática cada vez mais frequente. Maior acurácia e precisão aliado a menor subjetividade são algumas das vantagens da fitopatometria por imagens, quando comparado a estimativa visual amparada por escalas diagramáticas. Este material aborda o uso do pacote R pliman (plant image analysis) na fitopatometria (quantificação de severidade, número de lesões, etc.) baseada em imagens no R."
+date = "2021/09/28"
+lastmod = "2021/09/28"
+toc = true  # Show table of contents? true/false
+type = "docs"  # Do not modify.
+[menu.plimanufsc]
+parent = "pliman"
+weight = 1
++++
+
+
+
+
+# <i class="fas fa-chalkboard-user"></i> Software e instruções de instalação
+
+<a class="btn btn-success" href="https://cran.r-project.org/bin/windows/base/" target="_blank"><i class="fa fa-save"></i> Download do R</a>
+
+
+<a class="btn btn-success" href="https://www.rstudio.com/products/rstudio/download/" target="_blank"><i class="fa fa-save"></i> Download do RStudio</a>
+
+
+
+
+<iframe width="760" height="430" src="https://www.youtube.com/embed/yN6Twrq1Ufs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
+# <i class="fas fa-chalkboard-teacher"></i> Ministrante
+<div style="padding-left:16px" id = "ministrante">
+
+<a href="https://olivoto.netlify.app/" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/tutorials/pliman_ufsc_fito/avatar.png" width="168" height="200"/></a>
+
+
+
+
+<p>
+<a class="btn btn-success" data-toggle="collapse" href="#perfiltiago" role="button" aria-expanded="false" aria-controls="perfiltiago">
+Tiago Olivoto (apresentação)
+</a>
+</p>
+
+
+<div class="collapse" id="perfiltiago">
+<div class="card card-body">
+
+Filho de agricultores familiares, Técnico Agrícola pela Escola Estadual de Educação Básica Viadutos (2008), Engenheiro agrônomo pela Universidade do Oeste de Santa Catarina (2014), Mestre em Agronomia: Agricultura e Ambiente pela Universidade Federal de Santa Maria (2017) e Doutor em Agronomia com ênfase em Melhoramento Genético Vegetal e Experimentação Agrícola pela Universidade Federal de Santa Maria (2020). Atualmente é Professor Adjunto A1 do Departamento de Fitotecnia da Universidade Federal de Santa Catarina (UFSC), atuando na área de Melhoramento Genético Vegetal e Experimentação Agrícola. Exerce atividades relacionadas ao planejamento, condução e avaliação de experimentos com culturas anuais, com ênfase no desenvolvimento e aperfeiçoamento de métodos estatístico-experimentais para avaliação de ensaios multi-ambientes em melhoramento genético de plantas. Em seu Currículo, os termos mais frequentes na contextualização da produção científica são: análise de ensaios multi-ambientes, índices multivariados, intervalo de confiança para correlação, planejamento de experimentos, seleção indireta, interação genótipo-vs-ambiente, modelos mistos e parâmetros genéticos. É membro atuante da International Biometric Society (IBS) e integrante da comissão de Jovens Pesquisadores da Região Brasileira da Sociedade Internacional de Biometria, RBras, (JP-RBras) representando os estados do RS, SC e PR. Atua também como revisor ad hoc em revistas científicas nacionais e internacionais. Tem experiência com os softwares Gênes, GEA-R, R, SAS e SPSS. Vem desenvolvendo os pacotes para software R metan (https://tiagoolivoto.github.io/metan/), voltado para a checagem, manipulação, análise e apresentação de dados de ensaios multi-ambientes e pliman (https://tiagoolivoto.github.io/pliman/) voltado para a análise de imagens de plantas.
+
+</div>
+</div>
+
+
+
+
+<div class="container">
+<div class="col-md-12">
+<div class="row">
+
+<div class="col-md-3">
+<div class="box-simple">
+<a href="http://lattes.cnpq.br/2432360896340086" target="_blank" rel="noopener">
+<div class="icon">
+<i class="ai ai-4x ai-lattes"></i>
+</div>
+<h3>
+Currículo Lattes
+</h3>
+</div>
+</div>
+
+
+<div class="col-md-3">
+<div class="box-simple">
+<a href="https://www.researchgate.net/profile/Tiago_Olivoto2" target="_blank" rel="noopener">
+<div class="icon">
+<i class="ai ai-4x ai-researchgate"></i>
+</div>
+<h3>
+Research Gate
+</h3>
+</a>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="box-simple">
+<a href="https://scholar.google.com/citations?user=QjxIJkcAAAAJ&hl=pt-BR" target="_blank" rel="noopener">
+<div class="icon">
+<i class="ai ai-4x ai-google-scholar"></i>
+</div>
+<h3>
+Google Escolar
+</h3>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</p>
+</div>
+
+
+
+# <i class="fas fa-glasses"></i> Visão geral
+
+<img src="https://raw.githubusercontent.com/TiagoOlivoto/pliman/master/man/figures/logo_pliman.svg" align="right" width="250" height="250"/>
+
+{pliman} (**pl**ant **im**age **an**alysis) foi concebido para analisar (também) imagens de plantas, especialmente relacionadas à análise de folhas e sementes.  O pacote irá ajudá-lo a:   
+
+* Mensurar a severidade de doenças foliares;
+* Contar o número de lesões;
+* Obter características da forma das lesões;
+* Contar objetos em uma imagem;
+* Obter características de objetos (área, perímetro, raio, circularidade, excentricidade, solidez);
+* Obter os valores RGB para cada objeto em uma imagem;
+* Obter as coordenadas de objetos;
+* Obter os contornos de objetos;
+* Obter o *convex hull*;
+* Isolar objetos;
+* Plotar medidas de objetos.
+
+
+
+
+# <i class="fas fa-tools"></i> Instalação
+
+Instale a versão lançada do pliman do [CRAN](https://CRAN.R-project.org/package=pliman) com:
+
+
+```r
+install.packages ("pliman")
+
+```
+
+Ou instale a versão de desenvolvimento do [GitHub](https://github.com/TiagoOlivoto/pliman)
+
+
+```r
+# instalação do github
+if(!require(devtools)){
+  install.packages("devtools")
+}
+
+install_github ("TiagoOlivoto/pliman")
+
+# Para instalar a vinheta HTML, use
+devtools::install_github ("TiagoOlivoto/pliman", build_vignettes = TRUE)
+
+```
+
+*Nota*: Se você for um usuário do Windows, sugere-se primeiro baixar e instalar a versão mais recente do [Rtools](https://cran.r-project.org/bin/windows/Rtools/). Para obter as notas de lançamento mais recentes sobre esta versão de desenvolvimento, consulte o [arquivo NEWS](https://tiagoolivoto.github.io/metan/news/index.html).
+
+
+# <i class="fas fa-book"></i> Citação 
+
+Para citar o pacote `pliman` em seus trabalhos, use a seguinte referência:
+
+> Olivoto, T. (2022). Lights, camera, pliman! an R package for plant image analysis. Methods in Ecology and Evolution. <A HREF = "https://onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13803">doi: 10.1111/2041-210X.13803</A>
+
+<a href="https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13803" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/tutorials/pliman_ufsc_fito/paper.png" width="1000" height="273"/></a>
+
+
+```r
+citation("pliman")
+# 
+# Please, support this project by citing it in your publications!
+# 
+#   Olivoto, T.(2020). Lights, camera, pliman! An R package for plant
+#   image analysis. Methods Ecol Evol. 00:1-10
+#   doi:10.1111/2041-210X.13803
+# 
+# A BibTeX entry for LaTeX users is
+# 
+#   @Article{Olivoto2022,
+#     author = {Tiago Olivoto},
+#     title = {Lights, camera, pliman! An R package for plant image analysis},
+#     journal = {Methods in Ecology and Evolution},
+#     pages = {1-10},
+#     year = {2022},
+#     doi = {10.1111/2041-210X.13803},
+#   }
+```
+
+
+
+# <i class="fas fa-box-open"></i> Pacotes úteis
+
+Os resultados gerados pelo pacote pliman são retornados em forma de `data.frame`, o que permite sua manipulação futura dentro do R. Assim, sugere-se que os seguintes pacotes sejam instalados
+
+
+```r
+library(tidyverse)  # manipulação de dados
+library(pliman)     # análise de imagens
+library(patchwork)  # organizar gráficos
+```
+
+
+
+
+# <i class="fas fa-database"></i> Imagens e orientações
+
+Sugere-se que as imagens sejam baixadas e a pasta definida como diretório padrão. O arquivo `.zip` disponível no botão abaixo contém uma pasta chamada `leaves`. Esta pasta contém as imagens e scripts necessários para reprodução dos exemplos. Surigo definir esta pasta como o diretório padrão para o R.
+
+
+```r
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ufsc_fito/leaves")
+```
+
+
+
+<a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_esalq/leaves.rar">
+<button class="btn btn-success"><i class="fa fa-save"></i> Download das imagens e scripts</button>
+</a>
+
+
+
+<br>
+
+# <i class="fas fa-tv"></i> Slides
+
+Página para acesso aos slides <a href="https://tiagoolivoto.github.io/slides_R/slides/pliman_imagep/index.html#1" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+
+<iframe src="https://tiagoolivoto.github.io/slides_R/slides/pliman_imagep" width="672" height="400px" data-external="1"></iframe>
+
+
+Página para acesso aos slides <a href="https://tiagoolivoto.github.io/slides_R/slides/pliman_esalq/index.html#1" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+
+<iframe src="https://tiagoolivoto.github.io/slides_R/slides/pliman_esalq" width="672" height="400px" data-external="1"></iframe>
+
+
+
+# <i class="fas fa-scroll"></i> Take a look!
+
+A palestra a seguir foi ministrada a convite do Presidente da Região Brasileira da Sociedade Internacional de Biometria ([RBras](https://rbras.org.br/)), em parceria com a [ômega Data Science](https://omegadatascience.com.br/).
+
+<iframe width="760" height="430" src="https://www.youtube.com/embed/ElvUVlPocgA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
+# <i class="fab fa-creative-commons"></i> Licença
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener"><img alt="Licença Creative Commons" style="border-width:0" src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/img/gemsr/license.jpg" width="300" height="214" /></a><br />Este conteúdo está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons - Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional</a>. O resumo legível da licença afirma que você tem o direito de:
+
+<i class="fas fa-check"></i> **Compartilhar** — copiar e redistribuir o material em qualquer suporte ou formato
+
+<i class="fas fa-check"></i>**Adaptar** — remixar, transformar, e criar a partir do material
+
+<i class="fas fa-check"></i>**Atribuição** — Você deve dar o crédito apropriado, prover um link para a licença e indicar se mudanças foram feitas. Você deve fazê-lo em qualquer circunstância razoável, mas de nenhuma maneira que sugira que o licenciante apoia você ou o seu uso.
+
+<i class="fas fa-check"></i>**De acordo com os termos seguintes**
+
+* **Não Comercial** — Você não pode usar o material para fins comerciais.
+
+* **CompartilhaIgual** — Se você remixar, transformar, ou criar a partir do material, tem de distribuir as suas contribuições sob a mesma licença que o original.
+
+* **Sem restrições adicionais** — Você não pode aplicar termos jurídicos ou medidas de caráter tecnológico que restrinjam legalmente outros de fazerem algo que a licença permita.
+

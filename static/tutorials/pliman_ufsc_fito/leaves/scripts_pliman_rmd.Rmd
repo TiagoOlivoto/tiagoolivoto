@@ -1,0 +1,377 @@
+
+# Diretório das imagens
+```{r eval=FALSE}
+# mudar de acordo com a pasta em seu computador
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ufsc_fito/leaves")
+```
+
+
+# Importar imagens
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
+library(pliman)
+img <- image_import("exemp_1.jpeg")
+plot(img)
+
+```
+
+
+
+Para importar uma lista de imagens, o argumento `pattern` da função `image_import()` é usado. Todas as imagens que correspondem ao nome do padrão são importadas para uma lista.
+
+```{r import2}
+img_list <-  image_import(pattern = "exemp_", plot = TRUE)
+```
+
+
+
+# Exibindo imagens
+Imagens individuais são exibidas com `plot()`. Para combinar imagens, a função `image_combine()` é usada. Os usuários podem informar uma lista de objetos separados por vírgulas ou uma lista de objetos da classe `Image`.
+
+```{r display1, fig.width = 12}
+# Imagens individuais
+plot(img)
+
+```
+
+
+
+```{r display2, fig.width = 12}
+
+# Combine imagens
+image_combine(img_list)
+
+
+```
+
+
+# Manipulando imagens
+
+
+`pliman` fornece um conjunto de funções `image_*()` para realizar a manipulação de imagens e transformação de imagens exclusivas ou uma lista de imagens baseada no [pacote EBImage](https://www.bioconductor.org/packages/release/bioc/vignettes/EBImage/inst/doc/EBImage-Introduction.html).
+
+## Redimensionar uma imagem
+Às vezes, o redimensionamento de imagens de alta resolução é necessário para reduzir o esforço computacional e tempo de processamento. A função `image_resize()` é usada para redimensionar uma imagem. O argumento `rel_size` pode ser usado para redimensionar a imagem por tamanho relativo. Por exemplo, definindo `rel_size = 50` para uma imagem de largura 1280 x 720, a nova imagem terá um tamanho de 640 x 360.
+
+```{r manipulate1}
+image_dimension(img)
+img_resized <- image_resize(img, rel_size = 50)
+image_dimension(img_resized)
+```
+
+
+## Cortar uma imagem
+Cortar imagens é útil para remover ruídos da borda da imagem, bem como para reduzir o tamanho das imagens antes do processamento. Para recortar uma imagem, a função `image_crop()` é usada. Os usuários precisam informar um vetor numérico indicando a faixa de pixels (`width` e `height`) que será mantida na imagem recortada.
+
+```{r}
+crop1 <-
+  image_crop(img,
+             width = 71:685,
+             height = 56:1159,
+             plot = TRUE)
+```
+
+Se apenas `width` ou `height` forem informados, a imagem será recortada verticalmente ou horizontalmente.
+
+```{r}
+crop2 <-
+  image_crop(img,
+             height = 56:1159,
+             plot = TRUE)
+```
+
+Se `width` e `height` não forem declarados, um processo iterativo de corte da imagem é executado.
+
+```{r eval = FALSE}
+# executa apenas em uma seção iterativa
+image_crop(img)
+```
+
+
+Além disso, um processo de corte automatizado pode ser executado. Nesse caso, a imagem será cortada automaticamente na área de objetos com uma borda de cinco pixels por padrão.
+
+```{r}
+auto_crop <- image_autocrop(img, plot = TRUE)
+```
+
+
+
+## Resolução da imagem(DPI) {#dpi}
+A função `dpi()` executa uma função interativa para calcular a resolução da imagem dada uma distância conhecida informada pelo usuário. Para calcular a resolução da imagem(dpi), o usuário deve usar o botão esquerdo do mouse para criar uma linha de distância conhecida. Isso pode ser feito, por exemplo, usando um modelo com distância conhecida na imagem(por exemplo, `rule.jpg`).
+
+```{r eval = FALSE}
+
+# executado apenas em uma seção interativa
+rule <- image_import("rule.jpg", plot = TRUE)
+(dpi <- dpi(rule))
+
+rule2 <- image_crop(rule, width = 379:1638, height = 790:1769)
+
+analyze_objects(rule2,
+                marker = "area",
+                watershed = FALSE) |> 
+  get_measures(dpi = 518) |> 
+  plot_measures(measure = "area",
+                vjust = -100,
+                size = 2)
+```
+
+
+## Exportando imagens
+Para exportar imagens para o diretório atual, use a função `image_export()`. Se uma lista de imagens for exportada, as imagens serão salvas considerando o nome e a extensão presentes na lista. Se nenhuma extensão estiver presente, as imagens serão salvas como arquivos `* .jpg`.
+
+```{r export, eval=FALSE}
+imagem_exportar(img, "img_exported.jpg")
+```
+
+
+
+
+# Diretório das imagens
+```{r eval=FALSE}
+# mudar de acordo com a pasta em seu computador
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ufsc_fito/leaves")
+```
+
+
+## Segmentação
+
+No `pliman`, as seguintes funções podem ser usadas para segmentar uma imagem.
+
+* `image_binary()` para produzir uma imagem binária (preto e branco)
+* `image_segment()` para produzir uma imagem segmentada (objetos de imagem e um fundo branco).
+* `image_segment_iter()` para segmentar uma imagem iterativamente.
+
+Ambas as funções segmentam a imagem com base no valor de algum índice de imagem, que pode ser uma das bandas RGB ou qualquer operação com essas bandas. Internamente, essas funções chamam `image_index()` para calcular esses índices. Aqui, usamos o argumento `index" `para testar a segmentação com base no RGB e seus valores normalizados. Os usuários também podem fornecer seu índice com o argumento` my_index`.
+
+```{r segmentação2, fig.width = 10, fig.height = 5}
+library(pliman)
+img <- image_import("folhas.jpg", plot = TRUE)
+resized <- image_resize(img, 30) # reduz a resolução (plota mais rápido)
+
+# Calcule os índices
+indexes <- image_index(resized, index = c("R, G, B"))
+
+# Crie um gráfico raster com os valores RGB
+plot(indexes, ncol = 3)
+
+# Cria um histograma com os valores RGB
+plot(indexes,
+     type = "density",
+     ncol = 3)
+```
+
+Os dois picos representam as folhas (pico menor) e o fundo (pico maior). Quanto mais clara for a diferença entre esses picos, melhor será a segmentação da imagem.
+
+A função `image_segment()` é usada para segmentar imagens usando índices de imagem. Em nosso exemplo, usaremos os mesmos índices calculados abaixo para ver como a imagem é segmentada. A saída desta função pode ser usada como entrada na função `analyze_objects()`.
+
+```{r segmentação3, fig.width = 10, fig.height = 5}
+segmented <- image_segment(img, index = "B")
+```
+
+
+
+
+## Produzindo uma imagem binária
+
+No pliman, podemos produzir uma imagem binária com `image_binary()`. A título de curiosidade, usaremos os índices `"B"` (azul). Por padrão, `image_binary()` redimensiona a imagem para 30% do tamanho da imagem original para acelerar o tempo de computação. Use o argumento `resize = FALSE` para produzir uma imagem binária com o tamanho original.
+
+```{r binary1, fig.width = 10, fig.height = 5}
+# tamanho de imagem original
+image_binary(img, index = "B")
+
+# inverte a binarização
+image_binary(img, index = "B", invert = TRUE)
+```
+
+
+
+# Diretório das imagens
+```{r eval=FALSE}
+# mudar de acordo com a pasta em seu computador
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ufsc_fito/leaves")
+```
+
+
+# Severidade da doença
+## Utilizando paletas
+
+```{r doença1, fig.width = 12, fig.height = 3}
+
+library(pliman)
+img <- image_import("exemp_1.jpeg", plot = TRUE)
+h <- image_import("exem_h.png")
+d <- image_import("exem_d.png")
+b <- image_import("exem_b.png")
+image_combine(img, h, d, b, ncol = 4)
+```
+
+
+## Gerando paletas
+```{r eval=FALSE, fig.width=10}
+h2 <- pick_palette(img)
+d2 <- pick_palette(img)
+b2 <- pick_palette(img)
+image_combine(h2, d2, b2, ncol = 3)
+
+```
+
+
+### Padrão da função
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b)
+```
+
+
+### Mostrando preenchimento das lesões
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_contour = FALSE)
+```
+
+
+### Mostrando uma máscara
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_contour = FALSE,
+                  show_original = FALSE,
+                  col_lesions = "brown") # padrão é "black"
+```
+
+
+### Segmentando e analisando as lesões
+Ao utilizar `show_features = TRUE`, a função analisa as lesões e retorna resultados como número de lesões, área, perímetro, etc. Com `show_segmentation = TRUE`, as lesões segmentadas são mostradas.
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_features = TRUE,
+                  show_segmentation = TRUE)
+
+# corrigir as medidas (dpi = 150)
+sev_corrected <- get_measures(sev, dpi = 150)
+```
+
+
+## Processamento em lote
+Para analisar diversas imagens de um diretório, utiliza-se o argumento `pattern`, para declarar um padrão de nomes de arquivos. Serão utilizadas 15 folhas de soja disponíveis no repositório  https://osf.io/4hbr6, um banco de dados de imagens de anotação de severidade de doenças de plantas. Obrigado a [Emerson M. Del Ponte](https://osf.io/jb6yd/) e seus colaboradores por manter este projeto disponível publicamente.
+
+```{r}
+system.time(
+  sev_lote <- 
+    measure_disease(pattern = "soy",
+                    img_healthy = "soja_h",
+                    img_symptoms = "soja_s",
+                    img_background = "soja_b",
+                    show_image = FALSE,
+                    save_image = TRUE,
+                    dir_processed = "processadas",
+                    show_contour = FALSE,
+                    col_lesions = "brown")
+)
+sev_lote$severity
+```
+
+
+
+
+## Diagramas de área padrão
+
+Os diagramas de área padrão (SAD) têm sido usados há muito tempo como uma ferramenta para auxiliar na estimativa da severidade de doenças de plantas, servindo como um modelo de referência padrão antes ou durante as avaliações.
+
+Dado um objeto calculado com `measure_disease()`, um SAD com `n` imagens contendo os respectivos valores de severidade é obtido com `sad()`.
+
+As folhas com menor e maior severidade sempre estarão no SAD. Se `n = 1`, a folha com a menor severidade será retornada. As outras são amostradas sequencialmente para obter as `n` imagens após a severidade ter sido ordenada em ordem crescente. Por exemplo, se houver 30 folhas e `n` for definido como 3, as folhas amostradas serão a 1ª, 15ª e 30ª com os menores valores de severidade.
+
+O SAD só pode ser calculado se um nome de padrão de imagem for usado no argumento `pattern` da função `measure_disease()`. Se as imagens forem salvas, as `n` imagens serão recuperadas do diretório `dir_processed` (diretório padrão por default). Caso contrário, a severidade será calculada novamente para gerar as imagens. Um SAD com 8 imagens do exemplo acima pode ser obtido facilmente com:
+
+```{r}
+sad(sev_lote, n = 6, ncol = 3)
+```
+
+
+## Processamento paralelo
+
+Para acelerar o tempo de processamento quando várias imagens estão disponíveis, pode-se utilizar o argumento `paralell`. Isto criará múltiplas seções R em segundo plano, sendo cada uma responsável pelo processamento de uma parte das imagens.
+
+```{r}
+system.time(
+  sev_lote <- 
+    measure_disease(pattern = "soy",
+                    img_healthy = "soja_h",
+                    img_symptoms = "soja_s",
+                    img_background = "soja_b",
+                    show_image = FALSE,
+                    parallel = TRUE)
+)
+```
+
+
+
+## Várias imagens da mesma amostra
+
+Se os usuários precisarem analisar várias imagens da mesma amostra, as imagens da mesma amostra devem compartilhar o mesmo prefixo de nome de arquivo, que é definido como a parte do nome do arquivo que precede o primeiro hífen (`-`) ou underscore (`_`). 
+
+No exemplo a seguir, 16 imagens serão usadas como exemplos. Aqui, elas representam quatro repetiçoes de quatro diferentes tratamentos (`TRAT1_1, TRAT1_2, ..., TRAT4_4`). Observe que para garantir que todas as imagens sejam processadas, todas as imagens devem compartilhar um padrão comum, neste caso ("TRAT").
+
+```{r}
+system.time(
+  sev_trats <- 
+    measure_disease(pattern = "TRAT",
+                    img_healthy = "feijao_h",
+                    img_symptoms = "feijao_s",
+                    img_background = "feijao_b",
+                    show_features = TRUE,
+                    show_image = FALSE,
+                    parallel = TRUE)
+)
+sev <- 
+  sev_trats$severity |> 
+  separate_col(img, into = c("TRAT", "REP"))
+
+library(ggplot2)
+ggplot(sev, aes(TRAT, symptomatic))+
+  geom_boxplot() +
+  geom_jitter(alpha = 0.3)
+```
+
+
+
+
+## Múltiplas folhas em uma foto
+
+Quando múltiplas folhas estão presentes em uma imagem, a função `measure_disease` retorna a severidade média das folhas presentes na imagem. Para quantificar a severidade *por folha*, a função `measure_disease_byl()` pode ser utilizada.
+
+Esta função calcula a porcentagem de área foliar sintomática usando paletas de cores ou índices RGB para cada folha (`byl`) de uma imagem. Isso permite, por exemplo, processar réplicas do mesmo tratamento e obter os resultados de cada replicação com uma única imagem. Para fazer isso, as amostras de folhas são primeiro divididas usando a função `object_split()` e, em seguida, a função `measure_disease()` é aplicado à lista de folhas.
+
+```{r}
+mult1 <- image_import("multiplas_01.jpeg", plot = TRUE)
+image_index(mult1)
+
+byl <- 
+  measure_disease_byl(pattern = "multiplas_",
+                      index = "B", # usado para segmentar a folha do fundo
+                      img_healthy = "soja_h",
+                      img_symptoms = "soja_s",
+                      show_contour = FALSE,
+                      show_features = TRUE,
+                      col_lesions = "red")
+results_byl <- get_measures(byl)
+head(results_byl$results)
+head(results_byl$summary)
+head(results_byl$merge)
+```
+

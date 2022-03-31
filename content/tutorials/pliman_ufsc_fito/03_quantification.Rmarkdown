@@ -1,0 +1,213 @@
+---
+title: Fitopatometria
+linktitle: "3. Fitopatometria"
+toc: true
+type: docs
+date: "2022/03/31"
+draft: false
+df_print: paged
+code_download: true
+menu:
+  plimanufsc:
+    parent: pliman
+    weight: 4
+weight: 3
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ufsc_fito/leaves")
+```
+
+# Diretório das imagens
+```{r eval=FALSE}
+# mudar de acordo com a pasta em seu computador
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ufsc_fito/leaves")
+```
+
+
+# Severidade da doença
+## Utilizando paletas
+
+```{r doença1, fig.width = 12, fig.height = 3}
+
+library(pliman)
+img <- image_import("exemp_1.jpeg", plot = TRUE)
+h <- image_import("exem_h.png")
+d <- image_import("exem_d.png")
+b <- image_import("exem_b.png")
+image_combine(img, h, d, b, ncol = 4)
+```
+
+
+## Gerando paletas
+```{r eval=FALSE, fig.width=10}
+h2 <- pick_palette(img)
+d2 <- pick_palette(img)
+b2 <- pick_palette(img)
+image_combine(h2, d2, b2, ncol = 3)
+
+```
+
+
+### Padrão da função
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b)
+```
+
+
+### Mostrando preenchimento das lesões
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_contour = FALSE)
+```
+
+
+### Mostrando uma máscara
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_contour = FALSE,
+                  show_original = FALSE,
+                  col_lesions = "brown") # padrão é "black"
+```
+
+
+### Segmentando e analisando as lesões
+Ao utilizar `show_features = TRUE`, a função analisa as lesões e retorna resultados como número de lesões, área, perímetro, etc. Com `show_segmentation = TRUE`, as lesões segmentadas são mostradas.
+```{r}
+sev <- 
+  measure_disease(img = img,
+                  img_healthy = h,
+                  img_symptoms = d,
+                  img_background = b,
+                  show_features = TRUE,
+                  show_segmentation = TRUE)
+
+# corrigir as medidas (dpi = 150)
+sev_corrected <- get_measures(sev, dpi = 150)
+```
+
+
+## Processamento em lote
+Para analisar diversas imagens de um diretório, utiliza-se o argumento `pattern`, para declarar um padrão de nomes de arquivos. Serão utilizadas 15 folhas de soja disponíveis no repositório  https://osf.io/4hbr6, um banco de dados de imagens de anotação de severidade de doenças de plantas. Obrigado a [Emerson M. Del Ponte](https://osf.io/jb6yd/) e seus colaboradores por manter este projeto disponível publicamente.
+
+```{r}
+system.time(
+  sev_lote <- 
+    measure_disease(pattern = "soy",
+                    img_healthy = "soja_h",
+                    img_symptoms = "soja_s",
+                    img_background = "soja_b",
+                    show_image = FALSE,
+                    save_image = TRUE,
+                    dir_processed = "processadas",
+                    show_contour = FALSE,
+                    col_lesions = "brown")
+)
+sev_lote$severity
+```
+
+
+
+
+## Diagramas de área padrão
+
+Os diagramas de área padrão (SAD) têm sido usados há muito tempo como uma ferramenta para auxiliar na estimativa da severidade de doenças de plantas, servindo como um modelo de referência padrão antes ou durante as avaliações.
+
+Dado um objeto calculado com `measure_disease()`, um SAD com `n` imagens contendo os respectivos valores de severidade é obtido com `sad()`.
+
+As folhas com menor e maior severidade sempre estarão no SAD. Se `n = 1`, a folha com a menor severidade será retornada. As outras são amostradas sequencialmente para obter as `n` imagens após a severidade ter sido ordenada em ordem crescente. Por exemplo, se houver 30 folhas e `n` for definido como 3, as folhas amostradas serão a 1ª, 15ª e 30ª com os menores valores de severidade.
+
+O SAD só pode ser calculado se um nome de padrão de imagem for usado no argumento `pattern` da função `measure_disease()`. Se as imagens forem salvas, as `n` imagens serão recuperadas do diretório `dir_processed` (diretório padrão por default). Caso contrário, a severidade será calculada novamente para gerar as imagens. Um SAD com 8 imagens do exemplo acima pode ser obtido facilmente com:
+
+```{r}
+sad(sev_lote, n = 6, ncol = 3)
+```
+
+
+## Processamento paralelo
+
+Para acelerar o tempo de processamento quando várias imagens estão disponíveis, pode-se utilizar o argumento `paralell`. Isto criará múltiplas seções R em segundo plano, sendo cada uma responsável pelo processamento de uma parte das imagens.
+
+```{r}
+system.time(
+  sev_lote <- 
+    measure_disease(pattern = "soy",
+                    img_healthy = "soja_h",
+                    img_symptoms = "soja_s",
+                    img_background = "soja_b",
+                    show_image = FALSE,
+                    parallel = TRUE)
+)
+```
+
+
+
+## Várias imagens da mesma amostra
+
+Se os usuários precisarem analisar várias imagens da mesma amostra, as imagens da mesma amostra devem compartilhar o mesmo prefixo de nome de arquivo, que é definido como a parte do nome do arquivo que precede o primeiro hífen (`-`) ou underscore (`_`). 
+
+No exemplo a seguir, 16 imagens serão usadas como exemplos. Aqui, elas representam quatro repetiçoes de quatro diferentes tratamentos (`TRAT1_1, TRAT1_2, ..., TRAT4_4`). Observe que para garantir que todas as imagens sejam processadas, todas as imagens devem compartilhar um padrão comum, neste caso ("TRAT").
+
+```{r}
+system.time(
+  sev_trats <- 
+    measure_disease(pattern = "TRAT",
+                    img_healthy = "feijao_h",
+                    img_symptoms = "feijao_s",
+                    img_background = "feijao_b",
+                    show_features = TRUE,
+                    show_image = FALSE,
+                    parallel = TRUE)
+)
+sev <- 
+  sev_trats$severity |> 
+  separate_col(img, into = c("TRAT", "REP"))
+
+library(ggplot2)
+ggplot(sev, aes(TRAT, symptomatic))+
+  geom_boxplot() +
+  geom_jitter(alpha = 0.3)
+```
+
+
+
+
+## Múltiplas folhas em uma foto
+
+Quando múltiplas folhas estão presentes em uma imagem, a função `measure_disease` retorna a severidade média das folhas presentes na imagem. Para quantificar a severidade *por folha*, a função `measure_disease_byl()` pode ser utilizada.
+
+Esta função calcula a porcentagem de área foliar sintomática usando paletas de cores ou índices RGB para cada folha (`byl`) de uma imagem. Isso permite, por exemplo, processar réplicas do mesmo tratamento e obter os resultados de cada replicação com uma única imagem. Para fazer isso, as amostras de folhas são primeiro divididas usando a função `object_split()` e, em seguida, a função `measure_disease()` é aplicado à lista de folhas.
+
+```{r}
+mult1 <- image_import("multiplas_01.jpeg", plot = TRUE)
+image_index(mult1)
+
+byl <- 
+  measure_disease_byl(pattern = "multiplas_",
+                      index = "B", # usado para segmentar a folha do fundo
+                      img_healthy = "soja_h",
+                      img_symptoms = "soja_s",
+                      show_contour = FALSE,
+                      show_features = TRUE,
+                      col_lesions = "red")
+results_byl <- get_measures(byl)
+head(results_byl$results)
+head(results_byl$summary)
+head(results_byl$merge)
+```
+
+
+
+
