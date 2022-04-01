@@ -84,7 +84,7 @@ $$
 T=\frac{2}{15} \arccos (-\tan \phi \cdot \tan \delta)
 $$
 
-Onde \(T\) é o tempo de duração do dia; \(\phi\) é a latitude da cidade (para cidades do hemisfério sul, o sinal é negativo); \(\delta\) é a declinação solar, calculada no ítem anterior.
+Onde \$T\$ é o tempo de duração do dia; \$\phi\$ é a latitude da cidade (para cidades do hemisfério sul, o sinal é negativo); \$\delta\$ é a declinação solar, calculada no ítem anterior.
 
 
 ```{r}

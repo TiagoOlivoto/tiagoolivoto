@@ -14,7 +14,8 @@ knitr::opts_chunk$set(comment = "#", fig.align = "center", collapse = TRUE)
 ```{r, include = FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(bib2df)
-ref <- bib2df("ref.bib")
+
+ref <- bib2df("E:/Desktop/tiagoolivoto/content/publication/ref.bib")
 i <- !is.na(ref$JOURNAL)
 tb_year <- 
   ref[i, ] %>%

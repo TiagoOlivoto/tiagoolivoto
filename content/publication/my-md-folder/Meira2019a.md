@@ -2,8 +2,8 @@
 title = "Multivariate analysis revealed genetic divergence and promising traits for indirect selection in black oat"
 date = "2019-01-01"
 publication_types = ["2"]
-authors = ["Meira D.", "Meier C.", "**Olivoto T.**", "Follmann D.", "Rigatti A.", "Lunkes A.", "Marchioro V.", "De Souza V."]
-publication = "In: **Revista Brasileirade Ciencias Agrarias**, 14(4):1--7, https://doi.org/10.5039/agraria.v14i4a6514"
+authors = ["Meira D.", "Meier C.", "**Olivoto T.**", "Follmann D.", "Rigatti A.", "Lunkes A.", "Marchioro V.", "Souza V."]
+publication = "In: **Revista Brasileira de Ci\\^encias Agr\\'arias - Brazilian Journal of Agricultural Sciences**, 14(4):1--7, https://doi.org/10.5039/agraria.v14i4a6514, http://www.agraria.pro.br/ojs-2.4.6/index.php?journal=agraria\\&page=article\\&op=view\\&path\\%5B\\%5D=agraria\\_v14i4a6514"
 abstract = "This study aimed to identify important traits for indirect selection and to evaluate the variability among black oat populations through cause and effect relationships and canonical variables. Fourteen (14) black oat populations were collected in the 2013 cropping season which were evaluated in the laboratory, and then in the field in the 2014 cropping season. The seed width has a high and positive association with physiological quality of black oat seeds. The number of grains and thousand-grain weight has greater direct effects on the grain yield of black oat; thus, these traits may be considered for indirect selection in earlier phases of future black oat breeding programs. Targeted crosses between black oat genotypes coming from Salvador das Miss\\~oes with genotypes coming from the other studied locations should be promising to obtain recombinant offspring in the future."
 abstract_short = ""
 tags = ["black oat", "correlation coefficient", "indirect selection", "multivariate analysis"]

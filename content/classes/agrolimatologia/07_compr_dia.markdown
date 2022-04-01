@@ -82,7 +82,7 @@ ggplot(df_decl, aes(x = dj, y = dec)) +
        y = "Declinação solar (º)")
 ```
 
-<img src="/tutorials/agrolimatologia/07_compr_dia_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<img src="/classes/agrolimatologia/07_compr_dia_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 
 # Duração do dia
@@ -93,7 +93,7 @@ $$
 T=\frac{2}{15} \arccos (-\tan \phi \cdot \tan \delta)
 $$
 
-Onde \(T\) é o tempo de duração do dia; \(\phi\) é a latitude da cidade (para cidades do hemisfério sul, o sinal é negativo); \(\delta\) é a declinação solar, calculada no ítem anterior.
+Onde \$T\$ é o tempo de duração do dia; \$\phi\$ é a latitude da cidade (para cidades do hemisfério sul, o sinal é negativo); \$\delta\$ é a declinação solar, calculada no ítem anterior.
 
 
 
@@ -182,6 +182,6 @@ ggplot(df, aes(x = data, y = h_sol, col = local)) +
         legend.title = element_blank())
 ```
 
-<img src="/tutorials/agrolimatologia/07_compr_dia_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="/classes/agrolimatologia/07_compr_dia_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 
