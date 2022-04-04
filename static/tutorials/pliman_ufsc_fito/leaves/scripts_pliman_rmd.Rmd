@@ -55,6 +55,7 @@ image_combine(img_list)
 ```{r manipulate1}
 image_dimension(img)
 img_resized <- image_resize(img, rel_size = 50)
+plot(img_resized)
 image_dimension(img_resized)
 ```
 
@@ -167,8 +168,6 @@ A função `image_segment()` é usada para segmentar imagens usando índices de 
 ```{r segmentação3, fig.width = 10, fig.height = 5}
 segmented <- image_segment(img, index = "B")
 ```
-
-
 
 
 ## Produzindo uma imagem binária
