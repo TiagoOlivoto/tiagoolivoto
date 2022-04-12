@@ -331,8 +331,8 @@ sev_tomate <-
                   img_background = "tom_b",
                   col_lesions = "red",
                   show_contour = FALSE,
-                  save_image = TRUE,
-                  dir_processed = dir,
+                  save_image = FALSE,
+                  # dir_processed = dir,
                   parallel = TRUE)
 a <- 
   image_import(pattern = "proc_",

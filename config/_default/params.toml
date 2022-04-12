@@ -86,14 +86,14 @@ email = "tiagoolivoto@gmail.com"
 
 # Address
 # For country_code, use the 2-letter ISO code (see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 )
-# address = {street = "78 Rua João Borgmann", city = "Getúlio Vargas", region = "RS", postcode = "99900-000", country = "Brazil", country_code = "BR"}
+address = {street = "1346 Rodovia Admar Gonzaga", city = "Florianópolis", region = "SC", postcode = "88034-000", country = "Brazil", country_code = "BR"}
 
 # Geographic coordinates
 # To get your coordinates, right-click on Google Maps and choose "What's here?". The coords will show up at the bottom.
-#coordinates = {latitude = "-27.881043", longitude = "-52.227487"}
+coordinates = {latitude = "-27.58241", longitude = "-48.50593"}
 
 # Directions for visitors to locate you.
-# directions = "Enter Building 1 and take the stairs to Office 200 on Floor 2"
+directions = "Department of Plant Sciences, office room number 221"
 
 # Office hours
 # A list of your office hours. To remove, set to an empty list `[]`.
