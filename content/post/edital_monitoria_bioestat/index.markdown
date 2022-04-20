@@ -1,6 +1,6 @@
 ---
 toc: true
-title: Edital de seleção de monitor
+title: Edital de seleção de monitor FIT5306 - Bioestatística e Experimentação Agrícola
 subtitle: ''
 summary: 'Edital de seleção de monitor para a disciplina FIT5306 – Bioestatística e Experimentação Agrícola.'
 author: Tiago Olivoto
@@ -45,7 +45,7 @@ O Professor Dr. Tiago Olivoto, considerando o disposto na Resolução Normativa 
 
 
 
-# <i class="fas fa-browser"></i> Inscrição
+# <i class="fas fa-file-export"></i> Inscrição
 
 A inscrição deve ser realizada, exclusivamente, pelo [formulário online de inscrição](https://forms.gle/npCsKZvgom3B5rD2A), até as 23:59 do dia 26 de abril de 2022.
 
