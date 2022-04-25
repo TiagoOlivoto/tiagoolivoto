@@ -45,6 +45,16 @@ O Professor Dr. Tiago Olivoto, considerando o disposto na Resolução Normativa 
 
 
 
+# <i class="fas fa-timer"></i> Cronograma
+
+|     ATIVIDADE                         |     PERÍODO                               |
+|---------------------------------------|-------------------------------------------|
+|     Lançamento do Edital              |     20 de abril de 2022                   |
+|     Inscrição dos candidatos          |     20 de abril a 02 de maio   de 2022    |
+|     Entrevista com os   candidatos    |     04 de maio de 2022                    |
+|     Divulgação do resultado           |     05 de maio de 2022                    |
+
+
 # <i class="fas fa-file-export"></i> Inscrição
 
 A inscrição deve ser realizada, exclusivamente, pelo [formulário online de inscrição](https://forms.gle/npCsKZvgom3B5rD2A), até as 23:59 do dia 02 de maio de 2022.
