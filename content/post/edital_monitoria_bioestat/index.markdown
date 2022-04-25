@@ -45,7 +45,7 @@ O Professor Dr. Tiago Olivoto, considerando o disposto na Resolução Normativa 
 
 
 
-# <i class="fas fa-timer"></i> Cronograma
+# <i class="fas fa-clock"></i> Cronograma
 
 |     ATIVIDADE                         |     PERÍODO                               |
 |---------------------------------------|-------------------------------------------|
