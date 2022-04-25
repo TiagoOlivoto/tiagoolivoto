@@ -227,7 +227,7 @@ $$
 ```
 
 # Aplicação utilizando o pacote metan
-
+## Exemplo da altura de planta
 Para calcular todas as estatísticas de uma só vez, podemos usar `desc_stat()` do pacote metan. Esta função pode ser usada para calcular medidas de tendência central, posição e dispersão. Por padrão (`stats = "main"`), sete estatísticas (coeficiente de variação, máximo, média, mediana, mínimo, desvio padrão da amostra, erro padrão e intervalo de confiança da média) são calculadas. Outros valores permitidos são `"all"` para mostrar todas as estatísticas, `"robust"` para mostrar estatísticas robustas, `"quantile"` para mostrar estatísticas quantílicas ou escolher uma (ou mais) estatísticas usando um vetor separado por vírgula com os nomes das estatísticas, por exemplo, `stats = c("mean, cv")`. Também podemos usar `hist = TRUE` para criar um histograma para cada variável. Para mais detalhes consulte [este material](https://tiagoolivoto.github.io/e-bookr/analdata.html#ebasic).
 
 
@@ -242,9 +242,53 @@ desc_stat(altura,
 ```
 
 
+## Exemplo com os dados coletados em aula
+Neste exemplo, mostro como as estatísticas descritivas para os dados coletados em aula podem ser calculadas utilizando o pacote `metan`. Os dados são importados diretamente da planilha armazenada no drive, utilizando a função `import()` do pacote `rio`.
+
+```{r}
+library(rio)
+
+# link dos dados
+link <- "https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=463165208"
+
+# função para importar os dados
+df <- 
+  import(link, dec = ",") |> 
+  as_character(1:3) # primeiras 3 colunas como caracteres
+
+# estrutura dos dados 
+str(df)
+
+# primeiras linhas
+head(df)
+```
+
+Os dados foram organziados de maneira que cada fator (grupo e tipo de amostra) estivessem em uma coluna. Isto possibilita o cálculo das estatísticas para cada nível destes fatores. As duas variáveis quantitativas contínuas são: `Comprimento` (o comprimento da folha em cm e o comprimento do grão em mm); e `Largura_diametro` (a largura da folha em cm e o diâmetro do grão em mm). 
+
+### Estatísticas gerais
+Para saber as estatísticas descritivas gerais (sem estratificação por grupo), vamos utilizar a função `group_by()` para agrupar por `Tipo`. Com isso, as estatísticas serão calculadas separadamente para `Folha` e `Grao`. Por padrão, a função calcula as estatísticas descritivas para todas as variáveis numéricas do conjunto de dados. Sendo assim, não há necessidade de informar qual variável analisar.
+
+
+```{r}
+stats = c("mean, median, range, ave.dev, var.amo, sd.amo, cv, se, n")
+df |> 
+  group_by(Tipo) |> 
+  desc_stat(stats = stats)
+```
+
+### Estatísticas por grupo
+
+Para obter as estatística para cada grupo, basta adicionar o fator `Grupo` na função `group_by()` e realizar o mesmo comando mostrado acima.
+
+```{r}
+df |> 
+  group_by(Grupo, Tipo) |> 
+  desc_stat(stats = stats)
+```
+
+
+
 # Simulação de dados com diferentes variâncias
-
-
 
 O código a seguir apresenta uma simulação de três grupos com 10 observações cada um. Os grupos formados são A, B e C, todos com média `9,018686`.
 
