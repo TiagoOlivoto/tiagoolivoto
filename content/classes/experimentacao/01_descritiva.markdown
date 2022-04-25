@@ -411,11 +411,16 @@ desc_stat(altura,
 
 
 ## Exemplo com os dados coletados em aula
-Neste exemplo, mostro como as estatísticas descritivas para os dados coletados em aula podem ser calculadas utilizando o pacote metan. Os dados são importados diretamente da planilha armazenada no drive, utilizando a função `import()` do pacote `rio`.
+Neste exemplo, mostro como as estatísticas descritivas para os dados coletados em aula podem ser calculadas utilizando o pacote `metan`. Os dados são importados diretamente da planilha armazenada no drive, utilizando a função `import()` do pacote `rio`.
+
 
 ```r
 library(rio)
+
+# link dos dados
 link <- "https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=463165208"
+
+# função para importar os dados
 df <- 
   import(link, dec = ",") |> 
   as_character(1:3) # primeiras 3 colunas como caracteres
@@ -457,7 +462,6 @@ Para saber as estatísticas descritivas gerais (sem estratificação por grupo),
 
 ```r
 stats = c("mean, median, range, ave.dev, var.amo, sd.amo, cv, se, n")
-
 df |> 
   group_by(Tipo) |> 
   desc_stat(stats = stats)
