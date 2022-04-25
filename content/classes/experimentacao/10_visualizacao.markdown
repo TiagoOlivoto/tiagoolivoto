@@ -1,6 +1,6 @@
 ---
 title: Visualização
-linktitle: "5. Visualização de dados"
+linktitle: "10. Visualização de dados"
 toc: true
 type: docs
 date: "2022/03/15"
@@ -10,8 +10,7 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 6
-weight: 5
+    weight: 11
 ---
 
 # Pacotes
@@ -19,15 +18,11 @@ weight: 5
 
 ```r
 library(tidyverse)
-## Warning: package 'tidyverse' was built under R version 4.1.2
 ## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 ## v ggplot2 3.3.5     v purrr   0.3.4
 ## v tibble  3.1.6     v dplyr   1.0.8
 ## v tidyr   1.2.0     v stringr 1.4.0
 ## v readr   2.1.2     v forcats 0.5.1
-## Warning: package 'tidyr' was built under R version 4.1.2
-## Warning: package 'readr' was built under R version 4.1.2
-## Warning: package 'dplyr' was built under R version 4.1.2
 ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
@@ -57,7 +52,6 @@ library(metan)
 ## 
 ##     column_to_rownames, remove_rownames, rownames_to_column
 library(rio) 
-## Warning: package 'rio' was built under R version 4.1.2
 ```
 
 # Introdução
@@ -131,7 +125,7 @@ arrange_ggplot(p1, p2, p3,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-5-1.png" alt="Gráfico de dispersão padrão (p1) e com pontos mapeados por cores (p2) e marcadores (p3) para cada nível do fator 'DAP'." width="960" />
+<img src="/classes/experimentacao/10_visualizacao_files/figure-html/unnamed-chunk-5-1.png" alt="Gráfico de dispersão padrão (p1) e com pontos mapeados por cores (p2) e marcadores (p3) para cada nível do fator 'DAP'." width="960" />
 <p class="caption">Figure 1: Gráfico de dispersão padrão (p1) e com pontos mapeados por cores (p2) e marcadores (p3) para cada nível do fator 'DAP'.</p>
 </div>
 
@@ -148,7 +142,7 @@ fac1
 ```
 
 <div class="figure">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-6-1.png" alt="Um painel para cada nível da variável DAP" width="960" />
+<img src="/classes/experimentacao/10_visualizacao_files/figure-html/unnamed-chunk-6-1.png" alt="Um painel para cada nível da variável DAP" width="960" />
 <p class="caption">Figure 2: Um painel para cada nível da variável DAP</p>
 </div>
 
@@ -182,7 +176,7 @@ arrange_ggplot(fac1, fac2, tag_levels = list(c("f1", "f2")))
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-7-1.png" alt="Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) " width="768" />
+<img src="/classes/experimentacao/10_visualizacao_files/figure-html/unnamed-chunk-7-1.png" alt="Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) " width="768" />
 <p class="caption">Figure 3: Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) </p>
 </div>
 
@@ -255,7 +249,7 @@ arrange_ggplot(g1, g2, g3,
                tag_levels = list(c("g1", "g2", "g3")))
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-9-1.png" width="960" />
+<img src="/classes/experimentacao/10_visualizacao_files/figure-html/unnamed-chunk-9-1.png" width="960" />
 
 ### Regressão linear de primeiro grau
 
@@ -281,7 +275,7 @@ arrange_ggplot(l1, l2,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-10-1.png" alt="Gráfico de dispersão, combinando pontos e linhas de regressão." width="960" />
+<img src="/classes/experimentacao/10_visualizacao_files/figure-html/unnamed-chunk-10-1.png" alt="Gráfico de dispersão, combinando pontos e linhas de regressão." width="960" />
 <p class="caption">Figure 4: Gráfico de dispersão, combinando pontos e linhas de regressão.</p>
 </div>
 
@@ -311,7 +305,7 @@ arrange_ggplot(q1, q2, tag_levels = list(c("l1", "l2")))
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-11-1.png" alt="Gráfico de dispersão combinado com inclusão de curvas ajustadas." width="672" />
+<img src="/classes/experimentacao/10_visualizacao_files/figure-html/unnamed-chunk-11-1.png" alt="Gráfico de dispersão combinado com inclusão de curvas ajustadas." width="672" />
 <p class="caption">Figure 5: Gráfico de dispersão combinado com inclusão de curvas ajustadas.</p>
 </div>
 
@@ -325,7 +319,7 @@ plot_lines(dado_reg,
            fit = 2)
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+<img src="/classes/experimentacao/10_visualizacao_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
 
 ### Gráficos do tipo boxplot
@@ -346,7 +340,7 @@ arrange_ggplot(box1, box2, tag_levels = list(c("b1", "b2")))
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-13-1.png" alt="Gráfico do tipo boxplot combinando mapeamentos estéticos." width="864" />
+<img src="/classes/experimentacao/10_visualizacao_files/figure-html/unnamed-chunk-13-1.png" alt="Gráfico do tipo boxplot combinando mapeamentos estéticos." width="864" />
 <p class="caption">Figure 6: Gráfico do tipo boxplot combinando mapeamentos estéticos.</p>
 </div>
 
@@ -383,7 +377,7 @@ arrange_ggplot(h1, h2,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-14-1.png" alt="Gráfico do tipo histograma com estimativas de função de probabilidade kernel e normal." width="672" />
+<img src="/classes/experimentacao/10_visualizacao_files/figure-html/unnamed-chunk-14-1.png" alt="Gráfico do tipo histograma com estimativas de função de probabilidade kernel e normal." width="672" />
 <p class="caption">Figure 7: Gráfico do tipo histograma com estimativas de função de probabilidade kernel e normal.</p>
 </div>
 
@@ -419,7 +413,7 @@ arrange_ggplot(bar1, bar2,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-15-1.png" alt="Gráfico do tipo barras, com mapeamento estético e barras de erro." width="960" />
+<img src="/classes/experimentacao/10_visualizacao_files/figure-html/unnamed-chunk-15-1.png" alt="Gráfico do tipo barras, com mapeamento estético e barras de erro." width="960" />
 <p class="caption">Figure 8: Gráfico do tipo barras, com mapeamento estético e barras de erro.</p>
 </div>
 
@@ -443,7 +437,7 @@ arrange_ggplot(metan1, metan2,
                tag_levels = list(c("metan1", "metan2")))
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-16-1.png" width="960" />
+<img src="/classes/experimentacao/10_visualizacao_files/figure-html/unnamed-chunk-16-1.png" width="960" />
 
 
 # Referências

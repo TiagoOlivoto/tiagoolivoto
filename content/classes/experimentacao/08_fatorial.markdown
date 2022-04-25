@@ -1,6 +1,6 @@
 ---
 title: Experimentos Fatoriais
-linktitle: "3. FATORIAIS"
+linktitle: "8. Experimentos Fatoriais"
 toc: true
 type: docs
 date: "2022/02/10"
@@ -10,8 +10,8 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 4
-weight: 3
+    weight: 9
+# weight: 3
 ---
 
 # Pacotes
@@ -40,7 +40,7 @@ sketch(trat= c("A1", "A2"),
        r = 4)
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 
 
@@ -143,7 +143,7 @@ p3 <-
 arrange_ggplot(p1, p2, p3, guides = "collect")
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-3-1.png" width="960" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-3-1.png" width="960" />
 
 
 ## Modelo estatístico 
@@ -183,7 +183,7 @@ No seguinte gráfico, apresento as médias observadas da extensibilidade nos dif
 plot_factbars(df_fat, NIT, ENX, resp = L)
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 
 ## Verificação de outliers
@@ -201,7 +201,7 @@ inspect(df_fat, plot = TRUE)
 ## 4 L        numeric No      -           24    67   78.5    96       0
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 
 ## Estatística descritiva 
@@ -253,7 +253,7 @@ plot(medias_fat,
      comparisons = TRUE) # insere setas para comparação de médias (Tukey)
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 
 ## Pacote AgroR
@@ -283,7 +283,7 @@ with(df_fat,
 ## Independence from errors
 ## -----------------------------------------------------------------
 ##                  Method Statistic    p.value
-##  Durbin-Watson test(DW)  1.659457 0.03557374
+##  Durbin-Watson test(DW)  1.682362 0.04036279
 ## 
 ## 
 ## -----------------------------------------------------------------
@@ -318,8 +318,8 @@ with(df_fat,
 ## bloco                   3  10.46    3.49  0.1780 0.9096501    
 ## Fator2                  2 739.00  369.50 18.8654 8.039e-05 ***
 ## Fator2:Fator1           3 592.38  197.46 10.0815 0.0006909 ***
-##   Fator2:Fator1: DA     1 406.13  406.13 20.7354 0.0003805 ***
-##   Fator2:Fator1: AF+DA  1  15.12   15.12  0.7722 0.3933874    
+##   Fator2:Fator1: AF+DA  1  15.13   15.13  0.7722 0.3933874    
+##   Fator2:Fator1: DA     1 406.12  406.12 20.7354 0.0003805 ***
 ##   Fator2:Fator1: DA+ES  1 171.12  171.12  8.7371 0.0098160 ** 
 ## Residuals              15 293.79   19.59                      
 ## ---
@@ -333,23 +333,23 @@ with(df_fat,
 ## bloco                3   10.46    3.49  0.1780  0.909650    
 ## Fator1               1  287.04  287.04 14.6554  0.001645 ** 
 ## Fator1:Fator2        4 1044.33  261.08 13.3300 7.897e-05 ***
-##   Fator1:Fator2: S+  2  997.17  498.58 25.4560 1.508e-05 ***
 ##   Fator1:Fator2: S-  2   47.17   23.58  1.2041  0.327368    
+##   Fator1:Fator2: S+  2  997.17  498.58 25.4560 1.508e-05 ***
 ## Residuals           15  293.79   19.59                      
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 ```
 ## 
 ## -----------------------------------------------------------------
 ## Final table
 ## -----------------------------------------------------------------
-##         DA   AF+DA   DA+ES
-## S+ 93.2 aA 71.5 aB 86.8 aA
-## S- 79.0 bA 74.2 aA 77.5 bA
+##      AF+DA      DA   DA+ES
+## S- 74.2 aA 79.0 bA 77.5 bA
+## S+ 71.5 aB 93.2 aA 86.8 aA
 ```
 
 
@@ -379,7 +379,7 @@ sketch(trat= c("A1", "A2"),
        r = 4)
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 
 ## Análise de variância
@@ -477,8 +477,8 @@ with(df_fat,
 ## Analyzing  F1  inside of each level of  F2
 ## -----------------------------------------------------------------
 ##                      GL       SQ        QM        Fc  p.value
-## F1 : F2 DA      1.00000 406.1250 406.12500 21.548268 0.000343
 ## F1 : F2 AF+DA   1.00000  15.1250  15.12500  0.802506 0.384898
+## F1 : F2 DA      1.00000 406.1250 406.12500 21.548268 0.000343
 ## F1 : F2 DA+ES   1.00000 171.1250 171.12500  9.079587 0.008963
 ## Combined error 14.57876 274.7691  18.84722                   
 ## 
@@ -486,21 +486,21 @@ with(df_fat,
 ## Analyzing  F2  inside of the level of  F1
 ## -----------------------------------------------------------------
 ##             GL        SQ        QM        Fc  p.value
-## F2 : F1 S+   2 997.16667 498.58333 24.092617  6.3e-05
 ## F2 : F1 S-   2  47.16667  23.58333  1.139597 0.352262
+## F2 : F1 S+   2 997.16667 498.58333 24.092617  6.3e-05
 ## Error b     12 248.33333  20.69444
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 ```
 ## 
 ## -----------------------------------------------------------------
 ## Final table
 ## -----------------------------------------------------------------
-##         DA   AF+DA   DA+ES
-## S+ 93.2 aA 71.5 aB 86.8 aA
-## S- 79.0 bA 74.2 aA 77.5 bA
+##      AF+DA      DA   DA+ES
+## S- 74.2 aA 79.0 bA 77.5 bA
+## S+ 71.5 aB 93.2 aA 86.8 aA
 ```
 
 
@@ -516,13 +516,6 @@ Assumindo que todos estão instalados, é só carregar com
 ```r
 library(rio) # importar e exportar arquivos
 library(ExpDes.pt) # fazer anova
-```
-
-```
-## Warning: package 'ExpDes.pt' was built under R version 4.1.1
-```
-
-```r
 library(metan) # gráficos
 library(tidyverse) # manipulação de dados e gráficos
 
@@ -672,7 +665,7 @@ pcob_mv <-
 arrange_ggplot(pn_mv, pcob_mv)
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-17-1.png" width="960" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-17-1.png" width="960" />
 
 
 
@@ -764,7 +757,7 @@ pcob_ms <-
 arrange_ggplot(pn_ms, pcob_ms)
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-19-1.png" width="960" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-19-1.png" width="960" />
 
 
 
@@ -858,7 +851,7 @@ pcob_msr <-
 arrange_ggplot(pn_msr, pcob_msr)
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-21-1.png" width="960" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-21-1.png" width="960" />
 
 
 
@@ -1086,7 +1079,7 @@ plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
               ylab = "Número de legumes por planta")
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-25-1.png" width="672" />
 
 
 
@@ -1164,7 +1157,7 @@ plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
               ylab = "Número de grãos por legume")
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-27-1.png" width="672" />
 
 
 
@@ -1240,7 +1233,7 @@ plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
               ylab = "Massa de mil grãos (g)")
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-29-1.png" width="672" />
 
 
 #### Variável RG
@@ -1316,7 +1309,7 @@ plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
               ylab = "RG (kg/ha)")
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-31-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-31-1.png" width="672" />
 
 
 
@@ -1345,15 +1338,15 @@ FAT2_SI
 ##    BLOCO HIBRIDO DOSEN    RG
 ##    <dbl> <chr>   <dbl> <dbl>
 ##  1     1 NUPEC_1     0  6.9 
-##  2     1 NUPEC_2     0  6.68
-##  3     2 NUPEC_1     0  7   
-##  4     2 NUPEC_2     0  6.65
-##  5     3 NUPEC_1     0  6.95
-##  6     3 NUPEC_2     0  6.83
-##  7     4 NUPEC_1     0  7.03
-##  8     4 NUPEC_2     0  6.76
-##  9     1 NUPEC_1    25  7.44
-## 10     1 NUPEC_2    25  7.14
+##  2     1 NUPEC_1    25  7.44
+##  3     1 NUPEC_1    50  7.65
+##  4     1 NUPEC_1    75  7.5 
+##  5     1 NUPEC_1   100  7.03
+##  6     1 NUPEC_2     0  6.68
+##  7     1 NUPEC_2    25  7.14
+##  8     1 NUPEC_2    50  7.26
+##  9     1 NUPEC_2    75  7.03
+## 10     1 NUPEC_2   100  6.69
 ## # ... with 30 more rows
 ```
 
@@ -1390,7 +1383,7 @@ d <- plot_lines(FAT2_SI, DOSEN, RG,
 arrange_ggplot(h, d, tag_levels = list(c("h", "d")), widths = c(1, 3))
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-34-1.png" width="960" style="display: block; margin: auto;" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-34-1.png" width="960" style="display: block; margin: auto;" />
 
 
 
@@ -1737,7 +1730,7 @@ plot_factbars(FAT2_CI, DOSEN, HIBRIDO,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-37-1.png" alt="Gráfico das médias dos híbridos em cada dose de nitrogênio." width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-37-1.png" alt="Gráfico das médias dos híbridos em cada dose de nitrogênio." width="672" />
 <p class="caption">Figure 1: Gráfico das médias dos híbridos em cada dose de nitrogênio.</p>
 </div>
 
@@ -1880,7 +1873,7 @@ plot_factlines(FAT2_CI, DOSEN, RG,
   parse = TRUE) 
 ```
 
-<img src="/classes/experimentacao/03_fatorial_files/figure-html/unnamed-chunk-41-1.png" width="672" />
+<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-41-1.png" width="672" />
 
 Observando-se a figura acima, é possível identificar o comportamento quadrático da variável resposta do híbrido *NUPEC\_1*. Para este híbrido, houve um incremento positivo na produtividade até um ponto, posteriormente observa-se que a produtividade tendeu a reduzir. Uma explicação biológica para esta redução seria que o excesso de nitrogênio aplicado proporcionou um alto vigor vegetativo as plantas, podendo ter ocorrido competição entre as plantas por água, luz e outros nutrientes, ou até mesmo tombamento das plantas.
 

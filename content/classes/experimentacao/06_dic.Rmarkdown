@@ -1,6 +1,6 @@
 ---
 title: ANOVA - DIC
-linktitle: "1. ANOVA - DIC"
+linktitle: "6. Delineamento Inteiramente Casualizado"
 toc: true
 type: docs
 date: "2022/02/07"
@@ -10,8 +10,8 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 2
-weight: 1
+    weight: 7
+# weight: 1
 ---
 
 

@@ -1,6 +1,6 @@
 ---
 title: Visualização
-linktitle: "5. Visualização de dados"
+linktitle: "10. Visualização de dados"
 toc: true
 type: docs
 date: "2022/03/15"
@@ -10,8 +10,7 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 6
-weight: 5
+    weight: 11
 ---
 
 # Pacotes

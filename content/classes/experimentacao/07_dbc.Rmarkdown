@@ -1,6 +1,6 @@
 ---
 title: ANOVA - DIC
-linktitle: "2. ANOVA - DBC"
+linktitle: "7. Delineamento de Blocos Casualizados"
 toc: true
 type: docs
 date: "2022/02/10"
@@ -10,8 +10,7 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 3
-weight: 2
+    weight: 8
 ---
 
 

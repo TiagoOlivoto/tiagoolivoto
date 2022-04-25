@@ -1,0 +1,303 @@
+---
+title: Visualização
+linktitle: "1. Estatística Descritiva"
+toc: true
+type: docs
+date: "2022/04/22"
+draft: false
+df_print: paged
+code_download: true
+menu:
+  experimentacao:
+    parent: Experimentação
+    weight: 2
+# weight: 1
+---
+
+# Pacotes
+
+```{r collapse=TRUE}
+library(tidyverse)
+library(metan)   
+```
+
+# Introdução
+
+Nesse material trataremos das medidas de posição e medidas de dispersão mais utilizadas para descrever um conjunto de dados (ou grupos de dados).
+
+# Medidas de posição
+Seja uma amostra \$X_1\$, \$X_2\$, \$X_n\$, de uma população \$X_1\$, \$X_2\$, \$X_N\$ de tamanho \$n\$ e \$N\$, definimos a média aritmética por
+
+
+$$
+\mu  = \frac{\displaystyle\sum_{i=1}^{N}X_i}{N}, \quad \textrm{(População)}
+$$
+
+
+$$
+\bar{X} = \frac{\displaystyle\sum_{i=1}^{n}X_i}{n}. \quad \textrm{(Amostra)}
+$$
+
+Considere a altura (em cm) de cinco plantas de milho, armazenada no objeto `altura`. Para calcular a média destas alturas, utilziamos a função `mean()`. A mediana é calculada com a função `median()`.
+
+```{r}
+altura <- c(245, 250, 269, 280, 262)
+# Média
+(media <- mean(altura))
+
+# Mediana
+# Ordenar os dados
+sort(altura)
+
+# Calcular a mediana
+(mediana <- median(altura))
+
+```
+
+
+# Medidas de dispersão
+## Amplitude
+A primeira medida de dispersão que definiremos é a amplitude ou amplitude total, denotada por \$A_p = X_{(max)} - X_{(min)}\$, onde \$X_{(max)}\$ e \$X_{(min)}\$ são os valores máximos e mínimos do conjunto de dados, respectivamente. Os valores extremos podem ser encontrados com a função `range()`.
+
+```{r}
+(extremos <- range(altura))
+(amplitude <- extremos[2] - extremos[1])
+
+```
+
+
+## Desvios médios
+
+Considerando uma amostra \$X_1\$, \$X_2\$, \$X_n\$, de uma população \$X_1\$, \$X_2\$, \$X_N\$ de tamanho \$n\$ e \$N\$, a soma dos desvios é dada por
+
+$$
+DM  = \sum_{i = 1}^{n} \left(X_i - \bar{X} \right)
+$$
+
+Para calcularmos os desvios, basta utilizar o operador `-` no R.
+```{r}
+(desvios <- altura - media)
+```
+
+Para expressar estes desvios, vamos construir um gráfico utilizando o pacote `ggplot2`.
+
+```{r fig.height=3, fig.width=10}
+df <- data.frame(pessoa = paste("Planta", 1:5),
+                 altura = altura,
+                 altura_media = media,
+                 desvio = desvios)
+
+ggplot(df, aes(x = altura, y = pessoa)) +
+  geom_point(color = "blue",
+             size = 3) +
+  geom_segment(aes(x = media,
+                   xend = altura,
+                   y = pessoa,
+                   yend = pessoa)) +
+  geom_vline(xintercept = media, linetype = 2, color = "red") +
+  geom_text(aes(x = altura, y = pessoa, label = round(desvio, digits = 3),
+                hjust = ifelse(desvio < 0, 1.5, -0.5))) +
+  scale_x_continuous(limits = c(230, 300)) + 
+  theme(panel.grid.minor = element_blank()) +
+  labs(x = "Altura da planta (m)",
+       y = "Planta")
+```
+
+
+A expressão anterior resulta em
+$$
+DM  = \sum_{i = 1}^{n} \left(X_i - \bar{X} \right) = 0
+$$
+```{r}
+sum(desvios) |> round()
+```
+
+Isso significa que essa medida não traz ganho algum a descrição dos dados, porque os desvios positivos anulam-se com os desvios negativos no somatório. Para isso, podemos contornar essa situação inserindo uma função modular nessa medida anterior, e criar o módulo do desvio. Assim, o desvio médio é dado por:
+
+$$
+S_{|\bar{X}|} = \frac{\sum_{i = 1}^{n} \left|X_i - \bar{X} \right|}{n}
+$$
+
+```{r}
+# soma dos desvios em módulo
+(somadesv <- desvios |> abs() |> sum())
+
+# desvio médio
+somadesv / 5
+```
+
+## Variância
+
+Utilizando uma função quadrática na medida surge uma outra medida de variabilidade que é a soma de quadrados.  A soma de quadrados apresenta uma outra informação interessante que é penalizar as observações quanto mais estiver distante do valor central. Assim, quando elevamos ao quadrado um alto desvio, esse valor se torna maior ainda, mas quando elevamos ao quadrado um desvio pequeno, esse valor não cresce tanto. Com isso, conseguimos compreender quais os dados que estão mais dispersos em torno da média. Ao dividir a soma de quadrados por \$n-1\$ temos o estimador da variância amostral (\$S^2\$), dado por:
+
+$$
+S^2 = \frac{\sum_{i = 1}^{n} \left(X_i - \bar X_i \right)^2}{n-1}
+$$
+
+```{r}
+# Desvios ao quadrado
+(desvq <- desvios ^ 2)
+
+# soma dos desvios ao quadrado
+(somadesvq <- sum(desvq))
+
+# divisão por n - 1
+(var_altura <- somadesvq / 4)
+
+```
+
+Anteriormente, vimos o passo a passo para o cálculo da variância amostral. No R, a função `var()` pode ser utilizada para este fim.
+
+```{r}
+var(altura)
+```
+
+
+## Desvio padrão
+
+A variância, como medida de dispersão, apresenta sua unidade ao quadrado da unidade da variável em estudo. Em outras palavras, que se tivermos usando uma variável na escala de centímetros (ex., algura), a dispersão dada pela variância estará na escala de área (cm\$^2\$). Isso se torna difícil a percepção de dispersão quando observamos os dados. Para contornar isso, utilizamos o desvio padrão, que é a raíz quadrada da variância, dado por
+
+$$
+S = \sqrt{S^2}
+$$
+
+Para o exemplo acima, computamos o desvio padrão extraíndo a raíz de `var_altura`, ou, como para a variância, utilizando uma função específica do R para isso: `sd()` (de `s`tandard `d`eviation).
+
+```{r}
+(desv_altura <- sqrt(var_altura))
+# utilizando a função sd()
+sd(altura)
+```
+
+
+## Coeficiente de variação
+
+As medidas de variabilidade tais como a variância e desvio padrão, são conhecidas como medidas de dispersão absoluta. Isto significa que elas serão diretamente influenciadas pela magnitude da variável. Vamos tomar como motivação, os valores em `altura`, tomados em cm. Consideremos que estes dados são transformados para metros, por tanto, cada observação será dividida por 100. Observe abaixo o resultado do desvio padrão da mesma variável, mas com escala diferente.
+
+```{r}
+(altura_m <- altura / 100)
+(desv_altura_m <- sd(altura_m))
+```
+
+Para contornar este problema, podemos utilizar uma medida relativa de variabilidade chamada de Coeficiente de Variação (CV). Este pode ser usada para comparar a variabilidade entre quaisquer grupo de dados, independentemente da sua escala.  O coeficiente de variação é definido por:
+
+$$
+CV = \frac{S}{\bar{X}} \times 100
+$$
+
+```{r}
+# coeficiente de variação da variável em centímetros
+(cv_altura <- desv_altura / media * 100)
+
+# coeficiente de variação da variável em metros
+(cv_altura2 <- desv_altura_m / mean(altura_m) * 100)
+```
+
+Não existe no R base uma função para computar o coeficiente de variação, então vamos criá-la utilizando a abordagem `function()`.
+
+```{r}
+CV <- function(dados){
+  if(!class(dados) == "numeric"){
+    stop("Os dados precisam ser numéricos")
+  } #Indica que os dados devem ser numéricos
+  media <- mean(dados)
+  sd <- sd(dados)
+  CV <- (sd/media) * 100
+  return(CV) # Valor que será retornado pela função
+}
+
+CV(altura)
+```
+
+
+## Erro padrão da média
+
+O erro padrão da média é a estimativa do desvio padrão de sua distribuição amostral. O desvio padrão visto anteriormente reflete a variabilidade de cada observação em torno da média amostral. Já o erro padrão da média, representa a variabilidade de cada média amostral de todas amostra possíveis, em relação a média populacional. Sua estimativa é dada por:
+
+$$
+S_{\bar{X}}  = \frac{S}{\sqrt{n}}
+$$
+
+É fácil observar que à medida que \$n \to N\$, isto é, à medida que  
+\$n\$ aumenta, a média amostral ($\bar X$) tende a média populacional ($\mu$). Isso significa que a média amostral é mais precisa porque se aproxima cada vez mais da média populacional. Para os dados em `altura`, o erro padrão da média é calculado com:
+
+```{r}
+(epm <- desv_altura / sqrt(5))
+
+```
+
+# Aplicação utilizando o pacote metan
+
+Para calcular todas as estatísticas de uma só vez, podemos usar `desc_stat()` do pacote metan. Esta função pode ser usada para calcular medidas de tendência central, posição e dispersão. Por padrão (`stats = "main"`), sete estatísticas (coeficiente de variação, máximo, média, mediana, mínimo, desvio padrão da amostra, erro padrão e intervalo de confiança da média) são calculadas. Outros valores permitidos são `"all"` para mostrar todas as estatísticas, `"robust"` para mostrar estatísticas robustas, `"quantile"` para mostrar estatísticas quantílicas ou escolher uma (ou mais) estatísticas usando um vetor separado por vírgula com os nomes das estatísticas, por exemplo, `stats = c("mean, cv")`. Também podemos usar `hist = TRUE` para criar um histograma para cada variável. Para mais detalhes consulte [este material](https://tiagoolivoto.github.io/e-bookr/analdata.html#ebasic).
+
+
+```{r}
+library(metan)
+desc_stat(altura, stats = "all") |> as.data.frame()
+
+# estatísticas vistas neste material
+desc_stat(altura,
+          stats = c("mean, median, range, ave.dev, var.amo, sd.amo, cv, se")) |> 
+  as.data.frame()
+```
+
+
+# Simulação de dados com diferentes variâncias
+
+
+
+O código a seguir apresenta uma simulação de três grupos com 10 observações cada um. Os grupos formados são A, B e C, todos com média `9,018686`.
+
+```{r}
+# Dados dos grupos gerados
+set.seed(10) # assegura a reprodutibilidade
+A <- rnorm(10, mean = 10, sd = 2)
+set.seed(10)
+B <- rnorm(9, mean = 10, sd = 4)
+set.seed(10)
+C <- rnorm(9, mean = 10, sd = 6)
+
+# gerando B[10]
+B[10] <-  length(A) * mean(A) - sum(B)
+# gerando C[10]
+C[10] <- length(A) * mean(A) - sum(C)
+
+dados <- 
+  data.frame(grupo = c(rep("A", 10),
+                       rep("B", 10),
+                       rep("C", 10)),
+             valor = c(A, B, C))
+
+dados
+
+```
+
+Utilizando a função `means_by()` do pacote metan é possível computar médias por grupos.
+```{r}
+# calcular a média por grupo
+means_by(dados, grupo) |> as.data.frame()
+```
+
+Dessa forma, poderíamos concluir que os grupos de dados são iguais? A resposta é não. Isso significa, que essa medida de posição apenas não consegue caracterizar completamente os grupos de dados. Para isto, medidas de dispersão são necessárias. Note no exemplo abaixo, como as medidas de dispersão diferem consideravelmente entre os grupos!
+
+
+```{r}
+desc_stat(dados,
+          by = grupo,
+          stats = c("mean, median, range, ave.dev, var.amo, sd.amo, cv, se"))
+```
+
+Isto fica mais facilmente notado ao criarmos um gráfico do tipo boxplot, contendo a dispersão dos dados.
+
+```{r fig.width=8, fig.height=5}
+library(ggstatsplot)
+ggbetweenstats(dados,
+               x = grupo,
+               y = valor,
+               plot.type = "box",
+               pairwise.comparisons = FALSE,
+               results.subtitle = FALSE,
+               k = 4)
+```
+
+

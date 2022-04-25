@@ -1,6 +1,6 @@
 ---
 title: ANOVA - DIC
-linktitle: "1. ANOVA - DIC"
+linktitle: "6. Delineamento Inteiramente Casualizado"
 toc: true
 type: docs
 date: "2022/02/07"
@@ -10,8 +10,8 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 2
-weight: 1
+    weight: 7
+# weight: 1
 ---
 
 
@@ -64,7 +64,7 @@ trats <- c("50", "70", "100")
 sketch(trats, r = 4, pos = "line")
 ```
 
-<img src="/classes/experimentacao/01_dic_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="/classes/experimentacao/06_dic_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 
 
@@ -94,16 +94,17 @@ A função `inspect` do pacote `metan` é utilizada para inspecionar o conjunto 
 
 ```r
 inspect(df_dic, plot = TRUE)
-## # A tibble: 4 x 9
-##   Variable Class   Missing Levels Valid_n    Min Median    Max Outlier
-##   <chr>    <chr>   <chr>   <chr>    <int>  <dbl>  <dbl>  <dbl>   <dbl>
-## 1 RAD      factor  No      3           12   NA     NA     NA        NA
-## 2 REP      factor  No      4           12   NA     NA     NA        NA
-## 3 AF       numeric No      -           12 3648.  5287.  6118.        0
-## 4 MST      numeric No      -           12   10.7   13.6   16.9       0
+## # A tibble: 5 x 9
+##   Variable Class   Missing Levels Valid_n     Min  Median     Max Outlier
+##   <chr>    <chr>   <chr>   <chr>    <int>   <dbl>   <dbl>   <dbl>   <dbl>
+## 1 RAD      factor  No      3           12   NA      NA      NA         NA
+## 2 REP      factor  No      4           12   NA      NA      NA         NA
+## 3 AF_M2    numeric No      -           12    3.65    5.28    6.12       0
+## 4 AF       numeric No      -           12 3648.   5287.   6118.         0
+## 5 MST      numeric No      -           12   10.7    13.6    16.9        0
 ```
 
-<img src="/classes/experimentacao/01_dic_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="/classes/experimentacao/06_dic_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 
 # Estatística descritiva 
@@ -113,11 +114,12 @@ A função `desc_stat()` do pacote `metan` computa estatísticas descritivas par
 
 ```r
 desc_stat(df_dic)
-## # A tibble: 2 x 9
-##   variable    cv    max   mean median    min sd.amo      se     ci
-##   <chr>    <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>   <dbl>  <dbl>
-## 1 AF        14.7 6118.  5144.  5287.  3648.  755.   218.    479.  
-## 2 MST       16.0   16.9   13.7   13.6   10.7   2.20   0.634   1.40
+## # A tibble: 3 x 9
+##   variable    cv     max    mean  median     min  sd.amo      se      ci
+##   <chr>    <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+## 1 AF        14.7 6118.   5144.   5287.   3648.   755.    218.    479.   
+## 2 AF_M2     14.6    6.12    5.14    5.28    3.65   0.753   0.217   0.478
+## 3 MST       16.0   16.9    13.7    13.6    10.7    2.20    0.634   1.40
 ```
 
 
@@ -182,7 +184,7 @@ pwpp(medias)
 ```
 
 <div class="figure">
-<img src="/classes/experimentacao/01_dic_files/figure-html/unnamed-chunk-8-1.png" alt="Pairwise P-value plot" width="672" />
+<img src="/classes/experimentacao/06_dic_files/figure-html/unnamed-chunk-8-1.png" alt="Pairwise P-value plot" width="672" />
 <p class="caption">Figure 1: Pairwise P-value plot</p>
 </div>
 
@@ -196,7 +198,7 @@ plot(medias,
 ```
 
 <div class="figure">
-<img src="/classes/experimentacao/01_dic_files/figure-html/unnamed-chunk-9-1.png" alt="Comparações entre pares de médias com base no teste Tukey" width="672" />
+<img src="/classes/experimentacao/06_dic_files/figure-html/unnamed-chunk-9-1.png" alt="Comparações entre pares de médias com base no teste Tukey" width="672" />
 <p class="caption">Figure 2: Comparações entre pares de médias com base no teste Tukey</p>
 </div>
 
@@ -211,7 +213,7 @@ with(df_dic,
      DIC(RAD, MST))
 ```
 
-<img src="/classes/experimentacao/01_dic_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="/classes/experimentacao/06_dic_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 ```
 ## 
@@ -265,7 +267,7 @@ with(df_dic,
 ## 50  11.22022      c
 ```
 
-<img src="/classes/experimentacao/01_dic_files/figure-html/unnamed-chunk-10-2.png" width="672" />
+<img src="/classes/experimentacao/06_dic_files/figure-html/unnamed-chunk-10-2.png" width="672" />
 
 
 
