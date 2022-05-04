@@ -1,9 +1,9 @@
 +++
-title = "Apresentação do pacote {pliman}: analisando imagens no software R [Português]"
-linktitle = "Apresentação do pacote {pliman}: analisando imagens no software R [Português]"
-summary = "Apresentação do pacote {pliman} no curso 'Análise de Imagens no R', organizado pela Image Pesquisas."
-date = "2021/11/25"
-lastmod = "2021/11/25"
+title = "Luzes, câmera {pliman}! Analisando imagens de plantas no R [Português]"
+linktitle = "Pacote R {pliman}"
+summary = "Este material aborda o uso do pacote R pliman (plant image analysis) na fitopatometria (quantificação de severidade, número de lesões, etc.) baseada em imagens no R."
+date = "2021/09/28"
+lastmod = "2021/09/28"
 toc = true  # Show table of contents? true/false
 type = "docs"  # Do not modify.
 [menu.plimanip]
@@ -14,59 +14,31 @@ weight = 1
 
 
 
+# <i class="fas fa-chalkboard-user"></i> Software e instruções de instalação
 
-<div class="container">
-<div class="col-md-12">
-<div class="row">
-<div class="col-md-3">
-<div class="box-simple">
-<div class="icon">
-<i class="far fa-calendar-alt fa-4x"></i>
-</div>
-Data<br>25/11/2021
-</div>
-</div>
+<a class="btn btn-success" href="https://cran.r-project.org/bin/windows/base/" target="_blank"><i class="fa fa-save"></i> Download do R</a>
 
-<div class="col-md-3">
-<div class="box-simple">
-<div class="icon">
-<i class="far fa-clock fa-4x"></i>
-</div>
-Duração<br> ~40 minutos
-</div>
-</div>
 
-<div class="col-md-3">
-<div class="box-simple">
-<div class="icon">
-<i class="fas fa-map-marked-alt fa-4x"></i>
-</div>
-Modalidade:<br> online
-</div>
-</div>
+<a class="btn btn-success" href="https://www.rstudio.com/products/rstudio/download/" target="_blank"><i class="fa fa-save"></i> Download do RStudio</a>
 
-<div class="col-md-3">
-<div class="box-simple">
-<div class="icon">
-<i class="fab fa-r-project fa-4x"></i>
-</div>
-Software:<br> R e Rstudio
-</div>
-</div>
-</div>
-</div>
-</div>
+
+
+
+<iframe width="760" height="430" src="https://www.youtube.com/embed/e89kyYJgWqc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 
 # <i class="fas fa-chalkboard-teacher"></i> Ministrante
 <div style="padding-left:16px" id = "ministrante">
-<p>
-Consulte o resumo do perfil de Tiago clicando no botão abaixo ou visite seu perfil completo nas plataformas acadêmicas.
+
+<a href="https://olivoto.netlify.app/" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/tutorials/pliman_ufsc_fito/avatar.png" width="168" height="200"/></a>
+
+
+
 
 <p>
-<a class="btn btn-primary" data-toggle="collapse" href="#perfiltiago" role="button" aria-expanded="false" aria-controls="perfiltiago">
-Veja o resumo aqui!
+<a class="btn btn-success" data-toggle="collapse" href="#perfiltiago" role="button" aria-expanded="false" aria-controls="perfiltiago">
+Tiago Olivoto (apresentação)
 </a>
 </p>
 
@@ -74,7 +46,7 @@ Veja o resumo aqui!
 <div class="collapse" id="perfiltiago">
 <div class="card card-body">
 
-Tiago Olivoto é Técnico Agrícola pela Escola Estadual de Educação Básica Viadutos (2008), Engenheiro agrônomo pela Universidade do Oeste de Santa Catarina (2014), Mestre em Agronomia: Agricultura e Ambiente pela Universidade Federal de Santa Maria (2017) e Doutor em Agronomia com ênfase em Melhoramento Genético Vegetal e Experimentação Agrícola pela Universidade Federal de Santa Maria (2020). Tem experiência profissional como Técnico Agrícola (2008-2011), consultor técnico de vendas (2012-2013), na administração pública e gestão de pessoas  (2014-2015), atuando como Secretário Municipal da Agricultura e Meio Ambiente no município de Cacique Doble-RS. Atualmente é Professor  Substituto na Universidade Federal de Santa Maria (UFSM). É membro atuante da International Biometric Society (IBS) e integrante da comissão de Jovens Pesquisadores da Região Brasileira da Sociedade Internacional de Biometria, RBras, (JP-RBras) representando os estados do RS, SC e PR. Atua também como revisor ad hoc em revistas científicas nacionais e internacionais. Exerce atividades de pesquisa relacionadas ao planejamento, condução e avaliação de experimentos com culturas anuais, com ênfase no desenvolvimento e aperfeiçoamento de métodos estatístico-experimentais para avaliação de ensaios multi-ambientes em melhoramento genético de plantas. Em seu Currículo, os termos mais frequentes na contextualização da produção científica são: análise de ensaios multi-ambientes, índices multivariados, intervalo de confiança para correlação, planejamento de experimentos, seleção indireta, interação genótipo-vs-ambiente, modelos mistos e parâmetros genéticos. Tem experiência com os softwares Gênes, GEA-R, R, SAS e SPSS. Desenvolveu os pacotes para software R metan (https://tiagoolivoto.github.io/metan/), voltado para a checagem, manipulação, análise e apresentação de dados de ensaios multi-ambientes e pliman (https://tiagoolivoto.github.io/pliman/) voltado para a análise de imagens de plantas.
+Filho de agricultores familiares, Técnico Agrícola pela Escola Estadual de Educação Básica Viadutos (2008), Engenheiro agrônomo pela Universidade do Oeste de Santa Catarina (2014), Mestre em Agronomia: Agricultura e Ambiente pela Universidade Federal de Santa Maria (2017) e Doutor em Agronomia com ênfase em Melhoramento Genético Vegetal e Experimentação Agrícola pela Universidade Federal de Santa Maria (2020). Atualmente é Professor Adjunto A1 do Departamento de Fitotecnia da Universidade Federal de Santa Catarina (UFSC), atuando na área de Melhoramento Genético Vegetal e Experimentação Agrícola. Exerce atividades relacionadas ao planejamento, condução e avaliação de experimentos com culturas anuais, com ênfase no desenvolvimento e aperfeiçoamento de métodos estatístico-experimentais para avaliação de ensaios multi-ambientes em melhoramento genético de plantas. Em seu Currículo, os termos mais frequentes na contextualização da produção científica são: análise de ensaios multi-ambientes, índices multivariados, intervalo de confiança para correlação, planejamento de experimentos, seleção indireta, interação genótipo-vs-ambiente, modelos mistos e parâmetros genéticos. É membro atuante da International Biometric Society (IBS) e integrante da comissão de Jovens Pesquisadores da Região Brasileira da Sociedade Internacional de Biometria, RBras, (JP-RBras) representando os estados do RS, SC e PR. Atua também como revisor ad hoc em revistas científicas nacionais e internacionais. Tem experiência com os softwares Gênes, GEA-R, R, SAS e SPSS. Vem desenvolvendo os pacotes para software R metan (https://tiagoolivoto.github.io/metan/), voltado para a checagem, manipulação, análise e apresentação de dados de ensaios multi-ambientes e pliman (https://tiagoolivoto.github.io/pliman/) voltado para a análise de imagens de plantas.
 
 </div>
 </div>
@@ -95,22 +67,9 @@ Tiago Olivoto é Técnico Agrícola pela Escola Estadual de Educação Básica V
 <h3>
 Currículo Lattes
 </h3>
-</a>
 </div>
 </div>
 
-<div class="col-md-3">
-<div class="box-simple">
-<a href="https://www.mendeley.com/profiles/tiago-olivoto/" target="_blank" rel="noopener">
-<div class="icon">
-<i class="ai ai-4x ai-mendeley"></i>
-</div>
-<h3>
-Mendeley
-</h3>
-</a>
-</div>
-</div>
 
 <div class="col-md-3">
 <div class="box-simple">
@@ -150,12 +109,13 @@ Google Escolar
 
 <img src="https://raw.githubusercontent.com/TiagoOlivoto/pliman/master/man/figures/logo_pliman.svg" align="right" width="250" height="250"/>
 
-{pliman} (**pl**ant **im**age **an**alysis) foi concebido para analisar (também) imagens de plantas, especialmente relacionadas à análise de folhas e sementes.  O pacote irá ajudá-lo a:
+{pliman} (**pl**ant **im**age **an**alysis) foi concebido para analisar (também) imagens de plantas, especialmente relacionadas à análise de folhas e sementes.  O pacote irá ajudá-lo a:   
+
 * Mensurar a severidade de doenças foliares;
 * Contar o número de lesões;
 * Obter características da forma das lesões;
 * Contar objetos em uma imagem;
-* Obter características de objetos (área, perímetro, raio, circularidade, excentricidade, solidez);
+* Obter características de objetos (área, perímetro, raio, circularidade, excentricidade, solidez, elongação);
 * Obter os valores RGB para cada objeto em uma imagem;
 * Obter as coordenadas de objetos;
 * Obter os contornos de objetos;
@@ -164,7 +124,6 @@ Google Escolar
 * Plotar medidas de objetos.
 
 
-<a href="https://www.researchgate.net/publication/353021781_Measuring_plant_disease_severity_in_R_introducing_and_evaluating_the_pliman_package" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/tutorials/pliman_omegads/paper_pliman.png" width="1000" height="273"/></a>
 
 
 # <i class="fas fa-tools"></i> Instalação
@@ -196,7 +155,43 @@ devtools::install_github ("TiagoOlivoto/pliman", build_vignettes = TRUE)
 *Nota*: Se você for um usuário do Windows, sugere-se primeiro baixar e instalar a versão mais recente do [Rtools](https://cran.r-project.org/bin/windows/Rtools/). Para obter as notas de lançamento mais recentes sobre esta versão de desenvolvimento, consulte o [arquivo NEWS](https://tiagoolivoto.github.io/metan/news/index.html).
 
 
-# <i class="fas fa-box-open"></i> Pacotes necessários
+# <i class="fas fa-book"></i> Citação 
+
+Para citar o pacote `pliman` em seus trabalhos, use a seguinte referência:
+
+> Olivoto, T. (2022). Lights, camera, pliman! an R package for plant image analysis. Methods in Ecology and Evolution. <A HREF = "https://onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13803">doi: 10.1111/2041-210X.13803</A>
+
+<a href="https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13803" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/tutorials/pliman_ufsc_fito/paper.png" width="1000" height="273"/></a>
+
+
+```r
+citation("pliman")
+# 
+# Please, support this project by citing it in your publications!
+# 
+#   Olivoto, T.(2022). Lights, camera, pliman! An R package for plant
+#   image analysis. Methods Ecol Evol. 13:789-798
+#   doi:10.1111/2041-210X.13803
+# 
+# A BibTeX entry for LaTeX users is
+# 
+#   @Article{Olivoto2022,
+#     author = {Tiago Olivoto},
+#     title = {Lights, camera, pliman! An R package for plant image analysis},
+#     journal = {Methods in Ecology and Evolution},
+#     volume = {13},
+#     number = {4},
+#     pages = {789-798},
+#     year = {2022},
+#     doi = {10.1111/2041-210X.13803},
+#   }
+```
+
+
+
+# <i class="fas fa-box-open"></i> Pacotes úteis
+
+Os resultados gerados pelo pacote pliman são retornados em forma de `data.frame`, o que permite sua manipulação futura dentro do R. Assim, sugere-se que os seguintes pacotes sejam instalados
 
 
 ```r
@@ -207,21 +202,38 @@ library(patchwork)  # organizar gráficos
 
 
 
-# <i class="fas fa-database"></i> Imagens, scripts e orientações
 
-Sugere-se que as imagens sejam baixadas e a pasta definida como diretório padrão. Em meu exemplo, setei o seguinte caminho como diretório padrão. O arquivo .zip contém as imagens e os scripts necessários para reproduzir o conteúdo do material.
+# <i class="fas fa-database"></i> Imagens e orientações
+
+Sugere-se que as imagens sejam baixadas e a pasta definida como diretório padrão. O arquivo `.zip` disponível no botão abaixo contém uma pasta chamada `leaves`. Esta pasta contém as imagens e scripts necessários para reprodução dos exemplos. Surigo definir esta pasta como o diretório padrão para o R.
 
 
 ```r
-# mude de acordo com sua pasta
-setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ufsc_fito/leaves")
 ```
 
 
-<a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_ip/pliman_ip.rar">
-<button class="btn btn-success"><i class="fa fa-save"></i> Download do material</button>
+
+<a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_ufsc_fito/leaves.rar">
+<button class="btn btn-success"><i class="fa fa-save"></i> Download das imagens e scripts</button>
 </a>
+
+
+
 <br>
+
+# <i class="fas fa-tv"></i> Slides
+
+Página para acesso aos slides <a href="https://tiagoolivoto.github.io/slides_R/slides/pliman_imagep/index.html#1" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+
+<iframe src="https://tiagoolivoto.github.io/slides_R/slides/pliman_imagep" width="672" height="400px" data-external="1"></iframe>
+
+
+Página para acesso aos slides <a href="https://tiagoolivoto.github.io/slides_R/slides/pliman_esalq/index.html#1" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+
+<iframe src="https://tiagoolivoto.github.io/slides_R/slides/pliman_esalq" width="672" height="400px" data-external="1"></iframe>
+
+
 
 # <i class="fab fa-creative-commons"></i> Licença
 

@@ -4,7 +4,7 @@ linktitle: "1. Importação e manipulação"
 toc: true
 type: docs
 date: "2021/11/25"
-lastmod: "2021/11/25"
+lastmod: "2022/05/06"
 draft: false
 df_print: paged
 code_download: true
@@ -26,11 +26,13 @@ setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
-# Importar imagens
+## Importar imagens
 
 ```r
-library(pliman)  
-img <- image_import("grains.jpg")
+library(pliman)
+library(tidyverse)
+library(patchwork)
+img <- image_import("folhas.jpg")
 ```
 
 
@@ -39,25 +41,69 @@ Para importar uma lista de imagens, use um vetor de nomes de imagens, ou o argum
 
 
 ```r
-img_list1 <- image_import(c("grains.jpg", "green.jpg"))
-img_list2 <- image_import(pattern = "maize_")
-str(img_list1)
+img_list1 <- image_import(c("img_sb_50_1.jpg", "img_sb_50_2.jpg"))
+img_list2 <- image_import(pattern = "img_sb_")
+str(img_list2)
 ```
 
 ```
-## List of 2
-##  $ grains.jpg:Formal class 'Image' [package "EBImage"] with 2 slots
-##   .. ..@ .Data    : num [1:1281, 1:910, 1:3] 0.412 0.388 0.388 0.38 0.38 ...
+## List of 13
+##  $ img_sb_50_1.jpg :Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.365 0.361 0.369 0.357 0.365 ...
 ##   .. ..@ colormode: int 2
-##   .. ..$ dim: int [1:3] 1281 910 3
-##  $ green.jpg :Formal class 'Image' [package "EBImage"] with 2 slots
-##   .. ..@ .Data    : num [1:1238, 1:929, 1:3] 0.831 0.812 0.824 0.831 0.808 ...
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_10.jpg:Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.42 0.408 0.416 0.416 0.416 ...
 ##   .. ..@ colormode: int 2
-##   .. ..$ dim: int [1:3] 1238 929 3
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_11.jpg:Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.388 0.38 0.384 0.384 0.376 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_12.jpg:Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.38 0.38 0.392 0.384 0.4 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_13.jpg:Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.4 0.392 0.412 0.392 0.404 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_2.jpg :Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.384 0.384 0.392 0.388 0.392 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_3.jpg :Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.369 0.376 0.361 0.361 0.365 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_4.jpg :Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.4 0.408 0.396 0.392 0.392 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_5.jpg :Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.396 0.404 0.396 0.396 0.388 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_6.jpg :Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.4 0.38 0.396 0.384 0.388 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_7.jpg :Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.353 0.361 0.365 0.365 0.373 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_8.jpg :Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.365 0.373 0.38 0.388 0.384 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 816 612 3
+##  $ img_sb_50_9.jpg :Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:816, 1:612, 1:3] 0.373 0.365 0.373 0.376 0.392 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 816 612 3
 ```
 
 
-# Exibindo imagens
+## Exibindo imagens
 Imagens individuais são exibidas com `plot()`. Para combinar imagens, a função `image_combine()` é usada. Os usuários podem informar uma lista de objetos separados por vírgulas ou uma lista de objetos da classe `Image`.
 
 
@@ -83,7 +129,7 @@ image_combine(img_list1)
 
 `pliman` fornece um conjunto de funções `image_*()` para realizar a manipulação de imagens e transformação de imagens exclusivas ou uma lista de imagens baseada no [pacote EBImage](https://www.bioconductor.org/packages/release/bioc/vignettes/EBImage/inst/doc/EBImage-Introduction.html).
 
-# Redimensionar uma imagem
+## Redimensionar uma imagem
 Às vezes, o redimensionamento de imagens de alta resolução é necessário para reduzir o esforço computacional e tempo de processamento. A função `image_resize()` é usada para redimensionar uma imagem. O argumento `rel_size` pode ser usado para redimensionar a imagem por tamanho relativo. Por exemplo, definindo `rel_size = 50` para uma imagem de largura 1280 x 720, a nova imagem terá um tamanho de 640 x 360.
 
 
@@ -96,8 +142,8 @@ image_dimension(img)
 ## ----------------------
 ## Image dimension
 ## ----------------------
-## Width :  1281 
-## Height:  910
+## Width :  783 
+## Height:  1005
 ```
 
 ```r
@@ -110,119 +156,33 @@ image_dimension(img_resized)
 ## ----------------------
 ## Image dimension
 ## ----------------------
-## Width :  640 
-## Height:  455
+## Width :  392 
+## Height:  502
 ```
 
 
-# Cortar uma imagem
-Cortar imagens é útil para remover ruídos da borda da imagem, bem como para reduzir o tamanho das imagens antes do processamento. Para recortar uma imagem, a função `image_crop()` é usada. Os usuários precisam informar um vetor numérico indicando a faixa de pixels (`width` e `height`) que será mantida na imagem recortada.
-
-
-```r
-crop1 <-
-  image_crop(img,
-             width = 171:1088,
-             height = 115:855,
-             plot = TRUE)
-```
-
-<img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-
-Se apenas `width` ou `height` forem informados, a imagem será recortada verticalmente ou horizontalmente.
-
-
-```r
-crop2 <-
-  image_crop(img,
-             height = 115:855,
-             plot = TRUE)
-```
-
-<img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/unnamed-chunk-5-1.png" width="672" />
-
-Se `width` e `height` não forem declarados, um processo iterativo de corte da imagem é executado.
-
-
-```r
-# executa apenas em uma seção iterativa
-image_crop(img)
-```
-
-
-Além disso, um processo de corte automatizado pode ser executado. Nesse caso, a imagem será cortada automaticamente na área de objetos com uma borda de cinco pixels por padrão.
-
-
-```r
-auto_crop <- image_autocrop(img, plot = TRUE)
-```
-
-<img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/unnamed-chunk-7-1.png" width="672" />
-
-```r
-# um exemplo de corte em lote
-imgs_crop <- image_import(pattern = "crop_", plot = TRUE)
-```
-
-<img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/unnamed-chunk-7-2.png" width="672" />
-
-```r
-cropped <- image_autocrop(imgs_crop)
-image_combine(cropped)
-```
-
-<img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/unnamed-chunk-7-3.png" width="672" />
-
-```r
-# somente na versão de desenvolvimento
-image_export(cropped, prefix = "c_", subfolder = "cropped")
-```
-
-
-A função `image_trim()` é usada para cortar pixels das bordas da imagem.
 
 
 
-```r
-# apara 100 pixels de todas as bordas
-img_trim <- image_trim(img, edge = 50, plot = TRUE)
-
-# O mesmo é alcançado com
-img_trim2 <-
-  image_trim(img,
-             top = 50,
-             bottom = 50,
-             left = 50,
-             right = 50,
-             plot = TRUE)
-```
-
-<img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/manipulate2-1.png" width="960" />
-
-```r
-# apara 100 pixels da parte superior e 50 da inferior
-img_trim3 <-
-  image_trim(img,
-             top = 100,
-             bottom = 50,
-             plot = TRUE)
-```
-
-<img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/manipulate2-2.png" width="960" />
-
-
-
-
-# Resolução da imagem (DPI) {#dpi}
-A função `dpi()` executa uma função interativa para calcular a resolução da imagem dada uma distância conhecida informada pelo usuário. Para calcular a resolução da imagem(dpi), o usuário deve usar o botão esquerdo do mouse para criar uma linha de distância conhecida. Isso pode ser feito, por exemplo, usando um modelo com distância conhecida na imagem(por exemplo, `leaves.JPG`).
+## Resolução da imagem (DPI) {#dpi}
+A função `dpi()` executa uma função interativa para calcular a resolução da imagem dada uma distância conhecida informada pelo usuário. Para calcular a resolução da imagem (dpi), o usuário deve usar o botão esquerdo do mouse para criar uma linha de distância conhecida. Isso pode ser feito, por exemplo, usando um modelo com distância conhecida, como à seguir.
 
 
 ```r
 # executado apenas em uma seção interativa
 rule <- image_import("rule.jpg", plot = TRUE)
-dpi(rule)
-```
+(dpi <- dpi(rule))
 
+rule2 <- image_crop(rule,
+                    width = 384:1599,
+                    height = 805:1721,
+                    plot = TRUE)
+
+analyze_objects(rule2,
+                watershed = FALSE,
+                marker = "area") |> 
+  get_measures(dpi = 518)
+```
 
 
 
@@ -250,6 +210,7 @@ image_combine(img,
 ```
 
 <img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/manipulate6-1.png" width="960" />
+
 
 
 
