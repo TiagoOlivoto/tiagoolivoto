@@ -1,6 +1,6 @@
 ---
-title: Fitopatometria
-linktitle: "4. Fitopatometria"
+title: Phytopathometry
+linktitle: "4. Phytopathometry"
 toc: true
 type: docs
 date: "2021/11/25"
@@ -25,11 +25,18 @@ setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
-# Severidade da doença
-## Utilizando paletas
+# Disease severity
+## Using sample palettes
+
+Sample palettes can be made by simply manually sampling small areas of representative images and producing a composite image that will represent each of the desired classes (background, healthy, and symptomatic tissues). 
 
 
 ```r
+# generate html tables
+print_tbl <- function(table, digits = 3, ...){
+  knitr :: kable(table, booktabs = TRUE, digits = digits, ...)
+}
+
 library(pliman)
 ```
 
@@ -72,7 +79,10 @@ image_combine(img, h, d, b, ncol = 4)
 <img src="/tutorials/pliman_ip/04_phytopathometry_files/figure-html/doença1-1.png" width="1152" />
 
 
-## Gerando paletas
+## Producing sample palettes
+
+Users can produce these palettes with `pick_palette()` function.
+
 
 ```r
 h2 <- pick_palette(img)
@@ -82,7 +92,7 @@ image_combine(h2, d2, b2, ncol = 3)
 ```
 
 
-### Padrão da função
+### Defaults settings
 
 ```r
 sev <- 
@@ -100,11 +110,11 @@ sev$severity
 
 ```
 ##    healthy symptomatic
-## 1 92.74062    7.259378
+## 1 92.83025    7.169748
 ```
 
 
-### Mostrando preenchimento das lesões
+### Filling lesions
 
 ```r
 sev <- 
@@ -118,7 +128,7 @@ sev <-
 <img src="/tutorials/pliman_ip/04_phytopathometry_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 
-### Mostrando uma máscara
+### Showing a mask
 
 ```r
 sev <- 
@@ -133,8 +143,10 @@ sev <-
 <img src="/tutorials/pliman_ip/04_phytopathometry_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 
-### Segmentando e analisando as lesões
-Ao utilizar `show_features = TRUE`, a função analisa as lesões e retorna resultados como número de lesões, área, perímetro, etc. Com `show_segmentation = TRUE`, as lesões segmentadas são mostradas.
+### Segmenting and analyzing lesions
+
+When using `show_features = TRUE`, the function analyzes the lesions and returns results such as number of lesions, area, perimeter, etc. With `show_segmentation = TRUE`, segmented lesions are shown.
+
 
 ```r
 sev <- 
@@ -149,13 +161,13 @@ sev <-
 <img src="/tutorials/pliman_ip/04_phytopathometry_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
 ```r
-# corrigir as medidas (dpi = 150)
+# correct the measures (dpi = 150)
 sev_corrected <- get_measures(sev, dpi = 150)
 ```
 
 
-## Processamento em lote
-Para analisar diversas imagens de um diretório, utiliza-se o argumento `pattern`, para declarar um padrão de nomes de arquivos. Serão utilizadas 50 folhas de soja disponíveis no repositório  https://osf.io/4hbr6, um banco de dados de imagens de anotação de severidade de doenças de plantas. Obrigado a [Emerson M. Del Ponte](https://osf.io/jb6yd/) e seus colaboradores por manter este projeto disponível publicamente. Ao utilizar o argumento `save_image = TRUE` salvamos as imagens processadas em um diretório temporário, definido por `tempdir()`.
+## Batch processing
+To analyze several images from a directory, use the `pattern` argument to declare a pattern of filenames. Here, we Will used 50 soybean leaves available in the repository https://osf.io/4hbr6, a database of images of annotation of severity of plant diseases. Thanks to [Emerson M. Del Ponte](https://osf.io/jb6yd/) and his contributors for keeping this project publicly available. Using the `save_image = TRUE` argument we save the processed images in a temporary directory, defined by `tempdir()`.
 
 
 ```r
@@ -181,7 +193,7 @@ system.time(
 ```
 
 ```
-## Processing image soy_10 |==                                      | 4% 00:00:01 
+## Processing image soy_10 |==                                      | 4% 00:00:02 
 ```
 
 ```
@@ -193,11 +205,11 @@ system.time(
 ```
 
 ```
-## Processing image soy_13 |====                                    | 10% 00:00:05 
+## Processing image soy_13 |====                                    | 10% 00:00:06 
 ```
 
 ```
-## Processing image soy_14 |=====                                   | 12% 00:00:06 
+## Processing image soy_14 |=====                                   | 12% 00:00:07 
 ```
 
 ```
@@ -209,7 +221,7 @@ system.time(
 ```
 
 ```
-## Processing image soy_17 |=======                                 | 18% 00:00:09 
+## Processing image soy_17 |=======                                 | 18% 00:00:10 
 ```
 
 ```
@@ -249,7 +261,7 @@ system.time(
 ```
 
 ```
-## Processing image soy_26 |===============                         | 38% 00:00:21 
+## Processing image soy_26 |===============                         | 38% 00:00:20 
 ```
 
 ```
@@ -261,124 +273,124 @@ system.time(
 ```
 
 ```
-## Processing image soy_29 |==================                      | 44% 00:00:25 
+## Processing image soy_29 |==================                      | 44% 00:00:24 
 ```
 
 ```
-## Processing image soy_3 |===================                      | 46% 00:00:26 
+## Processing image soy_3 |===================                      | 46% 00:00:25 
 ```
 
 ```
-## Processing image soy_30 |===================                     | 48% 00:00:27 
+## Processing image soy_30 |===================                     | 48% 00:00:26 
 ```
 
 ```
-## Processing image soy_31 |====================                    | 50% 00:00:28 
+## Processing image soy_31 |====================                    | 50% 00:00:27 
 ```
 
 ```
-## Processing image soy_32 |=====================                   | 52% 00:00:29 
+## Processing image soy_32 |=====================                   | 52% 00:00:27 
 ```
 
 ```
-## Processing image soy_33 |======================                  | 54% 00:00:30 
+## Processing image soy_33 |======================                  | 54% 00:00:29 
 ```
 
 ```
-## Processing image soy_34 |======================                  | 56% 00:00:31 
+## Processing image soy_34 |======================                  | 56% 00:00:30 
 ```
 
 ```
-## Processing image soy_35 |=======================                 | 58% 00:00:33 
+## Processing image soy_35 |=======================                 | 58% 00:00:31 
 ```
 
 ```
-## Processing image soy_36 |========================                | 60% 00:00:34 
+## Processing image soy_36 |========================                | 60% 00:00:32 
 ```
 
 ```
-## Processing image soy_37 |=========================               | 62% 00:00:35 
+## Processing image soy_37 |=========================               | 62% 00:00:33 
 ```
 
 ```
-## Processing image soy_38 |==========================              | 64% 00:00:36 
+## Processing image soy_38 |==========================              | 64% 00:00:34 
 ```
 
 ```
-## Processing image soy_39 |==========================              | 66% 00:00:37 
+## Processing image soy_39 |==========================              | 66% 00:00:35 
 ```
 
 ```
-## Processing image soy_4 |============================             | 68% 00:00:38 
+## Processing image soy_4 |============================             | 68% 00:00:36 
 ```
 
 ```
-## Processing image soy_40 |============================            | 70% 00:00:39 
+## Processing image soy_40 |============================            | 70% 00:00:37 
 ```
 
 ```
-## Processing image soy_41 |=============================           | 72% 00:00:40 
+## Processing image soy_41 |=============================           | 72% 00:00:37 
 ```
 
 ```
-## Processing image soy_42 |==============================          | 74% 00:00:41 
+## Processing image soy_42 |==============================          | 74% 00:00:39 
 ```
 
 ```
-## Processing image soy_43 |==============================          | 76% 00:00:42 
+## Processing image soy_43 |==============================          | 76% 00:00:40 
 ```
 
 ```
-## Processing image soy_44 |===============================         | 78% 00:00:43 
+## Processing image soy_44 |===============================         | 78% 00:00:40 
 ```
 
 ```
-## Processing image soy_45 |================================        | 80% 00:00:44 
+## Processing image soy_45 |================================        | 80% 00:00:42 
 ```
 
 ```
-## Processing image soy_46 |=================================       | 82% 00:00:46 
+## Processing image soy_46 |=================================       | 82% 00:00:43 
 ```
 
 ```
-## Processing image soy_47 |==================================      | 84% 00:00:47 
+## Processing image soy_47 |==================================      | 84% 00:00:44 
 ```
 
 ```
-## Processing image soy_48 |==================================      | 86% 00:00:47 
+## Processing image soy_48 |==================================      | 86% 00:00:44 
 ```
 
 ```
-## Processing image soy_49 |===================================     | 88% 00:00:48 
+## Processing image soy_49 |===================================     | 88% 00:00:45 
 ```
 
 ```
-## Processing image soy_5 |=====================================    | 90% 00:00:49 
+## Processing image soy_5 |=====================================    | 90% 00:00:46 
 ```
 
 ```
-## Processing image soy_50 |=====================================   | 92% 00:00:50 
+## Processing image soy_50 |=====================================   | 92% 00:00:47 
 ```
 
 ```
-## Processing image soy_6 |=======================================  | 94% 00:00:51 
+## Processing image soy_6 |=======================================  | 94% 00:00:48 
 ```
 
 ```
-## Processing image soy_7 |=======================================  | 96% 00:00:52 
+## Processing image soy_7 |=======================================  | 96% 00:00:49 
 ```
 
 ```
-## Processing image soy_8 |======================================== | 98% 00:00:53 
+## Processing image soy_8 |======================================== | 98% 00:00:49 
 ```
 
 ```
-## Processing image soy_9 |=========================================| 100% 00:00:54 
+## Processing image soy_9 |=========================================| 100% 00:00:50 
 ```
 
 ```
 ##   usuário   sistema decorrido 
-##     50.66      4.49     55.30
+##     47.30      4.02     51.55
 ```
 
 ```r
@@ -386,57 +398,57 @@ sev_lote$severity
 ```
 
 ```
-##       img   healthy symptomatic
-## 1   soy_1 92.657063   7.3429375
-## 2  soy_10 57.028531  42.9714689
-## 3  soy_11 87.680947  12.3190533
-## 4  soy_12 61.948737  38.0512628
-## 5  soy_13 50.700496  49.2995038
-## 6  soy_14 99.768422   0.2315783
-## 7  soy_15 72.877105  27.1228948
-## 8  soy_16 30.626971  69.3730287
-## 9  soy_17 19.748411  80.2515889
-## 10 soy_18 81.583085  18.4169149
-## 11 soy_19 41.143174  58.8568265
-## 12  soy_2 85.453628  14.5463717
-## 13 soy_20 35.382776  64.6172236
-## 14 soy_21 33.891129  66.1088712
-## 15 soy_22 74.651185  25.3488152
-## 16 soy_23 58.397936  41.6020643
-## 17 soy_24 74.961393  25.0386074
-## 18 soy_25  9.997751  90.0022488
-## 19 soy_26 29.589505  70.4104950
-## 20 soy_27 30.691419  69.3085808
-## 21 soy_28 52.490804  47.5091963
-## 22 soy_29 23.314603  76.6853966
-## 23  soy_3 16.609423  83.3905772
-## 24 soy_30 43.163828  56.8361716
-## 25 soy_31 14.637519  85.3624813
-## 26 soy_32 50.275811  49.7241891
-## 27 soy_33 90.760009   9.2399911
-## 28 soy_34 45.949708  54.0502925
-## 29 soy_35 60.273151  39.7268486
-## 30 soy_36 94.816590   5.1834103
-## 31 soy_37 37.185171  62.8148294
-## 32 soy_38 58.103021  41.8969793
-## 33 soy_39 40.361302  59.6386976
-## 34  soy_4 66.346950  33.6530497
-## 35 soy_40 67.364801  32.6351994
-## 36 soy_41 97.030371   2.9696291
-## 37 soy_42 86.026327  13.9736728
-## 38 soy_43 90.836772   9.1632280
-## 39 soy_44 57.338701  42.6612994
-## 40 soy_45 82.644291  17.3557085
-## 41 soy_46 83.864979  16.1350205
-## 42 soy_47 75.456109  24.5438910
-## 43 soy_48 75.731072  24.2689278
-## 44 soy_49 69.680124  30.3198760
-## 45  soy_5 80.024331  19.9756692
-## 46 soy_50 56.575752  43.4242484
-## 47  soy_6 61.502494  38.4975061
-## 48  soy_7 59.890252  40.1097475
-## 49  soy_8 50.748110  49.2518904
-## 50  soy_9 80.251568  19.7484325
+##       img  healthy symptomatic
+## 1   soy_1 92.73146   7.2685398
+## 2  soy_10 55.04010  44.9599018
+## 3  soy_11 87.17110  12.8288982
+## 4  soy_12 61.87196  38.1280356
+## 5  soy_13 50.86890  49.1311038
+## 6  soy_14 99.81025   0.1897478
+## 7  soy_15 71.92649  28.0735148
+## 8  soy_16 29.96514  70.0348591
+## 9  soy_17 21.27273  78.7272680
+## 10 soy_18 83.35940  16.6406010
+## 11 soy_19 38.26796  61.7320359
+## 12  soy_2 85.74767  14.2523324
+## 13 soy_20 33.35104  66.6489582
+## 14 soy_21 32.42312  67.5768785
+## 15 soy_22 74.99314  25.0068645
+## 16 soy_23 60.38278  39.6172227
+## 17 soy_24 73.56431  26.4356889
+## 18 soy_25 10.30743  89.6925715
+## 19 soy_26 27.84452  72.1554768
+## 20 soy_27 31.76647  68.2335285
+## 21 soy_28 53.21907  46.7809278
+## 22 soy_29 23.38000  76.6199997
+## 23  soy_3 16.40237  83.5976287
+## 24 soy_30 43.87531  56.1246917
+## 25 soy_31 14.39778  85.6022238
+## 26 soy_32 46.35475  53.6452540
+## 27 soy_33 90.31809   9.6819114
+## 28 soy_34 43.12353  56.8764726
+## 29 soy_35 59.74704  40.2529629
+## 30 soy_36 93.90086   6.0991362
+## 31 soy_37 37.93420  62.0657972
+## 32 soy_38 53.32752  46.6724777
+## 33 soy_39 40.27709  59.7229122
+## 34  soy_4 66.61054  33.3894587
+## 35 soy_40 66.90941  33.0905881
+## 36 soy_41 97.02440   2.9756026
+## 37 soy_42 86.47105  13.5289502
+## 38 soy_43 90.59471   9.4052911
+## 39 soy_44 57.97418  42.0258175
+## 40 soy_45 83.67090  16.3291044
+## 41 soy_46 83.29936  16.7006407
+## 42 soy_47 75.45897  24.5410255
+## 43 soy_48 76.41285  23.5871508
+## 44 soy_49 70.47054  29.5294613
+## 45  soy_5 78.69218  21.3078153
+## 46 soy_50 59.03612  40.9638796
+## 47  soy_6 63.18407  36.8159338
+## 48  soy_7 59.59425  40.4057476
+## 49  soy_8 42.03463  57.9653662
+## 50  soy_9 79.87053  20.1294717
 ```
 
 
@@ -444,13 +456,13 @@ sev_lote$severity
 
 ## Diagramas de área padrão
 
-Os diagramas de área padrão (SAD) têm sido usados há muito tempo como uma ferramenta para auxiliar na estimativa da severidade de doenças de plantas, servindo como um modelo de referência padrão antes ou durante as avaliações.
+Standard area diagrams (SAD) have long been used as a tool to aid the estimation of plant disease severity, serving as a standard reference template before or during the assessments.
 
-Dado um objeto calculado com `measure_disease()`, um SAD com `n` imagens contendo os respectivos valores de severidade é obtido com `sad()`.
+Given an object computed with `measure_disease()` a Standard Area Diagram (SAD) with `n` images containing the respective severity values are obtained with `sad()`.
 
-As folhas com menor e maior severidade sempre estarão no SAD. Se `n = 1`, a folha com a menor severidade será retornada. As outras são amostradas sequencialmente para obter as `n` imagens após a severidade ter sido ordenada em ordem crescente. Por exemplo, se houver 30 folhas e `n` for definido como 3, as folhas amostradas serão a 1ª, 15ª e 30ª com os menores valores de severidade.
+Leaves with the smallest and highest severity will always be in the SAD. If `n = 1`, the leaf with the smallest severity will be returned. The others are sampled sequentially to achieve the n images after severity has been ordered in ascending order. For example, if there are 30 leaves and n is set to 3, the leaves sampled will be the 1st, 15th, and 30th with the smallest severity values.
 
-O SAD só pode ser calculado se um nome de padrão de imagem for usado no argumento `pattern` da função `measure_disease()`. Se as imagens forem salvas, as `n` imagens serão recuperadas do diretório `dir_processed` (diretório padrão por default). Caso contrário, a severidade será calculada novamente para gerar as imagens. Um SAD com 8 imagens do exemplo acima pode ser obtido facilmente com:
+The SAD can be only computed if an image pattern name is used in argument `pattern` of `measure_disease()`. If the images are saved, the `n` images will be retrevied from `dir_processed` directory. Otherwise, the severity will be computed again to generate the images. A SAD with 8 images from the above example can be obtained easely with:
 
 
 ```r
@@ -460,19 +472,19 @@ sad(sev_lote, n = 6, ncol = 3)
 <img src="/tutorials/pliman_ip/04_phytopathometry_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 ```
-##       img   healthy symptomatic rank
-## 6  soy_14 99.768422   0.2315783    1
-## 41 soy_46 83.864979  16.1350205   10
-## 44 soy_49 69.680124  30.3198760   20
-## 2  soy_10 57.028531  42.9714689   30
-## 31 soy_37 37.185171  62.8148294   40
-## 18 soy_25  9.997751  90.0022488   50
+##       img  healthy symptomatic rank
+## 6  soy_14 99.81025   0.1897478    1
+## 40 soy_45 83.67090  16.3291044   10
+## 44 soy_49 70.47054  29.5294613   20
+## 2  soy_10 55.04010  44.9599018   30
+## 31 soy_37 37.93420  62.0657972   40
+## 18 soy_25 10.30743  89.6925715   50
 ```
 
 
-## Processamento paralelo
+## Parallel processing
 
-Para acelerar o tempo de processamento quando várias imagens estão disponíveis, pode-se utilizar o argumento `paralell`. Isto criará múltiplas seções R em segundo plano, sendo cada uma responsável pelo processamento de uma parte das imagens.
+To speed up processing time when multiple images are available, you can use the `paralell` argument. In parallel programming (`parallel = TRUE`), the images are processed asynchronously (in parallel) in separate R sessions running in the background on the same machine. The number of sections is set by default to 50% of available cores. This number can be controlled explicitly with the argument workers.
 
 
 ```r
@@ -493,15 +505,16 @@ system.time(
 
 ```
 ##   usuário   sistema decorrido 
-##      0.31      0.06     21.75
+##      0.36      0.04     26.95
 ```
 
 
-## Várias imagens da mesma amostra
 
-Se os usuários precisarem analisar várias imagens da mesma amostra, as imagens da mesma amostra devem compartilhar o mesmo prefixo de nome de arquivo, que é definido como a parte do nome do arquivo que precede o primeiro hífen (`-`) ou underscore (`_`). 
+## Multiple images of the same sample
 
-No exemplo a seguir, 16 imagens serão usadas como exemplos. Aqui, elas representam quatro repetições de quatro diferentes tratamentos (`TRAT1_1, TRAT1_2, ..., TRAT4_4`). Observe que para garantir que todas as imagens sejam processadas, todas as imagens devem compartilhar um padrão comum, neste caso (`"TRAT"`).
+If users need to analyze multiple images from the same sample, the images from the same sample must share the same filename prefix, which is defined as the part of the filename that precedes the first hyphen (`-`) or underscore (`_`).
+
+In the following example, 16 images will be used as examples. Here, they represent four replicates of four different treatments (`TRAT1_1, TRAT1_2, ..., TRAT4_4`). Note that to ensure that all images are processed, all images must share a common pattern, in this case (`"TRAT"`).
 
 
 ```r
@@ -523,7 +536,7 @@ system.time(
 
 ```
 ##   usuário   sistema decorrido 
-##      0.25      0.04     14.53
+##      0.29      0.06     16.24
 ```
 
 ```r
@@ -543,52 +556,46 @@ ggplot(sev, aes(TRAT, symptomatic))+
 
 
 
-## Múltiplas folhas em uma foto
+## Multiple leaves in one image
 
-Quando múltiplas folhas estão presentes em uma imagem, a função `measure_disease` retorna a severidade média das folhas presentes na imagem. Para quantificar a severidade *por folha*, a função `measure_disease_byl()` pode ser utilizada.
+When multiple leaves are present in an image, the `measure_disease` function returns the average severity of the leaves present in the image. To quantify the severity *per leaf*, the `measure_disease_byl()` function can be used.
 
-Esta função calcula a porcentagem de área foliar sintomática usando paletas de cores ou índices RGB para cada folha (`byl`) de uma imagem. Isso permite, por exemplo, processar réplicas do mesmo tratamento e obter os resultados de cada replicação com uma única imagem. Para fazer isso, as amostras de folhas são primeiro divididas usando a função `object_split()` e, em seguida, a função `measure_disease()` é aplicado à lista de folhas.
+This function computes the percentage of symptomatic leaf area using color palettes or RGB indices for each leaf (`byl`) of an image. This allows, for example, to process replicates of the same treatment and obtain the results of each replication with a single image. To do this, the sample sheets are first split using the `object_split()` function and then the `measure_disease()` function is applied to the sheet list.
 
 
 ```r
-library(pliman)
 byl <- 
-  measure_disease_byl(img = "multiplas_04",
-                      index = "B", # usado para segmentar a folha do fundo
+  measure_disease_byl(pattern = "multiplas",
+                      index = "B", # used to segment leaves from background
                       img_healthy = "soja_h",
                       img_symptoms = "soja_s",
-                  # img_background = "soja_b",
                       show_contour = FALSE,
                       show_features = TRUE,
                       col_lesions = "red",
                       parallel = TRUE)
 ```
 
-<img src="/tutorials/pliman_ip/04_phytopathometry_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+```
+## Image processing using multiple sessions (6). Please wait.
+```
 
 ```r
 results_byl <- get_measures(byl)
-head(results_byl$results)
+
+results_byl$results |> 
+  head() |> 
+  print_tbl()
 ```
 
-```
-## NULL
-```
 
-```r
-head(results_byl$summary)
-```
 
-```
-## NULL
-```
-
-```r
-head(results_byl$merge)
-```
-
-```
-## NULL
-```
+|img          |leaf | id|       x|       y| area| area_ch| perimeter| radius_mean| radius_min| radius_max| radius_sd| diam_mean| diam_min| diam_max| major_axis| minor_axis| length|  width| radius_ratio| eccentricity|  theta| solidity| convexity| elongation| circularity| circularity_haralick| circularity_norm|
+|:------------|:----|--:|-------:|-------:|----:|-------:|---------:|-----------:|----------:|----------:|---------:|---------:|--------:|--------:|----------:|----------:|------:|------:|------------:|------------:|------:|--------:|---------:|----------:|-----------:|--------------------:|----------------:|
+|multiplas_01 |1    |  1| 231.571|  27.304|   56|      49|    27.213|       3.797|      2.675|      4.600|     0.496|     7.594|    5.351|    9.199|      9.128|      8.034|  8.785|  7.196|        1.719|        0.759| -0.832|    1.143|     0.827|      0.181|      13.224|                7.659|            1.339|
+|multiplas_01 |1    |  2| 374.140|  31.105|   57|      47|    29.899|       4.099|      1.893|      6.757|     1.314|     8.197|    3.786|   13.514|     12.985|      6.031| 12.739|  5.529|        3.570|        0.233|  0.529|    1.213|     0.859|      0.566|      15.684|                3.120|            1.694|
+|multiplas_01 |1    |  3| 317.000|  62.000|    5|       0|     7.000|       1.000|      0.000|      2.000|     0.707|     2.000|    0.000|    4.000|      5.657|      0.000|  4.000|  0.000|          Inf|        0.000|  1.571|      Inf|     0.571|      1.000|       9.800|                1.414|              Inf|
+|multiplas_01 |1    |  4| 168.635|  82.337|  104|     101|    41.385|       5.348|      3.394|      7.482|     1.096|    10.697|    6.788|   14.964|     14.070|     10.293| 13.291| 11.397|        2.204|        0.644| -1.142|    1.030|     0.877|      0.143|      16.468|                4.880|            1.613|
+|multiplas_01 |1    |  5| 226.706|  86.294|   17|      10|    11.828|       1.894|      1.294|      2.647|     0.394|     3.788|    2.587|    5.294|      5.552|      3.917|  4.933|  3.584|        2.046|        0.508| -0.459|    1.700|     0.845|      0.273|       8.230|                4.801|            1.113|
+|multiplas_01 |1    |  6| 175.353| 104.088|   34|      25|    19.899|       2.994|      2.013|      4.527|     0.772|     5.988|    4.026|    9.055|      9.066|      4.843|  8.831|  4.645|        2.249|        0.297|  0.953|    1.360|     0.900|      0.474|      11.647|                3.880|            1.313|
 
 

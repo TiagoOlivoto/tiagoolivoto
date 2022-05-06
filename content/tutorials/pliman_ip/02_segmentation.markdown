@@ -1,6 +1,6 @@
 ---
-title: Segmentação de imagens
-linktitle: "2. Segmentação de imagens"
+title: Segment objects
+linktitle: "2. Segment objects"
 toc: true
 type: docs
 date: "2021/10/27"
@@ -19,7 +19,7 @@ weight: 2
 
 
 
-# Diretório das imagens
+# Image directory
 
 ```r
 # mudar de acordo com a pasta em seu computador
@@ -27,7 +27,7 @@ setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
-# Importar imagens
+# Import images
 
 ```r
 library(pliman) 
@@ -41,17 +41,18 @@ img <- image_resize(img, rel_size = 30) #processamento mais rápido
 ```
 
 
-# Segmentação de imagem
+# Segment images
 
-No `pliman`, as seguintes funções podem ser usadas para segmentar uma imagem.
+In `pliman`, the following functions can be used to segment an image.
 
-* `image_binary()` para produzir uma imagem binária(preto e branco)
-* `image_segment()` para produzir uma imagem segmentada(objetos de imagem e um fundo branco).
-* `image_segment_iter()` para segmentar uma imagem iterativamente.
+* `image_binary()` to produce a binary (black and white) image.
+* `image_segment()` to produce a segmented image (image objects and a white background).
+* `image_segment_iter()` to segment an image interactively.
 
-Ambas as funções segmentam a imagem com base no valor de algum índice de imagem, que pode ser uma das bandas RGB ou qualquer operação com essas bandas. Internamente, essas funções chamam `image_index()` para calcular esses índices.
+Both functions segment the image based on the value of some image index, which can be one of the RGB bands or any operation with these bands. Internally, these functions call `image_index()` to calculate these indices.
 
-Aqui, usamos o argumento `index" `para testar a segmentação com base no RGB e seus valores normalizados. Os usuários também podem fornecer seu índice com o argumento` my_index`.
+Here, we use the `index" `argument to test segmentation based on RGB and its normalized values. Users can also provide their index with the `my_index` argument.
+
 
 
 ```r
@@ -75,13 +76,13 @@ plot(indexes, type = "density")
 
 <img src="/tutorials/pliman_ip/02_segmentation_files/figure-html/segmentação2-3.png" width="960" />
 
-Os dois picos representam a folha (pico menor) e o fundo (pico maior). Quanto mais clara for a diferença entre esses picos, melhor será a segmentação da imagem.
+The two peaks represent the leaf (smallest peak) and the background (larger peak). The clearer the difference between these peaks, the better the image segmentation.
 
 
 
-# Produzindo uma imagem binária
+# Producing a binary image
 
-Para segmentar objetos, o `pliman` utiliza a técnica de `threshold` (Otsu, 1979)^[1], ou seja, um ponto de corte (considerando os valores dos pixels) é escolhido e a imagem é classificada em duas classes (foreground e background). Temos, então, uma imagem binária. Podemos produzir esta imagem com `image_binary()`. Este processo de binarização é a chave para todas as etapas de análise de objetos, sendo que a acurácia da análise está diretamente relacionada com um processo de binarização satisfatório.
+To segment objects, `pliman` uses the `threshold` technique (Otsu, 1979)[^1], that is, a cut-off point (considering the pixel values) is chosen and the image is classified into two classes (foreground and background). We then have a binary image. We can produce this image with `image_binary()`. This binarization is the key process to all object analysis steps. The better the binarization, the better the results.
 
 
 ```r
@@ -90,13 +91,13 @@ binary <- image_binary(img)
 
 <img src="/tutorials/pliman_ip/02_segmentation_files/figure-html/binary1-1.png" width="960" />
 
-A função `image_segment()` é usada para segmentar imagens usando índices de imagem. Em nosso exemplo, usaremos o índice `NB` para segmentar as folhas do fundo.
+The `image_segment()` function is used to segment images using image indices. In our example, we will use the `NB` index to segment the bottom leaves.
 
 
 ```r
 segmented <- 
   image_segment(img,
-                index = "NB", # padrão da função
+                index = "NB", # default
                 fill_hull = TRUE)
 ```
 
@@ -104,6 +105,18 @@ segmented <-
 
 
 
+## Iterative segmentation
 
-^[1] Otsu, N. 1979. Threshold selection method from gray-level histograms. IEEE Trans Syst Man Cybern SMC-9(1): 62–66. doi: 10.1109/tsmc.1979.4310076.
+The function `image_segment_iter()` provides an iterative image segmentation. Users can choose how many segmentation to perform, using the argument `nseg`. Note that the same results can be obtained with `image_segment_iter()` using an iterative section.
+
+
+```r
+# Only run iteratively
+image_segment_iter(img, nseg = 1)
+```
+
+
+
+
+[^1]: Otsu, N. 1979. Threshold selection method from gray-level histograms. IEEE Trans Syst Man Cybern SMC-9(1): 62–66. doi: 10.1109/tsmc.1979.4310076.
 

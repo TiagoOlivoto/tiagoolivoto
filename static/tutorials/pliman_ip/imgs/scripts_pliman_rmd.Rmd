@@ -1,36 +1,32 @@
-% Análise 
+---
+title: Scripts R - pliman 
+---
+##Aufgabe 1
 
-```{r global_options, include = FALSE}
-knitr::opts_chunk$set(cache = FALSE, comment = "#", collapse = TRUE)
-
+```{r include = FALSE}
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
-
-# Manipulação e segmentação
-## Diretório das imagens
+# Image directory
 ```{r eval=FALSE}
 # mudar de acordo com a pasta em seu computador
-setwd("E:/Desktop/UFSC/cursos/pliman_imgp/imgs")
-```
-
-```{r echo = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/UFSC/cursos/pliman_imgp/imgs")
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
-## Importar imagens
+## Import images
 ```{r collapse = TRUE, message=FALSE, warning=FALSE}
 library(pliman)
 library(tidyverse)
 library(patchwork)
-img <- image_import("soy1.jpeg")
+img <- image_import("folhas.jpg")
 
 ```
 
 
 
-Para importar uma lista de imagens, use um vetor de nomes de imagens, ou o argumento `pattern`. Neste último, todas as imagens que correspondem ao nome do padrão são importadas para uma lista.
+To import a list of images, use a vector of image names, or the `pattern` argument. In the latter, all images that match the pattern name are imported into a list.
 
 ```{r import2}
 img_list1 <- image_import(c("img_sb_50_1.jpg", "img_sb_50_2.jpg"))
@@ -39,8 +35,8 @@ str(img_list2)
 ```
 
 
-## Exibindo imagens
-Imagens individuais são exibidas com `plot()`. Para combinar imagens, a função `image_combine()` é usada. Os usuários podem informar uma lista de objetos separados por vírgulas ou uma lista de objetos da classe `Image`.
+## Displaying imagens
+Individual images are displayed with `plot()`. To combine images, the `image_combine()` function is used. Users can enter a comma-separated list of objects or a list of objects of the `Image` class.
 
 ```{r display1, fig.width = 10, fig.height=6}
 # Imagens individuais
@@ -56,12 +52,12 @@ image_combine(img_list1)
 ```
 
 
+`pliman` provides a set of `image_*()` functions to perform image manipulation and transformation of unique images or an image list based on [EBImage package](https://www.bioconductor.org/packages/release /bioc/vignettes/EBImage/inst/doc/EBImage-Introduction.html).
 
 
-`pliman` fornece um conjunto de funções `image_*()` para realizar a manipulação de imagens e transformação de imagens exclusivas ou uma lista de imagens baseada no [pacote EBImage](https://www.bioconductor.org/packages/release/bioc/vignettes/EBImage/inst/doc/EBImage-Introduction.html).
+## Resize an image
 
-## Redimensionar uma imagem
-Às vezes, o redimensionamento de imagens de alta resolução é necessário para reduzir o esforço computacional e tempo de processamento. A função `image_resize()` é usada para redimensionar uma imagem. O argumento `rel_size` pode ser usado para redimensionar a imagem por tamanho relativo. Por exemplo, definindo `rel_size = 50` para uma imagem de largura 1280 x 720, a nova imagem terá um tamanho de 640 x 360.
+Sometimes resizing high-resolution images is necessary to reduce computational effort and processing time. The `image_resize()` function is used to resize an image. The `rel_size` argument can be used to resize the image by relative size. For example, setting `rel_size = 50` for an image of width 1280 x 720, the new image will have a size of 640 x 360.
 
 ```{r manipulate1}
 image_dimension(img)
@@ -71,199 +67,477 @@ image_dimension(img_resized)
 
 
 
+## Image resolution (DPI) {#dpi}
+The `dpi()` function executes an interactive function to calculate the image resolution given a known distance entered by the user. To calculate the image resolution (dpi), the user must use the left mouse button to create a line of known distance. This can be done, for example, using a model with known distance, as follows.
 
-
-## Resolução da imagem (DPI) {#dpi}
-A função `dpi()` executa uma função interativa para calcular a resolução da imagem dada uma distância conhecida informada pelo usuário. Para calcular a resolução da imagem (dpi), o usuário deve usar o botão esquerdo do mouse para criar uma linha de distância conhecida. Isso pode ser feito, por exemplo, usando um modelo com distância conhecida, como à seguir.
 
 ```{r eval = FALSE}
-# executado apenas em uma seção interativa
+#  this only works in an interactive section
 rule <- image_import("rule.jpg", plot = TRUE)
-dpi(rule)
+(dpi <- dpi(rule))
+
+rule2 <- 
+  image_crop(rule,
+             width = 130:1390, 
+             height = 582:1487, 
+             plot = TRUE)
+
+analyze_objects(rule2,
+                watershed = FALSE,
+                marker = "area") |> 
+  get_measures(dpi = 518) |> 
+  plot_measures(measure = "area", vjust = -100, size = 2)
 ```
 
 
 
 
-## Exportando imagens
-Para exportar imagens para o diretório atual, use a função `image_export()`. Se uma lista de imagens for exportada, as imagens serão salvas considerando o nome e a extensão presentes na lista. Se nenhuma extensão estiver presente, as imagens serão salvas como arquivos `*.jpg`.
+
+# Filter, blur, contrast, dilatation, erosion, opening, and closing
+
+```{r manipulate6, fig.width = 10, fig.height = 10}
+img_filter <- image_filter(img)
+img_blur <- image_blur(img)
+img_contrast <- image_contrast(img)
+img_dilatation <- image_dilate(img)
+img_erosion <- image_erode(img)
+img_opening <- image_opening(img)
+img_closing <- image_closing(img)
+image_combine(img,
+              img_filter,
+              img_blur,
+              img_contrast,
+              img_dilatation,
+              img_erosion,
+              img_opening,
+              img_closing,
+              ncol = 4)
+```
+
+
+
+
+# Export
+To export images to the current directory, use the `image_export()` function. If an image list is exported, the images will be saved considering the name and extension present in the list. If no extension is present, images will be saved as `*.jpg` files.
 
 ```{r export, eval=FALSE}
 image_export(img, "img_exported.jpg")
 
-# exportar lista (exemplo de subpasta)
-image_export(img_list2,
-             subfolder = "lista_exportada")
+# ou para uma subpasta
+image_export(img, "test/img_exported.jpg")
 ```
 
 
 
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 2
 
-## Segmentação
 
-No `pliman`, as seguintes funções podem ser usadas para segmentar uma imagem.
+```{r include = FALSE}
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
+```
 
-* `image_binary()` para produzir uma imagem binária (preto e branco)
-* `image_segment()` para produzir uma imagem segmentada (objetos de imagem e um fundo branco).
-* `image_segment_iter()` para segmentar uma imagem iterativamente.
 
-Ambas as funções segmentam a imagem com base no valor de algum índice de imagem, que pode ser uma das bandas RGB ou qualquer operação com essas bandas. Internamente, essas funções chamam `image_index()` para calcular esses índices. Aqui, usamos o argumento `index" `para testar a segmentação com base no RGB e seus valores normalizados. Os usuários também podem fornecer seu índice com o argumento` my_index`.
+# Image directory
+```{r eval=FALSE}
+# mudar de acordo com a pasta em seu computador
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
+```
 
-```{r segmentação2, fig.width = 10, fig.height = 5}
-img <- 
-  image_import("leaf5.jpg", plot = TRUE) %>% 
-  image_resize(30) # reduz a resolução (plota mais rápido)
 
+# Import images
+```{r collapse = TRUE, message=FALSE, warning=FALSE}
+library(pliman) 
+img <- image_import("folhas.jpg", plot = TRUE)
+img <- image_resize(img, rel_size = 30) #processamento mais rápido
+```
+
+
+# Segment images
+
+In `pliman`, the following functions can be used to segment an image.
+
+* `image_binary()` to produce a binary (black and white) image.
+* `image_segment()` to produce a segmented image (image objects and a white background).
+* `image_segment_iter()` to segment an image interactively.
+
+Both functions segment the image based on the value of some image index, which can be one of the RGB bands or any operation with these bands. Internally, these functions call `image_index()` to calculate these indices.
+
+Here, we use the `index" `argument to test segmentation based on RGB and its normalized values. Users can also provide their index with the `my_index` argument.
+
+
+```{r segmentação2, fig.width = 10, fig.height = 6}
 # Calcule os índices
-indexes <- image_index(img, index = c("R, G, B"))
+indexes <- image_index(img, index = c("R, G, B, NR, NG, NB"))
 
 # Crie um gráfico raster com os valores RGB
-plot(indexes, ncol = 3)
+plot(indexes)
 
-# Cria um histograma com os valores RGB
-plot(indexes,
-     type = "density",
-     ncol = 3)
+# Crie um histograma com os valores RGB
+plot(indexes, type = "density")
+
 ```
 
-Os dois picos representam a folha (pico menor) e o fundo (pico maior). Quanto mais clara for a diferença entre esses picos, melhor será a segmentação da imagem.
-
-A função `image_segment()` é usada para segmentar imagens usando índices de imagem. Em nosso exemplo, usaremos os mesmos índices calculados abaixo para ver como a imagem é segmentada. A saída desta função pode ser usada como entrada na função `analyze_objects()`.
-
-```{r segmentação3, fig.width = 10, fig.height = 5}
-segmented <- image_segment(img, index = "B")
-```
+The two peaks represent the leaf (smallest peak) and the background (larger peak). The clearer the difference between these peaks, the better the image segmentation.
 
 
 
+# Producing a binary image
 
-## Produzindo uma imagem binária
-
-No pliman, podemos produzir uma imagem binária com `image_binary()`. A título de curiosidade, usaremos os índices `"B"` (azul). Por padrão, `image_binary()` redimensiona a imagem para 30% do tamanho da imagem original para acelerar o tempo de computação. Use o argumento `resize = FALSE` para produzir uma imagem binária com o tamanho original.
+To segment objects, `pliman` uses the `threshold` technique (Otsu, 1979)[^1], that is, a cut-off point (considering the pixel values) is chosen and the image is classified into two classes (foreground and background). We then have a binary image. We can produce this image with `image_binary()`. This binarization is the key process to all object analysis steps. The better the binarization, the better the results.
 
 ```{r binary1, fig.width = 10, fig.height = 5}
-binary <- image_binary(img, index = "B")
+binary <- image_binary(img)
 
-# tamanho de imagem original
-image_binary(img,
-             index = "B",
-             resize = FALSE)
-
-# inverte a binarização
-image_binary(img,
-             index = "B",
-             resize = FALSE,
-             invert = TRUE)
 ```
 
+The `image_segment()` function is used to segment images using image indices. In our example, we will use the `NB` index to segment the bottom leaves.
 
-
-# Contagem de objetos
-## Imagem por imagem
-
-Aqui, contaremos os grãos na imagem `soy1.jpeg`. Esta imagem tem um fundo branco e contém 42 grãos de soja. A função `analyze_objects()` segmenta a imagem usando como padrão o índice azul normalizado, como segue $NB =(B /(R + G + B))$, onde *R*, *G* e *B* são as faixas vermelha, verde e azul. Os objetos são contados e os objetos segmentados são coloridos com permutações aleatórias.
-
-
-
-```{r, fig.width = 12, fig.height = 6}
-soy <- image_import("soy1.jpeg", plot = TRUE)
-
-# contagem manual
-# pick_count(soy)
-
-# contagem automática
-count <- analyze_objects(soy)
-count$statistics
-```
-
-
-
-Os usuários podem definir `show_contour = FALSE` para remover a linha de contorno e identificar os objetos (neste exemplo, os grãos) usando os argumentos `marker = "id"`. A cor do fundo também pode ser alterada com `col_background`.
-
-
-
-```{r, fig.width = 12, fig.height = 6}
-count2 <-
-  analyze_objects(soy,
-                  watershed = FALSE,
-                  show_contour = FALSE,
-                  marker = "id",
-                  show_original = FALSE,
-                  show_segmentation = TRUE) # padrão
+```{r segmentação3, fig.width = 10, fig.height = 5}
+segmented <- 
+  image_segment(img,
+                index = "NB", # default
+                fill_hull = TRUE)
 
 ```
 
 
 
-## Processamento em lote
+## Iterative segmentation
 
-Na análise de imagens, frequentemente é necessário processar mais de uma imagem. Por exemplo, no melhoramento de plantas, o número de grãos por planta (por exemplo, trigo) é frequentemente usado na seleção indireta de plantas de alto rendimento. No `pliman`, o processamento em lote pode ser feito quando o usuário declara o argumento `pattern`.
+The function `image_segment_iter()` provides an iterative image segmentation. Users can choose how many segmentation to perform, using the argument `nseg`. Note that the same results can be obtained with `image_segment_iter()` using an iterative section.
+
+```{r segmentation7, eval=FALSE}
+# Only run iteratively
+image_segment_iter(img, nseg = 1)
+```
 
 
-Para acelerar o tempo de processamento, especialmente para um grande número de imagens, o argumento `parallel = TRUE` pode ser usado. Nesse caso, as imagens são processadas de forma assíncrona (em paralelo) em sessões `R` separadas rodando em segundo plano na mesma máquina. O número de seções é configurado para 50% dos núcleos disponíveis. Este número pode ser controlado explicitamente com o argumento `workers`.
+
+
+[^1]: Otsu, N. 1979. Threshold selection method from gray-level histograms. IEEE Trans Syst Man Cybern SMC-9(1): 62–66. doi: 10.1109/tsmc.1979.4310076.
+
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 3
+
+```{r include = FALSE}
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
+```
+
+# Image directory
+```{r eval=FALSE}
+# mudar de acordo com a pasta em seu computador
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
+```
+
+# Working with polygons
+> A 'polygon' is a plane figure that is described by a finite number of straight line segments connected to form a closed polygonal chain (Singer, 1993)[^1].
+
+Given the above, we can conclude that image objects can be expressed as polygons with `n` vertices. `pliman` has a set of functions(`draw_*()`) useful for drawing common shapes like circles, squares, triangles, rectangles and `n`- tagons . Another group of ` poly_*()` functions can be used to analyze polygons. Let's start with a simple example related to the area and perimeter of a square.
+
+```{r fig.height =6}
+library(pliman)
+square <- draw_square(side = 1)
+poly_area(square)
+poly_perimeter(square)
+```
+
+Now, let's see what happens when we start with a hexagon and increase the number of sides up to 1000.
+
+```{r fig.height =6}
+shapes <- list(  side6 = draw_n_tagon(6, plot = FALSE),
+                 side12 = draw_n_tagon(12, plot = FALSE),
+                 side24 = draw_n_tagon(24, plot = FALSE),
+                 side100 = draw_n_tagon(100, plot = FALSE),
+                 side500 = draw_n_tagon(500, plot = FALSE),
+                 side100 = draw_n_tagon(1000, plot = FALSE))
+
+plot_polygon(shapes, merge = FALSE)
+
+poly_area(shapes)
+poly_perimeter(shapes)
+```
+
+
+Note that when \$n \to \infty\$, the sum of the sides becomes the circumference of the circle, given by \$2 \pi r\$, and the area becomes \$\pi r^2\$. This is fun, but `pliman` is primarily designed for analyzing plant image analysis. So why use polygons? Let's see how we can use these functions to get applicable information.
+
+
+```{r fig.width =8, fig.height =6}
+leaves <- image_import("ref_leaves.jpg", plot = TRUE)
+
+# getting the outline of objects
+cont <- object_contour(leaves, watershed = FALSE, index = "HI")
+
+# plotting the polygon
+plot_polygon(cont)
+```
+
+
+Nice! We can use the contours of any object to get useful information related to its shape. To reduce the amount of output, I will only use five samples: 2, 4, 13, 24, and 35.
+
+```{r fig.height =6}
+cont <- cont[c("2", "4", "13", "24", "35")]
+plot_polygon(cont)
+```
+
+In the current version of `pliman`, you can calculate the following measurements. For more details, see Chen & Wang (2005)[^2], Claude (2008)[^3], and Montero et al. (2009)[^4].
+
+## Area
+
+The area of a shape is calculated using Shoelace 's formula (Lee and Lim, 2017)[^5], as follows
+
+$$
+A=\frac{1}{2}\left |\sum_{i=1}^{n}\left(x_{i} y_{i+1}-x_{i+1}y_{i}\right)\right|
+$$
+
+```{r fig.height =6}
+poly_area(cont)
+```
+
+
+## Perimeter
+The perimeter is calculated as the sum of the Euclidean distance between all points on a shape. Distances can be obtained with `poly_distpts()`.
+
+```{r}
+poly_perimeter(cont)
+
+# perimeter of a circle with radius 2
+circle <- draw_circle(radius = 2, plot = FALSE)
+poly_perimeter(circle)
+
+# check the result
+2*pi*2
+```
+
+
+## Radius
+
+The radius of a pixel on the object's contour is calculated as its distance from the object's centroid(also called 'center of mass'). These distances can be obtained with `poly_centdist()`.
+
+```{r}
+dist <- poly_centdist(cont)
+
+# stats for radius
+mean_list(dist)
+min_list(dist)
+max_list(dist)
+sd_list(dist)
+
+# average radius of circle above
+poly_centdist(circle) |> mean_list()
+```
+
+
+
+## Length and width
+
+The length and width of an object are calculated with `poly_lw()`, as the difference between the maximum and minimum of the `x` and `y` coordinates after the object has been aligned with `poly_align()`.
+
+```{r fig.height =2, fig.width=10}
+aligned <- poly_align(cont, plot = FALSE)
+plot_polygon(aligned, merge = FALSE, ncol = 5)
+# calculate length and width
+poly_lw(cont)
+```
+
+## Circularity, eccentricity, diameter and elongation
+
+Circularity(Montero et al. 2009)[^6] is also called shape compactness, or measure of roundness of an object. It is given by \$C = P^2 / A\$, where \$P\$ is the perimeter and \$A\$ is the area of the object.
+
+```{r}
+poly_circularity(cont)
+```
+
+As the above measurement depends on the scale, normalized roundness can be used. In this case, a perfect circle is assumed to have circularity equal to 1. This measure is invariant under translation, rotation and scale transformations, given \$Cn = P^2 / 4 \pi A\$
+
+```{r}
+poly_circularity_norm(cont)
+
+# normalized circularity for different shapes
+draw_square(plot =FALSE) |> poly_circularity_norm()
+draw_circle(plot=FALSE) |> poly_circularity_norm()
+```
+
+
+` poly_circularity_haralick()` calculates the circularity of Haralick , CH(Haralick , 1974)[^7]. The method is based on calculating all Euclidean distances from the object's centroid to each contour pixel. With this set of distances, the mean($m$) and the standard deviation($s$) are calculated. These statistical parameters are used in a ratio that calculates CH as $CH = m/ sd $.
+
+```{r}
+poly_circularity_haralick(cont)
+```
+
+`poly_convexity()` Calculates the convexity of a shape using a ratio of the perimeter of the convex hull to the perimeter of the polygon.
+
+```{r}
+poly_convexity(cont)
+```
+
+
+`poly_eccentricity()` Calculates the eccentricity of a shape using the ratio of the eigenvalues(coordinate inertia axes).
+
+```{r}
+poly_eccentricity(cont)
+```
+
+
+`poly_elongation()` Calculates the elongation of an object as `1 - width / length`
+
+```{r}
+poly_elongation(cont)
+```
+
+
+`poly_caliper()` Calculates the gauge(also called Feret's diameter).
+
+```{r}
+poly_caliper(cont)
+```
+
+
+Users can use the `poly_measures()` function to calculate most object measurements in a single call.
+
+```{r}
+measures <- poly_measures(cont) |> round_cols()
+t(measures)
+```
+
+If the image resolution is known, the measurements can be corrected with ` get_measures()`. Image resolution can be obtained using a known distance in the image. In the example, the white square has a side of 5 cm. So using `dpi()` the resolution can be obtained. In this case, the dpi is ~50.
+
+```{r}
+(color_measures <- get_measures(measures, dpi = 50))
+
+```
+
+
+Some useful functions can be used to manipulate coordinates. In the following example I will show some features implemented in `pliman`. Just for simplicity, I'll just use object 2.
 
 
 ```{r}
-system.time(
-  list_res <- analyze_objects(pattern = "img_sb", show_image = FALSE)
-)
+o2 <- cont[["2"]]
+plot_polygon(o2)
+```
 
-# procesamento paralelo
-# três múltiplas seções (observe o tempo!)
-system.time(
-  list_res <- 
-    analyze_objects(pattern = "img_sb",
-                    show_image = FALSE,
-                    parallel = TRUE,
-                    workers = 3)
-)
+## Rotate polygons
 
+` poly_rotate()` can be used to rotate the polygon coordinates by an `angle` (0-360 degrees) in the trigonometric (anti-clockwise) direction.
+
+
+```{r fig.width =4, fig.height =4}
+rot <- poly_rotate(o2, angle = 45)
+```
+
+
+## Invert polygons
+` poly_flip_x()` and ` poly_flip_y()` can be used to flip shapes along the x and y axis, respectively.
+
+```{r fig.width =8, fig.height =4}
+flipped <- 
+  list(fx = poly_flip_x(o2), 
+       fy = poly_flip_y(o2))
+
+plot_polygon(flipped, merge = FALSE, aspect_ratio = 1)
+```
+
+
+## Perimeter sampling
+
+`poly_sample()` samples `n` coordinates between existing points, and `poly_sample_prop()` samples a proportion of coordinates between existing ones.
+
+```{r fig.width =4, fig.height =4}
+# sample 50 coordinates
+poly_sample(o2, n=50) |> plot_polygon()
+
+# sample 10% of coordinates
+poly_sample_prop(o2, prop = 0.1) |> plot_polygon()
+```
+
+
+## smoothing
+
+`poly_smooth()` smooths the contour of a polygon by combining ` prop` coordinate point samples and interpolating them using ` vertices` vertices(default is 1000) .
+
+```{r fig.width =6, fig.height = 6}
+smoothed <-
+  list( original = o2,
+        s1 = poly_smooth(o2, prop = 0.2, plot = FALSE),
+        s2 = poly_smooth(o2, prop = 0.1, plot = FALSE),
+        s1 = poly_smooth(o2, prop = 0.04, plot = FALSE)
+  )
+
+plot_polygon(smoothed, merge = FALSE, ncol = 2)
+```
+
+
+## Noises
+
+
+`poly_jitter()` adds a small amount of noise to a set of coordinates. See `base::jitter()` for more details.
+
+```{r fig.width =8, fig.height =4}
+set.seed(1)
+c1 <- draw_circle(n = 200, plot = FALSE)
+c2 <- draw_circle(n = 200, plot = FALSE) |>
+  poly_jitter(noise_x = 100,
+              noise_y = 100,
+              plot = FALSE)
+
+plot_polygon(list(c1, c2), merge = FALSE)
 ```
 
 
 
 
+# Analyzing objects
 
-# Características de objetos
-
-A função `analyze_objects()` pode ser usada para obter características de objetos de uma imagem. Vamos começar com um exemplo simples com a imagem `object_300dpi.png`. Esta imagem é distribuída com a instalação do pacote e pode ser obtida com `image_pliman()`.
+The functions seen so far can be used to obtain measurements of objects. However, for image analysis it is necessary to combine different functions(mainly `object_contour()` and `poly_measures()`). Also, almost always, several images need to be analyzed and repeating this process each time would be tedious and inefficient. To address these needs, users can use the ` analyze_objects()` function. Let's start with a simple example, using the `object_300dpi.png` image available on [ GitHub page](https://github.com/TiagoOlivoto/pliman/tree/master/inst/tmp_images). To facilitate importing images from this folder, an `image_pliman()` helper function is used.
 
 
-```{r collapse=TRUE}
+```{r collapse =TRUE}
+# generate html tables
+print_tbl <- function(table, digits = 3, ...){
+  knitr :: kable(table, booktabs = TRUE, digits = digits, ...)
+}
+library(pliman)
+library(tidyverse)
+library(patchwork)
+
 img <- image_pliman("objects_300dpi.jpg", plot = TRUE)
 
 ```
 
 
-A imagem acima foi produzida com o Microsoft PowerPoint. Tem uma resolução conhecida de 300 dpi(pontos por polegada) e mostra quatro objetos
 
-- Quadrado maior: 10 x 10 cm (100 cm$^2$)  
-- Quadrado menor: 5 x 5 cm(25 cm$^2$)  
-- Retângulo: 4 x 2 cm(8 cm$^2$)  
-- Círculo: 3 cm de diâmetro(~7,07 cm$^2$)  
+The image above was produced with Microsoft PowerPoint. It has a known resolution of 300 dpi(dots per inch) and displays four objects
 
-Para contar os objetos na imagem usamos `analyze_objects()` e informamos a imagem (o único argumento obrigatório).
+- Larger square: 10 x 10 cm (100 cm\$^2\$)
+- Smaller square: 5 x 5 cm(25 cm\$^2\$)
+- Rectangle: 4 x 2 cm(8 cm\$^2\$)
+- Circle: 3 cm in diameter(~7.07 cm\$^2\$)
+
+
+To count the objects in the image we use `analyze_objects()` and inform the image(the only required argument). By default, the `NB` index is used for object segmentation.
+
 
 ```{r, fig.width = 10, fig.height = 5}
 img_res <- analyze_objects(img, marker = "id")
-
 ```
 
 
-## Ajustando as medidas do objeto
 
-Os resultados foram armazenados em `img_res`. Como não há escala declarada no exemplo acima, não temos ideia sobre a área real dos objetos em cm$^2$, apenas em pixels. Neste caso, usamos `get_measures()` para ajustar as medidas de pixels para unidades métricas.
+## Adjusting object measurements
 
-Existem duas formas principais de ajustar as medidas do objeto (de pixels a cm, por exemplo). O primeiro é declarar a área, perímetro ou raio conhecido de um determinado objeto. A medida para os outros objetos será então calculada por uma regra de três simples. A segunda é declarando uma resolução de imagem conhecida em dpi (pontos por polegada). Neste caso, perímetro, área e raio serão ajustados pelo dpi informado.
+The results were stored in `img_res`. Since there is no scale declared in the example above, we have no idea about the actual area of objects in cm$^2$, only in pixels. In this case, we use `get_measures()` to adjust pixel measurements to metric units.
 
+There are two main ways to adjust object measurements (from pixels to cm, for example). The first is to declare the known area, perimeter or radius of a given object. The measure for the other objects will then be calculated by a simple rule of three. The second is by declaring a known image resolution in dpi(dots per inch). In this case, perimeter, area and radius will be adjusted by the dpi informed.
 
-### Declarando um valor conhecido
+### Declaring a known value
 
-Como conhecemos a área do quadrado maior (objeto 1), vamos ajustar a área dos outros objetos na imagem usando isso.
+Since we know the area of the larger square (object 1), let's adjust the area of the other objects in the image using this.
 
 
 ```{r}
-get_measures(img_res,
+get_measures(img_res ,
              id = 1,
              area ~ 100)
 
@@ -271,140 +545,420 @@ get_measures(img_res,
 
 
 
-### Declarando a resolução da imagem
+The same can be used to adjust measurements based on perimeter or radius. Let's adjust the perimeter of the objects by the perimeter of object 2(20 cm).
 
-Se a resolução da imagem for conhecida, todas as medidas serão ajustadas de acordo com esta resolução. Abaixo, os valores de todas as medidas são ajustados declarando o argumento `dpi` em` get_measures()`.
+
+### Declaring the image resolution
+
+If the image resolution is known, all measurements will be adjusted accordingly. Let's see a numerical example with `pixels_to_cm()`. This function converts the number of pixels(* px *) into cm, considering the image resolution in ` dpi `, as follows: \$cm = px \times(2.54 / dpi)\$. As we know the number of pixels of the larger square, its perimeter in cm is given by
+
+
 
 ```{r}
-img_res_cor <- get_measures(img_res, dpi = 300) |> as.data.frame()
-img_res_cor
+# number of pixels for the perimeter of the largest square
+
+ls_px <- img_res$results$perimeter [1]
+pixels_to_cm(px = ls_px , dpi = 300)
+
+
+```
+
+The perimeter of object 1 adjusted by image resolution is very close to the known value (40 cm). Below, the values of all measures are adjusted by declaring the `dpi` argument in `get_measures()`.
+
+```{r}
+img_res_cor <- get_measures(img_res , dpi = 300)
+
+t(img_res_cor) |>
+  print_tbl()
+
 ```
 
 
-## Entendendo as medidas
+
+### Understanding measurements
 
 ```{r}
-object_contour(img) %>%  # obtém o contorno dos objetos
-  poly_mass() %>%        # computa o centro de massa e raios mínimo e máximo
-  plot_mass()            # plota as medidas
+object_contour(img) %>% # get the contour of objects
+  poly_mass() %>% # computes center of mass and minimum and maximum radii
+  plot_mass() # plot the measurements
 ```
 
-* Quadrado maior:
-- O diâmetro mínimo (a = 9,97) pode ser considerado como o lado do quadrado
+* Larger square:
+- The minimum diameter(a = 9.97) can be considered as the side of the square
+- The maximum diameter, given by \$a \sqrt {2}\$ can be considered the diagonal of the square (\$9.97 \sqrt {2} = 14,099 \approx 14,105\$
 
-- O diâmetro máximo, dado por $a \sqrt{2}$ pode ser considerado a diagonal do quadrado ($9,97 \sqrt{2} = 14.099$ 
+```{r}
+t(img_res_cor) |>
+  print_tbl() 
+```
 
-Neste outro exemplo, usarei a imagem `potato_leaves.png`, que foi coletada de [Gupta et al.(2020)](https://doi.org/10.1111/nph.16286)
+
+The `analyze_objects()` function calculates a range of measurements that can be used to study the shape of objects, such as leaves. As an example, I will use the `potato_leaves.png` image, which was collected from [Gupta et al.(2020)](https://doi.org/10.1111/nph.16286).
 
 
-```{r batata, fig.width = 10}
-batata <- image_pliman("potato_leaves.jpg", plot = TRUE)
+```{r potato, fig.width = 10}
+potato <- image_pliman("potato_leaves.jpg", plot = TRUE)
 
 pot_meas <-
-  analyze_objects(batata,
+  analyze_objects(potato,
                   watershed = FALSE,
                   marker = "id",
-                  show_chull = TRUE) # mostra o casco convex
-pot_meas$results
+                  show_chull = TRUE) # show the convex hull
+
+pot_meas$results %>%
+  print_tbl()
 
 ```
 
 
-As três medidas principais (em unidades de pixel) são:
 
-1. `area` a área do objeto.
-2. `area_ch` a área do casco convexo.
-3. `perímetro` o perímetro do objeto.
+The three main measurements(in pixel units) are:
 
-Usando essas medidas, a circularidade e a solidez são calculadas conforme mostrado em (Gupta et al, 2020).
-
-$$
-circularidade = 4 \pi(area / perimeter ^ 2)
-$$
+1. ` area ` the area of the object.
+2. ` area_ch ` the area of the convex hull.
+3. `perimeter` the perimeter of the object.
 
 
+## Single image processing
 
-
-
-$$
-solidez = area / area \_ch
-$$
-
-
-
-A circularidade é influenciada por serrilhas e saliências. A solidez é sensível a folhas com lóbulos profundos ou com pecíolo distinto e pode ser usada para distinguir folhas sem tais estruturas. Ao contrário da circularidade, não é muito sensível a serrilhas e saliências menores, uma vez que o casco convexo permanece praticamente inalterado.
-
-
-
-## Comprimento e largura
-No exemplo a seguir, mostro como calcular o contorno do objeto, o centro de massa e os raios máximo e mínimo (em unidades de pixel). Nesse caso, o diâmetro mínimo e máximo (calculado com `analyze_objects()`) pode ser usado como uma medida para aproximar a largura e o comprimento do grão do feijão, respectivamente.
+In the following example, I show how to plot the length and width of each leaf in the following image.
 
 
 ```{r}
-bean <- image_import("bean.jpg", plot = TRUE)
+leaves <- image_import("folhas.jpg", plot = TRUE)
 
-bean_meas <- 
-  analyze_objects(bean,
-                  index = "G",
-                  fill_hull = TRUE,
+leaves_meas <-
+  analyze_objects(leaves ,
+                  watershed = FALSE,
+                  col_background = "black")
+
+leaves_cor <- get_measures(leaves_meas , dpi = 300)
+
+t(leaves_cor) |>
+  print_tbl()
+
+
+# plot width and length
+plot_measures(leaves_cor , measure = "width")
+plot_measures(leaves_cor , measure = "length", vjust = 50)
+```
+
+
+
+Here, we will count the grains in the `grains.jpg` image. This image has a cyan background and contains 90 soybeans that touch each other. The ` analyze_objects()` function segments the image using the normalized blue index by default, as follows \$NB =(B /(R + G + B))\$, where *R*, *G* and *B * are the red, green and blue bands. Note that if the image is contained in the default directory, it is not necessary to import it. Just enter the image name in quotes in the `img` argument(e.g., `img = "grains"`).
+
+In this example, objects are counted and segmented objects are colored with random colors using the `show_segmentation = TRUE` argument. Users can set ` show_contour = FALSE` to remove the contour line and identify the objects (in this example, the grains) using the `marker = "id"` arguments. The background color can also be changed with `col_background`.
+
+
+
+```{r, fig.width = 12, fig.height = 6}
+count <-
+  analyze_objects("grains",
+                  show_segmentation = TRUE,
+                  show_contour = FALSE,
+                  marker = "id")
+count$statistics
+```
+
+
+```{r}
+
+# Get the measurements of the object
+measurements <- get_measures(count)
+head(measurements)
+```
+
+
+In the following example, we will select objects with an area above the average of all objects using ` lower_size = 719.1`.
+
+
+
+```{r, fig.width = 12, fig.height = 6}
+
+analyze_objects("grains",
+                marker = "id",
+                lower_size = 719.1)
+```
+
+
+
+Users can also use the `topn _*` arguments to select the `n` objects based on the smallest or largest areas. Let's see how to select the 5 grains with the smallest area, showing the original grains on a blue background. We will also use the `my_index` argument to choose a custom index to segment the image. Just for comparison, we will explicitly set the normalized blue index by calling `my_index = "B /(R + G + B)"`.
+
+
+
+```{r, fig.width = 12, fig.height = 6}
+analyze_objects("grains",
+                marker = "id",
+                topn_lower = 5,
+                col_background = "salmon",
+                my_index = "B /(R + G + B)") # normalized blue(NB)
+```
+
+
+
+## Batch processing
+
+In image analysis, it is often necessary to process more than one image. For example, in plant breeding, the number of grains per plant(eg wheat) is often used in indirect selection of high-yielding plants. In `pliman`, batch processing can be done when the user declares the `pattern` argument.
+
+
+To speed up processing time, especially for large numbers of images, the `parallel = TRUE` argument can be used. In this case, images are processed asynchronously (in parallel) in separate `R` sessions running in the background on the same machine. The number of sections is set to 50% of available cores. This number can be explicitly controlled with the `workers` argument.
+
+
+```{r}
+system.time(
+  list_res <- analyze_objects(pattern = "img_sb", show_image = FALSE)
+)
+
+# parallel processing
+# 6 multiple sections (50% of my pc's cores)
+system.time(
+  list_res <-
+    analyze_objects(pattern = "img_sb",
+                    show_image = FALSE,
+                    parallel = TRUE)
+)
+
+```
+
+
+
+
+# Object coordinates
+Users can get the coordinates for all desired objects with `object_coord()`. When the `id` argument is set to `NULL` (default), a bounding rectangle is drawn including all objects. Use `id = "all"` to get the coordinates of all objects in the image or use a numeric vector to indicate the objects to calculate the coordinates. Note that the `watershed = FALSE` argument is used to avoid unique objects being split up into multiple objects by the watershed segmentation algorithm.
+
+
+```{r objec2}
+leaves <- image_import("folhas.jpg", plot = TRUE)
+
+# get the id of each object
+object_id(leaves, watershed = FALSE)
+
+# Get the coordinates of a bounding rectangle around all objects
+object_coord(leaves, watershed = FALSE)
+
+# Get coordinates for all objects
+object_coord(leaves ,
+             id = "all",
+             watershed = FALSE)
+
+# Get the coordinates of objects 1 and 2
+# 20 border pixels
+object_coord(leaves ,
+             id = 1,
+             edge = 20,
+             watershed = FALSE)
+```
+
+
+
+# Isolating objects
+
+Knowing the coordinates of each object, it is possible to isolate it. The `object_isolate()` function is used for this. In the following example, I will isolate object 1 and set a 10-pixel border around the object.
+
+```{r object3}
+id1 <-
+  object_isolate(leaves ,
+                 watershed = FALSE,
+                 id = 1,
+                 edge = 10)
+plot(id1)
+```
+
+# Including objects in a list
+
+`object_split()` can be used to split up a series of objects contained in a single image into a list, where each element is one object. By default, the background is removed and shown in white.
+
+```{r fig.width =10}
+list <- object_split(leaves, watershed = FALSE)
+str(list)
+```
+
+
+
+# RGB values for each object
+
+To get the RGB intensity of each object in the image, we use the `object_rgb = TRUE` argument in the `analyze_objects()` function. In the following example, we will use the R, G and B bands and their normalized values. The `pliman_indexes()` function returns the indexes available in the package. To compute a specific index, simply enter a formula containing the values of R, G, or B (e.g. `object_index = "B/G+R"`).
+
+
+
+```{r rgb2, fig.width = 10, fig.height = 6}
+img <- image_import("green.jpg", plot = TRUE)
+(indx <- pliman_indexes())
+
+soy_green <-
+  analyze_objects(img ,
+                  object_index = indx [1:6], # R:NB
+                  marker = "id",
+                  marker_col = "black",
+                  col_background = "white",
+                  show_contour = FALSE)
+
+# PCA with the indices
+ind <- summary_index(soy_green, type ="var")
+
+```
+
+The `R` index provided the greatest contribution to the variation of PC1. The biplot containing the indices (variables) and the grains (individuals) can be seen below.
+
+```{r fig.width =8, fig.height =8}
+get_biplot(ind$pca_res, show = "var")
+get_biplot(ind$pca_res, show = "ind")
+
+```
+
+
+Now, let's plot the `R` index on each object
+
+```{r}
+plot(img)
+plot_measures(soy_green ,
+              measure = "R",
+              col = " black ")
+```
+
+
+It seems that grains with average red (`R`) value less than 0.6 can be considered greenish seeds. Users can then work with this feature and adapt it to their case.
+
+```{r rgb4, fig.width =10, fig.height =4}
+report <-
+  summary_index(soy_green ,
+                index = "R",
+                cut_point = 0.6,
+                plot = FALSE)
+ids <- report$ids
+report$between_id
+report$within_id[ids,]
+
+
+# ratio of pixels of each object(above and below 0.6)
+barplot(t(report$within_id [,6:7]) |> as.matrix(),
+        legend = c("R < 0.6", "R > 0.6"))
+```
+
+
+In the following graph, I plot the distribution of the greenish and non-greenish R, G, and B values.
+
+```{r}
+# distribution of RGB values
+rgbs <-
+  soy_green$object_rgb |>
+  mutate(type = ifelse(id %in% ids, " Greenish ", " No greenish ")) |>
+  select(-id) |>
+  pivot_longer(-type)
+
+ggplot(rgbs, aes(x = value)) +
+  geom_density(aes(fill = name), alpha = 0.5) +
+  facet_wrap(~ type)
+
+
+```
+
+Now, using the ids of each grain, I plot the values only in the greenish ones.
+
+
+```{r}
+# plot 
+plot(img)
+plot_measures(soy_green ,
+              id = ids,
+              measure = "R",
+              col = "black")
+cont <- object_contour(img , show_image = FALSE)
+
+plot_contour(cont,
+             id = ids,
+             col = "red")
+
+```
+
+
+When there are many objects, the `parallel = TRUE` argument will speed up extracting the RGB values. In the following example, an image with 1343 grains of *Vicia cracca* is analyzed. The indices `"R"` and `"R/G"` are computed. Grains with an average red value greater than 0.25 are highlighted.
+
+```{r rgb5, fig.width = 12, fig.height =10}
+img2 <- image_import("vicia.jpg", plot = TRUE)
+
+vicia <-
+  analyze_objects(img2,
+                  index = "B",
+                  object_index = "R",
+                  show_image = FALSE,
+                  parallel = TRUE)
+
+summary_index <-
+  summary_index(vicia ,
+                index = "R",
+                cut_point = 0.25,
+                select_higher = TRUE)
+
+count2 <-
+  object_contour(img2,
+                 index = "B",
+                 show_image = FALSE)
+
+ids2 <- summary_index$ids
+plot_contour(count2, id = ids2, col = "red")
+
+```
+
+
+
+
+# Leaf area
+## Known resolution
+
+```{r}
+leaves <- image_import(image = "ref_leaves.jpg", plot = TRUE)
+
+af <-
+  analyze_objects(leaves ,
                   watershed = FALSE,
                   show_contour = FALSE,
                   col_background = "black",
-                  marker = "id",
-                  threshold = 0.45)
-bean_meas_cor <- get_measures(bean_meas, dpi = 300)
-bean_meas_cor[, c("id", "diam_min", "diam_max")]
-
-
-# contorno
-cont <- 
-  object_contour(bean,
-                 index = "G",
-                 watershed = FALSE,
-                 show_image = FALSE)
-
-plot_contour(cont, col = "white", lwd = 2)
-
-# centro de massa
-cm <- poly_mass(cont)
-plot_mass(cm,
-          col = "white",
-          arrow = TRUE)
-
-# plota a largura e comprimento
-plot_measures(bean_meas_cor, measure = "diam_min", vjust = 120)
-plot_measures(bean_meas_cor, measure = "diam_max", hjust = 180)
-```
-
-
-
-
-## Área foliar
-### Uma imagem
-```{r}
-folhas <- image_import(image = "leaves.jpg", plot = TRUE)
-af <-
-  analyze_objects(folhas,
-                  marker = "id",
-                  watershed = FALSE,
-                  show_contour = FALSE,
-                  col_background = "black")
-
+                  marker = "id")
 af_cor <- get_measures(af, dpi = 50.5)
-plot_measures(af_cor,
-              vjust = -25,
-              col = "red",
-              measure = "area")
 
-get_measures(af, id = 30, area ~ 25)
+plot_measures(af_cor ,
+              measure = "area",
+              vjust = -30,
+              col = " red ")
 ```
 
 
-### Preenchendo 'buracos'
-Um aspecto importante a se considerar é quando há a presença de 'buracos' nas folhas. Isto pode ocorrer, por exemplo, pelo ataque de pragas. Neste caso, a área teria que ser considerada, pois ela estava lá!
 
-```{r fig.width=10, fig.height=6}
+## Reference object (dev version)
+
+The `reference` argument can now be used to correct the object measures even when images with different shooting distances are used. In this example, the leaf area of the `ref_leaves` image is quantified and corrected considering a 5 x 5 (25 cm\$^2\$) white square as the reference object. For this, it is necessary to provide color palettes referring to the background (`background`), leaves (` foreground`) and the reference object (`reference`). Also, the area of the reference object needs to be informed in `reference_area`.
+
+```{r}
+img <- image_import(pattern = "ref_", plot = TRUE)
+
+area <-
+  analyze_objects(img = "ref_leaves",
+                  foreground = "ref_folha",
+                  background = "ref_back",
+                  reference = "ref_ref",
+                  reference_area = 25,
+                  marker = "area",
+                  watershed = FALSE)
+```
+
+
+
+
+## Filling 'holes'
+
+An important aspect to consider in leaf area measures is when leaves present 'holes'. This can occur, for example, by the attack of pests. In this case, the area would have to be considered, because it was there! The image bellow is used as an example.
+
+```{r fig.width =10, fig.height =6}
 holes <- image_import("holes.jpg", plot = TRUE)
+
+```
+
+
+In this case, the missing area will not be computed using the default settings of `analyze_objects()`. To include this area as the leaf area, we can use the argument `fill_hull()`. Note that this will only work for missing areas within a closed object. If the missing area includes the original leaf contour, there is no (yet available) way to reconstruct the leaf perimeter.
+
+
+```{r fig.width =10, fig.height =6}
 
 af <-
   analyze_objects(holes,
@@ -418,9 +972,10 @@ af <-
                   dir_processed = tempdir(),
                   contour_size = 5)
 
+# fill the missing area
 af2 <-
   analyze_objects(holes,
-                  fill_hull = TRUE, # preenche 'buracos'
+                  fill_hull = TRUE, # fill ' holes '
                   watershed = FALSE,
                   col_background = "white",
                   marker = "area",
@@ -436,48 +991,102 @@ imgs <- image_import(pattern = "proc", path = tempdir())
 image_combine(imgs)
 ```
 
-
-### Usando um objeto de referência (dev version)
-
-Na versão de desenvolvimento, foi incluído o argumento `reference`. Isto possibilita corrigir as medidas de objetos utilizando um objeto de referência. Neste exemplo, a área foliar da imagem `img_ref` é quantificada e corrigida considerando como objeto de referência, um retângulo de 2 x 6 (12 cm$^2$). Para isso, é necessário fornecer paletas de cores referentes ao fundo (`background`), folhas (`foreground`) e o objeto de referência (`reference`). Além disso, a área do objeto de referência precisa ser informada em `reference_area`.
+We can simply use the ratio between `proc_img` and `proc_img2` to compute the injured area in this leaflet.
 
 ```{r}
-img <- image_import(pattern = "ref_", plot = TRUE)
-
-area <- 
-  analyze_objects(img = "ref_img",
-                  foreground = "ref_leaf",
-                  background = "ref_back",
-                  reference = "ref_ref",
-                  reference_area = 12,
-                  marker = "area",
-                  watershed = FALSE)
+# percent of injuried area
+100 - 88379 / 99189 * 100
 ```
 
 
 
-### Várias imagens da mesma amostra
 
-Se os usuários precisarem analisar várias imagens da mesma amostra, as imagens da mesma amostra devem compartilhar o mesmo prefixo de nome de arquivo, que é definido como a parte do nome do arquivo que precede o primeiro hífen (`-`) ou underscore (`_`). Então, ao usar `get_measures()`, as medidas das imagens de folhas chamadas, por exemplo, `F1-1.jpeg`,` F1_2.jpeg` e `F1-3.jpeg` serão combinadas em uma única imagem (`F1`), mostrado no objeto `merge`. Isso é útil, por exemplo, para analisar folhas grandes que precisam ser divididas em várias imagens ou várias folhas pertencentes à mesma amostra que não podem ser digitalizadas em uma imagem única.
+## Compound leaves
 
-No exemplo a seguir, cinco imagens serão usadas como exemplos. Cada imagem possui folhas de diferentes espécies. As imagens foram divididas em imagens diferentes que compartilham o mesmo prefixo (por exemplo, L1_\*, L2_\* e assim por diante). Observe que para garantir que todas as imagens sejam processadas, todas as imagens devem compartilhar um padrão comum, neste caso ("L"). Os três pontos no canto inferior direito têm uma distância conhecida de 5 cm entre eles, que pode ser usada para extrair o dpi da imagem com `dpi()`. Apenas para fins didáticos, considerarei que todas as imagens têm resolução de 100 dpi.
+A simple leaf blade is undivided. The blade of a compound leaf is divided into several leaflets. In the following examples, I will show how to analyze simple and compound leaves with `analyze_objects()`, mainly if the goal is to obtain the measures for each leaf (e.g., mean area), where the number of objects (leaves) will influence the results.
+
+The following images by [Daniel Saueressig](https://www.florestaombrofilamista.com.br/sidol/?menu=contact) were obtained from the *Sistema de Identificação Dendrológica Online - Floresta Ombrófila Mista*[^8] and show examples of simple and compound leaves.
+
+```{r sc1, fig.width=10}
+imgs <- 
+  image_import(c("simple.jpg", "compound.jpg"),
+               plot = TRUE)
+
+```
+
+
+Analyzing non-touching simple leaves is fairly simple. We already did that. The squares in the background have 4 cm$^2$. With this information, it is possible to obtain the image resolution with `dpi(simple)`, which will be useful to adjust the measures. In this case, the estimated dpi is 48.65.
+
+```{r sc2}
+simple <- imgs$simple.jpg
+sarea <- analyze_objects(simple, marker = "id")
+
+```
+
+Note that with the default settings, the simple leaf was partitioned into small, segmented leaves. This can be solved by either using `object_size = "large"` or `watershed = FALSE`, to omit the watershed segmentation algorithm. The last is used here.
+
+
+```{r sc3}
+sarea <- 
+  analyze_objects(simple,
+                  watershed = FALSE,
+                  marker = "id",
+                  show_chull = TRUE)
+sarea_cor <- get_measures(sarea, dpi = 48.65)
+sarea_cor
+```
+
+
+For compound leaves, if the watershed segmentation is used, leaflets will probably be considered as different leaves, as can be seen below.
+
+```{r sc4}
+compound <- imgs$compound.jpg
+carea <- 
+  analyze_objects(compound,
+                  show_segmentation = TRUE,
+                  show_contour = FALSE,
+                  marker = "id")
+```
+
+Therefore, using `watershed = FALSE` will solve this problem, since all leaflets connected by at least one pixel will be considered part of the same leaf.
+
+```{r sc5}
+carea <- 
+  analyze_objects(compound,
+                  watershed = FALSE,
+                  show_segmentation = TRUE,
+                  show_contour = FALSE,
+                  show_chull = TRUE,
+                  marker = "id")
+carea_cor <- get_measures(carea, dpi = 49.5)
+carea_cor
+```
+
+
+
+
+## Multiple images of the same sample
+
+If users need to analyze multiple images from the same sample, the images must share the same filename prefix, which is defined as the part of the filename that precedes the first hyphen (`-`) or underscore (`_`). Then, when using ` get_measures()`, measurements from leaf images called, for example, `F1-1.jpeg`, `F1_2.jpeg` and `F1-3.jpeg` will be combined into a single image (`F1`), displayed in the `merge` object. This is useful, for example, for analyzing large sheets that need to be split into multiple images or multiple sheets belonging to the same sample that cannot be scanned into a single image.
+
+In the following example, five images will be used as examples. Each image has leaves of different species. The images have been split into different images that share the same prefix (eg L1_\*, L2_\*, and so on). Note that to ensure that all images are processed, all images must share a common pattern, in this case (`"L"`). The three dots in the lower right corner have a known distance of 5 cm between them, which can be used to extract the dpi of the image with `dpi()`. For teaching purposes only, I will assume that all images are 100 dpi resolution .
 
 
 ```{r merge0, fig.width = 10, fig.height = 10}
-# imagens inteiras
+# entire images
 imgs <-
   image_import(pattern = "leaf",
                plot = TRUE,
                ncol = 2)
 
-# imagens da mesma amostra
+# images of the same sample
 sample_imgs <-
   image_import(pattern = "L",
                plot = TRUE,
                ncol = 5)
 ```
 
-Aqui, usarei o `pattern =" L "` para indicar que todas as imagens com este nome de padrão devem ser analisadas. O índice verde (`" G "`) é usado para segmentar as folhas e `divisor de águas = FALSO` é usado para omitir o algoritmo de segmentação de divisor de águas.
+Here, I will use the `pattern = "L"` to indicate that all images with this pattern name should be merged. The green index (`"G"`) is used to segment the leaves and `watershed = FALSE` is used to omit the watershed segmentation algorithm.
 
 
 ```{r merge1}
@@ -487,180 +1096,151 @@ merged <-
                   watershed = FALSE)
 ```
 
-Usando a função `get_measures()` é possível converter as medidas de unidades de pixel em unidades métricas (cm$^ 2$).
+Using the `get_measures()` function it is possible to convert measurements from pixel units to metric units(cm\$^ 2\$).
 
 ```{r merge2}
 merged_cor <- get_measures(merged, dpi = 100)
 ```
 
-Observe que o `merged_cor` é uma lista com três objetos:
+Note that the  merged_cor` is a list with three objects:
 
-* `results`: um data frame que contém as medidas de cada objeto individual (neste caso, folha) de cada imagem analisada.
+* `results`: a data frame that contains the measurements of each individual object (in this case, leaf) of each analyzed image.
 
 ```{r merge3}
-merged_cor$results
+merged_cor$results %>%
+  print_tbl()
+
 ```
 
-* `summary`: um data frame que contém o resumo dos resultados, contendo o número de objetos em cada imagem (`n`) a soma, média e desvio padrão da área de cada imagem, bem como o valor médio para todas as outras medidas (perímetro, raio, etc.)
+* `summary` : a data frame that contains the summary of the results, containing the number of objects in each image (`n`) the sum, mean and standard deviation of the area of each image, as well as the average value for all others measurements (perimeter, radius, etc.)
 
 
 ```{r merge4}
-merged_cor$summary
+merged_cor$summary %>%
+  print_tbl()
+
 ```
 
-* `merge`: um data frame que contém os resultados mesclados pelo prefixo da imagem. Observe que, neste caso, os resultados são apresentados por L1, L2, L3, L4 e L5.
+* `merge`: a data frame that contains the results merged by image prefix. Note that in this case the results are displayed by L1, L2, L3, L4 and L5.
 
 ```{r merge5}
-merged_cor$merge
+merged_cor$merge %>%
+  print_tbl()
+
 ```
 
-O `area_sum` de img` L1` é a soma das duas folhas (uma em cada imagem)
+The ` area_sum` of img `L1` is the sum of the two sheets (one in each image).
 
 ```{r merge6}
-sum(merged_cor$results$area[1:2])
+sum(merged_cor$results$area [1:2])
+
 ```
 
 
+Below, I will create a plot to show the distribution of leaf area  
 
-
-```{r merge9, fig.width=10, fig.height=5}
+```{r merge9, fig.width =10, fig.height =5}
 df_leaf <-
-  merged_cor$results %>% 
-  separate(img, into = c("img", "code"))
+  merged_cor$results %>%
+  separate(img , into = c("img", "code"))
 
 # leaf area of the different species
-p1 <- 
-  ggplot(df_leaf, aes(x = img, y = area)) +
+p1 <-
+  ggplot(df_leaf, aes(img, area)) +
   geom_boxplot() +
-  geom_jitter(color = "red") +
-  labs(x = "Imagem", y = expression(Área~(cm^2)))
+  geom_jitter(color="red") +
+  labs(x = " Image ", y = expression(Area ~(cm^2)))
 
-p2 <- 
-  ggplot(df_leaf, aes(x = img, y = area)) +
+p2 <-
+  ggplot(df_leaf , aes(x = img , y = area)) +
   stat_summary(fun = sum,
                geom = "bar",
-               col = "black") +
-  labs(x = "Imagem", y = expression(Área~total~(cm^2)))
+               col = " black ") +
+  labs(x = " Image ", y = expression(Total~area ~(cm^2)))
 
 
 # solidity of the different species
-p3 <- 
-  ggplot(df_leaf, aes(x = img, y = solidity)) +
+p3 <-
+  ggplot(df_leaf , aes(x = img , y = solidity)) +
   geom_boxplot() +
-  geom_jitter(color = "red") +
-  labs(x = "Imagem", y = "Solidez")
+  geom_jitter(color="red") +
+  labs(x = "Image", y = "Solidity")
 
 p1 + p2 + p3 +
   plot_layout(ncol = 3)
 ```
 
 
-# Valores RGB para cada objeto
-
-Para obter a intensidade RGB de cada objeto de imagem, usamos o argumento `object_rgb = TRUE` na função `analyze_objects() `. Neste exemplo,
-
-```{r rgb1, fig.width = 10, fig.height = 10}
-img <- image_import("soy1.jpeg", plot = TRUE)
 
 
+
+
+[^1]: Singer, M.H. 1993. A general approach to moment calculation for polygons and line segments. Pattern Recognition 26(7): 1019–1028. doi: 10.1016/0031-3203(93)90003-F.
+
+
+[^2]: Chen, C.H., and P.S.P. Wang. 2005. Handbook of Pattern Recognition and Computer Vision. 3rd ed. World Scientific.
+
+[^3]: Claude, J. 2008. Morphometrics with R. Springer.
+
+[^4]: Montero, R.S., E. Bribiesca, R. Santiago, and E. Bribiesca. 2009. State of the Art of Compactness and Circularity Measures. International Mathematical Forum 4(27): 1305–1335.
+
+[^5]: Lee, Y., and W. Lim. 2017. Fórmula de cadarço: conectando a área de um polígono e o produto vetorial vetorial. The Mathematics Teacher 110(8): 631–636. doi: 10.5951/MATHTEACHER.110.8.0631.
+
+[^6]: Montero, R.S., E. Bribiesca, R. Santiago, and E. Bribiesca. 2009. State of the Art of Compactness and Circularity Measures. International Mathematical Forum 4(27): 1305–1335
+
+[^7]: Haralick, R.M. 1974. A Measure for Circularity of Digital Figures. IEEE Transactions on Systems, Man, and Cybernetics SMC-4(4): 394–396. doi: 10.1109/TSMC.1974.5408463.
+
+[^8]: https://www.florestaombrofilamista.com.br/sidol/?menu=glossary
+
+```{r, echo=FALSE, eval=TRUE}
+```
+##Aufgabe 4
+
+```{r include = FALSE}
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
-A média dos valores da banda verde será calculada declarando `object_index = "G"`.
-
-```{r rgb2, fig.width = 10, fig.height = 10}
-soy_green <-
-  analyze_objects(img,
-                  object_index = "R",
-                  marker_col = "black",
-                  col_background = "white",
-                  show_contour = FALSE)
-
-plot_measures(soy_green,
-              measure = "R",
-              col = "black")
-```
-
-
-Parece que grãos com valores médios de verde (R) inferiores a 0.6 podem ser consideradas sementes esverdeadas. Os usuários podem então trabalhar com esse recurso e adaptá-lo ao seu caso.
-
-```{r rgb4}
-report <- summary_index(soy_green, index = "R", cut_point = 0.6)
-ids <- report$ids
-
-plot(img)
-plot_measures(soy_green,
-              id = ids,
-              measure = "R",
-              col = "black")
-cont <- object_contour(img, show_image = FALSE)
-plot_contour(cont, id = ids, col = "red")
+# Diretório das imagens
+```{r eval=FALSE}
+# mudar de acordo com a pasta em seu computador
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
+# Disease severity
+## Using sample palettes
 
-Quando existem muitos objetos, o argumento `parallel = TRUE` irá acelerar a extração dos valores RGB. No exemplo a seguir, uma imagem com 1343 grãos de *Vicia cracca* é analisada. Os índices `"R"` e `"R/G"` são computados. Os grãos com um valor médio de vermelho superior a 0,25 são destacados.
+Sample palettes can be made by simply manually sampling small areas of representative images and producing a composite image that will represent each of the desired classes (background, healthy, and symptomatic tissues). 
 
-```{r rgb5, fig.width = 12, fig.height=10}
-img2 <- image_import("vicia.jpg", plot = TRUE)
+```{r doença1, fig.width = 12, fig.height = 3}
+# generate html tables
+print_tbl <- function(table, digits = 3, ...){
+  knitr :: kable(table, booktabs = TRUE, digits = digits, ...)
+}
 
-vicia <-
-  analyze_objects(img2,
-                  index = "B",
-                  object_index = "R",
-                  show_image = FALSE,
-                  parallel = TRUE)
-
-resumo_indice <- 
-  summary_index(vicia,
-                index = "R",
-                cut_point = 0.25,
-                select_higher = TRUE)
-
-cont2 <-
-  object_contour(img2,
-                 index = "B",
-                 show_image = FALSE)
-ids2 <- resumo_indice$ids
-plot_contour(cont2, id = ids2, col = "red")
-
-
-# cria gráfico de densidade dos valores RGB para as duas classes de grãos
-rgbs <-
-  vicia$object_rgb %>%
-  mutate(type = ifelse(id %in% ids2, "Destacado", "Não destacado")) %>%
-  select(-id) %>%
-  pivot_longer(-type)
-
-ggplot(rgbs, aes(x = value)) +
-  geom_density(aes(fill = name), alpha = 0.5) +
-  facet_wrap(~type)
-```
-
-
-
-# Severidade de doenças
-## Utilizando paletas
-
-```{r doença1, fig.width = 12, fig.height = 3, collapse=TRUE}
-
-img <- image_import("soy_1.jpg")
-h <- image_import("sev_healthy.png")
-d <- image_import("sev_disease.png")
-b <- image_import("sev_back.png")
+library(pliman)
+img <- image_import("exemp_1.jpeg", plot = TRUE)
+h <- image_import("exem_h.png")
+d <- image_import("exem_d.png")
+b <- image_import("exem_b.png")
 image_combine(img, h, d, b, ncol = 4)
 ```
 
-## Gerando paletas
+
+## Producing sample palettes
+
+Users can produce these palettes with `pick_palette()` function.
+
 ```{r eval=FALSE, fig.width=10}
-b2 <- pick_palette(img)
 h2 <- pick_palette(img)
 d2 <- pick_palette(img)
+b2 <- pick_palette(img)
 image_combine(h2, d2, b2, ncol = 3)
 
 ```
 
 
-## Padrão da função
+### Defaults settings
 ```{r}
 sev <- 
   measure_disease(img = img,
@@ -671,7 +1251,7 @@ sev$severity
 ```
 
 
-## Mostrando preenchimento das lesões
+### Filling lesions
 ```{r}
 sev <- 
   measure_disease(img = img,
@@ -682,133 +1262,148 @@ sev <-
 ```
 
 
-## Mostrando uma máscara
+### Showing a mask
 ```{r}
 sev <- 
   measure_disease(img = img,
                   img_healthy = h,
                   img_symptoms = d,
                   img_background = b,
-                  show_contour = FALSE,
                   show_original = FALSE,
-                  col_lesions = "brown")
+                  col_lesions = "brown") # padrão é "black"
 ```
 
 
-## Segmentando e analizando lesões
+### Segmenting and analyzing lesions
+
+When using `show_features = TRUE`, the function analyzes the lesions and returns results such as number of lesions, area, perimeter, etc. With `show_segmentation = TRUE`, segmented lesions are shown.
+
 ```{r}
 sev <- 
   measure_disease(img = img,
                   img_healthy = h,
                   img_symptoms = d,
                   img_background = b,
-                  watershed = TRUE,
-                  lesion_size = "elarge",
-                  show_contour = FALSE, # não mostra os contornos
-                  show_features = TRUE, # computa características das lesões
-                  show_segmentation = TRUE) # mostra as segmentações
-sev$severity
+                  show_features = TRUE,
+                  show_segmentation = TRUE)
 
-sev$statistics
-sev$shape[1:10, ]
+# correct the measures (dpi = 150)
+sev_corrected <- get_measures(sev, dpi = 150)
 ```
 
 
-
-## Utilizando índices RGB
-Para identificar o melhor índice para segmentar a imagem do fundo e após as lesões da folha sadia, pode-se utilizar a função `image_segment_iter`. (OBS. somente funcionará em uma seção iterativa).
-
-
-```{r eval=FALSE}
-img %>% 
-  image_resize(50) %>% 
-  image_segment_iter(nseg = 2, ncol = 3)
-
-```
-
-Após escolhidos os índices, podemos utilizar os argumentos `index_lb` e `index_dh` para segmentação da folha e fundo | lesão e sadio, respectivamente.
+## Batch processing
+To analyze several images from a directory, use the `pattern` argument to declare a pattern of filenames. Here, we Will used 50 soybean leaves available in the repository https://osf.io/4hbr6, a database of images of annotation of severity of plant diseases. Thanks to [Emerson M. Del Ponte](https://osf.io/jb6yd/) and his contributors for keeping this project publicly available. Using the `save_image = TRUE` argument we save the processed images in a temporary directory, defined by `tempdir()`.
 
 ```{r}
-# após escolhidos os índices, utiliza
-sev_index <- 
-  measure_disease(img, 
-                  index_lb = "G",
-                  index_dh = "GLAI",
-                  threshold = c("Otsu", 0.5),
-                  show_image = TRUE)
-sev_index$severity
-```
+# criar um diretório temporário
+temp_dir <- tempdir()
 
-
-
-## Processamento em lote
-Para analisar diversas imagens de um diretório, utiliza-se o argumento `pattern`, para declarar um padrão de nomes de arquivos. Serão utilizadas 20 folhas de soja disponíveis no repositório  https://osf.io/4hbr6, um banco de dados de imagens de anotação de severidade de doenças de plantas. Obrigado a [Emerson M. Del Ponte](https://osf.io/jb6yd/) e seus colaboradores por manter este projeto disponível publicamente.
-
-```{r}
 system.time(
   sev_lote <- 
-    measure_disease(pattern = "soy_",
-                    img_healthy = "sev_healthy",
-                    img_symptoms = "sev_disease",
-                    img_background = "sev_back",
-                    col_lesions = "brown",
-                    show_contour = FALSE,
+    measure_disease(pattern = "soy",
+                    img_healthy = "soja_h",
+                    img_symptoms = "soja_s",
+                    img_background = "soja_b",
                     show_image = FALSE,
                     save_image = TRUE,
-                    dir_processed = "processed",
-                    parallel = TRUE)
+                    dir_processed = temp_dir,
+                    show_contour = FALSE,
+                    col_lesions = "brown")
 )
 sev_lote$severity
 ```
 
-## Imagens processadas
-```{r fig.width=10, fig.height=10}
-imgs <- 
-  image_import(pattern = "proc_",
-               path = "processed",
-               plot = TRUE,
-               ncol = 5)
-```
 
 
 
 ## Diagramas de área padrão
 
-Os diagramas de área padrão (SAD) têm sido usados há muito tempo como uma ferramenta para auxiliar na estimativa da severidade de doenças de plantas, servindo como um modelo de referência padrão antes ou durante as avaliações.
+Standard area diagrams (SAD) have long been used as a tool to aid the estimation of plant disease severity, serving as a standard reference template before or during the assessments.
 
-Dado um objeto calculado com `measure_disease()`, um SAD com `n` imagens contendo os respectivos valores de severidade é obtido com `sad()`.
+Given an object computed with `measure_disease()` a Standard Area Diagram (SAD) with `n` images containing the respective severity values are obtained with `sad()`.
 
-As folhas com menor e maior severidade sempre estarão no SAD. Se `n = 1`, a folha com a menor severidade será retornada. As outras são amostradas sequencialmente para obter as `n` imagens após a severidade ter sido ordenada em ordem crescente. Por exemplo, se houver 30 folhas e `n` for definido como 3, as folhas amostradas serão a 1ª, 15ª e 30ª com os menores valores de severidade.
+Leaves with the smallest and highest severity will always be in the SAD. If `n = 1`, the leaf with the smallest severity will be returned. The others are sampled sequentially to achieve the n images after severity has been ordered in ascending order. For example, if there are 30 leaves and n is set to 3, the leaves sampled will be the 1st, 15th, and 30th with the smallest severity values.
 
-O SAD só pode ser calculado se um nome de padrão de imagem for usado no argumento `pattern` da função `measure_disease()`. Se as imagens forem salvas, as `n` imagens serão recuperadas do diretório `dir_processed` (diretório padrão por default). Caso contrário, a severidade será calculada novamente para gerar as imagens. Um SAD com 8 imagens do exemplo acima pode ser obtido facilmente com:
+The SAD can be only computed if an image pattern name is used in argument `pattern` of `measure_disease()`. If the images are saved, the `n` images will be retrevied from `dir_processed` directory. Otherwise, the severity will be computed again to generate the images. A SAD with 8 images from the above example can be obtained easely with:
 
 ```{r}
-sad(sev_lote, n = 8, ncol = 4)
+sad(sev_lote, n = 6, ncol = 3)
 ```
 
 
-## Múltiplas folhas em uma foto
+## Parallel processing
 
-Quando múltiplas folhas estão presentes em uma imagem, a função `measure_disease` retorna a severidade média das folhas presentes na imagem. Para quantificar a severidade *por folha*, a função `measure_disease_byl()` pode ser utilizada.
-
-Esta função calcula a porcentagem de área foliar sintomática usando paletas de cores ou índices RGB para cada folha (`byl`) de uma imagem. Isso permite, por exemplo, processar réplicas do mesmo tratamento e obter os resultados de cada replicação com uma única imagem. Para fazer isso, as amostras de folhas são primeiro divididas usando a função `object_split()` e, em seguida, a função `measure_disease()` é aplicado à lista de folhas.
+To speed up processing time when multiple images are available, you can use the `paralell` argument. In parallel programming (`parallel = TRUE`), the images are processed asynchronously (in parallel) in separate R sessions running in the background on the same machine. The number of sections is set by default to 50% of available cores. This number can be controlled explicitly with the argument workers.
 
 ```{r}
-mult1 <- image_import("multiplas_01.jpeg", plot = TRUE)
-image_index(mult1)
+system.time(
+  sev_lote <- 
+    measure_disease(pattern = "soy",
+                    img_healthy = "soja_h",
+                    img_symptoms = "soja_s",
+                    img_background = "soja_b",
+                    show_image = FALSE,
+                    parallel = TRUE)
+)
 
-# 
+
+```
+
+
+
+## Multiple images of the same sample
+
+If users need to analyze multiple images from the same sample, the images from the same sample must share the same filename prefix, which is defined as the part of the filename that precedes the first hyphen (`-`) or underscore (`_`).
+
+In the following example, 16 images will be used as examples. Here, they represent four replicates of four different treatments (`TRAT1_1, TRAT1_2, ..., TRAT4_4`). Note that to ensure that all images are processed, all images must share a common pattern, in this case (`"TRAT"`).
+
+```{r}
+system.time(
+  sev_trats <- 
+    measure_disease(pattern = "TRAT",
+                    img_healthy = "feijao_h",
+                    img_symptoms = "feijao_s",
+                    img_background = "feijao_b",
+                    show_features = TRUE,
+                    show_image = FALSE,
+                    parallel = TRUE)
+)
+sev <- 
+  sev_trats$severity |> 
+  separate_col(img, into = c("TRAT", "REP"))
+
+library(ggplot2)
+ggplot(sev, aes(TRAT, symptomatic))+
+  geom_boxplot() +
+  geom_jitter(alpha = 0.3) +
+  labs(x = "Tratamentos",
+       y = "Severidade (%)")
+```
+
+
+
+## Multiple leaves in one image
+
+When multiple leaves are present in an image, the `measure_disease` function returns the average severity of the leaves present in the image. To quantify the severity *per leaf*, the `measure_disease_byl()` function can be used.
+
+This function computes the percentage of symptomatic leaf area using color palettes or RGB indices for each leaf (`byl`) of an image. This allows, for example, to process replicates of the same treatment and obtain the results of each replication with a single image. To do this, the sample sheets are first split using the `object_split()` function and then the `measure_disease()` function is applied to the sheet list.
+
+```{r}
 byl <- 
-  measure_disease_byl(pattern = "multiplas_",
-                      index = "B", # usado para segmentar a folha do fundo
-                      img_healthy = "sev_healthy",
-                      img_symptoms = "sev_disease",
+  measure_disease_byl(pattern = "multiplas",
+                      index = "B", # used to segment leaves from background
+                      img_healthy = "soja_h",
+                      img_symptoms = "soja_s",
                       show_contour = FALSE,
-                      col_lesions = "red")
-byl$severity
+                      show_features = TRUE,
+                      col_lesions = "red",
+                      parallel = TRUE)
+
+results_byl <- get_measures(byl)
+
+results_byl$results |> 
+  head() |> 
+  print_tbl()
 ```
-
-
-
-
 

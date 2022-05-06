@@ -1,6 +1,6 @@
 ---
-title: Analizando objetos
-linktitle: "3. Analizando objetos"
+title: Analyzing objects
+linktitle: "3. Analyzing objects"
 toc: true
 type: docs
 date: "2021/11/25"
@@ -17,17 +17,17 @@ weight: 3
 
 
 
-# Diretório das imagens
+# Image directory
 
 ```r
 # mudar de acordo com a pasta em seu computador
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
-# Trabalhando com polígonos
-> Um 'polígono' é uma figura plana que é descrita por um número finito de segmentos de linha reta conectados para formar uma cadeia poligonal fechada (Singer, 1993)^[1].
+# Working with polygons
+> A 'polygon' is a plane figure that is described by a finite number of straight line segments connected to form a closed polygonal chain (Singer, 1993)[^1].
 
-Dado o exposto, podemos concluir que objetos de imagem podem ser expressos como polígonos com `n` vértices. O `pliman` tem um conjunto de funções (`draw_*()`) úteis  para desenhar formas comuns como círculos, quadrados, triângulos, retângulos e `n`-tagons. Outro grupo de funções `poly_*()` pode ser usado para analisar polígonos. Vamos começar com um exemplo simples, relacionado à área e perímetro de um quadrado.
+Given the above, we can conclude that image objects can be expressed as polygons with `n` vertices. `pliman` has a set of functions(`draw_*()`) useful for drawing common shapes like circles, squares, triangles, rectangles and `n`- tagons . Another group of ` poly_*()` functions can be used to analyze polygons. Let's start with a simple example related to the area and perimeter of a square.
 
 
 ```r
@@ -63,13 +63,13 @@ library(pliman)
 ```
 
 ```r
-quadrado <- draw_square(side = 1)
+square <- draw_square(side = 1)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 ```r
-poly_area(quadrado)
+poly_area(square)
 ```
 
 ```
@@ -77,30 +77,31 @@ poly_area(quadrado)
 ```
 
 ```r
-poly_perimeter(quadrado)
+poly_perimeter(square)
 ```
 
 ```
 ## [1] 4
 ```
 
-Agora, vamos ver o que acontece quando começamos com um hexágono e aumentamos o número de lados até 1000.
+Now, let's see what happens when we start with a hexagon and increase the number of sides up to 1000.
 
 
 ```r
-formas <- list(side6 = draw_n_tagon(6, plot = FALSE),
-               side12 = draw_n_tagon(12, plot = FALSE),
-               side24 = draw_n_tagon(24, plot = FALSE),
-               side100 = draw_n_tagon(100, plot = FALSE),
-               side500 = draw_n_tagon(500, plot = FALSE),
-               side100 = draw_n_tagon(1000, plot = FALSE))
-plot_polygon(formas, merge = FALSE)
+shapes <- list(  side6 = draw_n_tagon(6, plot = FALSE),
+                 side12 = draw_n_tagon(12, plot = FALSE),
+                 side24 = draw_n_tagon(24, plot = FALSE),
+                 side100 = draw_n_tagon(100, plot = FALSE),
+                 side500 = draw_n_tagon(500, plot = FALSE),
+                 side100 = draw_n_tagon(1000, plot = FALSE))
+
+plot_polygon(shapes, merge = FALSE)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 ```r
-poly_area(formas)
+poly_area(shapes)
 ```
 
 ```
@@ -109,7 +110,7 @@ poly_area(formas)
 ```
 
 ```r
-poly_perimeter(formas)
+poly_perimeter(shapes)
 ```
 
 ```
@@ -118,28 +119,28 @@ poly_perimeter(formas)
 ```
 
 
-Observe que quando `\(n \to \infty\)`, a soma dos lados se torna a circunferência do círculo, dada por `\(2\pi r\)`, e a área se torna `\(\pi r^2\)`. Isso é divertido, mas o `pliman` é projetado principalmente para analisar a análise de imagens de plantas. Então, por que usar polígonos? Vamos ver como podemos usar essas funções para obter informações realmente úteis.
+Note that when \$n \to \infty\$, the sum of the sides becomes the circumference of the circle, given by \$2 \pi r\$, and the area becomes \$\pi r^2\$. This is fun, but `pliman` is primarily designed for analyzing plant image analysis. So why use polygons? Let's see how we can use these functions to get applicable information.
 
 
 
 ```r
 leaves <- image_import("ref_leaves.jpg", plot = TRUE)
 
-# obtendo o contorno dos objetos
+# getting the outline of objects
 cont <- object_contour(leaves, watershed = FALSE, index = "HI")
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-5-1.png" width="768" />
 
 ```r
-# plotando o polígono
+# plotting the polygon
 plot_polygon(cont)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-5-2.png" width="768" />
 
 
-Legal! Podemos usar o contorno de qualquer objeto para obter informações úteis relacionadas à sua forma. Para reduzir a quantidade de saída, usarei apenas cinco amostras: 2, 4, 13, 24 e 35.
+Nice! We can use the contours of any object to get useful information related to its shape. To reduce the amount of output, I will only use five samples: 2, 4, 13, 24, and 35.
 
 
 ```r
@@ -149,14 +150,14 @@ plot_polygon(cont)
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
-Na versão atual do `pliman`, você poderá calcular as seguintes medidas. Para mais detalhes, ver Chen & Wang (2005)^[2], Claude (2008)^[3], e Montero et al. 2009^[4].
+In the current version of `pliman`, you can calculate the following measurements. For more details, see Chen & Wang (2005)[^2], Claude (2008)[^3], and Montero et al. (2009)[^4].
 
-## Área
+## Area
 
-A área de uma forma é calculada usando a formula de Shoelace (Lee e Lim, 2017)^[5], como segue
+The area of a shape is calculated using Shoelace 's formula (Lee and Lim, 2017)[^5], as follows
 
 $$
-A=\frac{1}{2}\left|\sum_{i=1}^{n}\left(x_{i} y_{i+1}-x_{i+1}y_{i}\right)\right|
+A=\frac{1}{2}\left |\sum_{i=1}^{n}\left(x_{i} y_{i+1}-x_{i+1}y_{i}\right)\right|
 $$
 
 
@@ -170,8 +171,8 @@ poly_area(cont)
 ```
 
 
-## Perímetro
-O perímetro é calculado como a soma da distância euclidiana entre todos os pontos de uma forma. As distâncias podem ser obtidas com `poly_distpts()`.
+## Perimeter
+The perimeter is calculated as the sum of the Euclidean distance between all points on a shape. Distances can be obtained with `poly_distpts()`.
 
 
 ```r
@@ -184,7 +185,7 @@ poly_perimeter(cont)
 ```
 
 ```r
-# perímetro de um círculo com raio igual a 2
+# perimeter of a circle with radius 2
 circle <- draw_circle(radius = 2, plot = FALSE)
 poly_perimeter(circle)
 ```
@@ -194,7 +195,7 @@ poly_perimeter(circle)
 ```
 
 ```r
-#verifica o resultado
+# check the result
 2*pi*2
 ```
 
@@ -203,15 +204,15 @@ poly_perimeter(circle)
 ```
 
 
-## Raio
+## Radius
 
-O raio de um pixel no contorno do objeto é calculado como sua distância ao centroide do objeto (também chamado de 'centro de massa'). Estas distâncias podem ser obtidas com `poly_centdist()`.
+The radius of a pixel on the object's contour is calculated as its distance from the object's centroid(also called 'center of mass'). These distances can be obtained with `poly_centdist()`.
 
 
 ```r
 dist <- poly_centdist(cont)
 
-# estatísticas para o raio
+# stats for radius
 mean_list(dist)
 ```
 
@@ -248,7 +249,7 @@ sd_list(dist)
 ```
 
 ```r
-# raio médio do círculo acima
+# average radius of circle above
 poly_centdist(circle) |> mean_list()
 ```
 
@@ -258,19 +259,20 @@ poly_centdist(circle) |> mean_list()
 
 
 
-## Comprimento e largura
+## Length and width
 
-O comprimento e a largura de um objeto são calculados com `poly_lw()`, como a diferença entre o máximo e o mínimo das coordenadas `x` e `y` após o objeto ter sido alinhado com `poly_align()`.
+The length and width of an object are calculated with `poly_lw()`, as the difference between the maximum and minimum of the `x` and `y` coordinates after the object has been aligned with `poly_align()`.
 
 
 ```r
-alinhado <- poly_align(cont)
+aligned <- poly_align(cont, plot = FALSE)
+plot_polygon(aligned, merge = FALSE, ncol = 5)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-10-1.png" width="960" />
 
 ```r
-# calcula comprimento e largura
+# calculate length and width
 poly_lw(cont)
 ```
 
@@ -283,9 +285,9 @@ poly_lw(cont)
 ## 35 286.2853   9.956061
 ```
 
-## Circularidade, excentricidade, diâmetro e alongamento
+## Circularity, eccentricity, diameter and elongation
 
-A circularidade (Montero et al. 2009)^[6] também é chamada de compacidade de forma, ou medida de redondeza de um objeto. É dada por `\(C = P^2 / A\)`, onde `\(P\)` é o perímetro e `\(A\)` é a área do objeto.
+Circularity(Montero et al. 2009)[^6] is also called shape compactness, or measure of roundness of an object. It is given by \$C = P^2 / A\$, where \$P\$ is the perimeter and \$A\$ is the area of the object.
 
 
 ```r
@@ -297,7 +299,7 @@ poly_circularity(cont)
 ##  36.18939  17.04356  20.69009  17.57513 211.68962
 ```
 
-Como a medida acima depende da escala, a circularidade normalizada pode ser usada. Neste caso, assume-se que um círculo perfeito possui circularidade igual a 1. Essa medida é invariável sob translação, rotação e transformações de escala, sendo dada `\(Cn = P^2 / 4 \pi A\)`
+As the above measurement depends on the scale, normalized roundness can be used. In this case, a perfect circle is assumed to have circularity equal to 1. This measure is invariant under translation, rotation and scale transformations, given \$Cn = P^2 / 4 \pi A\$
 
 
 ```r
@@ -310,8 +312,8 @@ poly_circularity_norm(cont)
 ```
 
 ```r
-# circularidade normalizada para diferentes formas
-draw_square(plot = FALSE) |> poly_circularity_norm()
+# normalized circularity for different shapes
+draw_square(plot =FALSE) |> poly_circularity_norm()
 ```
 
 ```
@@ -319,7 +321,7 @@ draw_square(plot = FALSE) |> poly_circularity_norm()
 ```
 
 ```r
-draw_circle(plot = FALSE) |> poly_circularity_norm()
+draw_circle(plot=FALSE) |> poly_circularity_norm()
 ```
 
 ```
@@ -327,7 +329,7 @@ draw_circle(plot = FALSE) |> poly_circularity_norm()
 ```
 
 
-`poly_circularity_haralick()` calcula a circularidade de Haralick, CH (Haralick, 1974)[^7]. O método é baseado no cálculo de todas as distâncias euclidianas do centroide do objeto até cada pixel de contorno. Com este conjunto de distâncias, calcula-se a média ($m$) e o desvio padrão ($s$). Esses parâmetros estatísticos são usados em uma razão que calcula a CH como `\(CH = m/sd\)`.
+` poly_circularity_haralick()` calculates the circularity of Haralick , CH(Haralick , 1974)[^7]. The method is based on calculating all Euclidean distances from the object's centroid to each contour pixel. With this set of distances, the mean($m$) and the standard deviation($s$) are calculated. These statistical parameters are used in a ratio that calculates CH as $CH = m/ sd $.
 
 
 ```r
@@ -339,7 +341,7 @@ poly_circularity_haralick(cont)
 ## 5.734954 4.591127 4.924687 4.722631 1.743795
 ```
 
-`poly_convexity()` Calcula a convexidade de uma forma usando uma razão entre o perímetro do casco convexo e o perímetro do polígono.
+`poly_convexity()` Calculates the convexity of a shape using a ratio of the perimeter of the convex hull to the perimeter of the polygon.
 
 
 ```r
@@ -352,7 +354,7 @@ poly_convexity(cont)
 ```
 
 
-`poly_eccentricity()` Calcula a excentricidade de uma forma usando a razão dos autovalores (eixos de inércia das coordenadas).
+`poly_eccentricity()` Calculates the eccentricity of a shape using the ratio of the eigenvalues(coordinate inertia axes).
 
 
 ```r
@@ -365,7 +367,7 @@ poly_eccentricity(cont)
 ```
 
 
-`poly_elongation()` Calcula a elongação de um objeto como `1 - largura / comprimento`
+`poly_elongation()` Calculates the elongation of an object as `1 - width / length`
 
 
 ```r
@@ -378,7 +380,7 @@ poly_elongation(cont)
 ```
 
 
-`poly_caliper()` Calcula o calibre (também chamado de diâmetro do Feret).
+`poly_caliper()` Calculates the gauge(also called Feret's diameter).
 
 
 ```r
@@ -391,45 +393,47 @@ poly_caliper(cont)
 ```
 
 
-Os usuários podem usar a função `poly_measures()` para calcular a maioria das medidas do objeto em uma única chamada.
+Users can use the `poly_measures()` function to calculate most object measurements in a single call.
 
 
 ```r
-(medidas <- poly_measures(cont) |> round_cols())
+measures <- poly_measures(cont) |> round_cols()
+t(measures)
 ```
 
 ```
-##    id      x      y    area area_ch perimeter radius_mean radius_min radius_max
-## 2   1 910.85 190.05 44952.0 57389.5   1275.45      119.33      68.87     170.41
-## 4   2 275.06 220.21 46622.0 47114.0    891.41      124.87      89.61     185.66
-## 13  3 866.76 482.69 15124.5 16451.0    559.40       71.92      48.36     108.04
-## 24  4 959.61 622.00 12060.0 12404.0    460.39       64.04      47.88      95.26
-## 35  5 455.04 733.98  1654.5  2129.0    591.81       72.10       3.34     143.81
-##    radius_sd radius_ratio diam_mean diam_min diam_max caliper length  width
-## 2      20.81         2.47    238.67   137.74   340.82  317.63 312.92 265.50
-## 4      27.20         2.07    249.74   179.23   371.32  351.75 351.67 186.40
-## 13     14.60         2.23    143.83    96.73   216.08  187.48 186.34 140.43
-## 24     13.56         1.99    128.09    95.76   190.51  184.17 184.07 100.13
-## 35     41.35        43.03    144.20     6.68   287.62  286.30 286.29   9.96
-##    solidity convexity elongation circularity circularity_haralick
-## 2      0.78      0.65       0.15       36.19                 3.31
-## 4      0.99      0.91       0.47       17.04                 3.29
-## 13     0.92      0.77       0.25       20.69                 3.31
-## 24     0.97      0.93       0.46       17.58                 3.53
-## 35     0.78      0.72       0.97      211.69                 0.08
-##    circularity_norm eccentricity
-## 2              2.88         0.84
-## 4              1.36         0.40
-## 13             1.65         0.60
-## 24             1.40         0.41
-## 35            16.85         0.00
+##                             2        4       13       24      35
+## id                       1.00     2.00     3.00     4.00    5.00
+## x                      910.85   275.06   866.76   959.61  455.04
+## y                      190.05   220.21   482.69   622.00  733.98
+## area                 44952.00 46622.00 15124.50 12060.00 1654.50
+## area_ch              57389.50 47114.00 16451.00 12404.00 2129.00
+## perimeter             1275.45   891.41   559.40   460.39  591.81
+## radius_mean            119.33   124.87    71.92    64.04   72.10
+## radius_min              68.87    89.61    48.36    47.88    3.34
+## radius_max             170.41   185.66   108.04    95.26  143.81
+## radius_sd               20.81    27.20    14.60    13.56   41.35
+## radius_ratio             2.47     2.07     2.23     1.99   43.03
+## diam_mean              238.67   249.74   143.83   128.09  144.20
+## diam_min               137.74   179.23    96.73    95.76    6.68
+## diam_max               340.82   371.32   216.08   190.51  287.62
+## caliper                317.63   351.75   187.48   184.17  286.30
+## length                 312.92   351.67   186.34   184.07  286.29
+## width                  265.50   186.40   140.43   100.13    9.96
+## solidity                 0.78     0.99     0.92     0.97    0.78
+## convexity                0.65     0.91     0.77     0.93    0.72
+## elongation               0.15     0.47     0.25     0.46    0.97
+## circularity             36.19    17.04    20.69    17.58  211.69
+## circularity_haralick     3.31     3.29     3.31     3.53    0.08
+## circularity_norm         2.88     1.36     1.65     1.40   16.85
+## eccentricity             0.84     0.40     0.60     0.41    0.00
 ```
 
-Se a resolução da imagem for conhecida, as medidas podem ser corrigidas com `get_measures()`. A resolução da imagem pode ser obtida usando uma distância conhecida na imagem. No exemplo, o quadrado branco tem um lado de 5 cm. Assim, usando `dpi()` a resolução pode ser obtida. Nesse caso, o dpi é ~50.
+If the image resolution is known, the measurements can be corrected with ` get_measures()`. Image resolution can be obtained using a known distance in the image. In the example, the white square has a side of 5 cm. So using `dpi()` the resolution can be obtained. In this case, the dpi is ~50.
 
 
 ```r
-(medidas_cor <- get_measures(medidas, dpi = 50))
+(color_measures <- get_measures(measures, dpi = 50))
 ```
 
 ```
@@ -460,9 +464,7 @@ Se a resolução da imagem for conhecida, as medidas podem ser corrigidas com `g
 ```
 
 
-
-
-Algumas funções úteis podem ser usadas para manipular coordenadas. No exemplo a seguir, mostrarei alguns recursos implementados no `pliman`. Apenas para simplificar, usarei apenas o objeto 2.
+Some useful functions can be used to manipulate coordinates. In the following example I will show some features implemented in `pliman`. Just for simplicity, I'll just use object 2.
 
 
 
@@ -473,9 +475,9 @@ plot_polygon(o2)
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-20-1.png" width="672" />
 
-## Rotacionar polígonos
+## Rotate polygons
 
-`poly_rotate()` pode ser usado para girar as coordenadas do polígono por um `ângulo` (0-360 graus) na direção trigonométrica (anti-horário).
+` poly_rotate()` can be used to rotate the polygon coordinates by an `angle` (0-360 degrees) in the trigonometric (anti-clockwise) direction.
 
 
 
@@ -486,71 +488,70 @@ rot <- poly_rotate(o2, angle = 45)
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-21-1.png" width="384" />
 
 
-## Inverter polígonos
-`poly_flip_x()` e `poly_flip_y()` podem ser usados para inverter formas ao longo do eixo x e y, respectivamente.
+## Invert polygons
+` poly_flip_x()` and ` poly_flip_y()` can be used to flip shapes along the x and y axis, respectively.
 
 
 ```r
-flipped <- list(
-  fx = poly_flip_x(o2),
-  fy = poly_flip_y(o2)
-)
+flipped <- 
+  list(fx = poly_flip_x(o2), 
+       fy = poly_flip_y(o2))
+
 plot_polygon(flipped, merge = FALSE, aspect_ratio = 1)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-22-1.png" width="768" />
 
 
-## Amostragem do perímetro
+## Perimeter sampling
 
-`poly_sample()` amostra `n` coordenadas entre pontos existentes, e `poly_sample_prop()` amostra uma proporção de coordenadas entre os existentes.
+`poly_sample()` samples `n` coordinates between existing points, and `poly_sample_prop()` samples a proportion of coordinates between existing ones.
 
 
 ```r
-# amostra 50 coordenadas
-poly_sample(o2, n = 50) |> plot_polygon()
+# sample 50 coordinates
+poly_sample(o2, n=50) |> plot_polygon()
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-23-1.png" width="384" />
 
 ```r
-# amostra 10% das coordenadas
+# sample 10% of coordinates
 poly_sample_prop(o2, prop = 0.1) |> plot_polygon()
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-23-2.png" width="384" />
 
 
-## Suavização
+## smoothing
 
-`poly_smooth()` suaviza o contorno de um polígono combinando `prop` amostras de pontos de coordenadas e interpolando-as usando `vertices` vértices (padrão é 1000) .
+`poly_smooth()` smooths the contour of a polygon by combining ` prop` coordinate point samples and interpolating them using ` vertices` vertices(default is 1000) .
 
 
 ```r
 smoothed <-
-  list(
-    original = o2,
-    s1 = poly_smooth(o2, prop = 0.2, plot = FALSE),
-    s2 = poly_smooth(o2, prop = 0.1, plot = FALSE),
-    s1 = poly_smooth(o2, prop = 0.04, plot = FALSE)
+  list( original = o2,
+        s1 = poly_smooth(o2, prop = 0.2, plot = FALSE),
+        s2 = poly_smooth(o2, prop = 0.1, plot = FALSE),
+        s1 = poly_smooth(o2, prop = 0.04, plot = FALSE)
   )
-plot_polygon(smoothed, merge = FALSE, ncol = 4)
+
+plot_polygon(smoothed, merge = FALSE, ncol = 2)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-24-1.png" width="864" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-24-1.png" width="576" />
 
 
-## Ruídos
+## Noises
 
 
-`poly_jitter()` adiciona uma pequena quantidade de ruído a um conjunto de coordenadas. Veja `base::jitter()` para mais detalhes.
+`poly_jitter()` adds a small amount of noise to a set of coordinates. See `base::jitter()` for more details.
 
 
 ```r
 set.seed(1)
 c1 <- draw_circle(n = 200, plot = FALSE)
-c2 <-
-  draw_circle(n = 200, plot = FALSE) |>
+c2 <- draw_circle(n = 200, plot = FALSE) |>
   poly_jitter(noise_x = 100,
               noise_y = 100,
               plot = FALSE)
@@ -563,19 +564,16 @@ plot_polygon(list(c1, c2), merge = FALSE)
 
 
 
+# Analyzing objects
 
-
-
-# Analisando objetos
-
-As funções vistas até agora podem ser utilizadas para obter medidas de objetos. No entanto, para a análise de uma imagem é necessário combinar diferentes funções (principalmente `object_contour()` e `poly_measures()`). Além disso, quase sempre, várias imagens precisam ser analizadas e repetir esse processo cada vez seria tedioso e pouco eficiente. Para contemplar estas necessidades, os usuários podem utilizar a função `analyze_objects()`. Vamos começar com um exemplo simples, utilizando a imagem`object_300dpi.png` disponível na [página GitHub](https://github.com/TiagoOlivoto/pliman/tree/master/inst/tmp_images). Para facilitar a importação de imagens desta pasta, uma função auxiliar `image_pliman()` é usada.
+The functions seen so far can be used to obtain measurements of objects. However, for image analysis it is necessary to combine different functions(mainly `object_contour()` and `poly_measures()`). Also, almost always, several images need to be analyzed and repeating this process each time would be tedious and inefficient. To address these needs, users can use the ` analyze_objects()` function. Let's start with a simple example, using the `object_300dpi.png` image available on [ GitHub page](https://github.com/TiagoOlivoto/pliman/tree/master/inst/tmp_images). To facilitate importing images from this folder, an `image_pliman()` helper function is used.
 
 
 
 ```r
-# gerar tabelas html
-print_tbl <- function(table,  digits = 3, ...){
-  knitr::kable(table, booktabs = TRUE, digits = digits, ...)
+# generate html tables
+print_tbl <- function(table, digits = 3, ...){
+  knitr :: kable(table, booktabs = TRUE, digits = digits, ...)
 }
 library(pliman)
 library(tidyverse)
@@ -601,15 +599,15 @@ img <- image_pliman("objects_300dpi.jpg", plot = TRUE)
 
 
 
-A imagem acima foi produzida com o Microsoft PowerPoint. Tem uma resolução conhecida de 300 dpi(pontos por polegada) e mostra quatro objetos
+The image above was produced with Microsoft PowerPoint. It has a known resolution of 300 dpi(dots per inch) and displays four objects
 
-- Quadrado maior: 10 x 10 cm (100 cm$^2$)  
-- Quadrado menor: 5 x 5 cm(25 cm$^2$)  
-- Retângulo: 4 x 2 cm(8 cm$^2$)  
-- Círculo: 3 cm de diâmetro(~7,07 cm$^2$)  
+- Larger square: 10 x 10 cm (100 cm\$^2\$)
+- Smaller square: 5 x 5 cm(25 cm\$^2\$)
+- Rectangle: 4 x 2 cm(8 cm\$^2\$)
+- Circle: 3 cm in diameter(~7.07 cm\$^2\$)
 
 
-Para contar os objetos na imagem usamos `analyze_objects()` e informamos a imagem (o único argumento obrigatório). Por padrão, o índice `NB` é utilizado para segmentação dos objetos.
+To count the objects in the image we use `analyze_objects()` and inform the image(the only required argument). By default, the `NB` index is used for object segmentation.
 
 
 
@@ -621,20 +619,20 @@ img_res <- analyze_objects(img, marker = "id")
 
 
 
-## Ajustando as medidas do objeto
+## Adjusting object measurements
 
-Os resultados foram armazenados em `img_res`. Como não há escala declarada no exemplo acima, não temos ideia sobre a área real dos objetos em cm$^2$, apenas em pixels. Neste caso, usamos `get_measures()` para ajustar as medidas de pixels para unidades métricas.
+The results were stored in `img_res`. Since there is no scale declared in the example above, we have no idea about the actual area of objects in cm$^2$, only in pixels. In this case, we use `get_measures()` to adjust pixel measurements to metric units.
 
-Existem duas formas principais de ajustar as medidas do objeto (de pixels a cm, por exemplo). O primeiro é declarar a área, perímetro ou raio conhecido de um determinado objeto. A medida para os outros objetos será então calculada por uma regra de três simples. A segunda é declarando uma resolução de imagem conhecida em dpi (pontos por polegada). Neste caso, perímetro, área e raio serão ajustados pelo dpi informado.
+There are two main ways to adjust object measurements (from pixels to cm, for example). The first is to declare the known area, perimeter or radius of a given object. The measure for the other objects will then be calculated by a simple rule of three. The second is by declaring a known image resolution in dpi(dots per inch). In this case, perimeter, area and radius will be adjusted by the dpi informed.
 
-### Declarando um valor conhecido
+### Declaring a known value
 
-Como conhecemos a área do quadrado maior (objeto 1), vamos ajustar a área dos outros objetos na imagem usando isso.
+Since we know the area of the larger square (object 1), let's adjust the area of the other objects in the image using this.
 
 
 
 ```r
-get_measures(img_res,
+get_measures(img_res ,
              id = 1,
              area ~ 100)
 ```
@@ -671,33 +669,35 @@ get_measures(img_res,
 
 
 
-O mesmo pode ser usado para ajustar as medidas com base no perímetro ou raio. Vamos ajustar o perímetro dos objetos pelo perímetro do objeto 2 (20 cm).
+The same can be used to adjust measurements based on perimeter or radius. Let's adjust the perimeter of the objects by the perimeter of object 2(20 cm).
 
 
-### Declarando a resolução da imagem
+### Declaring the image resolution
 
-Se a resolução da imagem for conhecida, todas as medidas serão ajustadas de acordo com esta resolução. Vamos ver um exemplo numérico com `pixels_to_cm()`. Esta função converte o número de pixels (*px*) em cm, considerando a resolução da imagem em `dpi`, da seguinte forma: `\(cm = px \times(2,54 / dpi)\)`. Como sabemos o número de pixels do quadrado maior, seu perímetro em cm é dado por
+If the image resolution is known, all measurements will be adjusted accordingly. Let's see a numerical example with `pixels_to_cm()`. This function converts the number of pixels(* px *) into cm, considering the image resolution in ` dpi `, as follows: \$cm = px \times(2.54 / dpi)\$. As we know the number of pixels of the larger square, its perimeter in cm is given by
 
 
 
 
 ```r
-# número de pixels para o perímetro do quadrado maior
+# number of pixels for the perimeter of the largest square
 
-ls_px <- img_res$results$perimeter[1]
-pixels_to_cm(px = ls_px, dpi = 300)
+ls_px <- img_res$results$perimeter [1]
+pixels_to_cm(px = ls_px , dpi = 300)
 ```
 
 ```
 ## [1] 39.9046
 ```
 
-O perímetro do objeto 1 ajustado pela resolução da imagem é muito próximo do verdadeiro (40 cm). Abaixo, os valores de todas as medidas são ajustados declarando o argumento `dpi` em` get_measures()`.
+The perimeter of object 1 adjusted by image resolution is very close to the known value (40 cm). Below, the values of all measures are adjusted by declaring the `dpi` argument in `get_measures()`.
 
 
 ```r
-img_res_cor <- get_measures(img_res, dpi = 300)
-print_tbl(t(img_res_cor))
+img_res_cor <- get_measures(img_res , dpi = 300)
+
+t(img_res_cor) |>
+  print_tbl()
 ```
 
 
@@ -733,76 +733,77 @@ print_tbl(t(img_res_cor))
 
 
 
-### Entendendo as medidas
+### Understanding measurements
 
 
 ```r
-object_contour(img) %>% # obtém o contorno dos objetos
-  poly_mass() %>% # computa o centro de massa e raios mínimo e máximo
-  plot_mass() # plota as medidas
+object_contour(img) %>% # get the contour of objects
+  poly_mass() %>% # computes center of mass and minimum and maximum radii
+  plot_mass() # plot the measurements
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-31-1.png" width="672" />
 
-* Quadrado maior:
-- O diâmetro mínimo (a = 9,97) pode ser considerado como o lado do quadrado
-
-- O diâmetro máximo, dado por `\(a \sqrt{2}\)` pode ser considerado a diagonal do quadrado ($9,97 \sqrt{2} = 14.099 \approx 14.105$ 
-
-```r
-t(img_res_cor)
-```
-
-```
-##                            1        2        3        4
-## id                     1.000    2.000    3.000    4.000
-## x                    668.506 1737.513 1737.575 1737.972
-## y                    798.002  453.246 1296.331  939.503
-## area                  99.729   24.973    7.004    7.900
-## area_ch               99.644   24.910    6.996    7.858
-## perimeter             39.905   21.950    9.890   11.890
-## radius_mean            5.725    2.861    1.489    1.664
-## radius_min             4.985    2.491    1.481    0.985
-## radius_max             7.052    3.520    1.500    2.219
-## radius_sd              0.628    0.313    0.003    0.423
-## diam_mean             11.450    5.722    2.979    3.327
-## diam_min               9.970    4.983    2.963    1.970
-## diam_max              14.105    7.039    2.999    4.438
-## major_axis            11.536    5.773    2.987    4.604
-## minor_axis            11.526    5.768    2.986    2.288
-## length                10.034    5.051    2.983    3.988
-## width                 10.017    5.043    2.988    1.973
-## radius_ratio           1.415    1.413    1.012    2.253
-## eccentricity           0.999    0.999    0.998    0.346
-## theta                  0.014    1.539   -1.490    0.000
-## solidity               1.001    1.003    1.001    1.005
-## convexity              0.752    0.681    0.921    0.837
-## elongation             0.002    0.002   -0.001    0.505
-## circularity           15.967   19.294   13.965   17.894
-## circularity_haralick   9.113    9.144  441.819    3.929
-## circularity_norm       1.273    1.541    1.117    1.433
-```
-
-
-
-A função `analyze_objects()` calcula uma gama de medidas que podem ser utilizadas para estudar a forma dos objetos, como por exemplo, folhas. Como exemplo, usarei a imagem `potato_leaves.png`, que foi coletada de [Gupta et al.(2020)](https://doi.org/10.1111/nph.16286)
-
+* Larger square:
+- The minimum diameter(a = 9.97) can be considered as the side of the square
+- The maximum diameter, given by \$a \sqrt {2}\$ can be considered the diagonal of the square (\$9.97 \sqrt {2} = 14,099 \approx 14,105\$
 
 
 ```r
-batata <- image_pliman("potato_leaves.jpg", plot = TRUE)
+t(img_res_cor) |>
+  print_tbl() 
+```
+
+
+
+|                     |       1|        2|        3|        4|
+|:--------------------|-------:|--------:|--------:|--------:|
+|id                   |   1.000|    2.000|    3.000|    4.000|
+|x                    | 668.506| 1737.513| 1737.575| 1737.972|
+|y                    | 798.002|  453.246| 1296.331|  939.503|
+|area                 |  99.729|   24.973|    7.004|    7.900|
+|area_ch              |  99.644|   24.910|    6.996|    7.858|
+|perimeter            |  39.905|   21.950|    9.890|   11.890|
+|radius_mean          |   5.725|    2.861|    1.489|    1.664|
+|radius_min           |   4.985|    2.491|    1.481|    0.985|
+|radius_max           |   7.052|    3.520|    1.500|    2.219|
+|radius_sd            |   0.628|    0.313|    0.003|    0.423|
+|diam_mean            |  11.450|    5.722|    2.979|    3.327|
+|diam_min             |   9.970|    4.983|    2.963|    1.970|
+|diam_max             |  14.105|    7.039|    2.999|    4.438|
+|major_axis           |  11.536|    5.773|    2.987|    4.604|
+|minor_axis           |  11.526|    5.768|    2.986|    2.288|
+|length               |  10.034|    5.051|    2.983|    3.988|
+|width                |  10.017|    5.043|    2.988|    1.973|
+|radius_ratio         |   1.415|    1.413|    1.012|    2.253|
+|eccentricity         |   0.999|    0.999|    0.998|    0.346|
+|theta                |   0.014|    1.539|   -1.490|    0.000|
+|solidity             |   1.001|    1.003|    1.001|    1.005|
+|convexity            |   0.752|    0.681|    0.921|    0.837|
+|elongation           |   0.002|    0.002|   -0.001|    0.505|
+|circularity          |  15.967|   19.294|   13.965|   17.894|
+|circularity_haralick |   9.113|    9.144|  441.819|    3.929|
+|circularity_norm     |   1.273|    1.541|    1.117|    1.433|
+
+
+The `analyze_objects()` function calculates a range of measurements that can be used to study the shape of objects, such as leaves. As an example, I will use the `potato_leaves.png` image, which was collected from [Gupta et al.(2020)](https://doi.org/10.1111/nph.16286).
+
+
+
+```r
+potato <- image_pliman("potato_leaves.jpg", plot = TRUE)
 
 pot_meas <-
-  analyze_objects(batata,
+  analyze_objects(potato,
                   watershed = FALSE,
                   marker = "id",
-                  show_chull = TRUE) # mostra o casco convex
+                  show_chull = TRUE) # show the convex hull
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/batata-1.png" width="960" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/potato-1.png" width="960" />
 
 ```r
-pot_meas$results %>% 
+pot_meas$results %>%
   print_tbl()
 ```
 
@@ -816,33 +817,35 @@ pot_meas$results %>%
 
 
 
-As três medidas principais (em unidades de pixel) são:
+The three main measurements(in pixel units) are:
 
-1. `area` a área do objeto.
-2. `area_ch` a área do casco convexo.
-3. `perímetro` o perímetro do objeto.
+1. ` area ` the area of the object.
+2. ` area_ch ` the area of the convex hull.
+3. `perimeter` the perimeter of the object.
 
 
-## Processamento de imagens únicas
+## Single image processing
 
-No exemplo a seguir, mostro como analisar três folhas de batata-doce, plotando o comprimento e a largura de cada uma.
+In the following example, I show how to plot the length and width of each leaf in the following image.
 
 
 
 ```r
-folhas <-  image_import("folhas.jpg", plot = TRUE) 
+leaves <- image_import("folhas.jpg", plot = TRUE)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-33-1.png" width="672" />
 
 ```r
-folhas_meas <- 
-  analyze_objects(folhas,
+leaves_meas <-
+  analyze_objects(leaves ,
                   watershed = FALSE,
                   col_background = "black")
 
-folhas_cor <- get_measures(folhas_meas, dpi = 300)
-print_tbl(t(folhas_cor))
+leaves_cor <- get_measures(leaves_meas , dpi = 300)
+
+t(leaves_cor) |>
+  print_tbl()
 ```
 
 
@@ -877,25 +880,24 @@ print_tbl(t(folhas_cor))
 |circularity_norm     |   1.973|   1.969|
 
 ```r
-# plota a largura e comprimento
-plot_measures(folhas_cor, measure = "width")
-plot_measures(folhas_cor, measure = "length", vjust = 50)
+# plot width and length
+plot_measures(leaves_cor , measure = "width")
+plot_measures(leaves_cor , measure = "length", vjust = 50)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-33-2.png" width="672" />
 
 
 
+Here, we will count the grains in the `grains.jpg` image. This image has a cyan background and contains 90 soybeans that touch each other. The ` analyze_objects()` function segments the image using the normalized blue index by default, as follows \$NB =(B /(R + G + B))\$, where *R*, *G* and *B * are the red, green and blue bands. Note that if the image is contained in the default directory, it is not necessary to import it. Just enter the image name in quotes in the `img` argument(e.g., `img = "grains"`).
 
-Aqui, contaremos os grãos na imagem `grains.jpg`. Esta imagem tem um fundo ciano e contém 90 grãos de soja que se tocam. A função `analyze_objects()` segmenta a imagem usando como padrão o índice azul normalizado, como segue \$NB = (B /(R + G + B))\$, onde *R*, *G* e *B* são as faixas vermelha, verde e azul. Note que se a imagem estiver contida no diretório padrão, não é necessário realizar a importação da mesma. Basta informar o nome da imagem entre aspas no argumento `img` (ex., `img = "grains"`).
-
-Neste exemplo, os objetos são contados e os objetos segmentados são coloridos com cores aleatórias utilizando o argumento `show_segmentation = TRUE`. Os usuários podem definir `show_contour = FALSE` para remover a linha de contorno e identificar os objetos (neste exemplo, os grãos) usando os argumentos `marker = "id"`. A cor do fundo também pode ser alterada com `col_background`.
+In this example, objects are counted and segmented objects are colored with random colors using the `show_segmentation = TRUE` argument. Users can set ` show_contour = FALSE` to remove the contour line and identify the objects (in this example, the grains) using the `marker = "id"` arguments. The background color can also be changed with `col_background`.
 
 
 
 
 ```r
-count <- 
+count <-
   analyze_objects("grains",
                   show_segmentation = TRUE,
                   show_contour = FALSE,
@@ -920,13 +922,10 @@ count$statistics
 
 
 
-
-
-
 ```r
-# Obtenha as medidas do objeto
-medidas <- get_measures(count)
-head(medidas)
+# Get the measurements of the object
+measurements <- get_measures(count)
+head(measurements)
 ```
 
 ```
@@ -961,13 +960,13 @@ head(medidas)
 ```
 
 
-No exemplo a seguir, selecionaremos objetos com uma área acima da média de todos os objetos usando `lower_size = 719.1`.
+In the following example, we will select objects with an area above the average of all objects using ` lower_size = 719.1`.
 
 
 
 
 ```r
-analyze_objects("grains", 
+analyze_objects("grains",
                 marker = "id",
                 lower_size = 719.1)
 ```
@@ -976,7 +975,7 @@ analyze_objects("grains",
 
 
 
-Os usuários também podem usar os argumentos `topn_*` para selecionar os  `n` objetos com base nas menores ou maiores áreas. Vamos ver como selecionar os 5 grãos com a menor área, mostrando os grãos originais em um fundo azul. Também usaremos o argumento `my_index` para escolher um índice personalizado para segmentar a imagem. Apenas para comparação, iremos configurar explicitamente o índice azul normalizado chamando `my_index = "B/(R + G + B)"`.
+Users can also use the `topn _*` arguments to select the `n` objects based on the smallest or largest areas. Let's see how to select the 5 grains with the smallest area, showing the original grains on a blue background. We will also use the `my_index` argument to choose a custom index to segment the image. Just for comparison, we will explicitly set the normalized blue index by calling `my_index = "B /(R + G + B)"`.
 
 
 
@@ -986,19 +985,19 @@ analyze_objects("grains",
                 marker = "id",
                 topn_lower = 5,
                 col_background = "salmon",
-                my_index = "B /(R + G + B)") # azul normalizado (NB)
+                my_index = "B /(R + G + B)") # normalized blue(NB)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-37-1.png" width="1152" />
 
 
 
-## Processamento em lote
+## Batch processing
 
-Na análise de imagens, frequentemente é necessário processar mais de uma imagem. Por exemplo, no melhoramento de plantas, o número de grãos por planta (por exemplo, trigo) é frequentemente usado na seleção indireta de plantas de alto rendimento. No `pliman`, o processamento em lote pode ser feito quando o usuário declara o argumento `pattern`.
+In image analysis, it is often necessary to process more than one image. For example, in plant breeding, the number of grains per plant(eg wheat) is often used in indirect selection of high-yielding plants. In `pliman`, batch processing can be done when the user declares the `pattern` argument.
 
 
-Para acelerar o tempo de processamento, especialmente para um grande número de imagens, o argumento `parallel = TRUE` pode ser usado. Nesse caso, as imagens são processadas de forma assíncrona (em paralelo) em sessões `R` separadas rodando em segundo plano na mesma máquina. O número de seções é configurado para 50% dos núcleos disponíveis. Este número pode ser controlado explicitamente com o argumento `workers`.
+To speed up processing time, especially for large numbers of images, the `parallel = TRUE` argument can be used. In this case, images are processed asynchronously (in parallel) in separate `R` sessions running in the background on the same machine. The number of sections is set to 50% of available cores. This number can be explicitly controlled with the `workers` argument.
 
 
 
@@ -1012,14 +1011,14 @@ system.time(
 ## Processing image img_sb_50_1 |===                                | 8% 00:00:00 
 Processing image img_sb_50_10 |=====                             | 15% 00:00:01 
 Processing image img_sb_50_11 |========                          | 23% 00:00:01 
-Processing image img_sb_50_12 |==========                        | 31% 00:00:02 
+Processing image img_sb_50_12 |==========                        | 31% 00:00:01 
 Processing image img_sb_50_13 |=============                     | 38% 00:00:02 
 Processing image img_sb_50_2 |================                   | 46% 00:00:02 
 Processing image img_sb_50_3 |===================                | 54% 00:00:03 
 Processing image img_sb_50_4 |======================             | 62% 00:00:04 
 Processing image img_sb_50_5 |========================           | 69% 00:00:05 
-Processing image img_sb_50_6 |===========================        | 77% 00:00:06 
-Processing image img_sb_50_7 |==============================     | 85% 00:00:07 
+Processing image img_sb_50_6 |===========================        | 77% 00:00:05 
+Processing image img_sb_50_7 |==============================     | 85% 00:00:06 
 Processing image img_sb_50_8 |================================   | 92% 00:00:07 
 Processing image img_sb_50_9 |===================================| 100% 00:00:08 
 ## --------------------------------------------
@@ -1046,14 +1045,14 @@ Processing image img_sb_50_9 |===================================| 100% 00:00:08
 
 ```
 ##   usuário   sistema decorrido 
-##      8.70      0.39      9.17
+##      8.15      0.34      8.52
 ```
 
 ```r
-# procesamento paralelo
-# 6 múltiplas seções (observe o tempo!)
+# parallel processing
+# 6 multiple sections (50% of my pc's cores)
 system.time(
-  list_res <- 
+  list_res <-
     analyze_objects(pattern = "img_sb",
                     show_image = FALSE,
                     parallel = TRUE)
@@ -1089,31 +1088,29 @@ system.time(
 
 ```
 ##   usuário   sistema decorrido 
-##      0.08      0.05      4.93
+##      0.08      0.03      4.43
 ```
 
 
 
 
-# Coordenadas de objetos
-Os usuários podem obter as coordenadas para todos os objetos desejados com `object_coord()`. Quando o argumento `id` é definido como `NULL` (padrão), um retângulo delimitador é desenhado incluindo todos os objetos. Use `id = "all"` para obter as coordenadas de todos os objetos na imagem ou use um vetor numérico para indicar os objetos para calcular as coordenadas. Note que o argumento `watershed = FALSE` é usado para 
+# Object coordinates
+Users can get the coordinates for all desired objects with `object_coord()`. When the `id` argument is set to `NULL` (default), a bounding rectangle is drawn including all objects. Use `id = "all"` to get the coordinates of all objects in the image or use a numeric vector to indicate the objects to calculate the coordinates. Note that the `watershed = FALSE` argument is used to avoid unique objects being split up into multiple objects by the watershed segmentation algorithm.
 
 
 
 ```r
-folhas <- image_import("folhas.jpg", plot = TRUE)
+leaves <- image_import("folhas.jpg", plot = TRUE)
 
-# obter o id de cada objeto
-object_id(folhas,
-          watershed = FALSE)
+# get the id of each object
+object_id(leaves, watershed = FALSE)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/objec2-1.png" width="672" />
 
 ```r
-# Obtenha as coordenadas de um retângulo delimitador em torno de todos os objetos
-object_coord(folhas,
-             watershed = FALSE)
+# Get the coordinates of a bounding rectangle around all objects
+object_coord(leaves, watershed = FALSE)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/objec2-2.png" width="672" />
@@ -1133,8 +1130,8 @@ object_coord(folhas,
 ```
 
 ```r
-# Obtenha as coordenadas para todos os objetos
-object_coord(folhas,
+# Get coordinates for all objects
+object_coord(leaves ,
              id = "all",
              watershed = FALSE)
 ```
@@ -1156,9 +1153,9 @@ object_coord(folhas,
 ```
 
 ```r
-# Obtenha as coordenadas dos objetos 1 e 2
-# 20 pixeis de borda
-object_coord(folhas,
+# Get the coordinates of objects 1 and 2
+# 20 border pixels
+object_coord(leaves ,
              id = 1,
              edge = 20,
              watershed = FALSE)
@@ -1182,31 +1179,29 @@ object_coord(folhas,
 
 
 
-# Isolando objetos
+# Isolating objects
 
-Conhecendo as coordenadas de cada objeto, é possível isolá-lo. A função `object_isolate()` é usada para isso. No exemplo a seguir, irei isolar o objeto 1 e definir uma borda de 5 pixels ao redor do objeto.
+Knowing the coordinates of each object, it is possible to isolate it. The `object_isolate()` function is used for this. In the following example, I will isolate object 1 and set a 10-pixel border around the object.
 
 
 ```r
-id1 <- 
-  object_isolate(folhas,
+id1 <-
+  object_isolate(leaves ,
                  watershed = FALSE,
                  id = 1,
                  edge = 10)
 plot(id1)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/objec3-1.png" width="672" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/object3-1.png" width="672" />
 
-# Incluindo objetos em uma lista
+# Including objects in a list
 
-Considerando esta mesma lógica, é possível dividir uma série de objetos contidos em uma única imagem e incluí-los em uma lista, utilizando `object_split()`. Por padrão, o fundo é removido, sendo mostrado na cor branca.
+`object_split()` can be used to split up a series of objects contained in a single image into a list, where each element is one object. By default, the background is removed and shown in white.
 
 
 ```r
-list <- 
-  object_split(folhas, 
-               watershed = FALSE)
+list <- object_split(leaves, watershed = FALSE)
 ```
 
 ```
@@ -1223,12 +1218,27 @@ list <-
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-39-1.png" width="960" />
 
+```r
+str(list)
+```
+
+```
+## List of 2
+##  $ 1:Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:330, 1:561, 1:3] 1 1 1 1 1 1 1 1 1 1 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 330 561 3
+##  $ 2:Formal class 'Image' [package "EBImage"] with 2 slots
+##   .. ..@ .Data    : num [1:390, 1:234, 1:3] 1 1 1 1 1 1 1 1 1 1 ...
+##   .. ..@ colormode: int 2
+##   .. ..$ dim: int [1:3] 390 234 3
+```
 
 
 
-# Valores RGB para cada objeto
+# RGB values for each object
 
-Para obter a intensidade RGB de cada objeto da imagem, usamos o argumento `object_rgb = TRUE` na função `analyze_objects() `. No seguinte exemplo,  utilizaremos as bandas R, G e B e seus valores normalizados. A função `pliman_indexes()` retorna os índices disponíveis no pacote. Para computar um índice específico, basta entrar com uma fórmula contendo os valores de R, G, ou B (ex. `object_index = "B/G+R"`). 
+To get the RGB intensity of each object in the image, we use the `object_rgb = TRUE` argument in the `analyze_objects()` function. In the following example, we will use the R, G and B bands and their normalized values. The `pliman_indexes()` function returns the indexes available in the package. To compute a specific index, simply enter a formula containing the values of R, G, or B (e.g. `object_index = "B/G+R"`).
 
 
 
@@ -1252,8 +1262,8 @@ img <- image_import("green.jpg", plot = TRUE)
 
 ```r
 soy_green <-
-  analyze_objects(img,
-                  object_index = indx[1:6], # R:NB
+  analyze_objects(img ,
+                  object_index = indx [1:6], # R:NB
                   marker = "id",
                   marker_col = "black",
                   col_background = "white",
@@ -1263,13 +1273,13 @@ soy_green <-
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/rgb2-2.png" width="960" />
 
 ```r
-# PCA com os índices
-ind <- summary_index(soy_green, type = "var")
+# PCA with the indices
+ind <- summary_index(soy_green, type ="var")
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/rgb2-3.png" width="960" />
 
-O índice `R` proporcionou a maior contribuição para a variação do PC1. O biplot contendo os índices (variáveis) e os grãos (indivíduos) pode ser visto abaixo.
+The `R` index provided the greatest contribution to the variation of PC1. The biplot containing the indices (variables) and the grains (individuals) can be seen below.
 
 
 ```r
@@ -1285,24 +1295,25 @@ get_biplot(ind$pca_res, show = "ind")
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-40-3.png" width="768" />
 
 
-Agora, vamos plotar o índice `R` em cada objeto
+Now, let's plot the `R` index on each object
 
 
 ```r
 plot(img)
-plot_measures(soy_green,
+plot_measures(soy_green ,
               measure = "R",
-              col = "black")
+              col = " black ")
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-41-1.png" width="672" />
 
-Parece que grãos com valores médios de vermelho (`R``) inferiores a 0.6 podem ser consideradas sementes esverdeadas. Os usuários podem então trabalhar com esse recurso e adaptá-lo ao seu caso.
+
+It seems that grains with average red (`R`) value less than 0.6 can be considered greenish seeds. Users can then work with this feature and adapt it to their case.
 
 
 ```r
-report <- 
-  summary_index(soy_green,
+report <-
+  summary_index(soy_green ,
                 index = "R",
                 cut_point = 0.6,
                 plot = FALSE)
@@ -1329,43 +1340,45 @@ report$within_id[ids,]
 ```
 
 ```r
-# proporção de pixeis de cada objeto (acima e abaixo de 0.6)
-barplot(t(report$within_id[,6:7]) |> as.matrix(),
+# ratio of pixels of each object(above and below 0.6)
+barplot(t(report$within_id [,6:7]) |> as.matrix(),
         legend = c("R < 0.6", "R > 0.6"))
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/rgb4-1.png" width="960" />
 
 
-No seguinte gráfico, ploto a distribuição dos valores de R, G e B dos esverdeados e não esverdeados.
+In the following graph, I plot the distribution of the greenish and non-greenish R, G, and B values.
 
 
 ```r
-# distribuição dos valores RGB
+# distribution of RGB values
 rgbs <-
   soy_green$object_rgb |>
-  mutate(type = ifelse(id %in% ids, "Esverdeado", "Não esverdeado")) |>
+  mutate(type = ifelse(id %in% ids, " Greenish ", " No greenish ")) |>
   select(-id) |>
   pivot_longer(-type)
 
 ggplot(rgbs, aes(x = value)) +
   geom_density(aes(fill = name), alpha = 0.5) +
-  facet_wrap(~type)
+  facet_wrap(~ type)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-42-1.png" width="672" />
 
-Agora, usando os ids de cada grão, ploto os valores somente nos esverdeados.
+Now, using the ids of each grain, I plot the values only in the greenish ones.
+
 
 
 ```r
-# plotar 
+# plot 
 plot(img)
-plot_measures(soy_green,
+plot_measures(soy_green ,
               id = ids,
               measure = "R",
               col = "black")
-cont <- object_contour(img, show_image = FALSE)
+cont <- object_contour(img , show_image = FALSE)
+
 plot_contour(cont,
              id = ids,
              col = "red")
@@ -1373,7 +1386,8 @@ plot_contour(cont,
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-43-1.png" width="672" />
 
-Quando existem muitos objetos, o argumento `parallel = TRUE` irá acelerar a extração dos valores RGB. No exemplo a seguir, uma imagem com 1343 grãos de *Vicia cracca* é analisada. Os índices `"R"` e `"R/G"` são computados. Os grãos com um valor médio de vermelho superior a 0,25 são destacados.
+
+When there are many objects, the `parallel = TRUE` argument will speed up extracting the RGB values. In the following example, an image with 1343 grains of *Vicia cracca* is analyzed. The indices `"R"` and `"R/G"` are computed. Grains with an average red value greater than 0.25 are highlighted.
 
 
 ```r
@@ -1386,18 +1400,19 @@ vicia <-
                   show_image = FALSE,
                   parallel = TRUE)
 
-resumo_indice <- 
-  summary_index(vicia,
+summary_index <-
+  summary_index(vicia ,
                 index = "R",
                 cut_point = 0.25,
                 select_higher = TRUE)
 
-cont2 <-
+count2 <-
   object_contour(img2,
                  index = "B",
                  show_image = FALSE)
-ids2 <- resumo_indice$ids
-plot_contour(cont2, id = ids2, col = "red")
+
+ids2 <- summary_index$ids
+plot_contour(count2, id = ids2, col = "red")
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/rgb5-1.png" width="1152" />
@@ -1405,39 +1420,38 @@ plot_contour(cont2, id = ids2, col = "red")
 
 
 
+# Leaf area
+## Known resolution
 
-
-# Área foliar
-## Resolução conhecida
 
 ```r
-folhas <- image_import(image = "ref_leaves.jpg", plot = TRUE)
+leaves <- image_import(image = "ref_leaves.jpg", plot = TRUE)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-44-1.png" width="672" />
 
 ```r
 af <-
-  analyze_objects(folhas,
+  analyze_objects(leaves ,
                   watershed = FALSE,
                   show_contour = FALSE,
                   col_background = "black",
                   marker = "id")
 af_cor <- get_measures(af, dpi = 50.5)
 
-plot_measures(af_cor,
+plot_measures(af_cor ,
               measure = "area",
               vjust = -30,
-              col = "red")
+              col = " red ")
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-44-2.png" width="672" />
 
 
 
-## Objeto de referência (dev version)
+## Reference object (dev version)
 
-Na versão de desenvolvimento, foi incluído o argumento `reference`. Isto possibilita corrigir as medidas de objetos utilizando um objeto de referência. Neste exemplo, a área foliar da imagem `ref_leaves` é quantificada e corrigida considerando como objeto de referência, um quadrado branco de 5 x 5 (25 cm$^2$). Para isso, é necessário fornecer paletas de cores referentes ao fundo (`background`), folhas (`foreground`) e o objeto de referência (`reference`). Além disso, a área do objeto de referência precisa ser informada em `reference_area`.
+The `reference` argument can now be used to correct the object measures even when images with different shooting distances are used. In this example, the leaf area of the `ref_leaves` image is quantified and corrected considering a 5 x 5 (25 cm\$^2\$) white square as the reference object. For this, it is necessary to provide color palettes referring to the background (`background`), leaves (` foreground`) and the reference object (`reference`). Also, the area of the reference object needs to be informed in `reference_area`.
 
 
 ```r
@@ -1447,7 +1461,7 @@ img <- image_import(pattern = "ref_", plot = TRUE)
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-45-1.png" width="672" />
 
 ```r
-area <- 
+area <-
   analyze_objects(img = "ref_leaves",
                   foreground = "ref_folha",
                   background = "ref_back",
@@ -1462,8 +1476,9 @@ area <-
 
 
 
-## Preenchendo 'buracos'
-Um aspecto importante a se considerar é quando há a presença de 'buracos' nas folhas. Isto pode ocorrer, por exemplo, pelo ataque de pragas. Neste caso, a área teria que ser considerada, pois ela estava lá!
+## Filling 'holes'
+
+An important aspect to consider in leaf area measures is when leaves present 'holes'. This can occur, for example, by the attack of pests. In this case, the area would have to be considered, because it was there! The image bellow is used as an example.
 
 
 ```r
@@ -1471,6 +1486,11 @@ holes <- image_import("holes.jpg", plot = TRUE)
 ```
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-46-1.png" width="960" />
+
+
+In this case, the missing area will not be computed using the default settings of `analyze_objects()`. To include this area as the leaf area, we can use the argument `fill_hull()`. Note that this will only work for missing areas within a closed object. If the missing area includes the original leaf contour, there is no (yet available) way to reconstruct the leaf perimeter.
+
+
 
 ```r
 af <-
@@ -1485,9 +1505,10 @@ af <-
                   dir_processed = tempdir(),
                   contour_size = 5)
 
+# fill the missing area
 af2 <-
   analyze_objects(holes,
-                  fill_hull = TRUE, # preenche 'buracos'
+                  fill_hull = TRUE, # fill ' holes '
                   watershed = FALSE,
                   col_background = "white",
                   marker = "area",
@@ -1503,20 +1524,146 @@ imgs <- image_import(pattern = "proc", path = tempdir())
 image_combine(imgs)
 ```
 
-<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-46-2.png" width="960" />
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/unnamed-chunk-47-1.png" width="960" />
+
+We can simply use the ratio between `proc_img` and `proc_img2` to compute the injured area in this leaflet.
+
+
+```r
+# percent of injuried area
+100 - 88379 / 99189 * 100
+```
+
+```
+## [1] 10.89839
+```
 
 
 
-## Várias imagens da mesma amostra
 
-Se os usuários precisarem analisar várias imagens da mesma amostra, as imagens da mesma amostra devem compartilhar o mesmo prefixo de nome de arquivo, que é definido como a parte do nome do arquivo que precede o primeiro hífen (`-`) ou underscore (`_`). Então, ao usar `get_measures()`, as medidas das imagens de folhas chamadas, por exemplo, `F1-1.jpeg`,` F1_2.jpeg` e `F1-3.jpeg` serão combinadas em uma única imagem (`F1`), mostrado no objeto `merge`. Isso é útil, por exemplo, para analisar folhas grandes que precisam ser divididas em várias imagens ou várias folhas pertencentes à mesma amostra que não podem ser digitalizadas em uma imagem única.
+## Compound leaves
 
-No exemplo a seguir, cinco imagens serão usadas como exemplos. Cada imagem possui folhas de diferentes espécies. As imagens foram divididas em imagens diferentes que compartilham o mesmo prefixo (por exemplo, L1_\*, L2_\* e assim por diante). Observe que para garantir que todas as imagens sejam processadas, todas as imagens devem compartilhar um padrão comum, neste caso ("L"). Os três pontos no canto inferior direito têm uma distância conhecida de 5 cm entre eles, que pode ser usada para extrair o dpi da imagem com `dpi()`. Apenas para fins didáticos, considerarei que todas as imagens têm resolução de 100 dpi.
+A simple leaf blade is undivided. The blade of a compound leaf is divided into several leaflets. In the following examples, I will show how to analyze simple and compound leaves with `analyze_objects()`, mainly if the goal is to obtain the measures for each leaf (e.g., mean area), where the number of objects (leaves) will influence the results.
+
+The following images by [Daniel Saueressig](https://www.florestaombrofilamista.com.br/sidol/?menu=contact) were obtained from the *Sistema de Identificação Dendrológica Online - Floresta Ombrófila Mista*[^8] and show examples of simple and compound leaves.
+
+
+```r
+imgs <- 
+  image_import(c("simple.jpg", "compound.jpg"),
+               plot = TRUE)
+```
+
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/sc1-1.png" width="960" />
+
+
+Analyzing non-touching simple leaves is fairly simple. We already did that. The squares in the background have 4 cm$^2$. With this information, it is possible to obtain the image resolution with `dpi(simple)`, which will be useful to adjust the measures. In this case, the estimated dpi is 48.65.
+
+
+```r
+simple <- imgs$simple.jpg
+sarea <- analyze_objects(simple, marker = "id")
+```
+
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/sc2-1.png" width="672" />
+
+Note that with the default settings, the simple leaf was partitioned into small, segmented leaves. This can be solved by either using `object_size = "large"` or `watershed = FALSE`, to omit the watershed segmentation algorithm. The last is used here.
 
 
 
 ```r
-# imagens inteiras
+sarea <- 
+  analyze_objects(simple,
+                  watershed = FALSE,
+                  marker = "id",
+                  show_chull = TRUE)
+```
+
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/sc3-1.png" width="672" />
+
+```r
+sarea_cor <- get_measures(sarea, dpi = 48.65)
+sarea_cor
+```
+
+```
+##   id       x       y   area area_ch perimeter radius_mean radius_min radius_max
+## 1  1 184.644 156.252 41.318  55.705    40.891       4.276      1.086      7.970
+## 2  2  68.644 151.805 19.926  31.421    31.151       3.011      1.091      5.733
+##   radius_sd diam_mean diam_min diam_max major_axis minor_axis length width
+## 1     1.791     8.553    2.172   15.941     13.642      4.219 15.471 5.989
+## 2     1.203     6.021    2.183   11.466      9.206      3.178 11.016 4.650
+##   radius_ratio eccentricity theta solidity convexity elongation circularity
+## 1        7.341        0.133 1.490    0.742     0.691      0.613      40.467
+## 2        5.253        0.148 1.552    0.634     0.643      0.578      48.701
+##   circularity_haralick circularity_norm
+## 1                2.387            3.296
+## 2                2.503            4.021
+```
+
+
+For compound leaves, if the watershed segmentation is used, leaflets will probably be considered as different leaves, as can be seen below.
+
+
+```r
+compound <- imgs$compound.jpg
+carea <- 
+  analyze_objects(compound,
+                  show_segmentation = TRUE,
+                  show_contour = FALSE,
+                  marker = "id")
+```
+
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/sc4-1.png" width="672" />
+
+Therefore, using `watershed = FALSE` will solve this problem, since all leaflets connected by at least one pixel will be considered part of the same leaf.
+
+
+```r
+carea <- 
+  analyze_objects(compound,
+                  watershed = FALSE,
+                  show_segmentation = TRUE,
+                  show_contour = FALSE,
+                  show_chull = TRUE,
+                  marker = "id")
+```
+
+<img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/sc5-1.png" width="672" />
+
+```r
+carea_cor <- get_measures(carea, dpi = 49.5)
+carea_cor
+```
+
+```
+##   id       x       y   area area_ch perimeter radius_mean radius_min radius_max
+## 1  1 114.670  91.252 15.896  32.768    47.898       2.253      0.026      4.931
+## 2  2 113.051 244.551 18.747  42.155    53.377       2.534      0.071      5.896
+##   radius_sd diam_mean diam_min diam_max major_axis minor_axis length width
+## 1     1.140     4.506    0.051    9.861      6.956      5.535  8.113 6.396
+## 2     1.254     5.068    0.143   11.792      8.406      6.555  9.304 7.099
+##   radius_ratio eccentricity  theta solidity convexity elongation circularity
+## 1      192.057        0.503 -0.258    0.485     0.432      0.212     144.331
+## 2       82.740        0.632  0.706    0.445     0.433      0.237     151.974
+##   circularity_haralick circularity_norm
+## 1                1.976           12.302
+## 2                2.021           12.907
+```
+
+
+
+
+## Multiple images of the same sample
+
+If users need to analyze multiple images from the same sample, the images must share the same filename prefix, which is defined as the part of the filename that precedes the first hyphen (`-`) or underscore (`_`). Then, when using ` get_measures()`, measurements from leaf images called, for example, `F1-1.jpeg`, `F1_2.jpeg` and `F1-3.jpeg` will be combined into a single image (`F1`), displayed in the `merge` object. This is useful, for example, for analyzing large sheets that need to be split into multiple images or multiple sheets belonging to the same sample that cannot be scanned into a single image.
+
+In the following example, five images will be used as examples. Each image has leaves of different species. The images have been split into different images that share the same prefix (eg L1_\*, L2_\*, and so on). Note that to ensure that all images are processed, all images must share a common pattern, in this case (`"L"`). The three dots in the lower right corner have a known distance of 5 cm between them, which can be used to extract the dpi of the image with `dpi()`. For teaching purposes only, I will assume that all images are 100 dpi resolution .
+
+
+
+```r
+# entire images
 imgs <-
   image_import(pattern = "leaf",
                plot = TRUE,
@@ -1526,7 +1673,7 @@ imgs <-
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/merge0-1.png" width="960" />
 
 ```r
-# imagens da mesma amostra
+# images of the same sample
 sample_imgs <-
   image_import(pattern = "L",
                plot = TRUE,
@@ -1535,7 +1682,7 @@ sample_imgs <-
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/merge0-2.png" width="960" />
 
-Aqui, usarei o `pattern =" L "` para indicar que todas as imagens com este nome de padrão devem ser analisadas. O índice verde (`" G "`) é usado para segmentar as folhas e `divisor de águas = FALSO` é usado para omitir o algoritmo de segmentação de divisor de águas.
+Here, I will use the `pattern = "L"` to indicate that all images with this pattern name should be merged. The green index (`"G"`) is used to segment the leaves and `watershed = FALSE` is used to omit the watershed segmentation algorithm.
 
 
 
@@ -1640,20 +1787,20 @@ merged <-
 
 <img src="/tutorials/pliman_ip/03_analyze_objects_files/figure-html/merge1-12.png" width="672" />
 
-Usando a função `get_measures()` é possível converter as medidas de unidades de pixel em unidades métricas (cm$^ 2$).
+Using the `get_measures()` function it is possible to convert measurements from pixel units to metric units(cm\$^ 2\$).
 
 
 ```r
 merged_cor <- get_measures(merged, dpi = 100)
 ```
 
-Observe que o `merged_cor` é uma lista com três objetos:
+Note that the  merged_cor` is a list with three objects:
 
-* `results`: um data frame que contém as medidas de cada objeto individual (neste caso, folha) de cada imagem analisada.
+* `results`: a data frame that contains the measurements of each individual object (in this case, leaf) of each analyzed image.
 
 
 ```r
-merged_cor$results %>% 
+merged_cor$results %>%
   print_tbl()
 ```
 
@@ -1685,12 +1832,12 @@ merged_cor$results %>%
 |L5_2 |  2| 205.390| 802.624|  42.866|   1.115|    33.289|       4.267|      2.060|      7.335|     1.583|     8.534|    4.120|   14.670|     12.766|      4.355| 14.614| 179.397|        3.561|        0.144|  1.508|    0.976|     0.912|      0.688|      25.852|                2.695|            2.075|
 |L5_2 |  3| 535.301| 819.600|  44.996|   1.176|    33.320|       4.300|      1.992|      7.465|     1.584|     8.600|    3.984|   14.930|     13.069|      4.450| 14.488| 185.768|        3.748|        0.155| -1.450|    0.972|     0.915|      0.674|      24.674|                2.714|            1.980|
 
-* `summary`: um data frame que contém o resumo dos resultados, contendo o número de objetos em cada imagem (`n`) a soma, média e desvio padrão da área de cada imagem, bem como o valor médio para todas as outras medidas (perímetro, raio, etc.)
+* `summary` : a data frame that contains the summary of the results, containing the number of objects in each image (`n`) the sum, mean and standard deviation of the area of each image, as well as the average value for all others measurements (perimeter, radius, etc.)
 
 
 
 ```r
-merged_cor$summary %>% 
+merged_cor$summary %>%
   print_tbl()
 ```
 
@@ -1711,11 +1858,11 @@ merged_cor$summary %>%
 |L5_1 |  3|  114.664|    38.221|  12.645|   1.011|    31.338|       4.012|      1.878|      6.903|     1.489|     8.023|    3.756|   13.806|     11.795|      4.144| 13.686| 171.087|        3.708|        0.147| -0.554|    0.958|     0.901|      0.683|      26.494|                2.693|            2.129|
 |L5_2 |  3|  133.484|    44.495|   1.445|   1.160|    33.535|       4.299|      2.080|      7.422|     1.592|     8.599|    4.160|   14.843|     12.998|      4.424| 14.620| 182.768|        3.573|        0.150| -0.496|    0.974|     0.908|      0.682|      25.286|                2.700|            2.029|
 
-* `merge`: um data frame que contém os resultados mesclados pelo prefixo da imagem. Observe que, neste caso, os resultados são apresentados por L1, L2, L3, L4 e L5.
+* `merge`: a data frame that contains the results merged by image prefix. Note that in this case the results are displayed by L1, L2, L3, L4 and L5.
 
 
 ```r
-merged_cor$merge %>% 
+merged_cor$merge %>%
   print_tbl()
 ```
 
@@ -1729,11 +1876,11 @@ merged_cor$merge %>%
 |L4  |  7|  333.643|    51.005|   6.982|   1.329|    29.666|       4.051|      2.982|      5.796|     0.712|     8.102|    5.965|   11.592|      9.856|      6.466| 10.715| 263.467|        2.002|        0.480|  0.681|    0.974|     0.883|      0.384|      18.059|                5.743|            1.447|
 |L5  |  6|  248.149|    41.358|   7.045|   1.085|    32.436|       4.156|      1.979|      7.162|     1.541|     8.311|    3.958|   14.325|     12.396|      4.284| 14.153| 176.927|        3.641|        0.148| -0.525|    0.966|     0.904|      0.683|      25.890|                2.697|            2.079|
 
-O `area_sum` de img` L1` é a soma das duas folhas (uma em cada imagem)
+The ` area_sum` of img `L1` is the sum of the two sheets (one in each image).
 
 
 ```r
-sum(merged_cor$results$area[1:2])
+sum(merged_cor$results$area [1:2])
 ```
 
 ```
@@ -1741,36 +1888,35 @@ sum(merged_cor$results$area[1:2])
 ```
 
 
-
+Below, I will create a plot to show the distribution of leaf area  
 
 
 ```r
 df_leaf <-
-  merged_cor$results %>% 
-  separate(img, into = c("img", "code"))
+  merged_cor$results %>%
+  separate(img , into = c("img", "code"))
 
 # leaf area of the different species
-p1 <- 
-  ggplot(df_leaf, aes(x = img, y = area)) +
+p1 <-
+  ggplot(df_leaf, aes(img, area)) +
   geom_boxplot() +
-  geom_jitter(color = "red") +
-  labs(x = "Imagem", y = expression(Área~(cm^2)))
+  geom_jitter(color="red") +
+  labs(x = " Image ", y = expression(Area ~(cm^2)))
 
-p2 <- 
-  ggplot(df_leaf, aes(x = img, y = area)) +
+p2 <-
+  ggplot(df_leaf , aes(x = img , y = area)) +
   stat_summary(fun = sum,
                geom = "bar",
-               # fill = "white",
-               col = "black") +
-  labs(x = "Imagem", y = expression(Área~total~(cm^2)))
+               col = " black ") +
+  labs(x = " Image ", y = expression(Total~area ~(cm^2)))
 
 
 # solidity of the different species
-p3 <- 
-  ggplot(df_leaf, aes(x = img, y = solidity)) +
+p3 <-
+  ggplot(df_leaf , aes(x = img , y = solidity)) +
   geom_boxplot() +
-  geom_jitter(color = "red") +
-  labs(x = "Imagem", y = "Solidez")
+  geom_jitter(color="red") +
+  labs(x = "Image", y = "Solidity")
 
 p1 + p2 + p3 +
   plot_layout(ncol = 3)
@@ -1783,24 +1929,20 @@ p1 + p2 + p3 +
 
 
 
+[^1]: Singer, M.H. 1993. A general approach to moment calculation for polygons and line segments. Pattern Recognition 26(7): 1019–1028. doi: 10.1016/0031-3203(93)90003-F.
 
 
+[^2]: Chen, C.H., and P.S.P. Wang. 2005. Handbook of Pattern Recognition and Computer Vision. 3rd ed. World Scientific.
 
+[^3]: Claude, J. 2008. Morphometrics with R. Springer.
 
+[^4]: Montero, R.S., E. Bribiesca, R. Santiago, and E. Bribiesca. 2009. State of the Art of Compactness and Circularity Measures. International Mathematical Forum 4(27): 1305–1335.
 
+[^5]: Lee, Y., and W. Lim. 2017. Fórmula de cadarço: conectando a área de um polígono e o produto vetorial vetorial. The Mathematics Teacher 110(8): 631–636. doi: 10.5951/MATHTEACHER.110.8.0631.
 
-[^1] Singer, M.H. 1993. A general approach to moment calculation for polygons and line segments. Pattern Recognition 26(7): 1019–1028. doi: 10.1016/0031-3203(93)90003-F.
+[^6]: Montero, R.S., E. Bribiesca, R. Santiago, and E. Bribiesca. 2009. State of the Art of Compactness and Circularity Measures. International Mathematical Forum 4(27): 1305–1335
 
+[^7]: Haralick, R.M. 1974. A Measure for Circularity of Digital Figures. IEEE Transactions on Systems, Man, and Cybernetics SMC-4(4): 394–396. doi: 10.1109/TSMC.1974.5408463.
 
-[^2] Chen, C.H., and P.S.P. Wang. 2005. Handbook of Pattern Recognition and Computer Vision. 3rd ed. World Scientific.
-
-[^3] Claude, J. 2008. Morphometrics with R. Springer.
-
-[^4] Montero, R.S., E. Bribiesca, R. Santiago, and E. Bribiesca. 2009. State of the Art of Compactness and Circularity Measures. International Mathematical Forum 4(27): 1305–1335.
-
-[^5] Lee, Y., and W. Lim. 2017. Fórmula de cadarço: conectando a área de um polígono e o produto vetorial vetorial. The Mathematics Teacher 110(8): 631–636. doi: 10.5951/MATHTEACHER.110.8.0631.
-
-[^6] Montero, R.S., E. Bribiesca, R. Santiago, and E. Bribiesca. 2009. State of the Art of Compactness and Circularity Measures. International Mathematical Forum 4(27): 1305–1335
-
-[^7] Haralick, R.M. 1974. A Measure for Circularity of Digital Figures. IEEE Transactions on Systems, Man, and Cybernetics SMC-4(4): 394–396. doi: 10.1109/TSMC.1974.5408463.
+[^8]: https://www.florestaombrofilamista.com.br/sidol/?menu=glossary
 

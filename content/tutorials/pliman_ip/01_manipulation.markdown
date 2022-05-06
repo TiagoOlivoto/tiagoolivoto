@@ -1,6 +1,6 @@
 ---
-title: Importação e manipulação
-linktitle: "1. Importação e manipulação"
+title: Import and manipule
+linktitle: "1. Import and manipulate"
 toc: true
 type: docs
 date: "2021/11/25"
@@ -18,7 +18,7 @@ weight: 1
 
 
 
-# Diretório das imagens
+# Image directory
 
 ```r
 # mudar de acordo com a pasta em seu computador
@@ -26,7 +26,7 @@ setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
-## Importar imagens
+## Import images
 
 ```r
 library(pliman)
@@ -37,7 +37,7 @@ img <- image_import("folhas.jpg")
 
 
 
-Para importar uma lista de imagens, use um vetor de nomes de imagens, ou o argumento `pattern`. Neste último, todas as imagens que correspondem ao nome do padrão são importadas para uma lista.
+To import a list of images, use a vector of image names, or the `pattern` argument. In the latter, all images that match the pattern name are imported into a list.
 
 
 ```r
@@ -103,8 +103,8 @@ str(img_list2)
 ```
 
 
-## Exibindo imagens
-Imagens individuais são exibidas com `plot()`. Para combinar imagens, a função `image_combine()` é usada. Os usuários podem informar uma lista de objetos separados por vírgulas ou uma lista de objetos da classe `Image`.
+## Displaying imagens
+Individual images are displayed with `plot()`. To combine images, the `image_combine()` function is used. Users can enter a comma-separated list of objects or a list of objects of the `Image` class.
 
 
 ```r
@@ -125,12 +125,12 @@ image_combine(img_list1)
 <img src="/tutorials/pliman_ip/01_manipulation_files/figure-html/display2-1.png" width="960" />
 
 
+`pliman` provides a set of `image_*()` functions to perform image manipulation and transformation of unique images or an image list based on [EBImage package](https://www.bioconductor.org/packages/release /bioc/vignettes/EBImage/inst/doc/EBImage-Introduction.html).
 
 
-`pliman` fornece um conjunto de funções `image_*()` para realizar a manipulação de imagens e transformação de imagens exclusivas ou uma lista de imagens baseada no [pacote EBImage](https://www.bioconductor.org/packages/release/bioc/vignettes/EBImage/inst/doc/EBImage-Introduction.html).
+## Resize an image
 
-## Redimensionar uma imagem
-Às vezes, o redimensionamento de imagens de alta resolução é necessário para reduzir o esforço computacional e tempo de processamento. A função `image_resize()` é usada para redimensionar uma imagem. O argumento `rel_size` pode ser usado para redimensionar a imagem por tamanho relativo. Por exemplo, definindo `rel_size = 50` para uma imagem de largura 1280 x 720, a nova imagem terá um tamanho de 640 x 360.
+Sometimes resizing high-resolution images is necessary to reduce computational effort and processing time. The `image_resize()` function is used to resize an image. The `rel_size` argument can be used to resize the image by relative size. For example, setting `rel_size = 50` for an image of width 1280 x 720, the new image will have a size of 640 x 360.
 
 
 ```r
@@ -162,32 +162,34 @@ image_dimension(img_resized)
 
 
 
+## Image resolution (DPI) {#dpi}
+The `dpi()` function executes an interactive function to calculate the image resolution given a known distance entered by the user. To calculate the image resolution (dpi), the user must use the left mouse button to create a line of known distance. This can be done, for example, using a model with known distance, as follows.
 
-
-## Resolução da imagem (DPI) {#dpi}
-A função `dpi()` executa uma função interativa para calcular a resolução da imagem dada uma distância conhecida informada pelo usuário. Para calcular a resolução da imagem (dpi), o usuário deve usar o botão esquerdo do mouse para criar uma linha de distância conhecida. Isso pode ser feito, por exemplo, usando um modelo com distância conhecida, como à seguir.
 
 
 ```r
-# executado apenas em uma seção interativa
+#  this only works in an interactive section
 rule <- image_import("rule.jpg", plot = TRUE)
 (dpi <- dpi(rule))
 
-rule2 <- image_crop(rule,
-                    width = 384:1599,
-                    height = 805:1721,
-                    plot = TRUE)
+rule2 <- 
+  image_crop(rule,
+             width = 130:1390, 
+             height = 582:1487, 
+             plot = TRUE)
 
 analyze_objects(rule2,
                 watershed = FALSE,
                 marker = "area") |> 
-  get_measures(dpi = 518)
+  get_measures(dpi = 518) |> 
+  plot_measures(measure = "area", vjust = -100, size = 2)
 ```
 
 
 
 
-# Filtro, desfoque, contraste, dilatação, erosão
+
+# Filter, blur, contrast, dilatation, erosion, opening, and closing
 
 
 ```r
@@ -214,8 +216,8 @@ image_combine(img,
 
 
 
-# Exportando imagens
-Para exportar imagens para o diretório atual, use a função `image_export()`. Se uma lista de imagens for exportada, as imagens serão salvas considerando o nome e a extensão presentes na lista. Se nenhuma extensão estiver presente, as imagens serão salvas como arquivos `* .jpg`.
+# Export
+To export images to the current directory, use the `image_export()` function. If an image list is exported, the images will be saved considering the name and extension present in the list. If no extension is present, images will be saved as `*.jpg` files.
 
 
 ```r
