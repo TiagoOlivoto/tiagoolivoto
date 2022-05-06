@@ -227,3 +227,26 @@ results_byl$results |>
 ```
 
 
+
+## And now?
+
+```{r}
+f0 <- image_import("fungo.png", plot = TRUE)
+
+back <- pick_palette(f0)
+fore <- pick_palette(f0)
+
+res <- 
+analyze_objects(f0,
+                background = back,
+                foreground = fore,
+                watershed = FALSE)
+
+meas <- get_measures(res, dpi = 81)
+plot_measures(meas,
+              col = "black",
+              measure = "area",
+              size = 2)
+```
+
+

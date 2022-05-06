@@ -1,14 +1,14 @@
 ---
 title: Scripts R - pliman 
 ---
-##Aufgabe 1
+# Import and manipulate
 
 ```{r include = FALSE}
 knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
-# Image directory
+## Image directory
 ```{r eval=FALSE}
 # mudar de acordo com a pasta em seu computador
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
@@ -91,33 +91,7 @@ analyze_objects(rule2,
 
 
 
-
-
-# Filter, blur, contrast, dilatation, erosion, opening, and closing
-
-```{r manipulate6, fig.width = 10, fig.height = 10}
-img_filter <- image_filter(img)
-img_blur <- image_blur(img)
-img_contrast <- image_contrast(img)
-img_dilatation <- image_dilate(img)
-img_erosion <- image_erode(img)
-img_opening <- image_opening(img)
-img_closing <- image_closing(img)
-image_combine(img,
-              img_filter,
-              img_blur,
-              img_contrast,
-              img_dilatation,
-              img_erosion,
-              img_opening,
-              img_closing,
-              ncol = 4)
-```
-
-
-
-
-# Export
+## Export
 To export images to the current directory, use the `image_export()` function. If an image list is exported, the images will be saved considering the name and extension present in the list. If no extension is present, images will be saved as `*.jpg` files.
 
 ```{r export, eval=FALSE}
@@ -129,24 +103,18 @@ image_export(img, "test/img_exported.jpg")
 
 
 
-```{r, echo=FALSE, eval=TRUE}
-```
-##Aufgabe 2
 
 
-```{r include = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
-```
 
-
-# Image directory
+# Segment objects
+## Image directory
 ```{r eval=FALSE}
 # mudar de acordo com a pasta em seu computador
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
-# Import images
+## Import images
 ```{r collapse = TRUE, message=FALSE, warning=FALSE}
 library(pliman) 
 img <- image_import("folhas.jpg", plot = TRUE)
@@ -154,7 +122,7 @@ img <- image_resize(img, rel_size = 30) #processamento mais rápido
 ```
 
 
-# Segment images
+## Segment images
 
 In `pliman`, the following functions can be used to segment an image.
 
@@ -183,7 +151,7 @@ The two peaks represent the leaf (smallest peak) and the background (larger peak
 
 
 
-# Producing a binary image
+## Producing a binary image
 
 To segment objects, `pliman` uses the `threshold` technique (Otsu, 1979)[^1], that is, a cut-off point (considering the pixel values) is chosen and the image is classified into two classes (foreground and background). We then have a binary image. We can produce this image with `image_binary()`. This binarization is the key process to all object analysis steps. The better the binarization, the better the results.
 
@@ -203,36 +171,15 @@ segmented <-
 ```
 
 
+# Analyzing objects
 
-## Iterative segmentation
-
-The function `image_segment_iter()` provides an iterative image segmentation. Users can choose how many segmentation to perform, using the argument `nseg`. Note that the same results can be obtained with `image_segment_iter()` using an iterative section.
-
-```{r segmentation7, eval=FALSE}
-# Only run iteratively
-image_segment_iter(img, nseg = 1)
-```
-
-
-
-
-[^1]: Otsu, N. 1979. Threshold selection method from gray-level histograms. IEEE Trans Syst Man Cybern SMC-9(1): 62–66. doi: 10.1109/tsmc.1979.4310076.
-
-```{r, echo=FALSE, eval=TRUE}
-```
-##Aufgabe 3
-
-```{r include = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
-```
-
-# Image directory
+## Image directory
 ```{r eval=FALSE}
 # mudar de acordo com a pasta em seu computador
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
-# Working with polygons
+## Working with polygons
 > A 'polygon' is a plane figure that is described by a finite number of straight line segments connected to form a closed polygonal chain (Singer, 1993)[^1].
 
 Given the above, we can conclude that image objects can be expressed as polygons with `n` vertices. `pliman` has a set of functions(`draw_*()`) useful for drawing common shapes like circles, squares, triangles, rectangles and `n`- tagons . Another group of ` poly_*()` functions can be used to analyze polygons. Let's start with a simple example related to the area and perimeter of a square.
@@ -284,7 +231,7 @@ plot_polygon(cont)
 
 In the current version of `pliman`, you can calculate the following measurements. For more details, see Chen & Wang (2005)[^2], Claude (2008)[^3], and Montero et al. (2009)[^4].
 
-## Area
+### Area
 
 The area of a shape is calculated using Shoelace 's formula (Lee and Lim, 2017)[^5], as follows
 
@@ -297,7 +244,7 @@ poly_area(cont)
 ```
 
 
-## Perimeter
+### Perimeter
 The perimeter is calculated as the sum of the Euclidean distance between all points on a shape. Distances can be obtained with `poly_distpts()`.
 
 ```{r}
@@ -312,7 +259,7 @@ poly_perimeter(circle)
 ```
 
 
-## Radius
+### Radius
 
 The radius of a pixel on the object's contour is calculated as its distance from the object's centroid(also called 'center of mass'). These distances can be obtained with `poly_centdist()`.
 
@@ -331,7 +278,7 @@ poly_centdist(circle) |> mean_list()
 
 
 
-## Length and width
+### Length and width
 
 The length and width of an object are calculated with `poly_lw()`, as the difference between the maximum and minimum of the `x` and `y` coordinates after the object has been aligned with `poly_align()`.
 
@@ -342,7 +289,7 @@ plot_polygon(aligned, merge = FALSE, ncol = 5)
 poly_lw(cont)
 ```
 
-## Circularity, eccentricity, diameter and elongation
+### Circularity, eccentricity, diameter and elongation
 
 Circularity(Montero et al. 2009)[^6] is also called shape compactness, or measure of roundness of an object. It is given by \$C = P^2 / A\$, where \$P\$ is the perimeter and \$A\$ is the area of the object.
 
@@ -418,7 +365,7 @@ o2 <- cont[["2"]]
 plot_polygon(o2)
 ```
 
-## Rotate polygons
+### Rotate polygons
 
 ` poly_rotate()` can be used to rotate the polygon coordinates by an `angle` (0-360 degrees) in the trigonometric (anti-clockwise) direction.
 
@@ -428,7 +375,7 @@ rot <- poly_rotate(o2, angle = 45)
 ```
 
 
-## Invert polygons
+### Invert polygons
 ` poly_flip_x()` and ` poly_flip_y()` can be used to flip shapes along the x and y axis, respectively.
 
 ```{r fig.width =8, fig.height =4}
@@ -440,7 +387,7 @@ plot_polygon(flipped, merge = FALSE, aspect_ratio = 1)
 ```
 
 
-## Perimeter sampling
+### Perimeter sampling
 
 `poly_sample()` samples `n` coordinates between existing points, and `poly_sample_prop()` samples a proportion of coordinates between existing ones.
 
@@ -453,7 +400,7 @@ poly_sample_prop(o2, prop = 0.1) |> plot_polygon()
 ```
 
 
-## smoothing
+### smoothing
 
 `poly_smooth()` smooths the contour of a polygon by combining ` prop` coordinate point samples and interpolating them using ` vertices` vertices(default is 1000) .
 
@@ -469,7 +416,7 @@ plot_polygon(smoothed, merge = FALSE, ncol = 2)
 ```
 
 
-## Noises
+### Noises
 
 
 `poly_jitter()` adds a small amount of noise to a set of coordinates. See `base::jitter()` for more details.
@@ -488,7 +435,7 @@ plot_polygon(list(c1, c2), merge = FALSE)
 
 
 
-# Analyzing objects
+## Analyzing objects
 
 The functions seen so far can be used to obtain measurements of objects. However, for image analysis it is necessary to combine different functions(mainly `object_contour()` and `poly_measures()`). Also, almost always, several images need to be analyzed and repeating this process each time would be tedious and inefficient. To address these needs, users can use the ` analyze_objects()` function. Let's start with a simple example, using the `object_300dpi.png` image available on [ GitHub page](https://github.com/TiagoOlivoto/pliman/tree/master/inst/tmp_images). To facilitate importing images from this folder, an `image_pliman()` helper function is used.
 
@@ -525,13 +472,13 @@ img_res <- analyze_objects(img, marker = "id")
 
 
 
-## Adjusting object measurements
+### Adjusting object measurements
 
 The results were stored in `img_res`. Since there is no scale declared in the example above, we have no idea about the actual area of objects in cm$^2$, only in pixels. In this case, we use `get_measures()` to adjust pixel measurements to metric units.
 
 There are two main ways to adjust object measurements (from pixels to cm, for example). The first is to declare the known area, perimeter or radius of a given object. The measure for the other objects will then be calculated by a simple rule of three. The second is by declaring a known image resolution in dpi(dots per inch). In this case, perimeter, area and radius will be adjusted by the dpi informed.
 
-### Declaring a known value
+#### Declaring a known value
 
 Since we know the area of the larger square (object 1), let's adjust the area of the other objects in the image using this.
 
@@ -548,7 +495,7 @@ get_measures(img_res ,
 The same can be used to adjust measurements based on perimeter or radius. Let's adjust the perimeter of the objects by the perimeter of object 2(20 cm).
 
 
-### Declaring the image resolution
+#### Declaring the image resolution
 
 If the image resolution is known, all measurements will be adjusted accordingly. Let's see a numerical example with `pixels_to_cm()`. This function converts the number of pixels(* px *) into cm, considering the image resolution in ` dpi `, as follows: \$cm = px \times(2.54 / dpi)\$. As we know the number of pixels of the larger square, its perimeter in cm is given by
 
@@ -575,7 +522,7 @@ t(img_res_cor) |>
 
 
 
-### Understanding measurements
+#### Understanding measurements
 
 ```{r}
 object_contour(img) %>% # get the contour of objects
@@ -619,7 +566,7 @@ The three main measurements(in pixel units) are:
 3. `perimeter` the perimeter of the object.
 
 
-## Single image processing
+### Single image processing
 
 In the following example, I show how to plot the length and width of each leaf in the following image.
 
@@ -696,7 +643,7 @@ analyze_objects("grains",
 
 
 
-## Batch processing
+### Batch processing
 
 In image analysis, it is often necessary to process more than one image. For example, in plant breeding, the number of grains per plant(eg wheat) is often used in indirect selection of high-yielding plants. In `pliman`, batch processing can be done when the user declares the `pattern` argument.
 
@@ -723,7 +670,7 @@ system.time(
 
 
 
-# Object coordinates
+## Object coordinates
 Users can get the coordinates for all desired objects with `object_coord()`. When the `id` argument is set to `NULL` (default), a bounding rectangle is drawn including all objects. Use `id = "all"` to get the coordinates of all objects in the image or use a numeric vector to indicate the objects to calculate the coordinates. Note that the `watershed = FALSE` argument is used to avoid unique objects being split up into multiple objects by the watershed segmentation algorithm.
 
 
@@ -751,7 +698,7 @@ object_coord(leaves ,
 
 
 
-# Isolating objects
+## Isolating objects
 
 Knowing the coordinates of each object, it is possible to isolate it. The `object_isolate()` function is used for this. In the following example, I will isolate object 1 and set a 10-pixel border around the object.
 
@@ -764,7 +711,7 @@ id1 <-
 plot(id1)
 ```
 
-# Including objects in a list
+## Including objects in a list
 
 `object_split()` can be used to split up a series of objects contained in a single image into a list, where each element is one object. By default, the background is removed and shown in white.
 
@@ -775,7 +722,7 @@ str(list)
 
 
 
-# RGB values for each object
+## RGB values for each object
 
 To get the RGB intensity of each object in the image, we use the `object_rgb = TRUE` argument in the `analyze_objects()` function. In the following example, we will use the R, G and B bands and their normalized values. The `pliman_indexes()` function returns the indexes available in the package. To compute a specific index, simply enter a formula containing the values of R, G, or B (e.g. `object_index = "B/G+R"`).
 
@@ -903,8 +850,8 @@ plot_contour(count2, id = ids2, col = "red")
 
 
 
-# Leaf area
-## Known resolution
+## Leaf area
+### Known resolution
 
 ```{r}
 leaves <- image_import(image = "ref_leaves.jpg", plot = TRUE)
@@ -925,7 +872,7 @@ plot_measures(af_cor ,
 
 
 
-## Reference object (dev version)
+### Reference object (dev version)
 
 The `reference` argument can now be used to correct the object measures even when images with different shooting distances are used. In this example, the leaf area of the `ref_leaves` image is quantified and corrected considering a 5 x 5 (25 cm\$^2\$) white square as the reference object. For this, it is necessary to provide color palettes referring to the background (`background`), leaves (` foreground`) and the reference object (`reference`). Also, the area of the reference object needs to be informed in `reference_area`.
 
@@ -945,7 +892,7 @@ area <-
 
 
 
-## Filling 'holes'
+### Filling 'holes'
 
 An important aspect to consider in leaf area measures is when leaves present 'holes'. This can occur, for example, by the attack of pests. In this case, the area would have to be considered, because it was there! The image bellow is used as an example.
 
@@ -1001,7 +948,7 @@ We can simply use the ratio between `proc_img` and `proc_img2` to compute the in
 
 
 
-## Compound leaves
+### Compound leaves
 
 A simple leaf blade is undivided. The blade of a compound leaf is divided into several leaflets. In the following examples, I will show how to analyze simple and compound leaves with `analyze_objects()`, mainly if the goal is to obtain the measures for each leaf (e.g., mean area), where the number of objects (leaves) will influence the results.
 
@@ -1065,7 +1012,7 @@ carea_cor
 
 
 
-## Multiple images of the same sample
+### Multiple images of the same sample
 
 If users need to analyze multiple images from the same sample, the images must share the same filename prefix, which is defined as the part of the filename that precedes the first hyphen (`-`) or underscore (`_`). Then, when using ` get_measures()`, measurements from leaf images called, for example, `F1-1.jpeg`, `F1_2.jpeg` and `F1-3.jpeg` will be combined into a single image (`F1`), displayed in the `merge` object. This is useful, for example, for analyzing large sheets that need to be split into multiple images or multiple sheets belonging to the same sample that cannot be scanned into a single image.
 
@@ -1174,41 +1121,17 @@ p1 + p2 + p3 +
 
 
 
+# Phytopathometry
 
-[^1]: Singer, M.H. 1993. A general approach to moment calculation for polygons and line segments. Pattern Recognition 26(7): 1019–1028. doi: 10.1016/0031-3203(93)90003-F.
-
-
-[^2]: Chen, C.H., and P.S.P. Wang. 2005. Handbook of Pattern Recognition and Computer Vision. 3rd ed. World Scientific.
-
-[^3]: Claude, J. 2008. Morphometrics with R. Springer.
-
-[^4]: Montero, R.S., E. Bribiesca, R. Santiago, and E. Bribiesca. 2009. State of the Art of Compactness and Circularity Measures. International Mathematical Forum 4(27): 1305–1335.
-
-[^5]: Lee, Y., and W. Lim. 2017. Fórmula de cadarço: conectando a área de um polígono e o produto vetorial vetorial. The Mathematics Teacher 110(8): 631–636. doi: 10.5951/MATHTEACHER.110.8.0631.
-
-[^6]: Montero, R.S., E. Bribiesca, R. Santiago, and E. Bribiesca. 2009. State of the Art of Compactness and Circularity Measures. International Mathematical Forum 4(27): 1305–1335
-
-[^7]: Haralick, R.M. 1974. A Measure for Circularity of Digital Figures. IEEE Transactions on Systems, Man, and Cybernetics SMC-4(4): 394–396. doi: 10.1109/TSMC.1974.5408463.
-
-[^8]: https://www.florestaombrofilamista.com.br/sidol/?menu=glossary
-
-```{r, echo=FALSE, eval=TRUE}
-```
-##Aufgabe 4
-
-```{r include = FALSE}
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
-```
-
-# Diretório das imagens
+## Diretório das imagens
 ```{r eval=FALSE}
 # mudar de acordo com a pasta em seu computador
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
-# Disease severity
-## Using sample palettes
+## Disease severity
+### Using sample palettes
 
 Sample palettes can be made by simply manually sampling small areas of representative images and producing a composite image that will represent each of the desired classes (background, healthy, and symptomatic tissues). 
 
@@ -1227,7 +1150,7 @@ image_combine(img, h, d, b, ncol = 4)
 ```
 
 
-## Producing sample palettes
+### Producing sample palettes
 
 Users can produce these palettes with `pick_palette()` function.
 
@@ -1292,7 +1215,7 @@ sev_corrected <- get_measures(sev, dpi = 150)
 ```
 
 
-## Batch processing
+### Batch processing
 To analyze several images from a directory, use the `pattern` argument to declare a pattern of filenames. Here, we Will used 50 soybean leaves available in the repository https://osf.io/4hbr6, a database of images of annotation of severity of plant diseases. Thanks to [Emerson M. Del Ponte](https://osf.io/jb6yd/) and his contributors for keeping this project publicly available. Using the `save_image = TRUE` argument we save the processed images in a temporary directory, defined by `tempdir()`.
 
 ```{r}
@@ -1317,7 +1240,7 @@ sev_lote$severity
 
 
 
-## Diagramas de área padrão
+### Standard area diagrams 
 
 Standard area diagrams (SAD) have long been used as a tool to aid the estimation of plant disease severity, serving as a standard reference template before or during the assessments.
 
@@ -1332,7 +1255,7 @@ sad(sev_lote, n = 6, ncol = 3)
 ```
 
 
-## Parallel processing
+### Parallel processing
 
 To speed up processing time when multiple images are available, you can use the `paralell` argument. In parallel programming (`parallel = TRUE`), the images are processed asynchronously (in parallel) in separate R sessions running in the background on the same machine. The number of sections is set by default to 50% of available cores. This number can be controlled explicitly with the argument workers.
 
@@ -1352,7 +1275,7 @@ system.time(
 
 
 
-## Multiple images of the same sample
+### Multiple images of the same sample
 
 If users need to analyze multiple images from the same sample, the images from the same sample must share the same filename prefix, which is defined as the part of the filename that precedes the first hyphen (`-`) or underscore (`_`).
 
@@ -1383,7 +1306,7 @@ ggplot(sev, aes(TRAT, symptomatic))+
 
 
 
-## Multiple leaves in one image
+### Multiple leaves in one image
 
 When multiple leaves are present in an image, the `measure_disease` function returns the average severity of the leaves present in the image. To quantify the severity *per leaf*, the `measure_disease_byl()` function can be used.
 
@@ -1405,5 +1328,28 @@ results_byl <- get_measures(byl)
 results_byl$results |> 
   head() |> 
   print_tbl()
+```
+
+
+
+## And now?
+
+```{r}
+f0 <- image_import("fungo.png", plot = TRUE)
+
+back <- pick_palette(f0)
+fore <- pick_palette(f0)
+
+res <- 
+analyze_objects(f0,
+                background = back,
+                foreground = fore,
+                watershed = FALSE)
+
+meas <- get_measures(res, dpi = 81)
+plot_measures(meas,
+              col = "black",
+              measure = "area",
+              size = 2)
 ```
 
