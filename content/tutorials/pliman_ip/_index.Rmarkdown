@@ -17,7 +17,7 @@ knitr::opts_chunk$set(cache = FALSE,
                       comment = "#",
                       fig.align = "center",
                       collapse = TRUE)
-knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ufsc_fito/leaves")
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
@@ -168,13 +168,13 @@ library(patchwork)  # arrange plots
 It is suggested that the images be downloaded and the folder set as the default directory. The `.zip` file available in the button below contains a folder called `leaves`. This folder contains the images and scripts needed to reproduce the examples. In my example, I set this folder as the default directory for R.
 
 ```{r eval=FALSE}
-setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ufsc_fito/leaves")
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
 
 
-<a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_ip/leaves.rar">
+<a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_ip/imgs.rar">
 <button class="btn btn-success"><i class="fa fa-save"></i> Download the images and scripts</button>
 </a>
 

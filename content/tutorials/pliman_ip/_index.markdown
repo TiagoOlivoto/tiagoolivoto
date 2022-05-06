@@ -186,13 +186,13 @@ It is suggested that the images be downloaded and the folder set as the default 
 
 
 ```r
-setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ufsc_fito/leaves")
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/pliman_ip/imgs")
 ```
 
 
 
 
-<a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_ip/leaves.rar">
+<a href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/static/tutorials/pliman_ip/imgs.rar">
 <button class="btn btn-success"><i class="fa fa-save"></i> Download the images and scripts</button>
 </a>
 
