@@ -250,17 +250,6 @@ freq_table(df_cor_grao, var = cor_grao) |> knitr::kable()
 ```
 
 
-## Número de folhas amostradas em cada grupo
-```{r}
-df_nfol <-
-  import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=463165208") |> 
-  filter(Tipo == "Folha")
-
-# Tabela
-freq_table(df_nfol, var = Grupo) |> knitr::kable()
-```
-
-
 
 ## Altura da turma
 

@@ -420,29 +420,6 @@ freq_table(df_cor_grao, var = cor_grao) |> knitr::kable()
 |Total    |       28|          28| 1.0000000|   1.0000000|
 
 
-## Número de folhas amostradas em cada grupo
-
-```r
-df_nfol <-
-  import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=463165208") |> 
-  filter(Tipo == "Folha")
-
-# Tabela
-freq_table(df_nfol, var = Grupo) |> knitr::kable()
-```
-
-
-
-|Grupo   | abs_freq| abs_freq_ac|  rel_freq| rel_freq_ac|
-|:-------|--------:|-----------:|---------:|-----------:|
-|Grupo 1 |       12|          12| 0.2105263|   0.2105263|
-|Grupo 2 |        6|          18| 0.1052632|   0.3157895|
-|Grupo 3 |       11|          29| 0.1929825|   0.5087719|
-|Grupo 4 |       16|          45| 0.2807018|   0.7894737|
-|Grupo 5 |       12|          57| 0.2105263|   1.0000000|
-|Total   |       57|          57| 1.0000000|   1.0000000|
-
-
 
 ## Altura da turma
 
@@ -473,5 +450,5 @@ df_altura$Altura |>
   hist()
 ```
 
-<img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
