@@ -166,9 +166,10 @@ knitr::kable(df)
 
 # Variáveis qualitativas e quantitativas discretas
 
-Para exemplificar a construção de tabelas de frequências de variáveis qualitativas / quantitativas discretas, utilizaremos a variável cor do grão. Neste caso, três classes (classes naturais) estão presentes: vermelho, amarelo e verde. Assim, a construção da tabela de frequência diz respeito a contagem de observações em cada uma destas classes e o cálculo das frequências relativas e absolutas. Pode-se criar facilmente esta tabela de frequência combinando as funções `count()` e `mutate()` do pacote `dplyr` (parte do `tidyverse`).
+Para exemplificar a construção de tabelas de frequências de variáveis qualitativas / quantitativas discretas, utilizaremos a variável cor do grão. Neste caso, três classes (classes naturais) estão presentes: vermelho, amarelo e verde. Assim, a construção da tabela de frequência diz respeito a contagem de observações em cada uma destas classes e o cálculo das frequências relativas e absolutas. 
 
 ## Representação tabular
+Pode-se criar facilmente esta tabela de frequência combinando as funções `count()` e `mutate()` do pacote `dplyr` (parte do `tidyverse`).
 
 
 ```r
@@ -249,123 +250,7 @@ A função `freq_table()` está disponível no pacote metan e é mostrada explic
 
 
 ```r
-freq_table <- function(.data, var, k = NULL, digits = 2){
-  if(is_grouped_df(.data)){
-    res <- 
-      metan::doo(.data,
-                 ~freq_table(., {{var}}, k = k, digits = digits))
-    freqs <- 
-      res %>% 
-      mutate(freqs = map(data, ~.x %>% .[["freqs"]])) |> 
-      unnest(freqs) |> 
-      remove_cols(data)
-    breaks <- 
-      res |> 
-      mutate(freqs = map(data, ~.x %>% .[["breaks"]])) |> 
-      # unnest(freqs) |> 
-      remove_cols(data)
-    list_breaks <- breaks$freqs
-    names(list_breaks) <- breaks$cor_grao
-    return(list(freqs = freqs,
-                breaks = breaks))
-    
-  } else{
-    # function to create a frequence table with continuous variable
-    # adapted from https://bendeivide.github.io/book-epaec/book-epaec.pdf
-    freq_quant <- function(data, k = NULL, digits = digits){
-      # the number of observations
-      n <- length(data)
-      
-      # check the number of classes
-      if(is.null(k)){
-        if (n > 100) {
-          k <- round(5 * log10(n), 0)
-        } else{
-          k <- round(sqrt(n), 0)
-        }
-      } else{
-        k <- k
-      }
-      # data range
-      rang <- range(data)
-      # amplitude
-      A <- diff(rang)
-      # the size of the class
-      c <- round(A / (k - 1), digits = digits)
-      
-      # lower and upper limit of the first class
-      LI1 <- min(rang) - c / 2
-      vi <- c(LI1,     rep(0, k - 1))
-      vs <- c(LI1 + c, rep(0, k - 1))
-      
-      # build the other classes
-      for (i in 2:k) {
-        vi[i] <- vi[i - 1] + c
-        vs[i] <- vs[i - 1] + c
-      }
-      vi <- round(vi, digits = digits)
-      vs <- round(vs, digits = digits)
-      # Find the frequency of each class
-      freq <- function(x, vi, vs, k) {
-        freq <- rep(0, k)
-        for (i in 1:(k - 1)) {
-          freq[i] <- length(x[x >= vi[i] & x < vs[i]])
-        }
-        freq[k] <- length(x[x >= vi[k] & x <= vs[k]])
-        return(freq)
-      }
-      
-      # absolute frequency
-      fi <- freq(data, vi, vs, k)
-      # check if any class is empty
-      if(any(fi == 0)){
-        warning("An empty class is not advised. Try to reduce the number of classes with the `k` argument", call. = FALSE)
-      }
-      # building the classes
-      classe <- paste(vi, "|--- ", vs)
-      classe[k] <- paste(vi[k], "|---|", vs[k])
-      freqs <- 
-        data.frame(class = classe,
-                   abs_freq = fi) |> 
-        mutate(abs_freq_ac = cumsum(abs_freq),
-               rel_freq = abs_freq / sum(abs_freq),
-               rel_freq_ac = cumsum(rel_freq))
-      freqs[nrow(freqs) + 1, ] <- c("Total", sum(freqs[, 2]), sum(freqs[, 2]), 1, 1)
-      freqs <- 
-        freqs |>
-        as_numeric(2:5) |> 
-        round_cols(digits = digits)
-      
-      breaks <- sort(c(vi, vs))
-      return(list(freqs = freqs,
-                  breaks = breaks))
-    }
-    
-    #check the class of the variable
-    class_data <- .data |> pull({{var}}) |> class()
-    # if variable is discrete or categorical
-    if(class_data %in% c("character", "factor", "integer")){
-      df <-
-        .data %>%
-        count({{var}}) |>
-        as_character(1) |> 
-        mutate(abs_freq = n,
-               abs_freq_ac = cumsum(abs_freq),
-               rel_freq = abs_freq / sum(abs_freq),
-               rel_freq_ac = cumsum(rel_freq)) |>
-        remove_cols(n)
-      df[nrow(df) + 1, ] <- c("Total", sum(df[, 2]), sum(df[, 2]), 1, 1)
-      df <- df |> as_numeric(2:5)
-      return(df)
-    }
-    # if variable is numeric
-    if(class_data == "numeric"){
-      data <- .data |> pull({{var}})
-      # apply the function freq_quant in the numeric vector
-      freq_quant(data, k = k, digits = digits)
-    }
-  }
-}
+freq_table
 ```
 
 ## Apresentação tabular
@@ -391,9 +276,7 @@ knitr::kable(frequencias$freqs)
 
 
 ```r
-df$comp_grao |> 
-  new_leem(variable = 2) |> 
-  hist()
+freq_hist(frequencias)
 ```
 
 <img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-6-1.png" width="672" />
@@ -407,7 +290,8 @@ df_cor_grao <- import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCek
                       dec = ",")
 
 
-freq_table(df_cor_grao, var = cor_grao) |> knitr::kable()
+freq_cafe <- freq_table(df_cor_grao, var = cor_grao)
+knitr::kable(freq_cafe$freqs)
 ```
 
 
@@ -418,6 +302,14 @@ freq_table(df_cor_grao, var = cor_grao) |> knitr::kable()
 |verde    |       15|          21| 0.5357143|   0.7500000|
 |vermelho |        7|          28| 0.2500000|   1.0000000|
 |Total    |       28|          28| 1.0000000|   1.0000000|
+
+```r
+# criar um histograma
+freq_hist(freq_cafe)
+```
+
+<img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-7-2.png" width="672" />
+
 
 
 
@@ -430,7 +322,7 @@ df_altura <- import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZ
 
 # Tabela
 dist_altura <- freq_table(df_altura, var = Altura)
-dist_altura$freqs|> knitr::kable()
+knitr::kable(dist_altura$freqs)
 ```
 
 
@@ -445,9 +337,7 @@ dist_altura$freqs|> knitr::kable()
 
 ```r
 # Gráfico
-df_altura$Altura |> 
-  new_leem(variable = 2) |> 
-  hist()
+freq_hist(dist_altura)
 ```
 
 <img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-8-1.png" width="672" />
