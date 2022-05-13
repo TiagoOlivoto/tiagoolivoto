@@ -14,4 +14,171 @@ menu:
 # weight: 1
 ---
 
-Em breve
+# Introdução à probabilidade
+
+Um modelo probabilístico é um modelo em que, à priori, não é possível definir um resultado particular. Este modelo é especificado por meio de uma distribuição de probabilidade. Geralmente, modelos probabilísticos são utilizados quando se tem um grande número de variáveis influenciando o resultado e estas variáveis não podem ser controladas. Como exemplo, pode-se citar a observação da germinação de uma semente, o lançamento de um dado, onde tenta-se prever o número da face que irá sair, etc. 
+
+
+# Distribuição binomial
+
+## Exercício bezerro
+
+Um produtor possui quatro vacas prenhas de monta natural. Como está cursando a disciplina de Bioestatística, ele gostaria de calcular probabilidades associadas ao nascimento de bezerras fêmeas
+```{r}
+dbinom(x = 0:4, size = 4, prob = 0.5)
+
+
+
+bezerros =
+  tibble(nbez = 0:4,
+         prob = dbinom(x = 0:4, size = 4, prob = 0.5),
+         prob_ac = cumsum(prob),
+         prob_ac_inv = rev(prob_ac))
+bezerros
+
+# Gr?fico da distribui??o
+ggplot(bezerros, aes(nbez, prob))+
+  geom_bar(stat = "identity",
+           width = 1,
+           col = "black",
+           size = 0.1,
+           fill = "cyan")+
+  labs(x = "Número de bezerros fêmeas",
+       y = "Probabilidade") +
+  ggtitle(label = "Probabilidade de nascimento de terneiras em 4 partos")+
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
+  theme_metan(grid = "y")
+
+```
+
+## Exercício questões prova
+
+Considere uma prova de estatística com peso 10 contendo 10 questões, cada uma com 5 alternativas. Apenas 1 é correta. Se o aluno tirar uma nota inferior a 4, o aluno está reprovado. Notas entre 4 e 7 fazem com que o aluno fique em exame. Se a nota for superior a 7 o aluno passa. Como João não prestou atenção nas aulas de estatística, ele decidiu “chutar” todas as questões. Calcule as probabilidades que se pede.
+
+
+### Probabilidade de não acertar nenhuma questão
+```{r}
+dbinom(x = 0, size = 10, prob = 0.2)
+```
+
+
+### Probabilidade de ser reprovado
+João será reprovado caso acerte menos que quatro questões. Logo, a soma as probabilidades de acertar 0, 1, 2 e 3 questões é esta probabilidade.
+
+```{r}
+dbinom(x = 0:3, size = 10, prob = 0.2) %>% sum()
+```
+
+### Probabilidade de ficar em exame 
+João ficará em exame caso acerte entre 4 e 7 questões. Logo, a probabilidade de ficar em exame será a soma das probabilidades individuais destes números de questões.
+
+```{r}
+dbinom(x = 4:7, size = 10, prob = 0.2) %>% sum()
+```
+
+
+### Passe na prova 
+João somente passará na prova, caso acerte mais que sete questões. Valendo-se da propriedade da soma das probabilidades, a probabilidade de João passar na prova é data tanto somando-se as probabilidades de acertar 8, 9 e 10 questões, quanto subtraindo a unidade da probabilidade da soma de acerto de até 7 questões.
+
+```{r}
+dbinom(x = 8:10, size = 10, prob = 0.2) %>% sum()
+1 - dbinom(0:7, size = 10, prob = 0.2) |> sum()
+```
+
+
+### Gabarite a prova
+A probabilidade de acerto de 10 questões é dada pela probabilidade pontual de exatamente 10 sucessos em 10 tentativas.
+
+```{r}
+
+dbinom(x = 10, size = 10, prob = 0.2)
+
+```
+
+
+
+
+```{r}
+prova <- 
+  tibble(nques = 0:10,
+         prob = dbinom(x = 0:10, size = 10, prob = 0.2),
+         prob_ac = cumsum(prob))
+
+
+ggplot(prova, aes(nques, prob, label = round(prob, 4)))+
+  geom_bar(stat = "identity",
+           col = "black",
+           fill = "cyan")+
+  scale_x_continuous(breaks = c(0:10))+
+  labs(x = "Número de questões",
+       y = "Probabilidade")+
+  ggtitle(label = "Probabilidade de acerto em uma prova de 10 questões",
+          subtitle = "Cada questão tem 5 alternativas, apenas 1 é correta")+
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
+  geom_text(vjust = -1) +
+  theme_metan(grid = "y")
+
+# Gr?fico Distribui??o acumulada
+
+ggplot(prova, aes(nques, prob_ac))+
+  geom_path(color = "red", size = 1)+
+  labs(x = "N?mero de quest?es",
+       y = "Probabilidade acumulada")+
+  ggtitle(label = "Probabilidade acumulada de acertar 10 quest?es 'chutando' todas",
+          subtitle = "Cada quest?o tem 5 alternativas, apenas 1 ? correta")+
+  scale_x_continuous(breaks = c(0:10))+
+  my_theme()
+
+```
+
+
+
+
+
+
+# Exerc?cio nascimento de bezerros f?meas [VAD ~ B(N, 0,85)]
+# a) Todas os bezerros nascidos sejam f?meas
+dbinom(x = 120, size = 120, prob = 0.85)
+
+# b) Pelo menos 90% dos bezerros nascidos sejam f?meas.
+# F?meas 108 ou mais
+# P(X >= 108) = 1 - P(X < 108)
+1 - pbinom(107, size = 120, prob = 0.85)
+# P(X >= 108) = P(X = 109) + P(X = 109) + ... + P(X = 120)
+dbinom(x = 108:120, size = 120, prob = 0.85) %>% sum()
+
+
+# c) multa
+n = 120 *0.75 - 1
+pbinom(n, size = 120, prob = 0.85)
+Valor = 10 * n
+
+
+bezerros =
+  tibble(nbez = 0:120,
+         prob = dbinom(x = 0:120, size = 120, prob = 0.85),
+         prob_ac = cumsum(prob))
+
+
+# Gr?fico da distribui??o
+ggplot(bezerros, aes(nbez, prob))+
+  geom_bar(stat = "identity",
+           width = 1,
+           col = "black",
+           size = 0.1,
+           fill = "cyan")+
+  labs(x = "N?mero de bezerros f?meas",
+       y = "Probabilidade") +
+  ggtitle(label = "Probabilidade de nascimento de terneiras em 120 partos",
+          subtitle = "S?men com 85% de probabilidade de nascimento de terneiras")+
+  scale_y_continuous(expand = expand_scale(mult = c(0, 0.1)))+
+  scale_x_continuous(breaks = seq(0, 120, 20))+
+  my_theme()
+
+geom_vline(xintercept = 120 * 0.85,
+           size = 1,
+           linetype = "dashed",
+           color = "red")
+
+
+# Avalia??o

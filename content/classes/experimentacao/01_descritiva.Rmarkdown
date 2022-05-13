@@ -253,7 +253,7 @@ link <- "https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjx
 
 # função para importar os dados
 df <- 
-  import(link, dec = ",") |> 
+  import(link) |> 
   as_character(1:3) # primeiras 3 colunas como caracteres
 
 # estrutura dos dados 
