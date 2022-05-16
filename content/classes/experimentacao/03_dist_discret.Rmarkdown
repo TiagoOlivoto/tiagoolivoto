@@ -95,6 +95,17 @@ $$
 P(X = 2) = \left( \begin{array}{l}2\\\2\end{array} \right) \times {0,5^2} \times {0,5^{2 - 2}} = 0,25
 $$
 
+No software R, a probabilidade de sucesso de um evento para uma variável que segue uma distribuição binomial é computada com a função `dbinom()`.
+
+```{r}
+args(dbinom)
+```
+
+* `x` é o vetor de quantiles (sucesso);
+* `size` é o número de experimentos (repetições);
+* `prob` é a probabilidade de sucesso em cada experimento aleatório.
+
+
 ```{r}
 library(tibble)
 data.frame(nbez = 0:2,

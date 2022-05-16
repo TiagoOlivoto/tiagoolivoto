@@ -123,6 +123,19 @@ $$
 P(X = 2) = \left( \begin{array}{l}2\\\2\end{array} \right) \times {0,5^2} \times {0,5^{2 - 2}} = 0,25
 $$
 
+No software R, a probabilidade de sucesso de um evento para uma variável que segue uma distribuição binomial é computada com a função `dbinom()`.
+
+``` r
+args(dbinom)
+```
+
+    ## function (x, size, prob, log = FALSE) 
+    ## NULL
+
+-   `x` é o vetor de quantiles (sucesso);
+-   `size` é o número de experimentos (repetições);
+-   `prob` é a probabilidade de sucesso em cada experimento aleatório.
+
 ``` r
 library(tibble)
 data.frame(nbez = 0:2,
@@ -218,7 +231,7 @@ ggplot(bezerros, aes(nbez, prob))+
   theme(panel.grid.minor = element_blank())
 ```
 
-<img src="/classes/experimentacao/03_dist_discret_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="/classes/experimentacao/03_dist_discret_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
 ## Exercício questões prova
 
@@ -300,7 +313,7 @@ ggplot(prova, aes(nques, prob, label = round(prob, 4)))+
   theme(panel.grid.minor = element_blank())
 ```
 
-<img src="/classes/experimentacao/03_dist_discret_files/figure-html/unnamed-chunk-12-1.png" width="960" />
+<img src="/classes/experimentacao/03_dist_discret_files/figure-html/unnamed-chunk-13-1.png" width="960" />
 
 ``` r
 # distribuição acumulada
@@ -316,7 +329,7 @@ ggplot(prova, aes(nques, prob_ac))+
   theme(panel.grid.minor = element_blank())
 ```
 
-<img src="/classes/experimentacao/03_dist_discret_files/figure-html/unnamed-chunk-12-2.png" width="960" />
+<img src="/classes/experimentacao/03_dist_discret_files/figure-html/unnamed-chunk-13-2.png" width="960" />
 
 ## Exercício germinação de sementes
 
@@ -406,7 +419,7 @@ ggplot(bezerros, aes(nbez, prob))+
   scale_x_continuous(breaks = seq(0, 120, 20))
 ```
 
-<img src="/classes/experimentacao/03_dist_discret_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+<img src="/classes/experimentacao/03_dist_discret_files/figure-html/unnamed-chunk-18-1.png" width="672" />
 
 ``` r
 # distribuição acumulada
@@ -422,6 +435,6 @@ ggplot(bezerros, aes(nbez, prob_ac))+
   theme(panel.grid.minor = element_blank())
 ```
 
-<img src="/classes/experimentacao/03_dist_discret_files/figure-html/unnamed-chunk-17-2.png" width="672" />
+<img src="/classes/experimentacao/03_dist_discret_files/figure-html/unnamed-chunk-18-2.png" width="672" />
 
 [^1]: <https://cooperativa.coop.br/semen-sexado-entenda-o-que-e/>
