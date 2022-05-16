@@ -11,9 +11,7 @@ menu:
   experimentacao:
     parent: Experimentação
     weight: 3
-# weight: 1
 ---
-
 
 Uma forma de lidar com grandes conjuntos de dados e identificar informações relevantes é agrupar estes dados. O agrupamento é feito em tabelas, denominadas de distribuições de frequências. A construção de distribuição de frequências é geralmente realizada de forma distinta para variáveis discretas (distribuição por pontos) e contínuas (distribuição por classes ou intervalos).
 
@@ -22,105 +20,8 @@ Neste exemplo, vamos utilizar os dados coletados do comprimento, diâmetro e cor
 
 ```r
 library(tidyverse)
-```
-
-```
-## Warning: package 'tidyverse' was built under R version 4.1.3
-```
-
-```
-## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
-```
-
-```
-## v ggplot2 3.3.5     v purrr   0.3.4
-## v tibble  3.1.6     v dplyr   1.0.8
-## v tidyr   1.2.0     v stringr 1.4.0
-## v readr   2.1.2     v forcats 0.5.1
-```
-
-```
-## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
-```
-
-```r
 library(rio)
-```
-
-```
-## Warning: package 'rio' was built under R version 4.1.3
-```
-
-```r
 library(metan)
-```
-
-```
-## Registered S3 method overwritten by 'GGally':
-##   method from   
-##   +.gg   ggplot2
-```
-
-```
-## |=========================================================|
-```
-
-```
-## | Multi-Environment Trial Analysis (metan) v1.16.0        |
-```
-
-```
-## | Author: Tiago Olivoto                                   |
-```
-
-```
-## | Type 'citation('metan')' to know how to cite metan      |
-```
-
-```
-## | Type 'vignette('metan_start')' for a short tutorial     |
-```
-
-```
-## | Visit 'https://bit.ly/pkgmetan' for a complete tutorial |
-```
-
-```
-## |=========================================================|
-```
-
-```
-## 
-## Attaching package: 'metan'
-```
-
-```
-## The following object is masked from 'package:forcats':
-## 
-##     as_factor
-```
-
-```
-## The following object is masked from 'package:dplyr':
-## 
-##     recode_factor
-```
-
-```
-## The following object is masked from 'package:tidyr':
-## 
-##     replace_na
-```
-
-```
-## The following objects are masked from 'package:tibble':
-## 
-##     column_to_rownames, remove_rownames, rownames_to_column
-```
-
-```r
 library(leem) # criação dos histogramas 
 
 # importar os dados do google sheet
@@ -163,12 +64,12 @@ knitr::kable(df)
 |      27|     11.48|      8.43|verde    |
 |      28|     12.66|      9.25|verde    |
 
-
 # Variáveis qualitativas e quantitativas discretas
 
-Para exemplificar a construção de tabelas de frequências de variáveis qualitativas / quantitativas discretas, utilizaremos a variável cor do grão. Neste caso, três classes (classes naturais) estão presentes: vermelho, amarelo e verde. Assim, a construção da tabela de frequência diz respeito a contagem de observações em cada uma destas classes e o cálculo das frequências relativas e absolutas. 
+Para exemplificar a construção de tabelas de frequências de variáveis qualitativas / quantitativas discretas, utilizaremos a variável cor do grão. Neste caso, três classes (classes naturais) estão presentes: vermelho, amarelo e verde. Assim, a construção da tabela de frequência diz respeito a contagem de observações em cada uma destas classes e o cálculo das frequências relativas e absolutas.
 
 ## Representação tabular
+
 Pode-se criar facilmente esta tabela de frequência combinando as funções `count()` e `mutate()` do pacote `dplyr` (parte do `tidyverse`).
 
 
@@ -196,6 +97,8 @@ knitr::kable(tab_feq)
 
 Para apresentar estes dados graficamente, pode-se construir um gráfico de barras, mostrando a contagem em cada classe.
 
+# 
+
 
 ```r
 ggplot(df, aes(cor_grao)) + 
@@ -212,13 +115,15 @@ ggplot(df, aes(cor_grao)) +
 
 <img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
-
-
 # Variáveis quantitativas
+
 Para o caso de variáveis quantitativas contínuas (ex. `X`), precisamos agrupar os valores observados em intervalos de classe. Por exemplo, quando medimos uma altura de uma planta (ex. 1,86 m), a altura real não está limitado a segunda casa decimal. Então, a melhor forma será criar regiões (intervalos), de modo que possamos contemplar um conjunto de valores.
 
-Um critério empírico, para definição do número de classes (\$k\$) a ser criado se baseia no número de elementos (\$n\$) na amostra. Caso (\$n\$) seja igual ou inferior a 100, calcula-se o número de classes com \$k = \sqrt{n}\$. Caso (\$n\$) seja maior que 100, calcula-se o número de classes com \$k = 5 \log_{10}(n)\$.
+$$
+\sqrt{250 \times \frac{2}{3}}
+$$
 
+Um critério empírico, para definição do número de classes (\$k\$) a ser criado se baseia no número de elementos (\$n\$) na amostra. Caso (\$n\$) seja igual ou inferior a 100, calcula-se o número de classes com \$k = \sqrt{n}\$. Caso (\$n\$) seja maior que 100, calcula-se o número de classes com \$k = 5 \log\_{10}(n)\$.
 
 Após a determinação do número de classes, é necessário determinar a amplitude total (\$A\$), dada por:
 
@@ -242,11 +147,9 @@ $$
 LS_1 = LI_1 + c
 $$
 
-
 O valor do limite superior não pertence a classe e será contabilizado para a próxima classe. Dizemos, então, que o conjunto é fechado a esquerda e aberto à direita. O limite inferior da segunda classe é dado pelo limite superior da primeira class (\$LI_2 = LS_1\$); o limite superior da segunda classe é dado por ($LS_2 = LI_2 + c$). Esta lógica segue até completar-se o número de classes do conjunto.
 
 A função `freq_table()` está disponível no pacote metan e é mostrada explicitamente aqui. Ela automatiza o processo de construção de tabelas de frequências, tanto para variáveis qualitativas como quantitativas. Basta informar o conjunto de dados, a variável, e, opcionalmente, o número de classes a ser criado.
-
 
 
 ```r
@@ -254,6 +157,7 @@ freq_table
 ```
 
 ## Apresentação tabular
+
 
 ```r
 frequencias <- freq_table(df, comp_grao)
@@ -271,7 +175,6 @@ knitr::kable(frequencias$freqs)
 |15.11 &#124;---&#124; 16.83 |        3|          28|     0.11|        1.00|
 |Total                       |       28|          28|     1.00|        1.00|
 
-
 ## Apresentação gráfica
 
 
@@ -281,9 +184,10 @@ freq_hist(frequencias)
 
 <img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
-
 # Exemplos discutidos em aula
+
 ## Cor do grão do café (grupo 3)
+
 
 ```r
 df_cor_grao <- import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=353032103",
@@ -309,9 +213,6 @@ freq_hist(freq_cafe)
 ```
 
 <img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-7-2.png" width="672" />
-
-
-
 
 ## Altura da turma
 
@@ -341,4 +242,3 @@ freq_hist(dist_altura)
 ```
 
 <img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-8-1.png" width="672" />
-

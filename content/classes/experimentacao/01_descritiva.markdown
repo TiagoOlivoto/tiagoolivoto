@@ -19,39 +19,7 @@ menu:
 
 ```r
 library(tidyverse)
-## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
-## v ggplot2 3.3.5     v purrr   0.3.4
-## v tibble  3.1.6     v dplyr   1.0.8
-## v tidyr   1.2.0     v stringr 1.4.0
-## v readr   2.1.2     v forcats 0.5.1
-## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
 library(metan)   
-## Registered S3 method overwritten by 'GGally':
-##   method from   
-##   +.gg   ggplot2
-## |=========================================================|
-## | Multi-Environment Trial Analysis (metan) v1.16.0        |
-## | Author: Tiago Olivoto                                   |
-## | Type 'citation('metan')' to know how to cite metan      |
-## | Type 'vignette('metan_start')' for a short tutorial     |
-## | Visit 'https://bit.ly/pkgmetan' for a complete tutorial |
-## |=========================================================|
-## 
-## Attaching package: 'metan'
-## The following object is masked from 'package:forcats':
-## 
-##     as_factor
-## The following object is masked from 'package:dplyr':
-## 
-##     recode_factor
-## The following object is masked from 'package:tidyr':
-## 
-##     replace_na
-## The following objects are masked from 'package:tibble':
-## 
-##     column_to_rownames, remove_rownames, rownames_to_column
 ```
 
 # Introdução
@@ -422,7 +390,7 @@ link <- "https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjx
 
 # função para importar os dados
 df <- 
-  import(link, dec = ",") |> 
+  import(link) |> 
   as_character(1:3) # primeiras 3 colunas como caracteres
 
 # estrutura dos dados 
@@ -468,13 +436,13 @@ df |>
 ```
 
 ```
-## # A tibble: 4 x 11
+## # A tibble: 4 × 11
 ##   Tipo  variable      mean median range ave.dev var.amo sd.amo    cv    se     n
 ##   <chr> <chr>        <dbl>  <dbl> <dbl>   <dbl>   <dbl>  <dbl> <dbl> <dbl> <dbl>
 ## 1 Folha Comprimento  12.2    12.1  13     2.23     8.33   2.89  23.7 0.382    57
-## 2 Folha Largura_dia~  5.41    5.4   6.1   0.990    1.66   1.29  23.8 0.171    57
+## 2 Folha Largura_dia…  5.41    5.4   6.1   0.990    1.66   1.29  23.8 0.171    57
 ## 3 Grao  Comprimento  12.5    12    29.6   3.72    32.1    5.66  45.3 0.558   103
-## 4 Grao  Largura_dia~  8.90    9.1  20.1   2.86    15.9    3.99  44.8 0.393   103
+## 4 Grao  Largura_dia…  8.90    9.1  20.1   2.86    15.9    3.99  44.8 0.393   103
 ```
 
 ### Estatísticas por grupo
@@ -489,30 +457,30 @@ df |>
 ```
 
 ```
-## # A tibble: 20 x 12
+## # A tibble: 20 × 12
 ##    Grupo   Tipo  variable  mean median range ave.dev var.amo sd.amo    cv     se
 ##    <chr>   <chr> <chr>    <dbl>  <dbl> <dbl>   <dbl>   <dbl>  <dbl> <dbl>  <dbl>
-##  1 Grupo 1 Folha Comprim~ 11.7   12.2   7     1.43    3.79   1.95   16.7  0.562 
-##  2 Grupo 1 Folha Largura~  5.1    4.75  2.9   0.833   1.03   1.02   19.9  0.293 
-##  3 Grupo 1 Grao  Comprim~ 14.3   14.2   4.21  1.05    1.77   1.33    9.28 0.384 
-##  4 Grupo 1 Grao  Largura~ 10.8   10.2   3.9   1.04    1.81   1.35   12.4  0.388 
-##  5 Grupo 2 Folha Comprim~ 11.7   12.2   5.5   2       5.97   2.44   20.9  0.997 
-##  6 Grupo 2 Folha Largura~  4.97   5.4   1.5   0.644   0.567  0.753  15.2  0.307 
-##  7 Grupo 2 Grao  Comprim~ 12.9   12.7   6.89  1.57    3.60   1.90   14.7  0.359 
-##  8 Grupo 2 Grao  Largura~  9.75   9.37  5.36  1.23    2.06   1.44   14.7  0.271 
-##  9 Grupo 3 Folha Comprim~  9.77  10     7.5   2.07    6.57   2.56   26.2  0.773 
-## 10 Grupo 3 Folha Largura~  4.55   5     4.5   1.21    2.37   1.54   33.9  0.464 
-## 11 Grupo 3 Grao  Comprim~ 10.5   10     8     1.75    4.37   2.09   19.9  0.348 
-## 12 Grupo 3 Grao  Largura~  6.56   6.5   7     1.17    2.14   1.46   22.3  0.244 
-## 13 Grupo 4 Folha Comprim~ 13.1   12.8   8.6   2.02    6.40   2.53   19.3  0.632 
-## 14 Grupo 4 Folha Largura~  5.91   5.5   3.2   0.877   0.992  0.996  16.8  0.249 
-## 15 Grupo 4 Grao  Comprim~ 18.2   15.4  21     7.65   70.0    8.37   45.9  1.87  
-## 16 Grupo 4 Grao  Largura~ 13.5   10.5  11     3.88   18.2    4.27   31.6  0.954 
-## 17 Grupo 5 Folha Comprim~ 13.9   15.3  10.4   2.42   10.3    3.21   23.0  0.927 
-## 18 Grupo 5 Folha Largura~  6.07   6.7   4.6   1.06    1.85   1.36   22.4  0.393 
-## 19 Grupo 5 Grao  Comprim~  1.6    1.6   0.4   0.0857  0.0167 0.129   8.07 0.0488
-## 20 Grupo 5 Grao  Largura~  1.03   1     0.2   0.0612  0.0057 0.0756  7.35 0.0286
-## # ... with 1 more variable: n <dbl>
+##  1 Grupo 1 Folha Comprim… 11.7   12.2   7     1.43    3.79   1.95   16.7  0.562 
+##  2 Grupo 1 Folha Largura…  5.1    4.75  2.9   0.833   1.03   1.02   19.9  0.293 
+##  3 Grupo 1 Grao  Comprim… 14.3   14.2   4.21  1.05    1.77   1.33    9.28 0.384 
+##  4 Grupo 1 Grao  Largura… 10.8   10.2   3.9   1.04    1.81   1.35   12.4  0.388 
+##  5 Grupo 2 Folha Comprim… 11.7   12.2   5.5   2       5.97   2.44   20.9  0.997 
+##  6 Grupo 2 Folha Largura…  4.97   5.4   1.5   0.644   0.567  0.753  15.2  0.307 
+##  7 Grupo 2 Grao  Comprim… 12.9   12.7   6.89  1.57    3.60   1.90   14.7  0.359 
+##  8 Grupo 2 Grao  Largura…  9.75   9.37  5.36  1.23    2.06   1.44   14.7  0.271 
+##  9 Grupo 3 Folha Comprim…  9.77  10     7.5   2.07    6.57   2.56   26.2  0.773 
+## 10 Grupo 3 Folha Largura…  4.55   5     4.5   1.21    2.37   1.54   33.9  0.464 
+## 11 Grupo 3 Grao  Comprim… 10.5   10     8     1.75    4.37   2.09   19.9  0.348 
+## 12 Grupo 3 Grao  Largura…  6.56   6.5   7     1.17    2.14   1.46   22.3  0.244 
+## 13 Grupo 4 Folha Comprim… 13.1   12.8   8.6   2.02    6.40   2.53   19.3  0.632 
+## 14 Grupo 4 Folha Largura…  5.91   5.5   3.2   0.877   0.992  0.996  16.8  0.249 
+## 15 Grupo 4 Grao  Comprim… 18.2   15.4  21     7.65   70.0    8.37   45.9  1.87  
+## 16 Grupo 4 Grao  Largura… 13.5   10.5  11     3.88   18.2    4.27   31.6  0.954 
+## 17 Grupo 5 Folha Comprim… 13.9   15.3  10.4   2.42   10.3    3.21   23.0  0.927 
+## 18 Grupo 5 Folha Largura…  6.07   6.7   4.6   1.06    1.85   1.36   22.4  0.393 
+## 19 Grupo 5 Grao  Comprim…  1.6    1.6   0.4   0.0857  0.0167 0.129   8.07 0.0488
+## 20 Grupo 5 Grao  Largura…  1.03   1     0.2   0.0612  0.0057 0.0756  7.35 0.0286
+## # … with 1 more variable: n <dbl>
 ```
 
 
@@ -604,7 +572,7 @@ desc_stat(dados,
 ```
 
 ```
-## # A tibble: 3 x 10
+## # A tibble: 3 × 10
 ##   grupo variable  mean median range ave.dev var.amo sd.amo    cv    se
 ##   <chr> <chr>    <dbl>  <dbl> <dbl>   <dbl>   <dbl>  <dbl> <dbl> <dbl>
 ## 1 A     valor     9.02   9.38  4.03    1.14    1.96   1.40  15.5 0.443
@@ -617,10 +585,6 @@ Isto fica mais facilmente notado ao criarmos um gráfico do tipo boxplot, conten
 
 ```r
 library(ggstatsplot)
-```
-
-```
-## Warning: package 'ggstatsplot' was built under R version 4.1.3
 ```
 
 ```

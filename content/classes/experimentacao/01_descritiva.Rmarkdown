@@ -16,7 +16,7 @@ menu:
 
 # Pacotes
 
-```{r collapse=TRUE}
+```{r warning=FALSE, message=FALSE}
 library(tidyverse)
 library(metan)   
 ```

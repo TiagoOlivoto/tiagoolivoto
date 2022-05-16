@@ -11,73 +11,194 @@ menu:
   experimentacao:
     parent: Experimentação
     weight: 4
-# weight: 1
 ---
 
 # Introdução à probabilidade
 
-Um modelo probabilístico é um modelo em que, à priori, não é possível definir um resultado particular. Este modelo é especificado por meio de uma distribuição de probabilidade. Geralmente, modelos probabilísticos são utilizados quando se tem um grande número de variáveis influenciando o resultado e estas variáveis não podem ser controladas. Como exemplo, pode-se citar a observação da germinação de uma semente, o lançamento de um dado, onde tenta-se prever o número da face que irá sair, etc. 
-
+Um modelo probabilístico é um modelo em que, à priori, não é possível definir um resultado particular. Este modelo é especificado por meio de uma distribuição de probabilidade. Geralmente, modelos probabilísticos são utilizados quando se tem um grande número de variáveis influenciando o resultado e estas variáveis não podem ser controladas. Como exemplo, pode-se citar a observação da germinação de uma semente, o lançamento de um dado, onde tenta-se prever o número da face que irá sair, etc.
 
 # Distribuição binomial
 
+Seja \$E\$ um experimento aleatório e \$\\Omega\$ um espaço amostra associado, onde \$n\$ é o número de vezes que o experimento \$E\$ é repetido, \$p\$ é a probabilidade de \$\\Omega\$ ocorrer em cada uma das \$n\$ repetições de \$E\$. Como existem apenas duas situações (\$\\Omega\$ ocorre ou \$\\Omega\$ não ocorre), pode-se determinar a probabilidade de \$\\Omega\$ não ocorrer como sendo \$q = 1 - p\$.
+
+
+Algumas condições devem ser respeitadas
+
+-   São feitas \$n\$ repetições do experimento, onde \$n\$ é uma constante;
+-   Há apenas dois resultados possíveis em cada repetição, denominados sucesso e falha
+-   A probabilidade de sucesso (\$p\$) e de falha \$q\$ permanecem constante em todas as repetições;
+-   As repetições são independentes, ou seja, o resultado de uma repetição não é influenciado por outros resultados.
+
+Se \$X\$ é uma variável aleatória com um comportamento Binomial, então a probabilidade de \$X\$ assumir um dos valores \$k\$ do conjunto \$\\Omega\$ é calculada por:
+
+$$
+P(X = k) = \left( \begin{array}{l}n\\\k\end{array} \right) \times {p^k} \times {q^{n - k}}
+$$
+
+Onde:
+
+-   \$p\$ é probabilidade de sucesso;
+-   \$q\$ é probabilidade de fracasso;
+-   \$k\$ é número de sucessos;
+-   \$n\$ é tamanho amostral (número de experimentos).
+
+
+## Um exemplo simples
+
+Consideremos a variável aleatória discreta *X* como o sexo de um bezerro nascido. Denotando sucesso (1 = fêmea) e fracasso (2 = macho), a probabilidade de sucesso é \$p = 0,5\$ e a de fracasso \$q = 1 - q = 0,5\$. Assim, considerando o parto de uma vaca, há 50% de chance de nascimento de uma terneira.
+
+```{r}
+library(DiagrammeR)
+mermaid("
+   graph TB
+    Start -->|0,5|A(1)
+    Start -->|0,5|B(0)
+")
+
+```
+
+Considerando duas vacas prenhas, com a mesma probabilidade de nascimento de fêmeas, temos então o seguinte cenário.
+
+```{r}
+mermaid("
+   graph TB
+    Start --> |0,5|A(1)
+    Start --> |0,5|B(0)
+    A --> |0,5|C(1)
+    A --> |0,5|D(0)
+    B --> |0,5|E(1)
+    B --> |0,5|F(0)
+    C --> G(11 = pp)
+    D --> H(10 = pq)
+    E --> I(01 = qp)
+    F --> J(00 = qq)
+")
+```
+
+Assim, as probabilidades associadas ao número de nascimentos de bezzeras são dadas por
+
+-   Nenhuma bezerra
+
+$$
+P(X = 0) = \left( \begin{array}{l}2\\\0\end{array} \right) \times {0,5^0} \times {0,5^{2 - 0}} = 0,25
+$$
+
+-   Uma bezerra
+
+$$
+P(X = 1) = \left( \begin{array}{l}2\\\1\end{array} \right) \times {0,5^1} \times {0,5^{2 - 1}} = 0,50
+$$
+
+-   Duas bezerras
+
+$$
+P(X = 2) = \left( \begin{array}{l}2\\\2\end{array} \right) \times {0,5^2} \times {0,5^{2 - 2}} = 0,25
+$$
+
+```{r}
+library(tibble)
+data.frame(nbez = 0:2,
+           prob = dbinom(0:2, size = 2, prob = 0.5))
+```
+
+A mesma lógica é utilizada para uma situação onde três vacas estão prenhas. Assim, \$n = 3\$, gera o seguinte cenário.
+
+```{r}
+
+mermaid("
+   graph TB
+    Start --> |0,5|A(1)
+    Start --> |0,5|B(0)
+    A --> |0,5|C(1)
+    A --> |0,5|D(0)
+    B --> |0,5|E(1)
+    B --> |0,5|F(0)
+    C --> |0,5|G(1)
+    C --> |0,5|H(0)
+    D --> |0,5|I(1)
+    D --> |0,5|J(0)
+    E --> |0,5|K(1)
+    E --> |0,5|L(0)
+    F --> |0,5|M(1)
+    F --> |0,5|N(0)
+    G --> O(111 = ppp)
+    H --> P(110 = ppq)
+    I --> Q(101 = pqp)
+    J --> R(100 = pqq)
+    K --> S(011 = qpp)
+    L --> T(010 = qpq)
+    M --> U(001 = qqp)
+    N --> V(000 = qqq)
+")
+```
+
+```{r}
+data.frame(n_femeas = 0:3,
+           prob = dbinom(0:3, size = 3, prob = 0.5))
+```
+
 ## Exercício bezerro
 
-Um produtor possui quatro vacas prenhas de monta natural. Como está cursando a disciplina de Bioestatística, ele gostaria de calcular probabilidades associadas ao nascimento de bezerras fêmeas
-```{r}
-dbinom(x = 0:4, size = 4, prob = 0.5)
+Um produtor possui quatro vacas prenhas de monta natural. Como está cursando a disciplina de Bioestatística, ele gostaria de calcular probabilidades associadas ao nascimento de bezerras fêmeas.
 
+```{r warning=FALSE, message=FALSE}
 
-
-bezerros =
+library(tibble)
+bezerros <- 
   tibble(nbez = 0:4,
          prob = dbinom(x = 0:4, size = 4, prob = 0.5),
          prob_ac = cumsum(prob),
          prob_ac_inv = rev(prob_ac))
 bezerros
 
-# Gr?fico da distribui??o
+# Gráfico da distribuição
+library(tidyverse)
 ggplot(bezerros, aes(nbez, prob))+
   geom_bar(stat = "identity",
-           width = 1,
            col = "black",
-           size = 0.1,
+           size = 0,
            fill = "cyan")+
   labs(x = "Número de bezerros fêmeas",
        y = "Probabilidade") +
   ggtitle(label = "Probabilidade de nascimento de terneiras em 4 partos")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
-  theme_metan(grid = "y")
+  scale_x_continuous(expand = expansion(mult = c(0, 0))) +
+  theme_grey(base_size = 14) +
+  theme(panel.grid.minor = element_blank())
 
 ```
 
+
+
+
 ## Exercício questões prova
 
-Considere uma prova de estatística com peso 10 contendo 10 questões, cada uma com 5 alternativas. Apenas 1 é correta. Se o aluno tirar uma nota inferior a 4, o aluno está reprovado. Notas entre 4 e 7 fazem com que o aluno fique em exame. Se a nota for superior a 7 o aluno passa. Como João não prestou atenção nas aulas de estatística, ele decidiu “chutar” todas as questões. Calcule as probabilidades que se pede.
-
+Considere uma prova de estatística com peso 10 contendo 10 questões, cada uma com 5 alternativas. Apenas 1 é correta. Se o aluno tirar uma nota inferior a 4, o aluno está reprovado. Notas entre 4 e 7 fazem com que o aluno fique em exame. Se a nota for superior a 7 o aluno passa. Como João não prestou atenção nas aulas de estatística, ele decidiu "chutar" todas as questões. Calcule as probabilidades que se pede.
 
 ### Probabilidade de não acertar nenhuma questão
+
 ```{r}
 dbinom(x = 0, size = 10, prob = 0.2)
 ```
 
-
 ### Probabilidade de ser reprovado
+
 João será reprovado caso acerte menos que quatro questões. Logo, a soma as probabilidades de acertar 0, 1, 2 e 3 questões é esta probabilidade.
 
 ```{r}
 dbinom(x = 0:3, size = 10, prob = 0.2) %>% sum()
 ```
 
-### Probabilidade de ficar em exame 
+### Probabilidade de ficar em exame
+
 João ficará em exame caso acerte entre 4 e 7 questões. Logo, a probabilidade de ficar em exame será a soma das probabilidades individuais destes números de questões.
 
 ```{r}
 dbinom(x = 4:7, size = 10, prob = 0.2) %>% sum()
 ```
 
+### Passe na prova
 
-### Passe na prova 
 João somente passará na prova, caso acerte mais que sete questões. Valendo-se da propriedade da soma das probabilidades, a probabilidade de João passar na prova é data tanto somando-se as probabilidades de acertar 8, 9 e 10 questões, quanto subtraindo a unidade da probabilidade da soma de acerto de até 7 questões.
 
 ```{r}
@@ -85,8 +206,8 @@ dbinom(x = 8:10, size = 10, prob = 0.2) %>% sum()
 1 - dbinom(0:7, size = 10, prob = 0.2) |> sum()
 ```
 
-
 ### Gabarite a prova
+
 A probabilidade de acerto de 10 questões é dada pela probabilidade pontual de exatamente 10 sucessos em 10 tentativas.
 
 ```{r}
@@ -95,10 +216,7 @@ dbinom(x = 10, size = 10, prob = 0.2)
 
 ```
 
-
-
-
-```{r}
+```{r fig.width=10, fig.height=6}
 prova <- 
   tibble(nques = 0:10,
          prob = dbinom(x = 0:10, size = 10, prob = 0.2),
@@ -116,69 +234,103 @@ ggplot(prova, aes(nques, prob, label = round(prob, 4)))+
           subtitle = "Cada questão tem 5 alternativas, apenas 1 é correta")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
   geom_text(vjust = -1) +
-  theme_metan(grid = "y")
+  theme_grey(base_size = 14) +
+  theme(panel.grid.minor = element_blank())
 
-# Gr?fico Distribui??o acumulada
+# distribuição acumulada
 
 ggplot(prova, aes(nques, prob_ac))+
   geom_path(color = "red", size = 1)+
-  labs(x = "N?mero de quest?es",
+  labs(x = "Número de questões",
        y = "Probabilidade acumulada")+
-  ggtitle(label = "Probabilidade acumulada de acertar 10 quest?es 'chutando' todas",
-          subtitle = "Cada quest?o tem 5 alternativas, apenas 1 ? correta")+
-  scale_x_continuous(breaks = c(0:10))+
-  my_theme()
+  ggtitle(label = "Probabilidade acumulada de acertar 10 questões 'chutando' todas",
+          subtitle = "Cada questão tem 5 alternativas, apenas 1 é correta")+
+  scale_x_continuous(breaks = c(0:10)) +
+  theme_grey(base_size = 14) +
+  theme(panel.grid.minor = element_blank())
 
 ```
 
+## Exercício germinação de sementes
 
+Uma empresa produtora de sementes de moranga vende pacotes com 20 sementes cada. O percentual de germinação destas sementes é de 92%. A empresa garante que pacotes que contém menos de 18 sementes germinadas são indenizados na metade do valor de venda. Se você comprou um pacote de sementes desta empresa a probabilidade de ser indenizado é de:
 
+```{r}
+dbinom(0:17, size = 20, prob = 0.92) |> sum()
 
+```
 
+## Exercício nascimento de bezerros
 
-# Exerc?cio nascimento de bezerros f?meas [VAD ~ B(N, 0,85)]
-# a) Todas os bezerros nascidos sejam f?meas
+> A inseminação artificial (IA) é uma das biotecnias da reprodução bovina mais importante e utilizada visando o melhoramento genético do rebanho. O uso de sêmem sexado é uma tecnologia em que os espermatozoides que vão resultar na escolha do sexo que o criador deseja, são separados daqueles que resultariam em machos após a fecundação do óvulo. Ou seja, ao final do processo obtêm-se uma paleta de sêmen com predominância de espermatozoides "fêmeas" ou "Machos", dependendo da escolha. Portanto, a sexagem de espermatozoides permite maximizar a produção animal, possibilitando maior progresso genético entre as gerações[^1].
+
+[^1]: <https://cooperativa.coop.br/semen-sexado-entenda-o-que-e/>
+
+Considere um lote de 120 vacas inseminadas com sêmem sexado que contenha a probabilidade de 85% de nascimento de fêmeas. Assumindo um nascimento por fêmea, calcule a probabilidade de:
+
+### Todos os bezerros nascidos sejam fêmeas
+
+Neste caso, a probabilidade é dada pela probabilidade pontual de 120 nascimentos de fêmeas.
+
+```{r}
 dbinom(x = 120, size = 120, prob = 0.85)
+```
 
-# b) Pelo menos 90% dos bezerros nascidos sejam f?meas.
-# F?meas 108 ou mais
-# P(X >= 108) = 1 - P(X < 108)
-1 - pbinom(107, size = 120, prob = 0.85)
-# P(X >= 108) = P(X = 109) + P(X = 109) + ... + P(X = 120)
-dbinom(x = 108:120, size = 120, prob = 0.85) %>% sum()
+### Pelo menos 90% dos bezerros nascidos sejam fêmeas
 
+Neste caso, precisaríamos de, pelo menos, 108 (120 \$\\times\$ 0,9) bezerros fêmeas. Então, a probabilidade dessa ocorrência é \$P(X \>= 108) = P(X = 109) + P(X = 109) + ... + P(X = 120)\$
 
-# c) multa
-n = 120 *0.75 - 1
-pbinom(n, size = 120, prob = 0.85)
-Valor = 10 * n
+```{r}
+x <- 
+  data.frame(nascimentos = 108:120) |> 
+  mutate(prob = dbinom(nascimentos, size = 120, prob = 0.85),
+         acum = cumsum(prob))
+x
+```
 
+### Multa por ineficiência
 
-bezerros =
+O vendedor do sêmen se comprometeu em pagar uma multa de R\$10,00 para cada bezerro macho nascido se a taxa de parição de fêmeas fosse menor que 75%. Qual a probabilidade do produtor receber alguma indenização?
+
+O produtor somente será indenizado se nascerem 89 ou menos bezerras. Assim, a probabilidade é dada pela soma das probabilidades individuais de 0 até 89
+
+```{r}
+
+dbinom(x = 0:89, size = 120, prob = 0.85) |> sum()
+```
+
+Abaixo, é possível identificar a distribuição de probabilidade para o exemplo dado.
+
+```{r}
+bezerros <- 
   tibble(nbez = 0:120,
          prob = dbinom(x = 0:120, size = 120, prob = 0.85),
          prob_ac = cumsum(prob))
 
 
-# Gr?fico da distribui??o
+# Gráfico da distribuição
 ggplot(bezerros, aes(nbez, prob))+
   geom_bar(stat = "identity",
-           width = 1,
            col = "black",
-           size = 0.1,
+           size = 0.05,
            fill = "cyan")+
-  labs(x = "N?mero de bezerros f?meas",
+  labs(x = "Número de bezerros fêmeas",
        y = "Probabilidade") +
   ggtitle(label = "Probabilidade de nascimento de terneiras em 120 partos",
-          subtitle = "S?men com 85% de probabilidade de nascimento de terneiras")+
-  scale_y_continuous(expand = expand_scale(mult = c(0, 0.1)))+
-  scale_x_continuous(breaks = seq(0, 120, 20))+
-  my_theme()
-
-geom_vline(xintercept = 120 * 0.85,
-           size = 1,
-           linetype = "dashed",
-           color = "red")
+          subtitle = "Sêmen com 85% de probabilidade de nascimento de terneiras")+
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
+  scale_x_continuous(breaks = seq(0, 120, 20))
 
 
-# Avalia??o
+# distribuição acumulada
+
+ggplot(bezerros, aes(nbez, prob_ac))+
+  geom_path(color = "red", size = 1)+
+  labs(x = "Número de fêmeas",
+       y = "Probabilidade acumulada")+
+  ggtitle(label = "Probabilidade acumulada de nascimento de fêmeas",
+          subtitle = "Sêmem sexado com 85% de chance de nascimento de fêmeas")+
+  # scale_x_continuous(breaks = c(0:10)) +
+  theme_grey(base_size = 14) +
+  theme(panel.grid.minor = element_blank())
+```
