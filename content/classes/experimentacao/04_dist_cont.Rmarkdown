@@ -390,6 +390,7 @@ ggplot() +
 Desta forma, uma tabela contendo a área sobre a curva desta distribuição
 de *Z* pode ser utilizada.
 
+
 [![](/classes/experimentacao/04_dist_cont_files/normalp.png)](https://github.com/TiagoOlivoto/tiagoolivoto/blob/master/static/classes/experimentacao/tabela_normal_padr%C3%A3o.pdf){target="\_blank"}
 
 A primeira decimal da variável Z encontra-se na linha e a segunda decimal na coluna. Como exemplo, a probabilidade de Z ser menor ou igual a -1 é de 0,15866.
