@@ -239,21 +239,15 @@ ggplot(df2, aes(x = x, y = px)) +
                 args = c(mean = media, sd = desvp))
 ```
 
-No método geométrico, a função *f(x)* corresponderá a altura de cada
-retângulo. A base do retângulo (\$\Delta\$), será dada por:
+No método geométrico, a função *f(x)* corresponderá a altura de cada retângulo. A base do retângulo (\$\Delta\$), será dada por:
 
 $$
 \Delta=\frac{x_1-x_0}{n}
-$$ onde *n* representa o número de retângulos no intervalo. Ao
-multiplicar a altura do retângulo pela sua base, temos a área de cada
-retângulo. Ao somarmos todas as *n* áreas, teremos a aproximação da
-probabilidade. Logo, é fácil notar que quanto maior o valor de *n*
-melhor será a aproximação do valor calculado pela integral.
+$$
 
-A função abaixo pode ser utilizada para aproximar a integral da função
-da distribuição Normal. A função `mnorm` é a Função Densidade de
-Probabilidade e é aplicada dentro da função `int_norm` para encontrar a
-altura de cada retângulo. Por padrão, 50000 retângulos são utilizados.
+onde *n* representa o número de retângulos no intervalo. Ao multiplicar a altura do retângulo pela sua base, temos a área de cada retângulo. Ao somarmos todas as *n* áreas, teremos a aproximação da probabilidade. Logo, é fácil notar que quanto maior o valor de *n* melhor será a aproximação do valor calculado pela integral.
+
+A função abaixo pode ser utilizada para aproximar a integral da função da distribuição Normal. A função `mnorm` é a Função Densidade de Probabilidade e é aplicada dentro da função `int_norm` para encontrar a altura de cada retângulo. Por padrão, 50000 retângulos são utilizados.
 
 ```{r}
 # função normal, f(x)
@@ -275,8 +269,7 @@ int_norm <- function(x0, x1, me, dp, n = 50000){
 
 ```
 
-Abaixo, a função `int_norm()` é usada para aproximar a probabilidade
-obtida anteriormente com a função `pnorm()`.
+Abaixo, a função `int_norm()` é usada para aproximar a probabilidade obtida anteriormente com a função `pnorm()`.
 
 ```{r}
 x0 <- 1.75 # x_0
@@ -290,14 +283,9 @@ dp <- 0.2  # desvio padrão
 fun_pnorm - aprox
 ```
 
-Nota-se que com 50000 retângulos, a aproximação da probabilidade pelo
-método geométrico apresentou diferença somente na quinta casa após a
-vírgula, demonstrando uma aproximação satisfatória. Vejamos o impacto do
-número de retângulos nesta aproximação. Para isso, vamos criar um
-gráfico para mostrar como esta aproximação vai melhorando com o aumento
-no número de retângulos. No exemplo, é simulado de 1 até 200 (apenas
-para fins didáticos). A linha vermelha horizontal representa a
-probabilidade compudata com a função `pnorm()`.
+Nota-se que com 50000 retângulos, a aproximação da probabilidade pelo método geométrico apresentou diferença somente na quinta casa após a vírgula, demonstrando uma aproximação satisfatória. Vejamos o impacto do
+número de retângulos nesta aproximação. Para isso, vamos criar um gráfico para mostrar como esta aproximação vai melhorando com o aumento no número de retângulos. No exemplo, é simulado de 1 até 200 (apenas
+para fins didáticos). A linha vermelha horizontal representa a probabilidade compudata com a função `pnorm()`.
 
 ```{r}
 x <- NULL
@@ -318,14 +306,10 @@ ggplot(df, aes(x, prob)) +
 
 ## Distribuição Normal Padrão
 
-A distribuição Normal Padrão é nada mais que uma distribuição normal com
-média e desvio padrão fixos (\$\mu = 0; \sigma = 1\$). Uma vez que estes
-parâmetros são fixos, sempre que desejamos calcular uma probabilidade
-pode-se recorrer a uma tabela, onde valores de probabilidade já foram
-previamente calculados para essa única distribuição.
+A distribuição Normal Padrão é nada mais que uma distribuição normal com média e desvio padrão fixos (\$\mu = 0; \sigma = 1\$). Uma vez que estes parâmetros são fixos, sempre que desejamos calcular uma probabilidade
+pode-se recorrer a uma tabela, onde valores de probabilidade já foram previamente calculados para essa única distribuição.
 
-Para isso, precisamos definir uma nova variável aleatória *Z*, chamada
-de variável aleatória normal padronizada, dada pela função linear *Z*.
+Para isso, precisamos definir uma nova variável aleatória *Z*, chamada de variável aleatória normal padronizada, dada pela função linear *Z*.
 
 $$
 Z = \frac{X- \mu}{\sigma}

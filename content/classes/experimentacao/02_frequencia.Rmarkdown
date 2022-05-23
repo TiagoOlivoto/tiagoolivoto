@@ -22,6 +22,7 @@ library(tidyverse)
 library(rio)
 library(metan)
 
+
 # importar os dados do google sheet
 df <- import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=353032103",
              dec = ",")
