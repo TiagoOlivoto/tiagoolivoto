@@ -12,6 +12,7 @@ menu:
 weight: 10
 ---
 
+
 O modelo de interação "genótipo + interação genótipo-ambiente (GGE)" tem sido amplamente utilizado para avaliação de genótipos e identificação de megaambientes em ensaios de múltiplos ambientes (MET). Este modelo considera um biplot GGE (ou seja, G + GE), que é construído pelos dois primeiros componentes principais em escala simétrica (PC1 e PC2) derivados da decomposição de valor singular de dados MET centrados no ambiente. O GGE biplot exibe graficamente G mais GE de um MET de uma forma que facilita a avaliação visual do genótipo e a identificação do megaambiente Yan (2007)[^1].
 
 

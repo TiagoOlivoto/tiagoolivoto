@@ -265,6 +265,7 @@ head(df)
 
 Os dados foram organziados de maneira que cada fator (grupo e tipo de amostra) estivessem em uma coluna. Isto possibilita o cálculo das estatísticas para cada nível destes fatores. As duas variáveis quantitativas contínuas são: `Comprimento` (o comprimento da folha em cm e o comprimento do grão em mm); e `Largura_diametro` (a largura da folha em cm e o diâmetro do grão em mm). 
 
+
 ### Estatísticas gerais
 Para saber as estatísticas descritivas gerais (sem estratificação por grupo), vamos utilizar a função `group_by()` para agrupar por `Tipo`. Com isso, as estatísticas serão calculadas separadamente para `Folha` e `Grao`. Por padrão, a função calcula as estatísticas descritivas para todas as variáveis numéricas do conjunto de dados. Sendo assim, não há necessidade de informar qual variável analisar.
 

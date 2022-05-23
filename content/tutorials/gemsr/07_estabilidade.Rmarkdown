@@ -23,6 +23,7 @@ print_tbl <- function(table, digits = 3, ...){
 }
 ```
 
+
 # Desempenho dos genótipos em cada ambiente
 A função `ge_plot()` pode ser usada para visualizar o desempenho do genótipo nos ambientes.
 

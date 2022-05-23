@@ -21,7 +21,6 @@ Neste exemplo, vamos utilizar os dados coletados do comprimento, diâmetro e cor
 library(tidyverse)
 library(rio)
 library(metan)
-library(leem) # criação dos histogramas 
 
 # importar os dados do google sheet
 df <- import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=353032103",
