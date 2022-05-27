@@ -34,8 +34,10 @@ ggplot(d, aes(date, count)) +
        y = "Número de downloads")
 
 
+
 # Instalar pacotes do CRAN (ex., metan)
-install.packages("metan")
+install.packages("pliman")
+
 
 ```
 
@@ -68,8 +70,15 @@ if (!require("BiocManager", quietly = TRUE)){
 }
 
 # Instalar os pacotes
-BiocManager::install("EBImage")
+BiocManager::install("EBImage", force = TRUE)
 
 
+```
+
+
+# Versão e pacotes
+
+```{r}
+sessionInfo()
 ```
 
