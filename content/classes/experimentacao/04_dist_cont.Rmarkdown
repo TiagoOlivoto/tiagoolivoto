@@ -1,6 +1,6 @@
 ---
-title: Distribuição Normal
-linktitle: "4. Distribuição Normal"
+title: Distribuições Contínuas
+linktitle: "4. Distribuições Contínuas"
 toc: true
 type: docs
 date: "2022/04/22"
@@ -11,10 +11,6 @@ menu:
   experimentacao:
     parent: Experimentação
     weight: 5
-# weight: 1
-editor_options: 
-  markdown: 
-    wrap: 72
 ---
 
 # Distribuição Normal
@@ -315,10 +311,10 @@ Para isso, precisamos definir uma nova variável aleatória *Z*, chamada de vari
 $$
 Z = \frac{X- \mu}{\sigma}
 $$ Onde *X* é uma variável aleatória com distribuição normal com média
-$\mu$ e $\sigma > 0$.
+\$\mu\$ e \$\sigma > 0\$.
 
 Como exemplo, vamos simular uma variável aleatória (X) com \$n = 300\$ tal que
-$X \sim N(\mu = 20; \sigma = 3)$.
+\$X \sim N(\mu = 20; \sigma = 3)\$.
 
 ```{r}
 set.seed(1) # assegura a reprodutibilidade
@@ -1368,12 +1364,12 @@ A distribuição *t* de Student é uma distribuição de probabilidade contínua
 
 [^1]: http://www.swlearning.com/quant/kohler/stat/biographical_sketches/bio12.1.html
 
-A distribuição *t* possui como único parâmetro o Grau Liberdade (GL). Esta distribuição detém caudas mais pesadas que a distribuição normal quando o tamanho da amostra é pequeno e a medida que $n \to N$, a distribuição *t* de Student se aproxima da normal. Note abaixo as diferenças nas curvas quando se compara a distribuição Normal com a distribuição *t* com diferentes GLs.
+A distribuição *t* possui como único parâmetro o Grau Liberdade (GL). Esta distribuição detém caudas mais pesadas que a distribuição normal quando o tamanho da amostra é pequeno e a medida que \$n \to N\$, a distribuição *t* de Student se aproxima da normal. Note abaixo as diferenças nas curvas quando se compara a distribuição Normal com a distribuição *t* com diferentes GLs.
 
 
 ```{r}
 ggplot() +
-  scale_x_continuous(limits = c(-4, 4)) +
+  scale_x_continuous(limits = c(-6, 6)) +
   stat_function(fun = dnorm,
                 size = 1.5,
                 aes(color = "black")) +
@@ -1628,7 +1624,7 @@ Os testes de hipóteses são utilizados para determinar quais resultados de um e
 No caso de uma amostra, a estatística teste (t calculado) é dada por
 
 $$
-{t_c} = \frac{{\bar Y - {\mu _0}}}{{\frac{{{S_y}}}{{\sqrt n }}}} \sim {t_{\left( {\alpha ,\nu } \right)}}
+{t_{c(\alpha; \nu)}} = \frac{{\bar Y - \mu }}{{\frac{{{S_Y}}}{{\sqrt n }}}}
 $$
 
 Onde \$\alpha\$ é a probabilidade de erro, \$\nu\$ é o grau de liberdade (nº de amostras menos 1), \$\bar Y\$ é a média da amostra, \$S_y\$ é o desvio padrão da amostra e \$n\$ é o número de amostras.
@@ -1638,7 +1634,7 @@ Vamos retornar ao exemplo da altura da turma. A média da amostragem é de 172,6
 Primeiramente, define-se as hipóteses;
 
 $$
-\begin{array}{l}{H_0}:172,6 = 165
+{H_0}:172,6 = 165
 $$
 
 $$
@@ -1663,9 +1659,7 @@ $$
 $$
 
 
-Como o t calculado (4,455) é maior que o t tabelado (2,09), rejeita-se a hipótese nula e afirma-se que a estimativa da média da altura da turma difere de 165 cm.
-
-Este mesmo teste pode ser realizado com a função `t.test()`.
+Como o t calculado (4,455) é maior que o t tabelado (2,09), rejeita-se a hipótese nula e afirma-se que a estimativa da média da altura da turma difere de 165 cm. Este mesmo teste pode ser realizado com a função `t.test()`.
 
 ```{r}
 # t tabelado
