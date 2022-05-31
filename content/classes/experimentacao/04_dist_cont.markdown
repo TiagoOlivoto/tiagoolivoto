@@ -17,7 +17,7 @@ editor_options:
     wrap: 72
 ---
 
-# Introdução
+# Distribuição Normal
 
 A distribuição normal é um modelo bastante útil na estatística, pois sua
 função densidade de probabilidade (FDP) está associada ao fato de que
@@ -271,21 +271,15 @@ ggplot(df2, aes(x = x, y = px)) +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
-No método geométrico, a função *f(x)* corresponderá a altura de cada
-retângulo. A base do retângulo (\$\Delta\$), será dada por:
+No método geométrico, a função *f(x)* corresponderá a altura de cada retângulo. A base do retângulo (\$\Delta\$), será dada por:
 
 $$
 \Delta=\frac{x_1-x_0}{n}
-$$ onde *n* representa o número de retângulos no intervalo. Ao
-multiplicar a altura do retângulo pela sua base, temos a área de cada
-retângulo. Ao somarmos todas as *n* áreas, teremos a aproximação da
-probabilidade. Logo, é fácil notar que quanto maior o valor de *n*
-melhor será a aproximação do valor calculado pela integral.
+$$
 
-A função abaixo pode ser utilizada para aproximar a integral da função
-da distribuição Normal. A função `mnorm` é a Função Densidade de
-Probabilidade e é aplicada dentro da função `int_norm` para encontrar a
-altura de cada retângulo. Por padrão, 50000 retângulos são utilizados.
+onde *n* representa o número de retângulos no intervalo. Ao multiplicar a altura do retângulo pela sua base, temos a área de cada retângulo. Ao somarmos todas as *n* áreas, teremos a aproximação da probabilidade. Logo, é fácil notar que quanto maior o valor de *n* melhor será a aproximação do valor calculado pela integral.
+
+A função abaixo pode ser utilizada para aproximar a integral da função da distribuição Normal. A função `mnorm` é a Função Densidade de Probabilidade e é aplicada dentro da função `int_norm` para encontrar a altura de cada retângulo. Por padrão, 50000 retângulos são utilizados.
 
 
 ```r
@@ -307,8 +301,7 @@ int_norm <- function(x0, x1, me, dp, n = 50000){
 }
 ```
 
-Abaixo, a função `int_norm()` é usada para aproximar a probabilidade
-obtida anteriormente com a função `pnorm()`.
+Abaixo, a função `int_norm()` é usada para aproximar a probabilidade obtida anteriormente com a função `pnorm()`.
 
 
 ```r
@@ -341,14 +334,9 @@ fun_pnorm - aprox
 ## [1] 6.171243e-07
 ```
 
-Nota-se que com 50000 retângulos, a aproximação da probabilidade pelo
-método geométrico apresentou diferença somente na quinta casa após a
-vírgula, demonstrando uma aproximação satisfatória. Vejamos o impacto do
-número de retângulos nesta aproximação. Para isso, vamos criar um
-gráfico para mostrar como esta aproximação vai melhorando com o aumento
-no número de retângulos. No exemplo, é simulado de 1 até 200 (apenas
-para fins didáticos). A linha vermelha horizontal representa a
-probabilidade compudata com a função `pnorm()`.
+Nota-se que com 50000 retângulos, a aproximação da probabilidade pelo método geométrico apresentou diferença somente na quinta casa após a vírgula, demonstrando uma aproximação satisfatória. Vejamos o impacto do
+número de retângulos nesta aproximação. Para isso, vamos criar um gráfico para mostrar como esta aproximação vai melhorando com o aumento no número de retângulos. No exemplo, é simulado de 1 até 200 (apenas
+para fins didáticos). A linha vermelha horizontal representa a probabilidade compudata com a função `pnorm()`.
 
 
 ```r
@@ -370,16 +358,13 @@ ggplot(df, aes(x, prob)) +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
+
 ## Distribuição Normal Padrão
 
-A distribuição Normal Padrão é nada mais que uma distribuição normal com
-média e desvio padrão fixos (\$\mu = 0; \sigma = 1\$). Uma vez que estes
-parâmetros são fixos, sempre que desejamos calcular uma probabilidade
-pode-se recorrer a uma tabela, onde valores de probabilidade já foram
-previamente calculados para essa única distribuição.
+A distribuição Normal Padrão é nada mais que uma distribuição normal com média e desvio padrão fixos (\$\mu = 0; \sigma = 1\$). Uma vez que estes parâmetros são fixos, sempre que desejamos calcular uma probabilidade
+pode-se recorrer a uma tabela, onde valores de probabilidade já foram previamente calculados para essa única distribuição.
 
-Para isso, precisamos definir uma nova variável aleatória *Z*, chamada
-de variável aleatória normal padronizada, dada pela função linear *Z*.
+Para isso, precisamos definir uma nova variável aleatória *Z*, chamada de variável aleatória normal padronizada, dada pela função linear *Z*.
 
 $$
 Z = \frac{X- \mu}{\sigma}
@@ -465,6 +450,7 @@ ggplot() +
 
 Desta forma, uma tabela contendo a área sobre a curva desta distribuição
 de *Z* pode ser utilizada.
+
 
 [![](/classes/experimentacao/04_dist_cont_files/normalp.png)](https://github.com/TiagoOlivoto/tiagoolivoto/blob/master/static/classes/experimentacao/tabela_normal_padr%C3%A3o.pdf){target="\_blank"}
 
@@ -1490,28 +1476,683 @@ arrange_ggplot(normal, padrao, ncol = 1)
 
 
 
-<!-- # Distribuição t -->
+# Distribuição t
 
-<!-- ```{r} -->
-<!-- ggplot() + -->
-<!--   scale_x_continuous(limits = c(-4, 4)) + -->
-<!--   stat_function(fun = dnorm, -->
-<!--                 size = 1.5, -->
-<!--                 aes(color = "black")) + -->
-<!--   stat_function(fun = dt, -->
-<!--                 aes(color = "blue"), -->
-<!--                 size = 1.5, -->
-<!--                 args = list(df = 1)) + -->
-<!--   stat_function(fun = dt, -->
-<!--                 size = 1.5, -->
-<!--                 aes(color = "red"), -->
-<!--                 args = list(df = 3)) + -->
-<!--   stat_function(fun = dt, -->
-<!--                 size = 1.5, -->
-<!--                 aes(color = "green"), -->
-<!--                 args = list(df = 20))  + -->
-<!--   scale_color_manual(labels = c("normal", "t - 1 GL", "t - 3 GL", "t - 20 GL"), -->
-<!--                      values = c("black", "blue", "red", "green")) + -->
-<!--   theme(legend.position = "bottom", -->
-<!--         legend.title = element_blank()) -->
-<!-- ``` -->
+A distribuição *t* de Student é uma distribuição de probabilidade contínua, publicada por William Sealy Gosset sob o pseudônimo *Student* [^1].
+
+[^1]: http://www.swlearning.com/quant/kohler/stat/biographical_sketches/bio12.1.html
+
+A distribuição *t* possui como único parâmetro o Grau Liberdade (GL). Esta distribuição detém caudas mais pesadas que a distribuição normal quando o tamanho da amostra é pequeno e a medida que `\(n \to N\)`, a distribuição *t* de Student se aproxima da normal. Note abaixo as diferenças nas curvas quando se compara a distribuição Normal com a distribuição *t* com diferentes GLs.
+
+
+
+```r
+ggplot() +
+  scale_x_continuous(limits = c(-4, 4)) +
+  stat_function(fun = dnorm,
+                size = 1.5,
+                aes(color = "black")) +
+  stat_function(fun = dt,
+                aes(color = "blue"),
+                size = 1.5,
+                args = list(df = 1)) +
+  stat_function(fun = dt,
+                size = 1.5,
+                aes(color = "red"),
+                args = list(df = 3)) +
+  stat_function(fun = dt,
+                size = 1.5,
+                aes(color = "green"),
+                args = list(df = 20))  +
+  scale_color_manual(labels = c("normal", "t - 1 GL", "t - 20 GL", "t - 3 GL"),
+                     values = c("black", "blue", "red", "green")) +
+  ylab("") +
+  theme(legend.position = "bottom",
+        legend.title = element_blank())
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+
+
+Abaixo, é mostrada a Função Densidade de Probabilidade de uma distribuição *t* com 20 graus liberdade. As áreas sombreadas em azul escuro representam os quantis que acumulam uma área de \$\alpha / 2\$ em cada lado da distribuição, de tal forma que a área destacada em verde representa 1 - \$\alpha\$, sendo \$\alpha\$ a probabilidade de erro.
+
+
+```r
+ggplot() +
+  stat_function(fun = dt, 
+                args = list(df = 20),
+                geom = "area", 
+                fill = "steelblue", 
+                xlim = c(-4, -2.08)) +
+  stat_function(fun = dt, 
+                args = list(df = 20),
+                geom = "area", 
+                fill = "steelblue", 
+                xlim = c(4, 2.08)) +
+    stat_function(fun = dt, 
+                args = list(df = 20),
+                geom = "area", 
+                fill = "green", 
+                xlim = c(-2.08, 2.08)) +
+  stat_function(fun = dt,
+                args = list(df = 20),
+                size = 1) +
+  scale_x_continuous(limits = c(-4, 4),
+                     breaks = c(-2.08, 2.08)) +
+  scale_y_continuous(expand = expansion(mult = c(0, .1)),
+                     breaks = NULL) +
+  ylab("")
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+
+
+## Intervalo de confiança
+
+
+A estimação por pontos (ex., média) não nos fornece a ideia da margem de erro cometida ao estimar um determinado parâmetro. Por isso, para verificar se uma dada hipótese `\(H_0\)` (de igualdade) é ou não verdadeira, deve-se utilizar intervalos de confiança ou testes de hipóteses. A construção destes intervalos, e as particularidades dos testes de hipóteses para amostras independentes e dependentes, serão discutidos a seguir. Recomendo como literatura o livro [Estatística Básica](http://www.editoraufv.com.br/produto/1595058/estatistica-basica)[^analdata-2] escrito pelo Prof. Daniel Furtado Ferreira.
+
+O intervalo de confiança de uma média amostral assumindo uma taxa de erro `\(\alpha\\)` é dado por:
+
+$$
+P\left[ {\bar X - {t_{\alpha /2}}\frac{S}{{\sqrt n }} \le \mu  \le \bar X + {t_{\alpha /2}}\frac{S}{{\sqrt n }}} \right] = 1 - \alpha 
+$$
+
+Na expressão acima, \$\bar X\$ é a média, \$S\$ é o desvio padrão e \$-t_{\alpha /2}\$ e \$+t_{\alpha /2}\$ são os quantis inferior e superior, respectivamente, da distribuição *t* de Student. O intervalo acima indica que o valor do parâmetro (\$\mu\$) tem \$1 - \alpha\$ de chance de estar contido no intervalo.
+
+### Exemplo 1 (altura da turma)
+Como exemplo de motivação, vamos utilizar os dados referentes a altura (em cm) dos alunos da disciplina de Bioestatística e Experimentação Agrícola, mensurada em sala de aula. A amostra é composta por 20 observações.
+
+
+```r
+library(rio)
+df_altura <- 
+  import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=1992833755") |> 
+  as_character(Pessoa)
+
+df_altura
+```
+
+```
+##    Pessoa Altura
+## 1       1    176
+## 2       2    164
+## 3       3    159
+## 4       4    163
+## 5       5    173
+## 6       6    161
+## 7       7    177
+## 8       8    179
+## 9       9    168
+## 10     10    172
+## 11     11    178
+## 12     12    170
+## 13     13    174
+## 14     14    169
+## 15     15    175
+## 16     16    169
+## 17     17    187
+## 18     18    181
+## 19     19    186
+## 20     20    171
+```
+
+
+Como n = 20, o grau liberdade para encontrar o quantil da distribuição *t* é 19. O quantil associado a este Grau Liberdade, considerando \$\alpha = 0,05\$ é encontrado na tabela da distribuição *t*. Nesta tabela, o valor de 
+
+
+
+[![](/classes/experimentacao/04_dist_cont_files/dist_t.png)](https://github.com/TiagoOlivoto/tiagoolivoto/blob/master/static/classes/experimentacao/tabela_t.pdf){target="\_blank"}
+
+
+Tamém podemos encontrar este quantil utilizando a função `qt()`. No próximo código, o quantil (2.5% e 97.5%), a média e o desvio padrão são calculados. Note que 
+
+
+```r
+(quantil_t <- qt(c(0.025, 0.975), df = 19))
+```
+
+```
+## [1] -2.093024  2.093024
+```
+
+```r
+(media <- mean(df_altura$Altura))
+```
+
+```
+## [1] 172.6
+```
+
+```r
+(desvpad <- sd(df_altura$Altura))
+```
+
+```
+## [1] 7.639234
+```
+
+De posse destas informações, podemos calcular o intervalo de confiança (limite inferior, LI e limite superior, LS)
+
+$$
+LI = 172,6 - 2,093 \times \frac{{7,64}}{{\sqrt {20} }} = 169,02
+$$
+
+$$
+Ls = 172,6 + 2,093 \times \frac{{7,64}}{{\sqrt {20} }} = 176,17
+$$
+
+Para facilitar nossos próximos exemplos, vamos criar uma função para computar o intervalo de confiança 95%.
+
+```r
+get_ci_t <- function(media, dp, n){
+  quantil_t <- qt(0.975, n - 1)
+  quantil_t * dp / sqrt(n)
+}
+```
+
+
+
+
+```r
+df <- tibble(
+  media = media,
+  desvpad = desvpad,
+  LI = media - get_ci_t(media, desvpad, 20),
+  LS = media + get_ci_t(media, desvpad, 20)
+)
+df
+```
+
+```
+## # A tibble: 1 × 4
+##   media desvpad    LI    LS
+##   <dbl>   <dbl> <dbl> <dbl>
+## 1  173.    7.64  169.  176.
+```
+
+```r
+# criar o gráfico com os intervalos
+ggplot(df, aes(x = media, y = "")) +
+  geom_errorbar(aes(xmin = LI,
+                    xmax = LS),
+                width = 0.1) +
+  geom_point(color = "blue",
+             size = 3) +
+  scale_x_continuous(breaks = seq(169, 177, by = 1)) +
+  labs(x = "Altura do aluno (cm)",
+       y = "")
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+
+A função `t.test()` pode também ser utilizada para calcular o intervalo de confiança de 95% quando se tem apenas uma amostra.
+
+
+```r
+ic <- t.test(df_altura$Altura)
+ic$conf.int
+```
+
+```
+## [1] 169.0247 176.1753
+## attr(,"conf.level")
+## [1] 0.95
+```
+
+
+### Exemplo 2 (peso de frango)
+
+Considere um aviário com 15000 frangos. O criador realizou a amostragem de 25 frangos aleatoriamente para realizar uma estimativa da média do peso do lote visando a programação para abate. Após analisar as pesagens coletadas, o produtor encontrou uma média de 2,83 Kg e um desvio padrão de 0,27 Kg. Pergunta-se: Qual o intervalo de 95% para a média estimada?
+
+
+```r
+df3 <- tibble(
+  media = 2.83,
+  desvpad = 0.27,
+  LI = media - get_ci_t(media, desvpad, n = 25),
+  LS = media + get_ci_t(media, desvpad, n = 25)
+)
+
+ggplot(df3, aes(x = media, y = "")) +
+  geom_errorbar(aes(xmin = LI,
+                    xmax = LS),
+                width = 0.1) +
+  geom_point(color = "blue",
+             size = 3) +
+  labs(x = "Peso médio do frango",
+       y = "")
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+
+
+
+
+### Variação no desvio padrão
+Abaixo, são simuladas 4 amostras de n = 20 com médias igual a 10 e desvios padrões variantes. Note como o intervalo de confiança é menor a medida em que o desvio padrão é mais baixo.
+
+
+```r
+df4 <- tibble(
+  amostra = paste0(1:4),
+  media = c(10, 10, 10, 10),
+  desvpad = c(1, 4, 6, 8),
+  LI = media - get_ci_t(media, desvpad, n = 20),
+  LS = media + get_ci_t(media, desvpad, n = 20),
+  lab = paste0("dp: ", desvpad)
+)
+df4
+```
+
+```
+## # A tibble: 4 × 6
+##   amostra media desvpad    LI    LS lab  
+##   <chr>   <dbl>   <dbl> <dbl> <dbl> <chr>
+## 1 1          10       1  9.53  10.5 dp: 1
+## 2 2          10       4  8.13  11.9 dp: 4
+## 3 3          10       6  7.19  12.8 dp: 6
+## 4 4          10       8  6.26  13.7 dp: 8
+```
+
+```r
+# criar o gráfico com os intervalos
+ggplot(df4, aes(x = media, y = amostra)) +
+  geom_vline(xintercept = 10, linetype = 2) + 
+  geom_errorbar(aes(xmin = LI,
+                    xmax = LS),
+                width = 0.1) +
+  geom_point(color = "blue",
+             size = 3) +
+  scale_x_continuous(breaks = seq(169, 177, by = 1)) +
+  geom_text(aes(label = lab),
+            vjust = -1,
+            hjust = 2) +
+  labs(x = "Variável hipotética",
+       y = "Amostra")
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+
+
+### Variação no tamanho da amostra
+
+
+
+```r
+df_t <- tibble(
+  dist = "t",
+  n = seq(2, 30, length.out = 200),
+  media = 10,
+  desvpad = 2,
+  UL = media + get_ci_t(media, desvpad, n = n),
+  LL = media - get_ci_t(media, desvpad, n = n)
+)
+df_n <- tibble(
+  dist = "normal",
+  n = seq(2, 30, length.out = 200),
+  media = 10,
+  desvpad = 2,
+  UL = media + qnorm(0.975) * desvpad / sqrt(n),
+  LL = media - qnorm(0.975) * desvpad / sqrt(n)
+)
+df_dists <- rbind(df_t, df_n)
+
+# criar o gráfico com os intervalos
+ggplot(df_dists, aes(color = dist)) +
+  geom_line(aes(x = n, y = LL), size = 1) +
+  geom_line(aes(x = n, y = UL), size = 1) +
+  scale_x_continuous(breaks = seq(2, 30, by = 2)) +
+  labs(x = "Tamanho da amostra",
+       y = "Intervalo de confiança (95%)") +
+  theme(legend.position = "bottom",
+        legend.title = element_blank())
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+
+
+
+## Testes de hipóteses
+
+Os testes de hipóteses são utilizados para determinar quais resultados de um estudo científico podem levar à rejeição da hipótese nula (\$H_0\$) a um nível de significância pré–estabelecido. Os testes de hipóteses aqui demonstrados tem como objetivo:
+
+1) verificar se determinada amostra difrere ou não de zero (${H_0}:\mu = 0$)
+2) Verificar se duas amostras independentes são ou não iguais (${H_0}:{\mu _1} = {\mu _2}$).
+2) Verificar se duas amostras dependentes possuem desvios iguais a zero (${H_0}:d_i = 0$).
+
+
+
+### Teste de hipótese para uma amostra
+
+No caso de uma amostra, a estatística teste (t calculado) é dada por
+
+$$
+{t_c} = \frac{{\bar Y - {\mu _0}}}{{\frac{{{S_y}}}{{\sqrt n }}}} \sim {t_{\left( {\alpha ,\nu } \right)}}
+$$
+
+Onde \$\alpha\$ é a probabilidade de erro, \$\nu\$ é o grau de liberdade (nº de amostras menos 1), \$\bar Y\$ é a média da amostra, \$S_y\$ é o desvio padrão da amostra e \$n\$ é o número de amostras.
+
+Vamos retornar ao exemplo da altura da turma. A média da amostragem é de 172,6 cm. Digamos que a altura média dos alunos da UFSC é de 165 cm. Pode-se dizer que a estimativa da altura da turma de Bioestatística a 165 cm, considerando uma taxa de erro de 5%?
+
+Primeiramente, define-se as hipóteses;
+
+$$
+\begin{array}{l}{H_0}:172,6 = 165
+$$
+
+$$
+H_1:172,6 \ne 165
+$$
+
+
+
+```r
+altura <- df_altura$Altura
+(dp <- sd(altura))
+```
+
+```
+## [1] 7.639234
+```
+
+```r
+(media <- mean(altura))
+```
+
+```
+## [1] 172.6
+```
+
+```r
+(n <- length(altura))
+```
+
+```
+## [1] 20
+```
+
+```r
+(t_tab <- qt(0.975, df = n - 1))
+```
+
+```
+## [1] 2.093024
+```
+
+
+$$
+{t_c} = \frac{{172,6 - 165}}{{\frac{{7,63}}{{\sqrt {20} }}}}
+$$
+$$
+{t_c} = 4,455
+$$
+
+
+Como o t calculado (4,455) é maior que o t tabelado (2,09), rejeita-se a hipótese nula e afirma-se que a estimativa da média da altura da turma difere de 165 cm.
+
+Este mesmo teste pode ser realizado com a função `t.test()`.
+
+
+```r
+# t tabelado
+t.test(altura, mu = 165)
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  altura
+## t = 4.4492, df = 19, p-value = 0.0002752
+## alternative hypothesis: true mean is not equal to 165
+## 95 percent confidence interval:
+##  169.0247 176.1753
+## sample estimates:
+## mean of x 
+##     172.6
+```
+
+
+
+### Teste de hipóteses para amostras independentes
+
+Neste tipo de teste de hipótese, o objetivo é comparar se a estimativa da média de um grupo "A" difere estatisticamente da estimativa da média de um grupo "B". Utilizaremos como amostras os dados do diâmetro dos grãos obtidas na primeira aula, onde deseja-se comparar se o diâmetro entre os grupos "vermelho" e "verde" difere estatisticamente.
+
+
+```r
+df_grao <- 
+  import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=1716920199",
+         dec = ",")
+
+#gráfico
+ggplot(df_grao, aes(DIAM_GRAO, fill = COR_GRAO)) +
+  geom_density(alpha = 0.6) +
+  scale_fill_manual(values = c("green", "red")) +
+  theme(legend.position = "bottom",
+        legend.title = element_blank())
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+
+```r
+vermelho <- 
+  df_grao |> 
+  subset(COR_GRAO == "vermelho") |>
+  pull(DIAM_GRAO)
+
+verde <- 
+  df_grao |> 
+  subset(COR_GRAO == "verde") |>
+  pull(DIAM_GRAO)
+```
+
+Neste caso, a estatística do teste é dada por
+
+$$
+{t_c} = \frac{{\left( {{{\bar x}_1} - {{\bar x}_2}} \right)}}{{\sqrt {S_p^2\left( {\frac{1}{{{n_1}}} + \frac{1}{{{n_2}}}} \right)} }}
+$$
+
+Onde
+
+$$
+S_p^2 = \frac{{\left( {{n_1} - 1} \right)S_{{x_1}}^2 + \left( {{n_2} - 1} \right)S_{{x_2}}^2}}{{{n_1} + {n_2} - 2}}
+$$
+
+Onde \$\bar x_1\$, \$n_1\$ e \$S^2_{x_1}\$ são a média, o tamanho da amostra e a variância para a amostra 1; \$\bar x_2\$, \$n_2\$ e \$S^2_{x_2}\$ são a média, o tamanho da amostra e a variância para a amostra 2. Vamos calcular estas estatísticas para os dados em questão. A estatística de teste é então comparada com o *t* tabelado com 26 (13 + 15 - 2) Graus Liberdade.
+
+
+```r
+df_grao |> 
+  desc_stat(DIAM_GRAO,
+            by = COR_GRAO,
+            stats = c("n, mean, sd.amo")) |> 
+  as.data.frame()
+```
+
+```
+##   COR_GRAO  variable  n    mean sd.amo
+## 1    verde DIAM_GRAO 15  8.8200 1.0105
+## 2 vermelho DIAM_GRAO 13 10.8177 1.0617
+```
+
+```r
+(t_tab <- qt(0.975, df = 26))
+```
+
+```
+## [1] 2.055529
+```
+
+
+Com base nos valores obtidos, a estatística t é obtida com:
+
+$$
+S_p^2 = \frac{{\left( {13 - 1} \right)1,{{06}^2} + \left( {15 - 1} \right)1,{{01}^2}}}{{13 + 15 - 2}}
+$$
+
+$$
+S_p^2 = 1,067
+$$
+
+
+$$
+{t_c} = \frac{{\left( {10,81 - 8,82} \right)}}{{\sqrt {1,067\left( {\frac{1}{{13}} + \frac{1}{{15}}} \right)} }}
+$$
+
+$$
+{t_c} = 5,084
+$$
+
+Como `\(5,084 > 2,055\)`, rejeita-se a hipótese \$H_0\$ e conclui-se que as médias dos dois grupos são estatisticamente distintas. Usando a função `t.test()`, este teste de hipótese é realizado com:
+
+
+```r
+# testa se as amostras difrem entre si
+t.test(vermelho, verde, var.equal = TRUE) 
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  vermelho and verde
+## t = 5.0962, df = 26, p-value = 2.608e-05
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  1.191932 2.803452
+## sample estimates:
+## mean of x mean of y 
+##  10.81769   8.82000
+```
+
+
+O pacote [ggstatplot](https://indrajeetpatil.github.io/ggstatsplot/index.html)[^analdata-3] pode ser utilizado para confecionar gráficos que incluem teste de hipóteses.
+
+
+```r
+library(ggstatsplot)
+
+ggbetweenstats(df_grao, 
+               x = COR_GRAO,
+               y = DIAM_GRAO,
+               plot.type = "box",
+               bf.message = FALSE,
+               var.equal = TRUE)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-32-1.png" width="672" />
+
+
+### Teste de hipóteses para amostras dependentes
+
+As formas de comparação discutidas acima consideram as amostras como sendo independentes entre si. Em certas ocasiões, um mesmo indivíduo de uma amostra é medido ao longo do tempo ou avaliado antes ou depois da aplicação de um determinado tratamento.
+
+Assim, nessas ocasiões, é possível avaliar se a diferença média das observações é estatisticamente igual a zero ou não. Se esta diferença for estatisticamente diferente de zero, pode-se afirmar que tal tratamento possui efeito significativo.
+
+A estatística do teste *t* para amostras pareadas é dada por 
+
+$$
+{t_c} = \frac{{\bar D}}{{\frac{{{S_D}}}{{\sqrt n }}}} \sim {t_{\left( {\alpha ,\nu } \right)}}
+$$
+
+Onde \$\bar D\$ é a média das diferenças e \$S_D\$ é o desvio padrão das diferenças.
+
+> A fim de determinar a eficiência de um medicamento antitérmico, a temperatura corporal (em graus Celsius) de 7 indivíduos foi medida. Em seguida, foi administrado o medicamento e após uma hora a temperatura foi medida novamente.
+
+
+
+```r
+paired <- 
+  import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=1507821405",
+         dec = ",")
+paired
+```
+
+```
+##   INDIVIDUO ANTES DEPOIS DIFERENCA
+## 1         1  37.5   36.8      -0.7
+## 2         2  36.0   35.4      -0.6
+## 3         3  39.0   37.6      -1.4
+## 4         4  38.0   37.2      -0.8
+## 5         5  37.8   36.9      -0.9
+## 6         6  38.5   37.7      -0.8
+## 7         7  39.3   38.0      -1.3
+```
+
+```r
+(mean_dif <- mean(paired$DIFERENCA))
+```
+
+```
+## [1] -0.9285714
+```
+
+```r
+(dp_dif <- sd(paired$DIFERENCA))
+```
+
+```
+## [1] 0.3039424
+```
+
+```r
+(n <- length(paired$DIFERENCA))
+```
+
+```
+## [1] 7
+```
+
+A estatística de teste é dada por:
+
+$$
+{t_c} = \frac{{-0.928 - 0}}{{\frac{{0,3039}}{{\sqrt {7} }}}}
+$$
+$$
+t_c = -8,079
+$$
+
+
+
+```r
+antes <- paired$ANTES
+depois <- paired$DEPOIS
+t.test(depois, antes, paired = TRUE, var.equal = TRUE)
+```
+
+```
+## 
+## 	Paired t-test
+## 
+## data:  depois and antes
+## t = -8.083, df = 6, p-value = 0.0001921
+## alternative hypothesis: true mean difference is not equal to 0
+## 95 percent confidence interval:
+##  -1.2096712 -0.6474716
+## sample estimates:
+## mean difference 
+##      -0.9285714
+```
+
+Note que o mesmo resultado é obtido ao se realizar um teste para uma amostra utilizando a diferença calculada.
+
+
+```r
+t.test(paired$DIFERENCA, var.equal = TRUE)
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  paired$DIFERENCA
+## t = -8.083, df = 6, p-value = 0.0001921
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  -1.2096712 -0.6474716
+## sample estimates:
+##  mean of x 
+## -0.9285714
+```
+

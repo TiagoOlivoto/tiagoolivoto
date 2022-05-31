@@ -720,6 +720,7 @@ plot_measures(af_cor ,
 The `reference` argument can now be used to correct the object measures even when images with different shooting distances are used. In this example, the leaf area of the `ref_leaves` image is quantified and corrected considering a 5 x 5 (25 cm\$^2\$) white square as the reference object. For this, it is necessary to provide color palettes referring to the background (`background`), leaves (` foreground`) and the reference object (`reference`). Also, the area of the reference object needs to be informed in `reference_area`.
 
 ```{r}
+library(pliman)
 img <- image_import(pattern = "ref_", plot = TRUE)
 
 area <-
