@@ -11,6 +11,7 @@ menu:
   experimentacao:
     parent: Experimentação
     weight: 4
+weight: 3
 ---
 
 <script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
@@ -44,7 +45,7 @@ Um modelo probabilístico é um modelo em que, à priori, não é possível defi
 
 # Distribuição binomial
 
-Seja \$E\$ um experimento aleatório e \$\Omega\$ um espaço amostra associado, onde \$n\$ é o número de vezes que o experimento \$E\$ é repetido, \$p\$ é a probabilidade de \$\Omega\$ ocorrer em cada uma das \$n\$ repetições de \$E\$. Como existem apenas duas situações (\$\Omega\$ ocorre ou \$\Omega\$ não ocorre), pode-se determinar a probabilidade de \$\Omega\$ não ocorrer como sendo \$q = 1 - p\$.
+Seja \$E\$ um experimento aleatório e \$\\Omega\$ um espaço amostra associado, onde \$n\$ é o número de vezes que o experimento \$E\$ é repetido, \$p\$ é a probabilidade de \$\\Omega\$ ocorrer em cada uma das \$n\$ repetições de \$E\$. Como existem apenas duas situações (\$\\Omega\$ ocorre ou \$\\Omega\$ não ocorre), pode-se determinar a probabilidade de \$\\Omega\$ não ocorrer como sendo \$q = 1 - p\$.
 
 Algumas condições devem ser respeitadas
 
@@ -53,7 +54,7 @@ Algumas condições devem ser respeitadas
 -   A probabilidade de sucesso (\$p\$) e de falha \$q\$ permanecem constante em todas as repetições;
 -   As repetições são independentes, ou seja, o resultado de uma repetição não é influenciado por outros resultados.
 
-Se \$X\$ é uma variável aleatória com um comportamento Binomial, então a probabilidade de \$X\$ assumir um dos valores \$k\$ do conjunto \$\Omega\$ é calculada por:
+Se \$X\$ é uma variável aleatória com um comportamento Binomial, então a probabilidade de \$X\$ assumir um dos valores \$k\$ do conjunto \$\\Omega\$ é calculada por:
 
 $$
 P(X = k) = \left( \begin{array}{l}n\\\k\end{array} \right) \times {p^k} \times {q^{n - k}}
@@ -223,8 +224,7 @@ ggplot(bezerros, aes(nbez, prob))+
            size = 0,
            fill = "cyan")+
   labs(x = "Número de bezerros fêmeas",
-       y = "Probabilidade") +
-  ggtitle(label = "Probabilidade de nascimento de terneiras em 4 partos")+
+       y = "Probabilidade")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
   scale_x_continuous(expand = expansion(mult = c(0, 0))) +
   theme_grey(base_size = 14) +
@@ -359,7 +359,7 @@ dbinom(x = 120, size = 120, prob = 0.85)
 
 ### Pelo menos 90% dos bezerros nascidos sejam fêmeas
 
-Neste caso, precisaríamos de, pelo menos, 108 (120 \$\times\$ 0,9) bezerros fêmeas. Então, a probabilidade dessa ocorrência é \$P(X \>= 108) = P(X = 109) + P(X = 109) + … + P(X = 120)\$
+Neste caso, precisaríamos de, pelo menos, 108 (120 \$\\times\$ 0,9) bezerros fêmeas. Então, a probabilidade dessa ocorrência é \$P(X \>= 108) = P(X = 109) + P(X = 109) + … + P(X = 120)\$
 
 ``` r
 x <- 

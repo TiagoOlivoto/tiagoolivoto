@@ -11,18 +11,12 @@ menu:
   experimentacao:
     parent: Experimentação
     weight: 5
+weight: 4
 ---
 
 # Distribuição Normal
 
-A distribuição normal é um modelo bastante útil na estatística, pois sua
-função densidade de probabilidade (FDP) está associada ao fato de que
-aproxima de forma bastante satisfatória as curvas de frequências
-observadas quando se mensura diversas variáveis biológicas (ex., altura,
-massa, comprimento, etc). Como exemplo, vamos ver a distribuição da
-massa de mil grãos de híbridos de milho, disponíveis no conjunto de
-dados `data_ge` do pacote `metan`. Neste exemplo, a linha vermelha
-representa a distribuição normal.
+A distribuição normal é um modelo bastante útil na estatística, pois sua função densidade de probabilidade (FDP) está associada ao fato de que aproxima de forma bastante satisfatória as curvas de frequências observadas quando se mensura diversas variáveis biológicas (ex., altura, massa, comprimento, etc). Como exemplo, vamos ver a distribuição da massa de mil grãos de híbridos de milho, disponíveis no conjunto de dados `data_ge` do pacote `metan`. Neste exemplo, a linha vermelha representa a distribuição normal.
 
 
 ```r
@@ -80,27 +74,22 @@ ggplot(df, aes(Comprimento)) +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
-
 ## Parâmetros da distribuição
 
 A distribuição normal possui dois parâmetros:
 
--   \$\mu\$, sendo a média;
--   \$\sigma\$, sendo o desvio padrão.
+-   \$\\mu\$, sendo a média;
+-   \$\\sigma\$, sendo o desvio padrão.
 
-Estes parâmetros definem a posição e a dispersão do conjunto de dados.
-Assim, se *X* se distribui de forma normal e contínua (variável
-contínua) de \$-\infty<x<+\infty\$, a área total sob a curva do modelo é 1.
+Estes parâmetros definem a posição e a dispersão do conjunto de dados. Assim, se *X* se distribui de forma normal e contínua (variável contínua) de \$-\\infty\<x\<+\\infty\$, a área total sob a curva do modelo é 1.
 
-
-O modelo da função normal possui a seguinte Função Densidade de
-Probabilidade:
+O modelo da função normal possui a seguinte Função Densidade de Probabilidade:
 
 $$
 {f}(x) = \frac{1}{{\sqrt {2\pi {\sigma ^2}} }}{e^{ - \frac{{{{(x - \mu )}^2}}}{{2{\sigma ^2}}}}}-\infty< x < \infty
 $$
 
-No exemplo abaixo, é apresentado a distribuição de uma variável aleatória contínua (*X*) com \$\mu = 20\$, e \$\sigma = 2\$. Assim, dizemos que \$X \sim N(\mu,\sigma)\$, ou seja, segue uma distribuição normal com média \$\mu = 20\$ e desvio padrão \$\sigma = 2\$.
+No exemplo abaixo, é apresentado a distribuição de uma variável aleatória contínua (*X*) com \$\\mu = 20\$, e \$\\sigma = 2\$. Assim, dizemos que \$X \\sim N(\\mu,\\sigma)\$, ou seja, segue uma distribuição normal com média \$\\mu = 20\$ e desvio padrão \$\\sigma = 2\$.
 
 
 ```r
@@ -157,10 +146,7 @@ arrange_ggplot(p1, p2, p3)
 
 ## Calculando as probabilidades
 
-A probabilidade estatística de um valor estar no intervalo
-\$\[x_0,x_1\]\$ é dada pela soma da área abaixo da curva contida no
-intervalo entre estes dois pontos. Tal área pode ser obtida conforme
-segue:
+A probabilidade estatística de um valor estar no intervalo \$\[x_0,x_1\]\$ é dada pela soma da área abaixo da curva contida no intervalo entre estes dois pontos. Tal área pode ser obtida conforme segue:
 
 $$
 P\left(x_{1}\le X \le  x_{2}\right)=\int_{x_{1}}^{x_{2}} \frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}} d x
@@ -198,7 +184,7 @@ ggplot() +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
-Para calcular esta probabilidade, precisamos encontrar a probabilidade associada a cada quantil, utilizando a função `pnorm()`. Esta função retorna por padrão a probabilidade \$P\[X \le x\]\$. Assim, ao se diminuir a probabilidade de encontrar uma planta com 2 m da probabilidade de encontrar uma planta com até 1,75 m, resolvemos o problema.
+Para calcular esta probabilidade, precisamos encontrar a probabilidade associada a cada quantil, utilizando a função `pnorm()`. Esta função retorna por padrão a probabilidade \$P\[X \\le x\]\$. Assim, ao se diminuir a probabilidade de encontrar uma planta com 2 m da probabilidade de encontrar uma planta com até 1,75 m, resolvemos o problema.
 
 
 ```r
@@ -267,7 +253,7 @@ ggplot(df2, aes(x = x, y = px)) +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
-No método geométrico, a função *f(x)* corresponderá a altura de cada retângulo. A base do retângulo (\$\Delta\$), será dada por:
+No método geométrico, a função *f(x)* corresponderá a altura de cada retângulo. A base do retângulo (\$\\Delta\$), será dada por:
 
 $$
 \Delta=\frac{x_1-x_0}{n}
@@ -330,9 +316,7 @@ fun_pnorm - aprox
 ## [1] 6.171243e-07
 ```
 
-Nota-se que com 50000 retângulos, a aproximação da probabilidade pelo método geométrico apresentou diferença somente na quinta casa após a vírgula, demonstrando uma aproximação satisfatória. Vejamos o impacto do
-número de retângulos nesta aproximação. Para isso, vamos criar um gráfico para mostrar como esta aproximação vai melhorando com o aumento no número de retângulos. No exemplo, é simulado de 1 até 200 (apenas
-para fins didáticos). A linha vermelha horizontal representa a probabilidade compudata com a função `pnorm()`.
+Nota-se que com 50000 retângulos, a aproximação da probabilidade pelo método geométrico apresentou diferença somente na quinta casa após a vírgula, demonstrando uma aproximação satisfatória. Vejamos o impacto do número de retângulos nesta aproximação. Para isso, vamos criar um gráfico para mostrar como esta aproximação vai melhorando com o aumento no número de retângulos. No exemplo, é simulado de 1 até 200 (apenas para fins didáticos). A linha vermelha horizontal representa a probabilidade compudata com a função `pnorm()`.
 
 
 ```r
@@ -354,21 +338,19 @@ ggplot(df, aes(x, prob)) +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
-
 ## Distribuição Normal Padrão
 
-A distribuição Normal Padrão é nada mais que uma distribuição normal com média e desvio padrão fixos (\$\mu = 0; \sigma = 1\$). Uma vez que estes parâmetros são fixos, sempre que desejamos calcular uma probabilidade
-pode-se recorrer a uma tabela, onde valores de probabilidade já foram previamente calculados para essa única distribuição.
+A distribuição Normal Padrão é nada mais que uma distribuição normal com média e desvio padrão fixos (\$\\mu = 0; \\sigma = 1\$). Uma vez que estes parâmetros são fixos, sempre que desejamos calcular uma probabilidade pode-se recorrer a uma tabela, onde valores de probabilidade já foram previamente calculados para essa única distribuição.
 
 Para isso, precisamos definir uma nova variável aleatória *Z*, chamada de variável aleatória normal padronizada, dada pela função linear *Z*.
 
 $$
 Z = \frac{X- \mu}{\sigma}
-$$ Onde *X* é uma variável aleatória com distribuição normal com média
-\$\mu\$ e \$\sigma > 0\$.
+$$
 
-Como exemplo, vamos simular uma variável aleatória (X) com \$n = 300\$ tal que
-\$X \sim N(\mu = 20; \sigma = 3)\$.
+Onde *X* é uma variável aleatória com distribuição normal com média \$\\mu\$ e \$\\sigma \> 0\$.
+
+Como exemplo, vamos simular uma variável aleatória (X) com \$n = 300\$ tal que \$X \\sim N(\\mu = 20; \\sigma = 3)\$.
 
 
 ```r
@@ -444,9 +426,7 @@ ggplot() +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
-Desta forma, uma tabela contendo a área sobre a curva desta distribuição
-de *Z* pode ser utilizada.
-
+Desta forma, uma tabela contendo a área sobre a curva desta distribuição de *Z* pode ser utilizada.
 
 [![](/classes/experimentacao/04_dist_cont_files/normalp.png)](https://github.com/TiagoOlivoto/tiagoolivoto/blob/master/static/classes/experimentacao/tabela_normal_padr%C3%A3o.pdf){target="\_blank"}
 
@@ -462,13 +442,7 @@ pnorm(-1)
 ## [1] 0.1586553
 ```
 
-
-
-> Retomando o exemplo:
-Considere como exemplo, a altura de planta em uma lavoura de milho. Esta
-variável segue uma distribuição normal com média 2 e desvio padrão de
-0,2. Pergunda-se: qual é a probabilidade de, ao entrar aleatoriamente
-nesta lavoura ser encontrada uma planta que mede de 1,75 m a 2 m?
+> Retomando o exemplo: Considere como exemplo, a altura de planta em uma lavoura de milho. Esta variável segue uma distribuição normal com média 2 e desvio padrão de 0,2. Pergunda-se: qual é a probabilidade de, ao entrar aleatoriamente nesta lavoura ser encontrada uma planta que mede de 1,75 m a 2 m?
 
 Neste caso, utilizando a normal padrão, a resolução é dada por:
 
@@ -517,8 +491,8 @@ prob2 - prob1 # P(-1,25 <= Z <= 0)
 ## [1] 0.3943502
 ```
 
-
 No exemplo, a área da parte sombreada (probabilidade) é de 0,39455.
+
 
 ```r
 normal <-
@@ -558,8 +532,6 @@ arrange_ggplot(normal, padrao, ncol = 1)
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-16-1.png" width="672" />
 
-
-
 <!-- ## Questões -->
 
 <!-- ### Questão 1 -->
@@ -567,55 +539,95 @@ arrange_ggplot(normal, padrao, ncol = 1)
 <!-- 1.  A série histórica das vendas de uma determinada fórmula de adubo seguem uma distribuição normal com média 25.000 t e desvio padrão de 2.600 t. Se a empresa fabricante decidir fabricar 30000 toneladas deste adubo para suprir a demanda da safra atual, qual é a probabilidade de que ela não possa atender todas as vendas por estar   com a produção esgotada? -->
 
 <!-- (R = 0,0272) SOLUÇÃO: encontrar a -->
+
 <!--     probabilidade de vender mais que 30000 t -->
 
 <!-- ```{r fig.width=10, fig.height=8} -->
 
 <!-- me <- 25000 -->
+
 <!-- sdd <- 2600 -->
+
 <!-- val <- 30000 -->
+
 <!-- Z <- (val - me) / sdd -->
+
 <!-- prob <- 1 - pnorm(Z) -->
+
 <!-- qnorm(1-pnorm(3.5), me, sdd) -->
+
 <!-- qnorm(1-pnorm(3.5), me, sdd, lower.tail = F) -->
 
 <!-- normal <- -->
+
 <!--   ggplot() + -->
+
 <!--   xlim(c(15900, 34100)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(30000, 34100), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 )) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 )) + -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor original", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável original") -->
 
 <!-- padrao <- -->
+
 <!--   ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(Z, 3.5)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
+
 <!--   # theme_metan(color.background = "transparent")+ -->
+
 <!--   ggtitle("Distribuição da variável padronizada", -->
+
 <!--           subtitle = paste("Valor de Z:", round(Z, 4), "; Prob área sombreada:", round(prob, 4))) -->
 
 <!-- arrange_ggplot(normal, padrao, ncol = 1) -->
+
 <!-- ``` -->
 
 <!-- ### Questão 2 -->
@@ -623,113 +635,184 @@ arrange_ggplot(normal, padrao, ncol = 1)
 <!-- 2. O gerente da empresa que João trabalha resolveu premiar seus     vendedores mais eficientes (5%) na venda de insumos. Um levantamento     das vendas individuais anuais mostrou que a venda de adubo segue uma     distribuição normal com média 240.000 t. e desvio padrão 30.000 t.     Qual o volume de vendas mínimo que João deve realizar para ser premiado? -->
 
 <!-- > (R = 289.346)  -->
+
 <!-- RESOLUÇÃO: encontrar o valor de Z associado aos 5% que mais vendem Z = 1.6448 Valor da variável original associado ao Z = 289.346 -->
 
 <!-- ```{r fig.width=10, fig.height=8} -->
+
 <!-- # quantil associado aos 5% que mais vendem  -->
+
 <!-- Z <- qnorm(0.95) -->
 
 <!-- me <- 240000 -->
+
 <!-- sdd <- 30000 -->
+
 <!-- # volume mínimo de vendas -->
+
 <!-- vendas <- round(Z * sdd + me) -->
 
-
 <!-- original <- -->
+
 <!--   ggplot() + -->
+
 <!--   xlim(c(135000, 345000)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(vendas, 360000), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor original", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável original") -->
 
 <!-- padrao <- -->
+
 <!--   ggplot() + -->
+
 <!--   xlim(c(-3.5, 3.5)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(Z, 3.5))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição de Z", -->
+
 <!--           subtitle = paste("Valor de Z:", round(Z, 4), "; Prob área sombreada:", round(prob, 4))) -->
 
 <!-- arrange_ggplot(original, padrao, ncol = 1) -->
+
 <!-- ``` -->
 
-
 <!-- ### Questão 3 -->
+
 <!-- Uma variável aleatória X segue uma distribuição normal com média 100 e desvio padrão 10. Calcule a probabilidade de x estar entre 90 e 110. -->
 
-
 <!-- ```{r fig.width=10, fig.height=8} -->
+
 <!-- me <- 100 -->
+
 <!-- sdd <- 10 -->
+
 <!-- val1 <- 90 -->
+
 <!-- val2 <- 110 -->
+
 <!-- Z1 <- (val1 - me) / sdd -->
+
 <!-- Z2 <- (val2 - me) / sdd -->
 
 <!-- # probabilidade dos valores estarem a 1 desvio padrão para mais ou menos -->
+
 <!-- pnorm(Z2) - pnorm(Z1) -->
 
 <!-- args <- list( -->
+
 <!--   mean = 100, -->
+
 <!--   sd = 10 -->
+
 <!-- ) -->
 
 <!-- normal <- -->
+
 <!--   ggplot() + -->
+
 <!--   scale_x_continuous(limits = c(60, 140), -->
+
 <!--                      breaks = seq(60, 140, 10)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(90, 110), -->
+
 <!--                 args = args) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 args = args) + -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor original", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável original") -->
 
-
 <!-- padrao <- -->
+
 <!--   ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(Z1, Z2)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-4, 4), breaks = c(seq(-4, 4, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", -->
+
 <!--        y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável padronizada") -->
 
 <!-- arrange_ggplot(normal, padrao, ncol = 1) -->
+
 <!-- ``` -->
-
-
 
 <!-- ### Questão 4 -->
 
@@ -738,52 +821,91 @@ arrange_ggplot(normal, padrao, ncol = 1)
 <!-- > R: 0,53 RESOLUÇÃO: calcular a probabilidade x ser maior que 9 e menor que 12 -->
 
 <!-- ```{r fig.width=10, fig.height=8} -->
+
 <!-- me <- 10 -->
+
 <!-- sdd <- 2 -->
+
 <!-- val1 <- 9 -->
+
 <!-- val2 <- 12 -->
+
 <!-- Z1 <- (val1 - me) / sdd -->
+
 <!-- Z2 <- (val2 - me) / sdd -->
 
 <!-- (prob <- pnorm(Z2) - pnorm(Z1)) -->
 
 <!-- normal <- -->
+
 <!--   ggplot() + -->
+
 <!--   scale_x_continuous(limits =  c(3, 17), -->
+
 <!--                      breaks = 3:17) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(val1, val2), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor original", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável original") -->
 
 <!-- padrao <- -->
+
 <!--   ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(Z1, Z2))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável padronizada", -->
+
 <!--           subtitle = paste("Z1:", round(Z1, 4), "  Z2:", round(Z2, 4), "; Prob área sombreada:", round(prob, 4))) -->
 
 <!-- arrange_ggplot(normal, padrao, ncol = 1) -->
+
 <!-- ``` -->
 
 <!-- ### Questão 5 -->
@@ -795,393 +917,662 @@ arrange_ggplot(normal, padrao, ncol = 1)
 <!-- ```{r fig.width=10, fig.height=8} -->
 
 <!-- me <- 100 -->
+
 <!-- sdd <- 10 -->
+
 <!-- val <- 115 -->
+
 <!-- Z <- (val - me) / sdd -->
 
 <!-- (prob <- pnorm(Z)) -->
 
 <!-- normal <- -->
+
 <!--   ggplot() + -->
+
 <!--   scale_x_continuous(limits = c(65,  135)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(65, val), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor original", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável original") -->
 
 <!-- padrao <- -->
+
 <!--   ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(-3.5, Z))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável padronizada", -->
+
 <!--           subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4))) -->
 
 <!-- arrange_ggplot(normal, padrao, ncol = 1) -->
+
 <!-- ``` -->
 
 <!-- * P(X \> 80) -->
 
 <!-- > R: 0,9772 -->
+
 <!-- RESOLUÇÃO: calcular a probabilidade x ser maior que 80, ou seja `\(1 - P(X \le 80\)`). -->
 
 <!-- ```{r} -->
+
 <!-- me <- 100 -->
+
 <!-- sdd <- 10 -->
+
 <!-- val <- 80 -->
+
 <!-- Z <- (val - me) / sdd -->
 
 <!-- (prob <- 1 - pnorm(Z)) -->
 
 <!-- normal <- -->
+
 <!--   ggplot() + -->
+
 <!--   scale_x_continuous(limits = c(65,  135)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(80, 140), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor original", -->
+
 <!--        y = "Probabilidade") -->
 
 <!-- padrao <- -->
+
 <!--   ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(Z, 4))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", y = "Probabilidade") -->
 
 <!-- arrange_ggplot(normal, padrao, ncol = 1) -->
+
 <!-- ``` -->
 
-
 <!-- * P(X \> 100) -->
+
 <!-- > R: 0,5 -->
+
 <!-- RESOLUÇÃO: calcular a probabilidade x ser maior que 50, ou seja `\(1 - P(X \le 50\)`). -->
 
 <!-- ```{r} -->
 
 <!-- me <- 100 -->
+
 <!-- sdd <- 10 -->
+
 <!-- val <- 100 -->
+
 <!-- Z <- (val - me) / sdd -->
 
 <!-- (prob <- 1 - pnorm(Z)) -->
 
 <!-- normal <- -->
+
 <!--   ggplot() + -->
+
 <!--   scale_x_continuous(limits = c(65,  135)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(100, 140), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor original", -->
+
 <!--        y = "Probabilidade") -->
 
 <!-- padrao <- -->
+
 <!--   ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(Z, 4))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", y = "Probabilidade") -->
 
 <!-- arrange_ggplot(normal, padrao, ncol = 1) -->
 
 <!-- ``` -->
-
 
 <!-- ### Questão 6 -->
 
 <!-- A alturas de 10000 alunos de um colégio têm distribuição aproximadamente normal com média de 170 cm e desvio padrão de 5 cm. Qual o número esperado de alunos com altura superior a 1,65 m? -->
 
 <!-- > R = 8413 alunos (0,8413 \* 10000) -->
+
 <!-- RESOLUÇÃO: calcular a probabilidade de alunos com mais de 165 cm, logo achando o número de alunos. -->
 
 <!-- ```{r fig.width=10, fig.height=8} -->
 
 <!-- n <- 10000 -->
+
 <!-- me <- 170 -->
+
 <!-- sdd <- 5 -->
+
 <!-- val <- 165 -->
+
 <!-- Z <- (val - me) / sdd -->
+
 <!-- (prob <- 1 - pnorm(Z)) -->
 
 <!-- normal <- -->
+
 <!--   ggplot() + -->
+
 <!--   scale_x_continuous(limits = c(152.5,  187.5), -->
+
 <!--                      breaks = seq(150, 190, by = 5)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(val, 187.5), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Altura do aluno",  -->
+
 <!--        y = "Probabilidade") -->
 
-
 <!-- padrao <- -->
+
 <!--   ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(Z, 3.5))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-3.5, 3.5), -->
+
 <!--                      breaks = c(seq(-3, 3, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", -->
+
 <!--        y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável padronizada", -->
+
 <!--           subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4))) -->
 
 <!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-<!-- ``` -->
 
+<!-- ``` -->
 
 <!-- ### Questão 7 -->
 
 <!-- Uma ensacadora de adubos está regulada para que o peso em cada saco seja de 50 Kg com desvio padrão de 5 Kg. Admitindo-se que a distribuição é aproximadamente normal, qual a percentagem de sacos em que o peso de adubo é inferior a 45 Kg? -->
 
 <!-- > R (0,1587) -->
+
 <!-- RESOLUÇÃO: encontrar a probabilidade de achar sacos com menos que 45 Kg. -->
 
 <!-- ```{r fig.width=10, fig.height=8} -->
 
 <!-- me <- 50 -->
+
 <!-- sdd <- 5 -->
+
 <!-- val <- 45 -->
+
 <!-- Z <- (val - me) / sdd -->
+
 <!-- (prob <- pnorm(Z)) -->
 
 <!-- normal <- -->
+
 <!--   ggplot() + -->
+
 <!--   scale_x_continuous(limits = c(32.5,  67.5), -->
+
 <!--                      breaks = seq(30, 70, by = 5)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(32.5, val), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 size = 1, -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Peso do saco de adubo", -->
+
 <!--        y = "Probabilidade") -->
 
 <!-- padrao <- -->
+
 <!--   ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(-3.5, Z))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável padronizada", -->
+
 <!--           subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4))) -->
 
 <!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-<!-- ``` -->
 
+<!-- ``` -->
 
 <!-- ### Questão 8 -->
 
 <!-- Um lote de frangos com 14.000 frangos apresenta média de peso de 3,0 Kg e desvio padrão de 0,2 Kg. Assumindo que o peso deste lote segue uma distribuição aproximadamente normal, quantos são os frangos que pesam mais que 3300 g? -->
 
 <!-- > R = \~ 935 (0,0668072 \* 14000) -->
+
 <!-- RESOLUÇÃO: encontrar Z e achar a probabilidade de o peso ser maior que Z. -->
 
 <!-- ```{r fig.width=10, fig.height=8} -->
+
 <!-- me <- 3 -->
+
 <!-- sdd <- 0.2 -->
+
 <!-- val <- 3.3 -->
+
 <!-- Z <- (val - me) / sdd -->
+
 <!-- (prob <- 1 - pnorm(Z)) -->
+
 <!-- round(prob * 14000) -->
 
 <!-- normal <- -->
+
 <!--   ggplot() + -->
+
 <!--   scale_x_continuous(limits = c(2.3, 3.7), -->
+
 <!--                      breaks = seq(2, 4, by = 0.5)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(val, 4), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+  -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Peso do frango (kg)", y = "probabilidade")  -->
 
-
 <!-- padrao <- -->
+
 <!--   ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(Z, 3.5))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-3.5, 3.5), -->
+
 <!--                      breaks = c(seq(-3, 3, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável padronizada", -->
+
 <!--           subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4))) -->
 
 <!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-<!-- ``` -->
 
+<!-- ``` -->
 
 <!-- ### Questão 9 -->
 
 <!-- Em uma fazenda de criação de coelhos, um lote com 300 coelhos tem média que segue uma distribuição normal com média de 3,5 Kg com desvio padrão de 250 g. Coelhos com peso de até 3.7 Kg são vendidos a R\$ 15,00 o Kg. Coelhos com peso acima de 3,7 Kg são vendidos a R\$ 20,00 o Kg. Quantos coelhos serão vendidos ao maior valor de venda? -->
 
 <!-- > R (\~ 63 coelhos; 0.2119 \* 300) -->
+
 <!-- RESOLUÇÃO encontrar o número de coelhos que pesem mais que 3.7 Kg. No -->
+
 <!-- gráfico abaixo, a cor vermelha representa a probabilidade de coelhos com -->
+
 <!-- menos de 3.7 Kg e a cor azul a probabilidade de encontrar coelhos com -->
+
 <!-- mais de 3.7 Kg. -->
 
 <!-- ```{r fig.width=10, fig.height=8} -->
 
 <!-- me <- 3.5 -->
+
 <!-- sdd <- 0.25 -->
+
 <!-- val <- 3.7 -->
+
 <!-- (Z <- (val - me) / sdd) -->
+
 <!-- (prob <- 1 - pnorm(Z)) -->
 
 <!-- # número de coelhos -->
+
 <!-- round(prob * 300) -->
+
 <!-- normal <- -->
+
 <!--   ggplot() +  -->
+
 <!--   scale_x_continuous(limits = c(2.625,  4.375)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "blue", -->
+
 <!--                 xlim = c(val, 4.375), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "red", -->
+
 <!--                 xlim = c(2.625, val), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor original", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Peso do coelho") -->
 
 <!-- padrao <-  -->
+
 <!-- ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "blue", -->
+
 <!--                 xlim = c(Z, 3.5))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "red", -->
+
 <!--                 xlim = c(-3.5, Z))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável padronizada", -->
+
 <!--           subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área azul:", round(prob, 4))) -->
 
 <!-- arrange_ggplot(normal, padrao, ncol = 1) -->
 
 <!-- ``` -->
-
 
 <!-- ### Questão 10 -->
 
@@ -1200,108 +1591,191 @@ arrange_ggplot(normal, padrao, ncol = 1)
 <!-- ```{r fig.width=10, fig.height=5} -->
 
 <!-- me <- 430 -->
+
 <!-- sdd <- 65 -->
+
 <!-- val1 <- 320 -->
+
 <!-- val2 <- 520 -->
+
 <!-- Z1 <- (val1 - me) / sdd -->
+
 <!-- Z2 <- (val2 - me) / sdd -->
 
 <!-- (prob1 <- pnorm(Z1)) -->
+
 <!-- (prob2 <- pnorm(Z2) - prob1) -->
+
 <!-- (prob3 <- 1 - sum(prob1, prob2)) -->
 
 <!-- # checar se a soma das probabilidades deu 1 -->
+
 <!-- sum(prob1, prob2, prob3) -->
 
 <!-- normal <- -->
+
 <!--   ggplot() + -->
+
 <!--   xlim(c(202.5,  657.5)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(202.5, val1), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "green", -->
+
 <!--                 xlim = c(val1, val2), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "red", -->
+
 <!--                 xlim = c(val2, 657.5), -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 args = list( -->
+
 <!--                   mean = me, -->
+
 <!--                   sd = sdd -->
+
 <!--                 ))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor original", y = "Probabilidade")+ -->
+
 <!--   ggtitle("Distribuição da variável ") -->
 
 <!-- padrao <- -->
+
 <!--   ggplot() + -->
+
 <!--   xlim(c(-3.5, 3.5)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "steelblue", -->
+
 <!--                 xlim = c(-3.5, Z1))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "green", -->
+
 <!--                 xlim = c(Z1, Z2))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "red", -->
+
 <!--                 xlim = c(Z2, 3.5))+ -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line")+ -->
+
 <!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
+
 <!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
+
 <!--   annotate("text", x = -3, y = 0.11, label = "Abatedouro A") + -->
+
 <!--   annotate("segment", -->
+
 <!--            x = -3, -->
+
 <!--            y = 0.1, -->
+
 <!--            xend = -2.2, -->
+
 <!--            yend = 0.01, -->
+
 <!--            arrow=arrow()) + -->
+
 <!--   annotate("text", x = -3, y = 0.31, label = "Abatedouro B") + -->
+
 <!--   annotate("segment", -->
+
 <!--            x = -3, -->
+
 <!--            y = 0.3, -->
+
 <!--            xend = 0, -->
+
 <!--            yend = 0.15, -->
+
 <!--            arrow=arrow()) + -->
+
 <!--   annotate("text", x = 3, y = 0.11, label = "Abatedouro C") + -->
+
 <!--   annotate("segment", -->
+
 <!--            x = 3, -->
+
 <!--            y = 0.1, -->
+
 <!--            xend = 2, -->
+
 <!--            yend = 0.01, -->
+
 <!--            arrow=arrow()) -->
 
 <!-- arrange_ggplot(normal, padrao) -->
+
 <!-- ``` -->
-
-
 
 <!-- ### Questão 11 -->
 
 <!-- Um agricultor possui uma área de plantio de eucalipto com 2,5 ha e uma densidade de 1500 plantas por ha. O diâmetro a altura do peito (DAP) segue uma distribuição normal, com média de 22 cm e variância de 16 cm\$^2\$. -->
 
 <!-- O produtor recebeu uma proposta de compra das toras que segue a seguinte -->
+
 <!-- condição. -->
 
 <!-- -   Se as toras apresentarem até 17 cm de DAP, a madeira é destinada para produção de maravalha, com preço por tora de R\\\$ 28,00. -->
@@ -1313,37 +1787,53 @@ arrange_ggplot(normal, padrao, ncol = 1)
 <!-- a\) O valor estimado de venda de toras para maravalha -->
 
 <!-- Para encontrar este número, precisamos saber quantas árvores com esta -->
+
 <!-- medida são esperadas. Para isso, precisamos encontrar a probabilidade de -->
+
 <!-- ocorrência de árvores com até 18 cm de DAP e multiplicar essa -->
+
 <!-- probabilidade pelo total de árvores. -->
 
 <!-- $$ -->
+
 <!-- Z = \frac{17 - 22}{4} = -1,25 -->
+
 <!-- $$ -->
 
 <!-- ```{r fig.width=10, fig.height=8} -->
 
 <!-- ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "cyan", -->
+
 <!--                 xlim = c(-3, -1.25)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 xlim = c(-3, 3)) + -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + -->
+
 <!--   labs(y = "", x = "Z") -->
 
-
-
 <!-- # probabilidade -->
+
 <!-- (p17 <- pnorm(17, mean = 22, sd = 4)) -->
 
 <!-- # número de toras -->
+
 <!-- (n <- round(p17 * (1500 * 2.5))) -->
 
 <!-- # valor das toras -->
+
 <!-- n * 28 -->
+
 <!-- ``` -->
 
 <!-- b\) o valor estimado de venda de toras para fabricação de tábua -->
@@ -1351,135 +1841,188 @@ arrange_ggplot(normal, padrao, ncol = 1)
 <!-- Para encontrar este número, precisamos saber quantas árvores com com mais de 18 cm se espera. A probabilidade de árvores com mais de 18 cm (P) é dada por -->
 
 <!-- $$ -->
+
 <!-- Z = P(X > 1,25) = 1 - P(\le 1,25) -->
+
 <!-- $$ -->
 
 <!-- $$ -->
+
 <!-- P(X > 1,25) = 1 - 0,1056 -->
+
 <!-- $$ -->
 
 <!-- $$ -->
+
 <!-- P(X > 1,25) = 0,8943 -->
-<!-- $$ -->
 
+<!-- $$ -->
 
 <!-- ```{r} -->
 
 <!-- ggplot() + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "cyan", -->
+
 <!--                 xlim = c(-1.25, 3)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line", -->
+
 <!--                 xlim = c(-3, 3)) + -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + -->
+
 <!--   labs(y = "", x = "Z") -->
 
-
 <!-- # probabilidade -->
+
 <!-- (p_mais18 <- 1 - pnorm(17, mean = 22, sd = 4)) -->
 
 <!-- # número de toras -->
+
 <!-- (n2 <- round(p_mais18 * (1500 * 2.5))) -->
 
 <!-- # valor das toras -->
+
 <!-- n2 * 46 -->
+
 <!-- ``` -->
 
 <!-- c\) O DAP que somente 5 % das toras ultrapassará -->
 
 <!-- Este valor é o quantil da distribuição no valor acumulado de 0.95. -->
+
 <!-- Precisamos, primeiramente, encontrar a probabilidade de \$P(Z \> z)\$: -->
 
-
 <!-- $$ -->
+
 <!-- P(Z\>z) = 1 - P(Z≤z) -->
-<!-- $$ -->
-
 
 <!-- $$ -->
+
+<!-- $$ -->
+
 <!-- P(Z\>z) = 1 - 0,95 -->
-<!-- $$ -->
-
 
 <!-- $$ -->
+
+<!-- $$ -->
+
 <!-- P(Z\>z) = 0,05 -->
+
 <!-- $$ -->
+
 <!-- O valor de 0,95 é encontrado no quantil \~1,65 (Z) da distribuição -->
+
 <!-- normal padrão (tabela). Para saber o valor exato, podemos utilizar a -->
+
 <!-- função `qnorm()`. -->
 
 <!-- ```{r} -->
+
 <!-- qnorm(0.95) -->
+
 <!-- ``` -->
 
 <!-- ```{r} -->
 
 <!-- ggplot() + -->
+
 <!--   scale_x_continuous(limits = c(-3, 3), -->
+
 <!--                      breaks = 1.644) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "area", -->
+
 <!--                 fill = "cyan", -->
+
 <!--                 xlim = c(1.644, 3)) + -->
+
 <!--   stat_function(fun = dnorm, -->
+
 <!--                 geom = "line") + -->
+
 <!--   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + -->
+
 <!--   labs(y = "", x = "Z") + -->
+
 <!--     annotate("segment", -->
+
 <!--            x = 2.1, -->
+
 <!--            y = 0.1, -->
+
 <!--            xend = 2, -->
+
 <!--            yend = 0.02, -->
+
 <!--            arrow=arrow()) + -->
+
 <!--   annotate("text", -->
+
 <!--            x = 2.1, y = 0.11, -->
+
 <!--            label = "Área = 0,05") -->
+
 <!-- ``` -->
 
 <!-- De posse do valor de *Z*, basta realizar uma inversão da fórmula de -->
+
 <!-- padronização para encontrar o valor de *x*. -->
 
 <!-- $$ -->
+
 <!-- Z = (x – \mu)/\sigma\\ -->
-<!-- $$ -->
-
 
 <!-- $$ -->
+
+<!-- $$ -->
+
 <!-- 1,644 = (x – 22)/4\\ -->
-<!-- $$ -->
-
 
 <!-- $$ -->
+
+<!-- $$ -->
+
 <!-- 1,644\times4 = x – 22\\ -->
-<!-- $$ -->
-
 
 <!-- $$ -->
+
+<!-- $$ -->
+
 <!-- 6,576 = x – 22\\ -->
+
 <!-- $$ -->
 
 <!-- $$ -->
+
 <!-- x = 22 + 6,576 -->
+
 <!-- $$ -->
 
 <!-- $$ -->
+
 <!-- x = 28,576 -->
+
 <!-- $$ -->
+
 <!-- Então, o peso DAP que somente 5% das toras ultrapassará é de \~28,6 cm. -->
-
-
-
 
 # Distribuição t
 
 A distribuição *t* de Student é uma distribuição de probabilidade contínua, publicada por William Sealy Gosset sob o pseudônimo *Student* [^1].
 
-[^1]: http://www.swlearning.com/quant/kohler/stat/biographical_sketches/bio12.1.html
+[^1]: <http://www.swlearning.com/quant/kohler/stat/biographical_sketches/bio12.1.html>
 
-A distribuição *t* possui como único parâmetro o Grau Liberdade (GL). Esta distribuição detém caudas mais pesadas que a distribuição normal quando o tamanho da amostra é pequeno e a medida que \$n \to N\$, a distribuição *t* de Student se aproxima da normal. Note abaixo as diferenças nas curvas quando se compara a distribuição Normal com a distribuição *t* com diferentes GLs.
-
+A distribuição *t* possui como único parâmetro o Grau Liberdade (GL). Esta distribuição detém caudas mais pesadas que a distribuição normal quando o tamanho da amostra é pequeno e a medida que \$n \\to N\$, a distribuição *t* de Student se aproxima da normal. Note abaixo as diferenças nas curvas quando se compara a distribuição Normal com a distribuição *t* com diferentes GLs.
 
 
 ```r
@@ -1509,8 +2052,7 @@ ggplot() +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
-
-Abaixo, é mostrada a Função Densidade de Probabilidade de uma distribuição *t* com 20 graus liberdade. As áreas sombreadas em azul escuro representam os quantis que acumulam uma área de \$\alpha / 2\$ em cada lado da distribuição, de tal forma que a área destacada em verde representa 1 - \$\alpha\$, sendo \$\alpha\$ a probabilidade de erro.
+Abaixo, é mostrada a Função Densidade de Probabilidade de uma distribuição *t* com 20 graus liberdade. As áreas sombreadas em azul escuro representam os quantis que acumulam uma área de \$\\alpha / 2\$ em cada lado da distribuição, de tal forma que a área destacada em verde representa 1 - \$\\alpha\$, sendo \$\\alpha\$ a probabilidade de erro.
 
 
 ```r
@@ -1525,7 +2067,7 @@ ggplot() +
                 geom = "area", 
                 fill = "steelblue", 
                 xlim = c(4, 2.08)) +
-    stat_function(fun = dt, 
+  stat_function(fun = dt, 
                 args = list(df = 20),
                 geom = "area", 
                 fill = "green", 
@@ -1542,21 +2084,20 @@ ggplot() +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-18-1.png" width="672" />
 
-
 ## Intervalo de confiança
 
+A estimação por pontos (ex., média) não nos fornece a ideia da margem de erro cometida ao estimar um determinado parâmetro. Por isso, para verificar se uma dada hipótese `\(H_0\)` (de igualdade) é ou não verdadeira, deve-se utilizar intervalos de confiança ou testes de hipóteses. A construção destes intervalos, e as particularidades dos testes de hipóteses para amostras independentes e dependentes, serão discutidos a seguir. Recomendo como literatura o livro [Estatística Básica](http://www.editoraufv.com.br/produto/1595058/estatistica-basica)\[^analdata-2\] escrito pelo Prof. Daniel Furtado Ferreira.
 
-A estimação por pontos (ex., média) não nos fornece a ideia da margem de erro cometida ao estimar um determinado parâmetro. Por isso, para verificar se uma dada hipótese `\(H_0\)` (de igualdade) é ou não verdadeira, deve-se utilizar intervalos de confiança ou testes de hipóteses. A construção destes intervalos, e as particularidades dos testes de hipóteses para amostras independentes e dependentes, serão discutidos a seguir. Recomendo como literatura o livro [Estatística Básica](http://www.editoraufv.com.br/produto/1595058/estatistica-basica)[^analdata-2] escrito pelo Prof. Daniel Furtado Ferreira.
-
-O intervalo de confiança de uma média amostral assumindo uma taxa de erro `\(\alpha\\)` é dado por:
+O intervalo de confiança de uma média amostral assumindo uma taxa de erro \$\\alpha\$ é dado por:
 
 $$
 P\left[ {\bar X - {t_{\alpha /2}}\frac{S}{{\sqrt n }} \le \mu  \le \bar X + {t_{\alpha /2}}\frac{S}{{\sqrt n }}} \right] = 1 - \alpha 
 $$
 
-Na expressão acima, \$\bar X\$ é a média, \$S\$ é o desvio padrão e \$-t_{\alpha /2}\$ e \$+t_{\alpha /2}\$ são os quantis inferior e superior, respectivamente, da distribuição *t* de Student. O intervalo acima indica que o valor do parâmetro (\$\mu\$) tem \$1 - \alpha\$ de chance de estar contido no intervalo.
+Na expressão acima, \$\\bar X\$ é a média, \$S\$ é o desvio padrão e \$-t\_{\\alpha /2}\$ e \$+t\_{\\alpha /2}\$ são os quantis inferior e superior, respectivamente, da distribuição *t* de Student. O intervalo acima indica que o valor do parâmetro (\$\\mu\$) tem \$1 - \\alpha\$ de chance de estar contido no intervalo.
 
 ### Exemplo 1 (altura da turma)
+
 Como exemplo de motivação, vamos utilizar os dados referentes a altura (em cm) dos alunos da disciplina de Bioestatística e Experimentação Agrícola, mensurada em sala de aula. A amostra é composta por 20 observações.
 
 
@@ -1593,15 +2134,11 @@ df_altura
 ## 20     20    171
 ```
 
-
-Como n = 20, o grau liberdade para encontrar o quantil da distribuição *t* é 19. O quantil associado a este Grau Liberdade, considerando \$\alpha = 0,05\$ é encontrado na tabela da distribuição *t*. Nesta tabela, o valor de 
-
-
+Como n = 20, o grau liberdade para encontrar o quantil da distribuição *t* é 19. O quantil associado a este Grau Liberdade, considerando \$\\alpha = 0,05\$ é encontrado na tabela da distribuição *t*. Nesta tabela, o valor de
 
 [![](/classes/experimentacao/04_dist_cont_files/dist_t.png)](https://github.com/TiagoOlivoto/tiagoolivoto/blob/master/static/classes/experimentacao/tabela_t.pdf){target="\_blank"}
 
-
-Tamém podemos encontrar este quantil utilizando a função `qt()`. No próximo código, o quantil (2.5% e 97.5%), a média e o desvio padrão são calculados. Note que 
+Tamém podemos encontrar este quantil utilizando a função `qt()`. No próximo código, o quantil (2.5% e 97.5%), a média e o desvio padrão são calculados. Note que
 
 
 ```r
@@ -1640,14 +2177,17 @@ $$
 
 Para facilitar nossos próximos exemplos, vamos criar uma função para computar o intervalo de confiança 95%.
 
+
 ```r
 get_ci_t <- function(media, dp, n){
   quantil_t <- qt(0.975, n - 1)
-  quantil_t * dp / sqrt(n)
+  semi_amp <- quantil_t * dp / sqrt(n)
+  message(
+    "[", round(media - semi_amp, 3), " ; ", round(media + semi_amp, 3), "]"
+  )
+  return(semi_amp)
 }
 ```
-
-
 
 
 ```r
@@ -1657,6 +2197,14 @@ df <- tibble(
   LI = media - get_ci_t(media, desvpad, 20),
   LS = media + get_ci_t(media, desvpad, 20)
 )
+```
+
+```
+## [169.025 ; 176.175]
+## [169.025 ; 176.175]
+```
+
+```r
 df
 ```
 
@@ -1696,7 +2244,6 @@ ic$conf.int
 ## [1] 0.95
 ```
 
-
 ### Exemplo 2 (peso de frango)
 
 Considere um aviário com 15000 frangos. O criador realizou a amostragem de 25 frangos aleatoriamente para realizar uma estimativa da média do peso do lote visando a programação para abate. Após analisar as pesagens coletadas, o produtor encontrou uma média de 2,83 Kg e um desvio padrão de 0,27 Kg. Pergunta-se: Qual o intervalo de 95% para a média estimada?
@@ -1709,7 +2256,14 @@ df3 <- tibble(
   LI = media - get_ci_t(media, desvpad, n = 25),
   LS = media + get_ci_t(media, desvpad, n = 25)
 )
+```
 
+```
+## [2.719 ; 2.941]
+## [2.719 ; 2.941]
+```
+
+```r
 ggplot(df3, aes(x = media, y = "")) +
   geom_errorbar(aes(xmin = LI,
                     xmax = LS),
@@ -1722,10 +2276,8 @@ ggplot(df3, aes(x = media, y = "")) +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-24-1.png" width="672" />
 
-
-
-
 ### Variação no desvio padrão
+
 Abaixo, são simuladas 4 amostras de n = 20 com médias igual a 10 e desvios padrões variantes. Note como o intervalo de confiança é menor a medida em que o desvio padrão é mais baixo.
 
 
@@ -1738,6 +2290,14 @@ df4 <- tibble(
   LS = media + get_ci_t(media, desvpad, n = 20),
   lab = paste0("dp: ", desvpad)
 )
+```
+
+```
+## [9.5328.1287.1926.256 ; 10.46811.87212.80813.744]
+## [9.5328.1287.1926.256 ; 10.46811.87212.80813.744]
+```
+
+```r
 df4
 ```
 
@@ -1770,9 +2330,7 @@ ggplot(df4, aes(x = media, y = amostra)) +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-25-1.png" width="672" />
 
-
 ### Variação no tamanho da amostra
-
 
 
 ```r
@@ -1784,6 +2342,14 @@ df_t <- tibble(
   UL = media + get_ci_t(media, desvpad, n = n),
   LL = media - get_ci_t(media, desvpad, n = n)
 )
+```
+
+```
+## [-7.969-3.041-0.1791.6462.8923.7894.4614.9835.3985.7376.0186.2556.4586.6336.7876.9237.0447.1527.257.3397.427.4947.5637.6267.6847.7397.797.8387.8837.9257.9658.0028.0388.0728.1048.1358.1648.1928.2188.2448.2688.2918.3148.3368.3568.3768.3968.4148.4338.458.4678.4838.4998.5148.5298.5448.5588.5718.5848.5978.618.6228.6348.6458.6578.6688.6798.6898.6998.7098.7198.7298.7388.7478.7568.7658.7738.7828.798.7988.8068.8148.8218.8298.8368.8438.858.8578.8648.8718.8778.8848.898.8968.9028.9088.9148.928.9268.9318.9378.9438.9488.9538.9588.9648.9698.9748.9798.9838.9888.9938.9989.0029.0079.0119.0169.029.0249.0289.0339.0379.0419.0459.0499.0539.0579.069.0649.0689.0729.0759.0799.0829.0869.0899.0939.0969.19.1039.1069.119.1139.1169.1199.1229.1259.1289.1319.1349.1379.149.1439.1469.1499.1529.1549.1579.169.1639.1659.1689.1719.1739.1769.1789.1819.1839.1869.1889.1919.1939.1969.1989.29.2039.2059.2079.219.2129.2149.2169.2189.2219.2239.2259.2279.2299.2319.2339.2359.2379.2399.2419.2439.2459.2479.2499.2519.253 ; 27.96923.04120.17918.35417.10816.21115.53915.01714.60214.26313.98213.74513.54213.36713.21313.07712.95612.84812.7512.66112.5812.50612.43712.37412.31612.26112.2112.16212.11712.07512.03511.99811.96211.92811.89611.86511.83611.80811.78211.75611.73211.70911.68611.66411.64411.62411.60411.58611.56711.5511.53311.51711.50111.48611.47111.45611.44211.42911.41611.40311.3911.37811.36611.35511.34311.33211.32111.31111.30111.29111.28111.27111.26211.25311.24411.23511.22711.21811.2111.20211.19411.18611.17911.17111.16411.15711.1511.14311.13611.12911.12311.11611.1111.10411.09811.09211.08611.0811.07411.06911.06311.05711.05211.04711.04211.03611.03111.02611.02111.01711.01211.00711.00210.99810.99310.98910.98410.9810.97610.97210.96710.96310.95910.95510.95110.94710.94310.9410.93610.93210.92810.92510.92110.91810.91410.91110.90710.90410.910.89710.89410.8910.88710.88410.88110.87810.87510.87210.86910.86610.86310.8610.85710.85410.85110.84810.84610.84310.8410.83710.83510.83210.82910.82710.82410.82210.81910.81710.81410.81210.80910.80710.80410.80210.810.79710.79510.79310.7910.78810.78610.78410.78210.77910.77710.77510.77310.77110.76910.76710.76510.76310.76110.75910.75710.75510.75310.75110.74910.747]
+## [-7.969-3.041-0.1791.6462.8923.7894.4614.9835.3985.7376.0186.2556.4586.6336.7876.9237.0447.1527.257.3397.427.4947.5637.6267.6847.7397.797.8387.8837.9257.9658.0028.0388.0728.1048.1358.1648.1928.2188.2448.2688.2918.3148.3368.3568.3768.3968.4148.4338.458.4678.4838.4998.5148.5298.5448.5588.5718.5848.5978.618.6228.6348.6458.6578.6688.6798.6898.6998.7098.7198.7298.7388.7478.7568.7658.7738.7828.798.7988.8068.8148.8218.8298.8368.8438.858.8578.8648.8718.8778.8848.898.8968.9028.9088.9148.928.9268.9318.9378.9438.9488.9538.9588.9648.9698.9748.9798.9838.9888.9938.9989.0029.0079.0119.0169.029.0249.0289.0339.0379.0419.0459.0499.0539.0579.069.0649.0689.0729.0759.0799.0829.0869.0899.0939.0969.19.1039.1069.119.1139.1169.1199.1229.1259.1289.1319.1349.1379.149.1439.1469.1499.1529.1549.1579.169.1639.1659.1689.1719.1739.1769.1789.1819.1839.1869.1889.1919.1939.1969.1989.29.2039.2059.2079.219.2129.2149.2169.2189.2219.2239.2259.2279.2299.2319.2339.2359.2379.2399.2419.2439.2459.2479.2499.2519.253 ; 27.96923.04120.17918.35417.10816.21115.53915.01714.60214.26313.98213.74513.54213.36713.21313.07712.95612.84812.7512.66112.5812.50612.43712.37412.31612.26112.2112.16212.11712.07512.03511.99811.96211.92811.89611.86511.83611.80811.78211.75611.73211.70911.68611.66411.64411.62411.60411.58611.56711.5511.53311.51711.50111.48611.47111.45611.44211.42911.41611.40311.3911.37811.36611.35511.34311.33211.32111.31111.30111.29111.28111.27111.26211.25311.24411.23511.22711.21811.2111.20211.19411.18611.17911.17111.16411.15711.1511.14311.13611.12911.12311.11611.1111.10411.09811.09211.08611.0811.07411.06911.06311.05711.05211.04711.04211.03611.03111.02611.02111.01711.01211.00711.00210.99810.99310.98910.98410.9810.97610.97210.96710.96310.95910.95510.95110.94710.94310.9410.93610.93210.92810.92510.92110.91810.91410.91110.90710.90410.910.89710.89410.8910.88710.88410.88110.87810.87510.87210.86910.86610.86310.8610.85710.85410.85110.84810.84610.84310.8410.83710.83510.83210.82910.82710.82410.82210.81910.81710.81410.81210.80910.80710.80410.80210.810.79710.79510.79310.7910.78810.78610.78410.78210.77910.77710.77510.77310.77110.76910.76710.76510.76310.76110.75910.75710.75510.75310.75110.74910.747]
+```
+
+```r
 df_n <- tibble(
   dist = "normal",
   n = seq(2, 30, length.out = 200),
@@ -1807,17 +2373,11 @@ ggplot(df_dists, aes(color = dist)) +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-26-1.png" width="672" />
 
-
-
 ## Testes de hipóteses
 
-Os testes de hipóteses são utilizados para determinar quais resultados de um estudo científico podem levar à rejeição da hipótese nula (\$H_0\$) a um nível de significância pré–estabelecido. Os testes de hipóteses aqui demonstrados tem como objetivo:
+Os testes de hipóteses são utilizados para determinar quais resultados de um estudo científico podem levar à rejeição da hipótese nula (\$H_0\$) a um nível de significância pré--estabelecido. Os testes de hipóteses aqui demonstrados tem como objetivo:
 
-1) verificar se determinada amostra difrere ou não de zero (${H_0}:\mu = 0$)
-2) Verificar se duas amostras independentes são ou não iguais (${H_0}:{\mu _1} = {\mu _2}$).
-2) Verificar se duas amostras dependentes possuem desvios iguais a zero (${H_0}:d_i = 0$).
-
-
+1\) verificar se determinada amostra difrere ou não de zero (${H_0}:\mu = 0$) 2) Verificar se duas amostras independentes são ou não iguais (${H_0}:{\mu _1} = {\mu _2}$). 2) Verificar se duas amostras dependentes possuem desvios iguais a zero (${H_0}:d_i = 0$).
 
 ### Teste de hipótese para uma amostra
 
@@ -1827,7 +2387,7 @@ $$
 {t_{c(\alpha; \nu)}} = \frac{{\bar Y - \mu }}{{\frac{{{S_Y}}}{{\sqrt n }}}}
 $$
 
-Onde \$\alpha\$ é a probabilidade de erro, \$\nu\$ é o grau de liberdade (nº de amostras menos 1), \$\bar Y\$ é a média da amostra, \$S_y\$ é o desvio padrão da amostra e \$n\$ é o número de amostras.
+Onde \$\\alpha\$ é a probabilidade de erro, \$\\nu\$ é o grau de liberdade (nº de amostras menos 1), \$\\bar Y\$ é a média da amostra, \$S_y\$ é o desvio padrão da amostra e \$n\$ é o número de amostras.
 
 Vamos retornar ao exemplo da altura da turma. A média da amostragem é de 172,6 cm. Digamos que a altura média dos alunos da UFSC é de 165 cm. Pode-se dizer que a estimativa da altura da turma de Bioestatística a 165 cm, considerando uma taxa de erro de 5%?
 
@@ -1840,7 +2400,6 @@ $$
 $$
 H_1:172,6 \ne 165
 $$
-
 
 
 ```r
@@ -1876,14 +2435,13 @@ altura <- df_altura$Altura
 ## [1] 2.093024
 ```
 
-
 $$
 {t_c} = \frac{{172,6 - 165}}{{\frac{{7,63}}{{\sqrt {20} }}}}
 $$
+
 $$
 {t_c} = 4,455
 $$
-
 
 Como o t calculado (4,455) é maior que o t tabelado (2,09), rejeita-se a hipótese nula e afirma-se que a estimativa da média da altura da turma difere de 165 cm. Este mesmo teste pode ser realizado com a função `t.test()`.
 
@@ -1906,8 +2464,6 @@ t.test(altura, mu = 165)
 ## mean of x 
 ##     172.6
 ```
-
-
 
 ### Teste de hipóteses para amostras independentes
 
@@ -1953,7 +2509,7 @@ $$
 S_p^2 = \frac{{\left( {{n_1} - 1} \right)S_{{x_1}}^2 + \left( {{n_2} - 1} \right)S_{{x_2}}^2}}{{{n_1} + {n_2} - 2}}
 $$
 
-Onde \$\bar x_1\$, \$n_1\$ e \$S^2_{x_1}\$ são a média, o tamanho da amostra e a variância para a amostra 1; \$\bar x_2\$, \$n_2\$ e \$S^2_{x_2}\$ são a média, o tamanho da amostra e a variância para a amostra 2. Vamos calcular estas estatísticas para os dados em questão. A estatística de teste é então comparada com o *t* tabelado com 26 (13 + 15 - 2) Graus Liberdade.
+Onde \$\\bar x_1\$, \$n_1\$ e \$S^2\_{x_1}\$ são a média, o tamanho da amostra e a variância para a amostra 1; \$\\bar x_2\$, \$n_2\$ e \$S^2\_{x_2}\$ são a média, o tamanho da amostra e a variância para a amostra 2. Vamos calcular estas estatísticas para os dados em questão. A estatística de teste é então comparada com o *t* tabelado com 26 (13 + 15 - 2) Graus Liberdade.
 
 
 ```r
@@ -1978,7 +2534,6 @@ df_grao |>
 ## [1] 2.055529
 ```
 
-
 Com base nos valores obtidos, a estatística t é obtida com:
 
 $$
@@ -1988,7 +2543,6 @@ $$
 $$
 S_p^2 = 1,067
 $$
-
 
 $$
 {t_c} = \frac{{\left( {10,81 - 8,82} \right)}}{{\sqrt {1,067\left( {\frac{1}{{13}} + \frac{1}{{15}}} \right)} }}
@@ -2020,8 +2574,7 @@ t.test(vermelho, verde, var.equal = TRUE)
 ##  10.81769   8.82000
 ```
 
-
-O pacote [ggstatplot](https://indrajeetpatil.github.io/ggstatsplot/index.html)[^analdata-3] pode ser utilizado para confecionar gráficos que incluem teste de hipóteses.
+O pacote [ggstatplot](https://indrajeetpatil.github.io/ggstatsplot/index.html)\[^analdata-3\] pode ser utilizado para confecionar gráficos que incluem teste de hipóteses.
 
 
 ```r
@@ -2037,23 +2590,21 @@ ggbetweenstats(df_grao,
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-32-1.png" width="672" />
 
-
 ### Teste de hipóteses para amostras dependentes
 
 As formas de comparação discutidas acima consideram as amostras como sendo independentes entre si. Em certas ocasiões, um mesmo indivíduo de uma amostra é medido ao longo do tempo ou avaliado antes ou depois da aplicação de um determinado tratamento.
 
 Assim, nessas ocasiões, é possível avaliar se a diferença média das observações é estatisticamente igual a zero ou não. Se esta diferença for estatisticamente diferente de zero, pode-se afirmar que tal tratamento possui efeito significativo.
 
-A estatística do teste *t* para amostras pareadas é dada por 
+A estatística do teste *t* para amostras pareadas é dada por
 
 $$
 {t_c} = \frac{{\bar D}}{{\frac{{{S_D}}}{{\sqrt n }}}} \sim {t_{\left( {\alpha ,\nu } \right)}}
 $$
 
-Onde \$\bar D\$ é a média das diferenças e \$S_D\$ é o desvio padrão das diferenças.
+Onde \$\\bar D\$ é a média das diferenças e \$S_D\$ é o desvio padrão das diferenças.
 
 > A fim de determinar a eficiência de um medicamento antitérmico, a temperatura corporal (em graus Celsius) de 7 indivíduos foi medida. Em seguida, foi administrado o medicamento e após uma hora a temperatura foi medida novamente.
-
 
 
 ```r
@@ -2103,10 +2654,10 @@ A estatística de teste é dada por:
 $$
 {t_c} = \frac{{-0.928 - 0}}{{\frac{{0,3039}}{{\sqrt {7} }}}}
 $$
+
 $$
 t_c = -8,079
 $$
-
 
 
 ```r
@@ -2150,3 +2701,314 @@ t.test(paired$DIFERENCA, var.equal = TRUE)
 ## -0.9285714
 ```
 
+## Exercícios
+
+### Métodos de mensuração (régua e imagem)
+
+Nos últimos anos, o melhoramento ganhou ferramentas que aumentam a eficiência no desenvolvimento de novas cultivares. Dentre essas, pode-se citar a genotipagem por meio do mapeamento genético e marcadores moleculares, gerando uma infinidade de informações genéticas. No entanto, mesmo com o avanço exponencial desse ramo da ciência, há ainda uma enorme necessidade de obtenção de dados fenotípicos confiáveis [^2].
+
+[^2]: <https://link.springer.com/10.1007/s00122-021-03820-3>
+
+Técnicas que utilizam visão computacional e análise de imagens possibilitam ganho de tempo e, principalmente recursos durante as etapas do melhoramento. Com tais análises, é possível obter grande quantidade de dados em pouco tempo. No entanto, é necessário que tais medidas sejam acuradas, ou seja, representem fidedignamente os valores reais observados. Para validar a obtenção de medidas de comprimento e largura de folhas via imagens, medidas de comprimento e largura de 15 folhas foram obtidas utilizando duas técnicas. A primeira, utilizando análises de imagens no pacote R pliman e a segunda por meio do auxílio de uma régua. Os dados coletados são encontrados a seguir.
+
+
+```r
+library(rio)
+library(metan)
+library(tidyverse)
+
+df <- import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=2115165499",
+             dec = ",")
+df
+```
+
+```
+##    folha metodo comprimento largura
+## 1      1  regua       16.50    6.40
+## 2      2  regua       16.00    4.70
+## 3      3  regua       12.50    3.40
+## 4      4  regua       10.00    4.20
+## 5      5  regua        7.60    3.40
+## 6      6  regua        6.80    3.20
+## 7      7  regua       14.10    6.80
+## 8      8  regua        9.90    4.80
+## 9      9  regua        9.70    4.30
+## 10    10  regua        6.50    2.60
+## 11    11  regua        5.70    2.50
+## 12     1   foto       15.64    6.66
+## 13     2   foto       15.40    4.55
+## 14     3   foto       12.29    3.38
+## 15     4   foto        9.71    4.16
+## 16     5   foto        7.66    3.41
+## 17     6   foto        6.67    3.17
+## 18     7   foto       14.55    6.90
+## 19     8   foto       10.22    4.98
+## 20     9   foto        9.96    4.46
+## 21    10   foto        6.61    2.72
+## 22    11   foto        5.94    2.54
+```
+
+Considerando que as medidas (régua e foto) foram obtidas no mesmo indivíduo, utilize um teste t pareado para testar, a 5% de probabilidade de erro, se o método de mensuração por imagem difere do método manual (por régua) para as variáveis em questão.
+
+
+```r
+# variável comprimento da folha
+# ex
+comp_foto <- df |> subset(metodo == "foto") |> pull(comprimento)
+comp_foto
+```
+
+```
+##  [1] 15.64 15.40 12.29  9.71  7.66  6.67 14.55 10.22  9.96  6.61  5.94
+```
+
+```r
+comp_regua <- df |> subset(metodo == "regua") |> pull(comprimento)
+comp_regua
+```
+
+```
+##  [1] 16.5 16.0 12.5 10.0  7.6  6.8 14.1  9.9  9.7  6.5  5.7
+```
+
+```r
+# calcula a diferença
+dif <- comp_foto - comp_regua
+# realiza um teste t com a diferença
+
+t.test(dif)
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  dif
+## t = -0.48217, df = 10, p-value = 0.6401
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  -0.3321539  0.2139721
+## sample estimates:
+##   mean of x 
+## -0.05909091
+```
+
+```r
+# mesma coisa informando as duas médias com 'paired = TRUE'
+t.test(comprimento ~ metodo, data = df, paired = TRUE)
+```
+
+```
+## 
+## 	Paired t-test
+## 
+## data:  comprimento by metodo
+## t = -0.48217, df = 10, p-value = 0.6401
+## alternative hypothesis: true mean difference is not equal to 0
+## 95 percent confidence interval:
+##  -0.3321539  0.2139721
+## sample estimates:
+## mean difference 
+##     -0.05909091
+```
+
+```r
+# variável largura da folha
+t.test(largura ~ metodo, data = df, paired = TRUE)
+```
+
+```
+## 
+## 	Paired t-test
+## 
+## data:  largura by metodo
+## t = 1.5996, df = 10, p-value = 0.1408
+## alternative hypothesis: true mean difference is not equal to 0
+## 95 percent confidence interval:
+##  -0.02250533  0.13705079
+## sample estimates:
+## mean difference 
+##      0.05727273
+```
+
+### Variáveis espiga de milho
+
+Um experimento visando comparar dois híbridos de milho (H1 e H2) obteve dados da massa de grãos (MGRA) e número de grãos (NGRA) por espiga, apresentados abaixo.
+
+
+```r
+df <- import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=1657403926",
+             dec = ",")
+df
+```
+
+```
+##    HIBRIDO MGRA NGRA
+## 1       H1  219  570
+## 2       H1  280  665
+## 3       H1  224  627
+## 4       H1  243  644
+## 5       H1  289  734
+## 6       H1  203  541
+## 7       H1  148  409
+## 8       H1  246  652
+## 9       H1  129  384
+## 10      H1  246  709
+## 11      H2  226  529
+## 12      H2  208  531
+## 13      H2  132  339
+## 14      H2  125  295
+## 15      H2  224  533
+## 16      H2  113  498
+## 17      H2  122  497
+## 18      H2  114  521
+## 19      H2  119  640
+## 20      H2   61  196
+```
+
+Assumindo que as variáveis MGRA e NGRA seguem uma distribuição normal, utilize um teste t para testar a hipótese de diferença das médias destas variáveis entre os dois híbridos. Após a obtenção dos resultados, realize a interpretação para cada variável.
+
+-   Variável MGRA
+
+
+```r
+t.test(MGRA ~ HIBRIDO, data = df, var.equal = TRUE)
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  MGRA by HIBRIDO
+## t = 3.2725, df = 18, p-value = 0.00423
+## alternative hypothesis: true difference in means between group H1 and group H2 is not equal to 0
+## 95 percent confidence interval:
+##   28.03252 128.56748
+## sample estimates:
+## mean in group H1 mean in group H2 
+##            222.7            144.4
+```
+
+```r
+library(ggstatsplot)
+
+ggbetweenstats(df, 
+               x = HIBRIDO,
+               y = MGRA,
+               plot.type = "box",
+               bf.message = FALSE,
+               var.equal = TRUE)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-39-1.png" width="672" />
+
+-   Variável MGRA
+
+
+```r
+t.test(NGRA ~ HIBRIDO, data = df, var.equal = TRUE)
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  NGRA by HIBRIDO
+## t = 2.3802, df = 18, p-value = 0.02856
+## alternative hypothesis: true difference in means between group H1 and group H2 is not equal to 0
+## 95 percent confidence interval:
+##   15.90901 255.29099
+## sample estimates:
+## mean in group H1 mean in group H2 
+##            593.5            457.9
+```
+
+```r
+ggbetweenstats(df, 
+               x = HIBRIDO,
+               y = NGRA,
+               plot.type = "box",
+               bf.message = FALSE,
+               var.equal = TRUE)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-40-1.png" width="672" />
+
+Considerando os resultados do teste de hipótese, rejeita-se a hipótese nula para as duas variáveis e afirma-se que as médias dos dois híbridos para MGRA e NGRA por espiga são diferentes.
+
+### DAP de eucalipto
+
+Um Engenheiro Florestal realizou mensurações do Diâmetro a Altura do Peito em duas áreas plantadas de eucalipto. Ambas as áreas possuem 05 anos de idade, mas se encontram em diferentes tipos de solo. Após coletar os dados, os seguintes valores foram obtidos:
+
+| Parâmetro        | Área 1 | Área 2 |
+|------------------|--------|--------|
+| \$\\bar X (cm)\$ | 11,5   | 13,6   |
+| S (cm)           | 3      | 5      |
+| n (contagem)     | 23     | 31     |
+
+Com base nessas informações, calcule o intervalo de confiança de 95% para as médias do DAP da área 1 e área 2 e, com base nos intervalos, justifique se a média do DAP das duas áreas pode ser considerada estatisticamente diferente.
+
+
+
+```r
+df <- tibble(
+  area = c("Área 1", "Área 2"),
+  media = c(11.5, 13.6),
+  desvpad = c(3, 5),
+  n = c(20, 31),
+  LI = media - get_ci_t(media, desvpad, n),
+  LS = media + get_ci_t(media, desvpad, n)
+)
+```
+
+```
+## [10.09611.766 ; 12.90415.434]
+## [10.09611.766 ; 12.90415.434]
+```
+
+```r
+df
+```
+
+```
+## # A tibble: 2 × 6
+##   area   media desvpad     n    LI    LS
+##   <chr>  <dbl>   <dbl> <dbl> <dbl> <dbl>
+## 1 Área 1  11.5       3    20  10.1  12.9
+## 2 Área 2  13.6       5    31  11.8  15.4
+```
+
+```r
+# criar o gráfico com os intervalos
+ggplot(df, aes(x = media, y = area)) +
+  geom_errorbar(aes(xmin = LI,
+                    xmax = LS),
+                width = 0.1) +
+  geom_point(size = 3) +
+  labs(x = "Diâmetro a Altura do Peito (cm)",
+       y = "")
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-41-1.png" width="960" />
+
+Considerando que os intervalos de confiança se cruzam, pode-se afirmar que as médias não diferem estatisticamente. Vamos testar esta hipótese utilizando um teste t?. Neste caso, o t calculado é comparado com o t tabelado a 49 (21 + 31 - 2) graus liberdade.
+
+
+```r
+qt(0.975, df = 49)
+```
+
+```
+## [1] 2.009575
+```
+
+
+$$
+{t_c} = \frac{{11,5 - 13,6}}{{\sqrt {\frac{{\left( {20 - 1} \right){3^2} + \left( {31 - 1} \right){5^2}}}{{20 + 31 - 2}} \times \left( {\frac{1}{{20}} + \frac{1}{{31}}} \right)} }}
+$$
+
+
+$$
+{t_c} = 1,688
+$$
+Como o t calculado foi menor que o tabelado, não rejeita-se a hipótese nula de diferença entre as médias, assumindo-se que as médias são estatisticamente iguais.

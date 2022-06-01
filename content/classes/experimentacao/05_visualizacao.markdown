@@ -1,6 +1,6 @@
 ---
 title: Visualização
-linktitle: "10. Visualização de dados"
+linktitle: "5. Visualização de dados"
 toc: true
 type: docs
 date: "2022/03/15"
@@ -10,20 +10,56 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 11
+    weight: 6
+weight: 5
 ---
 
 # Pacotes
 
-```{r collapse=TRUE}
+
+```r
 library(tidyverse)
+## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
+## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
+## ✔ readr   2.1.2     ✔ forcats 0.5.1
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
 library(metan)   
+## Registered S3 method overwritten by 'GGally':
+##   method from   
+##   +.gg   ggplot2
+## |=========================================================|
+## | Multi-Environment Trial Analysis (metan) v1.16.0        |
+## | Author: Tiago Olivoto                                   |
+## | Type 'citation('metan')' to know how to cite metan      |
+## | Type 'vignette('metan_start')' for a short tutorial     |
+## | Visit 'https://bit.ly/pkgmetan' for a complete tutorial |
+## |=========================================================|
+## 
+## Attaching package: 'metan'
+## The following object is masked from 'package:forcats':
+## 
+##     as_factor
+## The following object is masked from 'package:dplyr':
+## 
+##     recode_factor
+## The following object is masked from 'package:tidyr':
+## 
+##     replace_na
+## The following objects are masked from 'package:tibble':
+## 
+##     column_to_rownames, remove_rownames, rownames_to_column
 library(rio) 
 ```
 
 # Introdução
 
+
 > "O gráfico simples trouxe mais informações à mente do analista de dados do que qualquer outro dispositivo." --- John Tukey
+
 
 ## O pacote `ggplot2`
 
@@ -35,21 +71,32 @@ O `ggplot2` é um pacote R para produção de gráficos que diferentemente da ma
 
 A seguir, vamos discutir os aspcetos básicos para a construção de gráficos utilizando o pacote `ggplot2`. A função `arrange_ggplot()` do pacote `metan` foi utilizado aqui para organizar os gráficos em forma de painéis. Os dados contidos na aba *FAT1_CI* do arquivo *dados_biost_exp.xlsx* serão utilizados. Estes dados podem ser carregados pelo seguinte comando.
 
-```{r echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE}
+
+```r
 url <- "http://bit.ly/df_biostat_exp"
 df <- import(url, sheet = "FAT1_CI")
 df <- as_factor(df, DAP, SOM)
 str(df)
 ```
 
+```
+## 'data.frame':	36 obs. of  5 variables:
+##  $ DAP: Factor w/ 3 levels "21","28","35": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ SOM: Factor w/ 3 levels "50","70","100": 1 1 1 1 2 2 2 2 3 3 ...
+##  $ REP: num  1 2 3 4 1 2 3 4 1 2 ...
+##  $ MST: num  4.31 5.25 4.5 4.61 4.12 ...
+##  $ AF : num  847 1607 1320 1567 1206 ...
+```
+
 ## As camadas de um gráfico `ggplot2`
 
 No `ggplot2`, os gráficos são construídos camada por camada (ou, *layers*, em inglês). Neste exemplo, vamos confeccionar um gráfico onde o eixo `x` será representado pela variável `MST` e o eixo `y` pela variável `AF`.
 
-```{r message = FALSE, warning = FALSE, fig.width = 3.5, fig.height = 3.5, fig.align = "center", fig.cap = "Gráfico de dispersão (x e y) padrão. "}
-p1 <- ggplot(df, aes(x = MST, y = AF)) +
-  geom_point()
 
+```r
+p1 <- 
+  ggplot(df, aes(x = MST, y = AF)) +
+  geom_point()
 ```
 
 Este comando criou um gráfico e armazenou no objeto `p1`, que será plotado posteriormente. Observe que o primeiro argumento da função é o data frame onde nossos dados foram armazenados. A função `aes()` descreve como as variáveis são mapeadas (neste caso `MST` no eixo `x` e `AF` no eixo `y`). A função `geom_point()` definiu que a forma geométrica a ser utilizada é baseada em pontos, gerando, assim, um gráfico de dispersão. Isto é tudo que precisa ser feito para a confecção de um gráfico simples.
@@ -60,7 +107,8 @@ Este comando criou um gráfico e armazenou no objeto `p1`, que será plotado pos
 
 Alterar a estética dos gráficos `ggplot2` é uma tarefa relativamente simples. No gráfico anterior, os valores do `MST` e `MST` foram plotados sem nenhum tipo de mapeamento estético. Digamos que marcadores com diferentes cores para cada ambiente poderia nos ajudar a compreender melhor o padrão presente em nossos dados. Vamos confeccionar este gráfico.
 
-```{r message = FALSE, warning = FALSE, fig.width = 8, fig.height = 3, fig.align = "center", fig.cap = "Gráfico de dispersão padrão (p1) e com pontos mapeados por cores para cada nível do fator 'DAP' (p2)."}
+
+```r
 p2 <- 
   ggplot(df, aes(x = MST, y = AF, colour = DAP)) +
   geom_point()
@@ -68,7 +116,8 @@ p2 <-
 
 Ao incluirmos `colour = DAP` dentro da função `aes`, dizemos ao `ggplot` que os pontos devem ser mapeados esteticamente (neste caso utilizando cores) para cada nível do fator `DAP` presente em nossos dados. Digamos que em vez de utilizar diferentes cores, os ambientes deveriam ser representados por diferentes tipos de marcadores (quadrados, triângulo, etc.) Neste caso, o argumento `colour = DAP` deveria ser substituído por `shape = DAP`.
 
-```{r message = FALSE, warning = FALSE, fig.width = 10, fig.height = 3, fig.align = "center", fig.cap = "Gráfico de dispersão padrão (p1) e com pontos mapeados por cores (p2) e marcadores (p3) para cada nível do fator 'DAP'."}
+
+```r
 p3 <- 
   ggplot(df, aes(x = MST, y = AF, shape = DAP)) +
   geom_point()
@@ -79,16 +128,27 @@ arrange_ggplot(p1, p2, p3,
                tag_levels = list(c("p1", "p2", "p3")))
 ```
 
+<div class="figure" style="text-align: center">
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-5-1.png" alt="Gráfico de dispersão padrão (p1) e com pontos mapeados por cores (p2) e marcadores (p3) para cada nível do fator 'DAP'." width="960" />
+<p class="caption">Figure 1: Gráfico de dispersão padrão (p1) e com pontos mapeados por cores (p2) e marcadores (p3) para cada nível do fator 'DAP'.</p>
+</div>
+
 ## Facet (facetas)
 
 Mapeando os diferentes níveis de `DAP` para diferentes cores, incluímos em um único gráfico os dados de todos os dias após o plantio. Mas, e se nosso objetivo fosse realizar um gráfico para cada dia? O `ggplot2` tem uma poderosa ferramenta para isto: as funções `facet_`. Ao utilizar estas funções, o conjunto de dados é subdividido e um gráfico é construído para cada um destes subconjuntos. Vamos ver como elas podem nos ajudar em nosso problema.
 
-```{r message = FALSE, warning = FALSE,fig.width=10, fig.height=4, fig.cap = "Um painel para cada nível da variável DAP"}
+
+```r
 fac1 <- ggplot(df, aes(x = MST, y = AF)) +
   geom_point() +
   facet_wrap(~ DAP)
 fac1
 ```
+
+<div class="figure">
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-6-1.png" alt="Um painel para cada nível da variável DAP" width="960" />
+<p class="caption">Figure 2: Um painel para cada nível da variável DAP</p>
+</div>
 
 Neste exemplo, um gráfico completamente diferente do anterior é gerado com apenas uma simples modificação: excluímos do mapeamento estético o argumento `colour = DAP` e incluímos uma nova função, `facet_wrap(~ DAP)`. Neste caso, informamos que um gráfico deveria ser realizado para cada dia após o plantio.
 
@@ -96,7 +156,8 @@ Neste exemplo, um gráfico completamente diferente do anterior é gerado com ape
 
 Cada gráfico criado com a função `ggplot()` tem um tema padrão. *Tema*, aqui, é toda propriedade relacionada ao aspecto visual do gráfico, que não foi definida na função `aes()` e que pode ser modificada utilizando a função `theme()` (veja `?theme`). O `ggplot2` já conta com alguns temas personalizados para facilitar nosso trabalho. Considerando o exemplo anterior, vamos utilizar a função `theme_bw()` (preto e branco) e a função `theme()` para modificar as propriedades visuais do gráfico.
 
-```{r message = FALSE, warning = FALSE, fig.width = 8, fig.height = 3.5, fig.align = "center", fig.cap = "Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) "}
+
+```r
 fac2 <- ggplot(df, aes(x = MST, y = AF)) +
   geom_point() +
   facet_wrap(~DAP) +
@@ -116,12 +177,17 @@ fac2 <- ggplot(df, aes(x = MST, y = AF)) +
   labs(x = "Rendimento de grãos", y = "Peso hectolitro") 
 
 arrange_ggplot(fac1, fac2, tag_levels = list(c("f1", "f2")))
-
 ```
+
+<div class="figure" style="text-align: center">
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-7-1.png" alt="Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) " width="768" />
+<p class="caption">Figure 3: Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) </p>
+</div>
 
 Os argumentos inseridos dentro das função `theme()` modificaram a aparência do nosso gráfico. Inúmeros outros argumentos são disponíveis, fazendo com que os gráficos originados sejam completamente personalizáveis. Digamos que precisamos confeccionar diversos gráficos e gostaríamos de manter o mesmo tema do gráfico acima. Seria exaustivo e desinteressante informar cada vez estes argumentos para cada gráfico, não? Felizmente, outra poderosa ferramenta proporcionada pelo `ggplot2` é a possibilidade de confeccionarmos nossos próprios temas. Para isto, vamos executar o seguinte comando para criar um tema personalizado (`my_theme()`). Este tema pode então ser aplicado como uma camada adicional a cada gráfico que confecionarmos. Para evitar a necessidade da inclusão deste tema em cada gráfico gerado, iremos definir este tema como padrão utilizando a função `theme_set()`.
 
-```{r message = FALSE, warning = FALSE, fig.width = 5, fig.height = 4.5, fig.align = "center"}
+
+```r
 my_theme <- function () {
   theme_bw() %+replace% # permite que os valores informados possam ser sobescritos
     theme(axis.ticks.length = unit(.2, "cm"),
@@ -132,7 +198,6 @@ my_theme <- function () {
           panel.grid =  element_blank())
 }
 theme_set(my_theme())
-
 ```
 
 ## Geoms (geometria)
@@ -163,7 +228,8 @@ Três importantes geometrias são apresentadas a seguir:
 3.  `geom_abline()` adiciona uma linha diagonal definida por um intercepto e uma inclinação.
 
 
-```{r fig.width=10, fig.height=3}
+
+```r
 g1 <- 
   ggplot(df, aes(MST, AF)) +
   geom_point()
@@ -187,10 +253,12 @@ arrange_ggplot(g1, g2, g3,
                tag_levels = list(c("g1", "g2", "g3")))
 ```
 
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-9-1.png" width="960" />
+
 ### Regressão linear de primeiro grau
 
-```{r message = FALSE, warning = FALSE, fig.width = 10, fig.height = 4, fig.align = "center", fig.cap = "Gráfico de dispersão, combinando pontos e linhas de regressão."}
 
+```r
 l1 <- 
   ggplot(df, aes(x = MST, y = AF)) +
   geom_point() +
@@ -208,13 +276,18 @@ l2 <-
 arrange_ggplot(l1, l2,
                tag_levels = list(c("s1", "s2")),
                widths = c(1, 1.2))
-
 ```
+
+<div class="figure" style="text-align: center">
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-10-1.png" alt="Gráfico de dispersão, combinando pontos e linhas de regressão." width="960" />
+<p class="caption">Figure 4: Gráfico de dispersão, combinando pontos e linhas de regressão.</p>
+</div>
 
 ### Regressão linear polinomial
 
 Para confeccionar um gráfico de regressão polinomial, além do argumento `method = "lm"` (linear model), precisa-se incluir no argumento `formula` a formula utilizada, neste caso, definida utilizando `poly()` (polinomial).
-```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 3, fig.align = "center", fig.cap = "Gráfico de dispersão combinado com inclusão de curvas ajustadas."}
+
+```r
 #### Polinômio de segundo grau
 dado_reg = tibble(dose = c(15,20,25,30,35,40),
                   prod = c(65,70,73,75,69,62))
@@ -235,20 +308,28 @@ q2 <-
 arrange_ggplot(q1, q2, tag_levels = list(c("l1", "l2")))
 ```
 
+<div class="figure" style="text-align: center">
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-11-1.png" alt="Gráfico de dispersão combinado com inclusão de curvas ajustadas." width="672" />
+<p class="caption">Figure 5: Gráfico de dispersão combinado com inclusão de curvas ajustadas.</p>
+</div>
+
 Utilizando a função `plot_lines()` do pacote metan, um gráfico semelhante pode ser criado com
 
-```{r}
+
+```r
 plot_lines(dado_reg, 
            x = dose,
            y = prod,
            fit = 2)
 ```
 
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+
 
 ### Gráficos do tipo boxplot
 
-```{r message = FALSE, warning = FALSE, fig.width = 9, fig.height = 3, fig.align = "center", fig.cap = "Gráfico do tipo boxplot combinando mapeamentos estéticos."}
 
+```r
 box1 <- 
   ggplot(df, aes(x = DAP, y = MST)) +
   geom_boxplot()
@@ -262,12 +343,17 @@ box2 <-
 arrange_ggplot(box1, box2, tag_levels = list(c("b1", "b2")))
 ```
 
+<div class="figure" style="text-align: center">
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-13-1.png" alt="Gráfico do tipo boxplot combinando mapeamentos estéticos." width="864" />
+<p class="caption">Figure 6: Gráfico do tipo boxplot combinando mapeamentos estéticos.</p>
+</div>
+
 Seis estatísticas são mostradas neste boxplot. A mediana (linha horizontal), a média (ponto) as caixas inferior e superior correspondem ao primeiro e terceiro quartil (percentis 25 e 75, respectivamente). A linha vertical superior se estende da caixa até o maior valor, não maior que \$1,5 \times {IQR}\$ (onde IQR é a amplitude interquartílica). A linha vertical inferior se estende da caixa até o menor valor, de no máximo, \$1,5 \times {IQR}\$. Dados além das linhas horizontais podem ser considerados *outliers*.
 
 ### Gráficos do tipo histograma
 
-```{r message = FALSE, warning = FALSE, fig.width = 7, fig.height = 2.5, fig.align = "center", fig.cap = "Gráfico do tipo histograma com estimativas de função de probabilidade kernel e normal."}
 
+```r
 url <- "http://bit.ly/df_biostat_exp"
 df_maize <- import(url, sheet = "maize")
 
@@ -294,12 +380,17 @@ arrange_ggplot(h1, h2,
                tag_levels = list(c("h1", "h2")))
 ```
 
+<div class="figure" style="text-align: center">
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-14-1.png" alt="Gráfico do tipo histograma com estimativas de função de probabilidade kernel e normal." width="672" />
+<p class="caption">Figure 7: Gráfico do tipo histograma com estimativas de função de probabilidade kernel e normal.</p>
+</div>
+
 No histograma (h2), a linha vermelha representa a estimativa da função de probabilidade normal. Para isto, a escala do eixo `y` foi mudada de contagem para densidade.
 
 ### Gráficos do tipo barra
 
-```{r message = FALSE, warning = FALSE, fig.width = 10, fig.height = 3, fig.align = "center", fig.cap = "Gráfico do tipo barras, com mapeamento estético e barras de erro."}
 
+```r
 bar1 <- 
   ggplot(df, aes(x = DAP, y = MST)) +
   geom_bar(stat = "summary",
@@ -325,24 +416,34 @@ arrange_ggplot(bar1, bar2,
                tag_levels = list(c("bar1", "bar2")))
 ```
 
+<div class="figure" style="text-align: center">
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-15-1.png" alt="Gráfico do tipo barras, com mapeamento estético e barras de erro." width="960" />
+<p class="caption">Figure 8: Gráfico do tipo barras, com mapeamento estético e barras de erro.</p>
+</div>
+
 A afirmação de que um gráfico `ggplot2` é feito em camadas fica mais evidente aqui. No gráfico `bar1`, as barras representam as médias geral da MST em cada dia após o plantio. No segundo gráfico, um novo argumento visto (`fill = SOM`). Isto informa que as barras devem ser coloridas para cada nível do fator `SOM`. A função `stat_summary()`, também vista pela primeira vez aqui, foi utilizada no segundo gráfico para substituir a função `geom_bar()`. Com isto, foi possível incluir as médias (`fun = mean` e `geom = "bar`), bem como as barras de erro (`fun.data = mean_se` e `geom = "errorbar"`).
 
 Utilizando a função `plot_factbars()` do pacote metan, um gráfico semelhante pode ser criado com as funções `plot_bars()` e `plot_factbars()`
 
-```{r fig.height=4, fig.width=10}
-metan1 <- plot_bars(df,
-                    x = DAP,
-                    y = MST,
-                    y.lim = c(0, 17),
-                    lab.bar = c("c", "b", "a"))
-metan2 <- plot_factbars(df, DAP, SOM,
-                        resp = MST,
-                        y.lim = c(0, 17))
+
+```r
+metan1 <- 
+  plot_bars(df,
+            x = DAP,
+            y = MST,
+            y.lim = c(0, 17),
+            lab.bar = c("c", "b", "a"))
+metan2 <- 
+  plot_factbars(df, DAP, SOM,
+                resp = MST,
+                y.lim = c(0, 17))
 
 arrange_ggplot(metan1, metan2,
                widths = c(0.6, 1.2),
                tag_levels = list(c("metan1", "metan2")))
 ```
+
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-16-1.png" width="960" />
 
 
 # Referências

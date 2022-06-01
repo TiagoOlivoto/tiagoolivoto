@@ -1,6 +1,6 @@
 ---
 title: Regressão linear
-linktitle: "9. Regressão linear"
+linktitle: "10. Regressão linear"
 toc: true
 type: docs
 date: "2022/03/03"
@@ -10,7 +10,8 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 10
+    weight: 11
+weight: 10
 ---
 
 # Pacotes
@@ -63,7 +64,7 @@ p0 +
        y= "Rendimento de grãos (t/ha)")
 ```
 
-<img src="/classes/experimentacao/09_regressao_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="/classes/experimentacao/10_regressao_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 ```r
 # diversos modelos
@@ -83,7 +84,7 @@ p0 +
 ## `geom_smooth()` using formula 'y ~ x'
 ```
 
-<img src="/classes/experimentacao/09_regressao_files/figure-html/unnamed-chunk-2-2.png" width="672" />
+<img src="/classes/experimentacao/10_regressao_files/figure-html/unnamed-chunk-2-2.png" width="672" />
 
 ```r
 # modelo ajustado com resíduos
@@ -100,7 +101,7 @@ p0 +
 ## `geom_smooth()` using formula 'y ~ x'
 ```
 
-<img src="/classes/experimentacao/09_regressao_files/figure-html/unnamed-chunk-2-3.png" width="672" />
+<img src="/classes/experimentacao/10_regressao_files/figure-html/unnamed-chunk-2-3.png" width="672" />
 
 ```r
 # valores preditos
@@ -158,7 +159,7 @@ p0 +
 ## `geom_smooth()` using formula 'y ~ x'
 ```
 
-<img src="/classes/experimentacao/09_regressao_files/figure-html/unnamed-chunk-2-4.png" width="672" />
+<img src="/classes/experimentacao/10_regressao_files/figure-html/unnamed-chunk-2-4.png" width="672" />
 
 
 
@@ -223,7 +224,7 @@ p0 +
 ## `geom_smooth()` using formula 'y ~ x'
 ```
 
-<img src="/classes/experimentacao/09_regressao_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<img src="/classes/experimentacao/10_regressao_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 
 # Polinômio de segundo grau
@@ -302,7 +303,7 @@ p1 <-
 p1
 ```
 
-<img src="/classes/experimentacao/09_regressao_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="/classes/experimentacao/10_regressao_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 
 
@@ -434,7 +435,7 @@ p1 +
   parse = TRUE) 
 ```
 
-<img src="/classes/experimentacao/09_regressao_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="/classes/experimentacao/10_regressao_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 
 
@@ -479,7 +480,7 @@ cor(df_maize)
 corr_plot(df_maize)
 ```
 
-<img src="/classes/experimentacao/09_regressao_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="/classes/experimentacao/10_regressao_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 
 # Notas da aula prática
@@ -746,7 +747,7 @@ ggplot(df_co2, aes(x, y)) +
 ## `geom_smooth()` using formula 'y ~ x'
 ```
 
-<img src="/classes/experimentacao/09_regressao_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+<img src="/classes/experimentacao/10_regressao_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 
 
 ## Correlação
@@ -1386,7 +1387,7 @@ ggplot(reg_ex, aes(DOSE, RG)) +
 ## `geom_smooth()` using formula 'y ~ x'
 ```
 
-<img src="/classes/experimentacao/09_regressao_files/figure-html/unnamed-chunk-30-1.png" width="672" />
+<img src="/classes/experimentacao/10_regressao_files/figure-html/unnamed-chunk-30-1.png" width="672" />
 
 
 [^1]: FERREIRA, D. F. **Estatistica Basica**. 2. ed. Viçosa, MG.: UFV, 2009

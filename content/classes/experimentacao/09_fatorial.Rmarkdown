@@ -1,6 +1,6 @@
 ---
 title: Experimentos Fatoriais
-linktitle: "8. Experimentos Fatoriais"
+linktitle: "9. Experimentos Fatoriais"
 toc: true
 type: docs
 date: "2022/02/10"
@@ -10,8 +10,8 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 9
-# weight: 3
+    weight: 10
+weight: 9
 ---
 
 # Pacotes

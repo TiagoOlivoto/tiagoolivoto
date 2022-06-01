@@ -1,6 +1,6 @@
 ---
 title: ANOVA - DIC
-linktitle: "7. Delineamento de Blocos Casualizados"
+linktitle: "8. Delineamento de Blocos Casualizados"
 toc: true
 type: docs
 date: "2022/02/10"
@@ -10,7 +10,8 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 8
+    weight: 9
+weight: 8
 ---
 
 
@@ -63,14 +64,14 @@ trats <- c("50", "70", "100")
 sketch(trats, r = 4, pos = "line")
 ```
 
-<img src="/classes/experimentacao/07_dbc_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="/classes/experimentacao/08_dbc_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 ```r
 # casualização em DBC
 sketch(trats, r = 4, design = "DBC", pos = "line")
 ```
 
-<img src="/classes/experimentacao/07_dbc_files/figure-html/unnamed-chunk-2-2.png" width="672" />
+<img src="/classes/experimentacao/08_dbc_files/figure-html/unnamed-chunk-2-2.png" width="672" />
 
 
 
@@ -101,7 +102,7 @@ bloco <- plot_bars(df_dbc, REP, MST)
 arrange_ggplot(trat, bloco)
 ```
 
-<img src="/classes/experimentacao/07_dbc_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="/classes/experimentacao/08_dbc_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 
 # Verificação de outliers
@@ -110,17 +111,17 @@ A função `inspect` do pacote `metan` é utilizada para inspecionar o conjunto 
 
 ```r
 inspect(df_dbc, plot = TRUE)
-## # A tibble: 5 x 9
-##   Variable Class   Missing Levels Valid_n     Min  Median     Max Outlier
-##   <chr>    <chr>   <chr>   <chr>    <int>   <dbl>   <dbl>   <dbl>   <dbl>
-## 1 RAD      factor  No      3           12   NA      NA      NA         NA
-## 2 REP      factor  No      4           12   NA      NA      NA         NA
-## 3 AF_M2    numeric No      -           12    3.65    5.28    6.12       0
-## 4 AF       numeric No      -           12 3648.   5287.   6118.         0
-## 5 MST      numeric No      -           12   10.7    13.6    16.9        0
+## # A tibble: 5 × 10
+##   Variable Class   Missing Levels Valid_n     Min  Median     Max Outlier Text 
+##   <chr>    <chr>   <chr>   <chr>    <int>   <dbl>   <dbl>   <dbl>   <dbl> <lgl>
+## 1 RAD      factor  No      3           12   NA      NA      NA         NA NA   
+## 2 REP      factor  No      4           12   NA      NA      NA         NA NA   
+## 3 AF_M2    numeric No      -           12    3.65    5.28    6.12       0 NA   
+## 4 AF       numeric No      -           12 3648.   5287.   6118.         0 NA   
+## 5 MST      numeric No      -           12   10.7    13.6    16.9        0 NA
 ```
 
-<img src="/classes/experimentacao/07_dbc_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="/classes/experimentacao/08_dbc_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 
 # Estatística descritiva 
@@ -130,8 +131,8 @@ A função `desc_stat()` do pacote `metan` computa estatísticas descritivas par
 
 ```r
 desc_stat(df_dbc)
-## # A tibble: 3 x 9
-##   variable    cv     max    mean  median     min  sd.amo      se      ci
+## # A tibble: 3 × 9
+##   variable    cv     max    mean  median     min  sd.amo      se    ci.t
 ##   <chr>    <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
 ## 1 AF        14.7 6118.   5144.   5287.   3648.   755.    218.    479.   
 ## 2 AF_M2     14.6    6.12    5.14    5.28    3.65   0.753   0.217   0.478
@@ -200,7 +201,7 @@ arrange_ggplot(plot_dbc,
 ```
 
 <div class="figure">
-<img src="/classes/experimentacao/07_dbc_files/figure-html/unnamed-chunk-8-1.png" alt="Comparações entre pares de médias com base no teste Tukey considerando o delineamento inteiramente casualizado (a) e o delineamento de blocos casualizados (b)" width="672" />
+<img src="/classes/experimentacao/08_dbc_files/figure-html/unnamed-chunk-8-1.png" alt="Comparações entre pares de médias com base no teste Tukey considerando o delineamento inteiramente casualizado (a) e o delineamento de blocos casualizados (b)" width="672" />
 <p class="caption">Figure 1: Comparações entre pares de médias com base no teste Tukey considerando o delineamento inteiramente casualizado (a) e o delineamento de blocos casualizados (b)</p>
 </div>
 
@@ -215,7 +216,7 @@ with(df_dbc,
      DBC(RAD, REP, MST))
 ```
 
-<img src="/classes/experimentacao/07_dbc_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="/classes/experimentacao/08_dbc_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 ```
 ## 
@@ -245,7 +246,7 @@ with(df_dbc,
 ## -----------------------------------------------------------------
 ## 
 ## CV (%) =  2.94
-## R-squared =  0.9
+## MStrat/MST =  0.9
 ## Mean =  13.7232
 ## Median =  13.5946
 ## Possible outliers =  No discrepant point
@@ -268,7 +269,7 @@ with(df_dbc,
 ## 50  11.22022      c
 ```
 
-<img src="/classes/experimentacao/07_dbc_files/figure-html/unnamed-chunk-9-2.png" width="672" />
+<img src="/classes/experimentacao/08_dbc_files/figure-html/unnamed-chunk-9-2.png" width="672" />
 
 
 
@@ -384,7 +385,7 @@ with(df_af, DBC(RAD, REP, AF_M2))
 ## -----------------------------------------------------------------
 ## 
 ## CV (%) =  9.44
-## R-squared =  0.81
+## MStrat/MST =  0.81
 ## Mean =  5.1442
 ## Median =  5.285
 ## Possible outliers =  No discrepant point
@@ -419,7 +420,7 @@ with(df_af, DBC(RAD, REP, AF_M2))
 ## test and try to transform the data
 ```
 
-<img src="/classes/experimentacao/07_dbc_files/figure-html/unnamed-chunk-10-1.png" width="672" /><img src="/classes/experimentacao/07_dbc_files/figure-html/unnamed-chunk-10-2.png" width="672" />
+<img src="/classes/experimentacao/08_dbc_files/figure-html/unnamed-chunk-10-1.png" width="672" /><img src="/classes/experimentacao/08_dbc_files/figure-html/unnamed-chunk-10-2.png" width="672" />
 
 ```r
 # AgroR - DIC
@@ -472,7 +473,7 @@ with(df_af, DIC(RAD, AF_M2))
 ## -----------------------------------------------------------------
 ## 
 ## CV (%) =  9.51
-## R-squared =  0.89
+## MStrat/MST =  0.89
 ## Mean =  5.1442
 ## Median =  5.285
 ## Possible outliers =  No discrepant point
@@ -505,6 +506,6 @@ with(df_af, DIC(RAD, AF_M2))
 ## 
 ```
 
-<img src="/classes/experimentacao/07_dbc_files/figure-html/unnamed-chunk-10-3.png" width="672" /><img src="/classes/experimentacao/07_dbc_files/figure-html/unnamed-chunk-10-4.png" width="672" />
+<img src="/classes/experimentacao/08_dbc_files/figure-html/unnamed-chunk-10-3.png" width="672" /><img src="/classes/experimentacao/08_dbc_files/figure-html/unnamed-chunk-10-4.png" width="672" />
 
 

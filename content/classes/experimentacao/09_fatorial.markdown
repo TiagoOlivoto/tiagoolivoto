@@ -1,6 +1,6 @@
 ---
 title: Experimentos Fatoriais
-linktitle: "8. Experimentos Fatoriais"
+linktitle: "9. Experimentos Fatoriais"
 toc: true
 type: docs
 date: "2022/02/10"
@@ -10,8 +10,8 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 9
-# weight: 3
+    weight: 10
+weight: 9
 ---
 
 # Pacotes
@@ -40,7 +40,7 @@ sketch(trat= c("A1", "A2"),
        r = 4)
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 
 
@@ -143,7 +143,7 @@ p3 <-
 arrange_ggplot(p1, p2, p3, guides = "collect")
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-3-1.png" width="960" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-3-1.png" width="960" />
 
 
 ## Modelo estatístico 
@@ -183,7 +183,7 @@ No seguinte gráfico, apresento as médias observadas da extensibilidade nos dif
 plot_factbars(df_fat, NIT, ENX, resp = L)
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 
 ## Verificação de outliers
@@ -192,16 +192,16 @@ A função `inspect` do pacote `metan` é utilizada para inspecionar o conjunto 
 
 ```r
 inspect(df_fat, plot = TRUE)
-## # A tibble: 4 x 9
-##   Variable Class   Missing Levels Valid_n   Min Median   Max Outlier
-##   <chr>    <chr>   <chr>   <chr>    <int> <dbl>  <dbl> <dbl>   <dbl>
-## 1 ENX      factor  No      2           24    NA   NA      NA      NA
-## 2 NIT      factor  No      3           24    NA   NA      NA      NA
-## 3 REP      factor  No      4           24    NA   NA      NA      NA
-## 4 L        numeric No      -           24    67   78.5    96       0
+## # A tibble: 4 × 10
+##   Variable Class   Missing Levels Valid_n   Min Median   Max Outlier Text 
+##   <chr>    <chr>   <chr>   <chr>    <int> <dbl>  <dbl> <dbl>   <dbl> <lgl>
+## 1 ENX      factor  No      2           24    NA   NA      NA      NA NA   
+## 2 NIT      factor  No      3           24    NA   NA      NA      NA NA   
+## 3 REP      factor  No      4           24    NA   NA      NA      NA NA   
+## 4 L        numeric No      -           24    67   78.5    96       0 NA
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 
 ## Estatística descritiva 
@@ -211,8 +211,8 @@ A função `desc_stat()` do pacote `metan` computa estatísticas descritivas par
 
 ```r
 desc_stat(df_fat)
-## # A tibble: 1 x 9
-##   variable    cv   max  mean median   min sd.amo    se    ci
+## # A tibble: 1 × 9
+##   variable    cv   max  mean median   min sd.amo    se  ci.t
 ##   <chr>    <dbl> <dbl> <dbl>  <dbl> <dbl>  <dbl> <dbl> <dbl>
 ## 1 L         10.5    96  80.4   78.5    67   8.43  1.72  3.56
 ```
@@ -253,7 +253,7 @@ plot(medias_fat,
      comparisons = TRUE) # insere setas para comparação de médias (Tukey)
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 
 ## Pacote AgroR
@@ -340,7 +340,7 @@ with(df_fat,
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 ```
 ## 
@@ -379,7 +379,7 @@ sketch(trat= c("A1", "A2"),
        r = 4)
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 
 ## Análise de variância
@@ -491,7 +491,7 @@ with(df_fat,
 ## Error b     12 248.33333  20.69444
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 ```
 ## 
@@ -529,7 +529,7 @@ df_cobmassa
 ```
 
 ```
-## # A tibble: 32 x 6
+## # A tibble: 32 × 6
 ##    NITROGENIO ESPECIE     REP       MV    MS   MSR
 ##    <fct>      <fct>       <fct>  <dbl> <dbl> <dbl>
 ##  1 Sem N      Aveia Preta 1     17939. 3640.  53.2
@@ -542,7 +542,7 @@ df_cobmassa
 ##  8 Sem N      Centeio     4     15220. 3797. 213. 
 ##  9 Sem N      Triticale   1     14700. 2989. 268. 
 ## 10 Sem N      Triticale   2     19146. 3652. 399. 
-## # ... with 22 more rows
+## # … with 22 more rows
 ```
 
 
@@ -556,7 +556,7 @@ desc_stat(df_cobmassa, stats = c("min, mean, max"))
 ```
 
 ```
-## # A tibble: 3 x 4
+## # A tibble: 3 × 4
 ##   variable    min   mean    max
 ##   <chr>     <dbl>  <dbl>  <dbl>
 ## 1 MS       1576.   5053.  7573.
@@ -665,7 +665,7 @@ pcob_mv <-
 arrange_ggplot(pn_mv, pcob_mv)
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-17-1.png" width="960" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-17-1.png" width="960" />
 
 
 
@@ -757,7 +757,7 @@ pcob_ms <-
 arrange_ggplot(pn_ms, pcob_ms)
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-19-1.png" width="960" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-19-1.png" width="960" />
 
 
 
@@ -851,7 +851,7 @@ pcob_msr <-
 arrange_ggplot(pn_msr, pcob_msr)
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-21-1.png" width="960" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-21-1.png" width="960" />
 
 
 
@@ -881,7 +881,7 @@ df_cobsoja
 ```
 
 ```
-## # A tibble: 32 x 7
+## # A tibble: 32 × 7
 ##    ESPECIE     NITROGENIO REP      NL   NGL   MMG    RG
 ##    <fct>       <fct>      <fct> <dbl> <dbl> <dbl> <dbl>
 ##  1 Aveia Preta Sem N      R1     30    2.25   180 3547.
@@ -894,7 +894,7 @@ df_cobsoja
 ##  8 Centeio     Sem N      R4     38    2.39   150 3339.
 ##  9 Triticale   Sem N      R1     35.6  2.46   210 4400 
 ## 10 Triticale   Sem N      R2     32.2  2.42   200 4378.
-## # ... with 22 more rows
+## # … with 22 more rows
 ```
 
 
@@ -907,7 +907,7 @@ desc_stat(df_cobsoja, stats = c("min, mean, max"))
 ```
 
 ```
-## # A tibble: 4 x 4
+## # A tibble: 4 × 4
 ##   variable    min    mean     max
 ##   <chr>     <dbl>   <dbl>   <dbl>
 ## 1 MMG      150     178.    210   
@@ -1079,7 +1079,7 @@ plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
               ylab = "Número de legumes por planta")
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-25-1.png" width="672" />
 
 
 
@@ -1157,7 +1157,7 @@ plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
               ylab = "Número de grãos por legume")
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-27-1.png" width="672" />
 
 
 
@@ -1233,7 +1233,7 @@ plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
               ylab = "Massa de mil grãos (g)")
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-29-1.png" width="672" />
 
 
 #### Variável RG
@@ -1309,7 +1309,7 @@ plot_factbars(df_cobsoja, ESPECIE, NITROGENIO,
               ylab = "RG (kg/ha)")
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-31-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-31-1.png" width="672" />
 
 
 
@@ -1334,7 +1334,7 @@ FAT2_SI
 ```
 
 ```
-## # A tibble: 40 x 4
+## # A tibble: 40 × 4
 ##    BLOCO HIBRIDO DOSEN    RG
 ##    <dbl> <chr>   <dbl> <dbl>
 ##  1     1 NUPEC_1     0  6.9 
@@ -1347,7 +1347,7 @@ FAT2_SI
 ##  8     1 NUPEC_2    50  7.26
 ##  9     1 NUPEC_2    75  7.03
 ## 10     1 NUPEC_2   100  6.69
-## # ... with 30 more rows
+## # … with 30 more rows
 ```
 
 
@@ -1383,7 +1383,7 @@ d <- plot_lines(FAT2_SI, DOSEN, RG,
 arrange_ggplot(h, d, tag_levels = list(c("h", "d")), widths = c(1, 3))
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-34-1.png" width="960" style="display: block; margin: auto;" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-34-1.png" width="960" style="display: block; margin: auto;" />
 
 
 
@@ -1405,7 +1405,7 @@ FAT2_CI
 ```
 
 ```
-## # A tibble: 40 x 4
+## # A tibble: 40 × 4
 ##    BLOCO HIBRIDO DOSEN    RG
 ##    <dbl> <chr>   <dbl> <dbl>
 ##  1     1 NUPEC_1     0 11.2 
@@ -1418,7 +1418,7 @@ FAT2_CI
 ##  8     1 NUPEC_2    50 10.1 
 ##  9     1 NUPEC_2    75 10.9 
 ## 10     1 NUPEC_2   100 11.4 
-## # ... with 30 more rows
+## # … with 30 more rows
 ```
 
 
@@ -1730,7 +1730,7 @@ plot_factbars(FAT2_CI, DOSEN, HIBRIDO,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-37-1.png" alt="Gráfico das médias dos híbridos em cada dose de nitrogênio." width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-37-1.png" alt="Gráfico das médias dos híbridos em cada dose de nitrogênio." width="672" />
 <p class="caption">Figure 1: Gráfico das médias dos híbridos em cada dose de nitrogênio.</p>
 </div>
 
@@ -1873,7 +1873,7 @@ plot_factlines(FAT2_CI, DOSEN, RG,
   parse = TRUE) 
 ```
 
-<img src="/classes/experimentacao/08_fatorial_files/figure-html/unnamed-chunk-41-1.png" width="672" />
+<img src="/classes/experimentacao/09_fatorial_files/figure-html/unnamed-chunk-41-1.png" width="672" />
 
 Observando-se a figura acima, é possível identificar o comportamento quadrático da variável resposta do híbrido *NUPEC\_1*. Para este híbrido, houve um incremento positivo na produtividade até um ponto, posteriormente observa-se que a produtividade tendeu a reduzir. Uma explicação biológica para esta redução seria que o excesso de nitrogênio aplicado proporcionou um alto vigor vegetativo as plantas, podendo ter ocorrido competição entre as plantas por água, luz e outros nutrientes, ou até mesmo tombamento das plantas.
 

@@ -11,6 +11,7 @@ menu:
   experimentacao:
     parent: Experimentação
     weight: 3
+weight: 2
 ---
 
 Uma forma de lidar com grandes conjuntos de dados e identificar informações relevantes é agrupar estes dados. O agrupamento é feito em tabelas, denominadas de distribuições de frequências. A construção de distribuição de frequências é geralmente realizada de forma distinta para variáveis discretas (distribuição por pontos) e contínuas (distribuição por classes ou intervalos).
@@ -22,7 +23,7 @@ Neste exemplo, vamos utilizar os dados coletados do comprimento, diâmetro e cor
 library(tidyverse)
 library(rio)
 library(metan)
-library(leem) # criação dos histogramas 
+
 
 # importar os dados do google sheet
 df <- import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=353032103",

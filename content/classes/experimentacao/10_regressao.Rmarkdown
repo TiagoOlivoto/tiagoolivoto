@@ -1,6 +1,6 @@
 ---
 title: Regressão linear
-linktitle: "9. Regressão linear"
+linktitle: "10. Regressão linear"
 toc: true
 type: docs
 date: "2022/03/03"
@@ -10,7 +10,8 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 10
+    weight: 11
+weight: 10
 ---
 
 # Pacotes

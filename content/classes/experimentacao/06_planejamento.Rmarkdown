@@ -1,6 +1,6 @@
 ---
 title: Visualização
-linktitle: "5. Planejamento de experimentos"
+linktitle: "6. Planejamento de experimentos"
 toc: true
 type: docs
 date: "2022/04/22"
@@ -10,8 +10,8 @@ code_download: true
 menu:
   experimentacao:
     parent: Experimentação
-    weight: 6
-# weight: 1
+    weight: 7
+weight: 6
 ---
 
 Em breve

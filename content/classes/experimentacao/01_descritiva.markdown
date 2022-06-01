@@ -11,7 +11,7 @@ menu:
   experimentacao:
     parent: Experimentação
     weight: 2
-# weight: 1
+weight: 1
 ---
 
 # Pacotes
@@ -355,10 +355,10 @@ desc_stat(altura, stats = "all") |> as.data.frame()
 ```
 
 ```
-##   variable av.dev      ci     cv    gmean    hmean iqr    kurt     mad max
-## 1      val  10.96 17.5905 5.4238 260.8937 260.5887  19 -1.3829 17.7912 280
-##    mean median min n n.valid n.missing n.unique      ps  q2.5 q25 q75 q97.5
-## 1 261.2    262 245 5       5         0        5 14.0741 245.5 250 269 278.9
+##   variable av.dev    ci.t    ci.z     cv    gmean    hmean iqr    kurt     mad
+## 1      val  10.96 17.5905 12.4176 5.4238 260.8937 260.5887  19 -1.3829 17.7912
+##   max  mean median min n n.valid n.missing n.unique      ps  q2.5 q25 q75 q97.5
+## 1 280 261.2    262 245 5       5         0        5 14.0741 245.5 250 269 278.9
 ##   range  sd.amo  sd.pop     se   skew  sum sum.dev ave.dev sum.sq.dev var.amo
 ## 1    35 14.1669 12.6712 6.3356 0.2144 1306    54.8   10.96      802.8   200.7
 ##   var.pop
@@ -401,9 +401,9 @@ str(df)
 ## 'data.frame':	160 obs. of  5 variables:
 ##  $ Grupo           : chr  "Grupo 1" "Grupo 1" "Grupo 1" "Grupo 1" ...
 ##  $ Tipo            : chr  "Folha" "Folha" "Folha" "Folha" ...
-##  $ amostra         : chr  "1" "2" "3" "4" ...
-##  $ Comprimento     : num  18 11.1 12.1 12.1 14.1 15.1 16.1 10 10.3 10.4 ...
-##  $ Largura_diametro: num  6.4 6.41 6.42 6.43 6.44 6.45 6.46 6.47 6.48 6.49 ...
+##  $ Amostra         : chr  "1" "2" "3" "4" ...
+##  $ Comprimento     : num  14 9.4 12.1 12.2 12 12.5 11.4 7.5 9.8 14.5 ...
+##  $ Largura_Diametro: num  6.4 6.41 6.42 6.43 6.44 6.45 6.46 6.47 6.48 6.49 ...
 ```
 
 ```r
@@ -412,13 +412,13 @@ head(df)
 ```
 
 ```
-##     Grupo  Tipo amostra Comprimento Largura_diametro
-## 1 Grupo 1 Folha       1        18.0             6.40
-## 2 Grupo 1 Folha       2        11.1             6.41
+##     Grupo  Tipo Amostra Comprimento Largura_Diametro
+## 1 Grupo 1 Folha       1        14.0             6.40
+## 2 Grupo 1 Folha       2         9.4             6.41
 ## 3 Grupo 1 Folha       3        12.1             6.42
-## 4 Grupo 1 Folha       4        12.1             6.43
-## 5 Grupo 1 Folha       5        14.1             6.44
-## 6 Grupo 1 Folha       6        15.1             6.45
+## 4 Grupo 1 Folha       4        12.2             6.43
+## 5 Grupo 1 Folha       5        12.0             6.44
+## 6 Grupo 1 Folha       6        12.5             6.45
 ```
 
 Os dados foram organziados de maneira que cada fator (grupo e tipo de amostra) estivessem em uma coluna. Isto possibilita o cálculo das estatísticas para cada nível destes fatores. As duas variáveis quantitativas contínuas são: `Comprimento` (o comprimento da folha em cm e o comprimento do grão em mm); e `Largura_diametro` (a largura da folha em cm e o diâmetro do grão em mm). 
@@ -440,10 +440,10 @@ df |>
 ## # A tibble: 4 × 11
 ##   Tipo  variable      mean median range ave.dev var.amo sd.amo    cv    se     n
 ##   <chr> <chr>        <dbl>  <dbl> <dbl>   <dbl>   <dbl>  <dbl> <dbl> <dbl> <dbl>
-## 1 Folha Comprimento  12.2    12.1 13      2.23    8.33   2.89   23.7 0.382    57
-## 2 Folha Largura_dia…  6.16    6.5  1.81   0.605   0.462  0.680  11.0 0.09     57
-## 3 Grao  Comprimento  12.5    12   29.6    3.72   32.1    5.66   45.3 0.558   103
-## 4 Grao  Largura_dia…  8.90    9.1 20.1    2.86   15.9    3.99   44.8 0.393   103
+## 1 Folha Comprimento  12.2   12.1  13      2.23    8.33   2.89   23.7 0.382    57
+## 2 Folha Largura_Dia…  6.16   6.5   1.81   0.605   0.462  0.680  11.0 0.09     57
+## 3 Grao  Comprimento  13.5   12.4  24      3.34   23.9    4.89   36.3 0.482   103
+## 4 Grao  Largura_Dia…  9.53   9.59 18      2.37   11.4    3.38   35.4 0.333   103
 ```
 
 ### Estatísticas por grupo
@@ -461,26 +461,26 @@ df |>
 ## # A tibble: 20 × 12
 ##    Grupo  Tipo  variable  mean median range ave.dev var.amo sd.amo     cv     se
 ##    <chr>  <chr> <chr>    <dbl>  <dbl> <dbl>   <dbl>   <dbl>  <dbl>  <dbl>  <dbl>
-##  1 Grupo… Folha Comprim… 12.6   11.6   8     2.18    6.98   2.64   21.0   0.763 
+##  1 Grupo… Folha Comprim… 11.7   12.2   7     1.43    3.79   1.95   16.7   0.562 
 ##  2 Grupo… Folha Largura…  6.46   6.46  0.11  0.03    0.0013 0.0361  0.559 0.0104
 ##  3 Grupo… Grao  Comprim… 14.3   14.2   4.21  1.05    1.77   1.33    9.28  0.384 
 ##  4 Grupo… Grao  Largura… 10.8   10.2   3.9   1.04    1.81   1.35   12.4   0.388 
-##  5 Grupo… Folha Comprim… 11.6   11.5   0.6   0.144   0.0457 0.214   1.84  0.0872
+##  5 Grupo… Folha Comprim… 11.7   12.2   5.5   2       5.97   2.44   20.9   0.997 
 ##  6 Grupo… Folha Largura…  5.32   5.32  0.05  0.015   0.0003 0.0187  0.351 0.0076
 ##  7 Grupo… Grao  Comprim… 12.9   12.7   6.89  1.57    3.60   1.90   14.7   0.359 
 ##  8 Grupo… Grao  Largura…  9.75   9.37  5.36  1.23    2.06   1.44   14.7   0.271 
-##  9 Grupo… Folha Comprim… 12.4   12.4   1     0.297   0.136  0.369   2.97  0.111 
+##  9 Grupo… Folha Comprim…  9.77  10     7.5   2.07    6.57   2.56   26.2   0.773 
 ## 10 Grupo… Folha Largura…  5.05   5.05  0.1   0.0273  0.0011 0.0332  0.657 0.01  
 ## 11 Grupo… Grao  Comprim… 10.5   10     8     1.75    4.37   2.09   19.9   0.348 
 ## 12 Grupo… Grao  Largura…  6.56   6.5   7     1.17    2.14   1.46   22.3   0.244 
-## 13 Grupo… Folha Comprim… 15.1   14.8   4     0.972   1.30   1.14    7.58  0.286 
+## 13 Grupo… Folha Comprim… 13.1   12.8   8.6   2.02    6.40   2.53   19.3   0.632 
 ## 14 Grupo… Folha Largura…  6.58   6.58  0.15  0.04    0.0023 0.0476  0.724 0.0119
 ## 15 Grupo… Grao  Comprim… 18.2   15.4  21     7.65   70.0    8.37   45.9   1.87  
 ## 16 Grupo… Grao  Largura… 13.5   10.5  11     3.88   18.2    4.27   31.6   0.954 
-## 17 Grupo… Folha Comprim…  8.08   8.5   4.8   1.32    2.61   1.62   20.0   0.467 
+## 17 Grupo… Folha Comprim… 13.9   15.3  10.4   2.42   10.3    3.21   23.0   0.927 
 ## 18 Grupo… Folha Largura…  6.76   6.76  0.11  0.03    0.0013 0.0361  0.534 0.0104
-## 19 Grupo… Grao  Comprim…  1.6    1.6   0.4   0.0857  0.0167 0.129   8.07  0.0488
-## 20 Grupo… Grao  Largura…  1.03   1     0.2   0.0612  0.0057 0.0756  7.35  0.0286
+## 19 Grupo… Grao  Comprim… 16     16     4     0.857   1.67   1.29    8.07  0.488 
+## 20 Grupo… Grao  Largura… 10.3   10     2     0.612   0.571  0.756   7.35  0.286 
 ## # … with 1 more variable: n <dbl>
 ```
 
@@ -589,12 +589,6 @@ library(ggstatsplot)
 ```
 
 ```
-## Registered S3 method overwritten by 'parameters':
-##   method                         from      
-##   format.parameters_distribution datawizard
-```
-
-```
 ## You can cite this package as:
 ##      Patil, I. (2021). Visualizations with statistical details: The 'ggstatsplot' approach.
 ##      Journal of Open Source Software, 6(61), 3167, doi:10.21105/joss.03167
@@ -608,18 +602,6 @@ ggbetweenstats(dados,
                pairwise.comparisons = FALSE,
                results.subtitle = FALSE,
                k = 4)
-```
-
-```
-## Registered S3 methods overwritten by 'effectsize':
-##   method              from      
-##   standardize.Surv    datawizard
-##   standardize.bcplm   datawizard
-##   standardize.clm2    datawizard
-##   standardize.default datawizard
-##   standardize.mediate datawizard
-##   standardize.wbgee   datawizard
-##   standardize.wbm     datawizard
 ```
 
 <img src="/classes/experimentacao/01_descritiva_files/figure-html/unnamed-chunk-22-1.png" width="768" />
