@@ -48,7 +48,7 @@ Vamos ver a distribuição dos valores do comprimento da folha de café, mensura
 ```{r}
 library(rio)
 # link dos dados
-link <- "https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=463165208"
+link <- "https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=1453191616"
 
 # função para importar os dados
 df <-  

@@ -153,10 +153,6 @@ O valor do limite superior não pertence a classe e será contabilizado para a p
 A função `freq_table()` está disponível no pacote metan e é mostrada explicitamente aqui. Ela automatiza o processo de construção de tabelas de frequências, tanto para variáveis qualitativas como quantitativas. Basta informar o conjunto de dados, a variável, e, opcionalmente, o número de classes a ser criado.
 
 
-```r
-freq_table
-```
-
 ## Apresentação tabular
 
 
@@ -167,14 +163,14 @@ knitr::kable(frequencias$freqs)
 
 
 
-|class                       | abs_freq| abs_freq_ac| rel_freq| rel_freq_ac|
-|:---------------------------|--------:|-----------:|--------:|-----------:|
-|8.23 &#124;---  9.95        |        2|           2|     0.07|        0.07|
-|9.95 &#124;---  11.67       |        5|           7|     0.18|        0.25|
-|11.67 &#124;---  13.39      |       10|          17|     0.36|        0.61|
-|13.39 &#124;---  15.11      |        8|          25|     0.29|        0.89|
-|15.11 &#124;---&#124; 16.83 |        3|          28|     0.11|        1.00|
-|Total                       |       28|          28|     1.00|        1.00|
+|class                         | abs_freq| abs_freq_ac| rel_freq| rel_freq_ac|
+|:-----------------------------|--------:|-----------:|--------:|-----------:|
+|8.229 &#124;---  9.952        |        2|           2|    0.071|       0.071|
+|9.952 &#124;---  11.675       |        5|           7|    0.179|       0.250|
+|11.675 &#124;---  13.398      |       10|          17|    0.357|       0.607|
+|13.398 &#124;---  15.121      |        8|          25|    0.286|       0.893|
+|15.121 &#124;---&#124; 16.844 |        3|          28|    0.107|       1.000|
+|Total                         |       28|          28|    1.000|       1.000|
 
 ## Apresentação gráfica
 
@@ -183,7 +179,7 @@ knitr::kable(frequencias$freqs)
 freq_hist(frequencias)
 ```
 
-<img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 # Exemplos discutidos em aula
 
@@ -201,19 +197,19 @@ knitr::kable(freq_cafe$freqs)
 
 
 
-|cor_grao | abs_freq| abs_freq_ac|  rel_freq| rel_freq_ac|
-|:--------|--------:|-----------:|---------:|-----------:|
-|amarelo  |        6|           6| 0.2142857|   0.2142857|
-|verde    |       15|          21| 0.5357143|   0.7500000|
-|vermelho |        7|          28| 0.2500000|   1.0000000|
-|Total    |       28|          28| 1.0000000|   1.0000000|
+|cor_grao | abs_freq| abs_freq_ac| rel_freq| rel_freq_ac|
+|:--------|--------:|-----------:|--------:|-----------:|
+|amarelo  |        6|           6|    0.214|       0.214|
+|verde    |       15|          21|    0.536|       0.750|
+|vermelho |        7|          28|    0.250|       1.000|
+|Total    |       28|          28|    1.000|       1.000|
 
 ```r
 # criar um histograma
 freq_hist(freq_cafe)
 ```
 
-<img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-7-2.png" width="672" />
+<img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 ## Altura da turma
 
@@ -229,17 +225,130 @@ knitr::kable(dist_altura$freqs)
 
 
 
-|class                         | abs_freq| abs_freq_ac| rel_freq| rel_freq_ac|
-|:-----------------------------|--------:|-----------:|--------:|-----------:|
-|154.34 &#124;---  163.67      |        3|           3|     0.15|        0.15|
-|163.67 &#124;---  173         |        7|          10|     0.35|        0.50|
-|173 &#124;---  182.33         |        8|          18|     0.40|        0.90|
-|182.33 &#124;---&#124; 191.66 |        2|          20|     0.10|        1.00|
-|Total                         |       20|          20|     1.00|        1.00|
+|class                           | abs_freq| abs_freq_ac| rel_freq| rel_freq_ac|
+|:-------------------------------|--------:|-----------:|--------:|-----------:|
+|154.333 &#124;---  163.666      |        3|           3|     0.15|        0.15|
+|163.666 &#124;---  172.999      |        7|          10|     0.35|        0.50|
+|172.999 &#124;---  182.332      |        8|          18|     0.40|        0.90|
+|182.332 &#124;---&#124; 191.665 |        2|          20|     0.10|        1.00|
+|Total                           |       20|          20|     1.00|        1.00|
 
 ```r
 # Gráfico
 freq_hist(dist_altura)
 ```
 
+<img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+
+
+# Exercício
+
+1. Considerando os dados dos 5 grupos (classes), disponível na planilha ‘união’ (https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=1453191616), construa e interprete a tabela de frequências, referente ao número de folhas avaliadas em cada grupo (quantitativa discreta). 
+
+
+```r
+df_uniao <- 
+  import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=1453191616",
+         dec = ",")
+
+# filtrar somente folhas
+df_folha <- subset(df_uniao, Tipo == "Folha")
+dist_numfolha <- freq_table(df_folha, var = Grupo)
+knitr::kable(dist_numfolha$freqs)
+```
+
+
+
+|Grupo   | abs_freq| abs_freq_ac| rel_freq| rel_freq_ac|
+|:-------|--------:|-----------:|--------:|-----------:|
+|Grupo 1 |       12|          12|    0.211|       0.211|
+|Grupo 2 |        6|          18|    0.105|       0.316|
+|Grupo 3 |       11|          29|    0.193|       0.509|
+|Grupo 4 |       16|          45|    0.281|       0.789|
+|Grupo 5 |       12|          57|    0.211|       1.000|
+|Total   |       57|          57|    1.000|       1.000|
+
+```r
+# Gráfico
+freq_hist(dist_numfolha)
+```
+
 <img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+
+
+2. Considerando as observações de todos os grupos para a variável quantitativa contínua largura da folha, calcule:
+
+   a. O tamanho da amostra (n): 57
+
+```r
+(n <- nrow(df_folha))
+```
+
+```
+## [1] 57
+```
+   
+   b. O número de classes (k):
+
+```r
+(k <- round(sqrt(n)))
+```
+
+```
+## [1] 8
+```
+   
+   c. A amplitude dos dados:
+
+```r
+(ampl <- range_data(df_folha, Largura_Diametro))
+```
+
+```
+##   Largura_Diametro
+## 1              5.9
+```
+	
+   d. O tamanho da classe
+
+```r
+ampl / (k - 1)
+```
+
+```
+##   Largura_Diametro
+## 1        0.8428571
+```
+
+   e. A tabela de distribuição de frequências contendo as frequências relativas e absolutas de cada classe.
+
+
+
+```r
+dist_largf <- 
+  freq_table(df_folha,
+             var = Largura_Diametro)
+knitr::kable(dist_largf$freqs)
+```
+
+
+
+|class                       | abs_freq| abs_freq_ac| rel_freq| rel_freq_ac|
+|:---------------------------|--------:|-----------:|--------:|-----------:|
+|1.078 &#124;---  1.922      |        1|           1|    0.018|       0.018|
+|1.922 &#124;---  2.764      |        1|           2|    0.018|       0.035|
+|2.764 &#124;---  3.607      |        2|           4|    0.035|       0.070|
+|3.607 &#124;---  4.45       |        5|           9|    0.088|       0.158|
+|4.45 &#124;---  5.294       |       11|          20|    0.193|       0.351|
+|5.294 &#124;---  6.136      |       11|          31|    0.193|       0.544|
+|6.136 &#124;---  6.979      |       23|          54|    0.404|       0.947|
+|6.979 &#124;---&#124; 7.822 |        3|          57|    0.053|       1.000|
+|Total                       |       57|          57|    1.000|       1.000|
+
+```r
+# Gráfico
+freq_hist(dist_largf)
+```
+
+<img src="/classes/experimentacao/02_frequencia_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+

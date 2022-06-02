@@ -103,10 +103,6 @@ O valor do limite superior não pertence a classe e será contabilizado para a p
 
 A função `freq_table()` está disponível no pacote metan e é mostrada explicitamente aqui. Ela automatiza o processo de construção de tabelas de frequências, tanto para variáveis qualitativas como quantitativas. Basta informar o conjunto de dados, a variável, e, opcionalmente, o número de classes a ser criado.
 
-```{r eval = FALSE}
-freq_table
-
-```
 
 ## Apresentação tabular
 
@@ -151,3 +147,60 @@ knitr::kable(dist_altura$freqs)
 # Gráfico
 freq_hist(dist_altura)
 ```
+
+
+# Exercício
+
+1. Considerando os dados dos 5 grupos (classes), disponível na planilha ‘união’ (https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=1453191616), construa e interprete a tabela de frequências, referente ao número de folhas avaliadas em cada grupo (quantitativa discreta). 
+
+```{r}
+df_uniao <- 
+  import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=1453191616",
+         dec = ",")
+
+# filtrar somente folhas
+df_folha <- subset(df_uniao, Tipo == "Folha")
+dist_numfolha <- freq_table(df_folha, var = Grupo)
+knitr::kable(dist_numfolha$freqs)
+
+
+# Gráfico
+freq_hist(dist_numfolha)
+```
+
+
+2. Considerando as observações de todos os grupos para a variável quantitativa contínua largura da folha, calcule:
+
+   a. O tamanho da amostra (n): 57
+```{r}
+(n <- nrow(df_folha))
+```
+   
+   b. O número de classes (k):
+```{r}
+(k <- round(sqrt(n)))
+```
+   
+   c. A amplitude dos dados:
+```{r}
+(ampl <- range_data(df_folha, Largura_Diametro))
+```
+	
+   d. O tamanho da classe
+```{r}
+ampl / (k - 1)
+```
+
+   e. A tabela de distribuição de frequências contendo as frequências relativas e absolutas de cada classe.
+
+
+```{r}
+dist_largf <- 
+  freq_table(df_folha,
+             var = Largura_Diametro)
+knitr::kable(dist_largf$freqs)
+
+# Gráfico
+freq_hist(dist_largf)
+```
+
