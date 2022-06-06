@@ -18,6 +18,9 @@ weight: 3
 
 
 
+<a class="btn btn-success" href="https://github.com/TiagoOlivoto/tiagoolivoto/tree/master/static/tutorials/r_quick_tips/003_import" target="_blank"><i class="fab fa-github"></i> Código fonte</a>
+
+
 <!-- # Tutorial -->
 
 <!-- <iframe width="760" height="430" src="https://www.youtube.com/embed/8B8QDZnDhtY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
