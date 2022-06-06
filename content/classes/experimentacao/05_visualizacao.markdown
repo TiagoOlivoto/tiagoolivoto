@@ -14,6 +14,9 @@ menu:
 weight: 5
 ---
 
+<a class="btn btn-success" href="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/content/classes/experimentacao/05_visualizacao.Rmarkdown" target="_blank"><i class="fab fa-github"></i> Códigos</a>
+
+
 # Pacotes
 Para reprodução destes exemplos, os seguintes pacotes são necessários:
 
@@ -622,10 +625,7 @@ ggplot() +
 
 <img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 
-### Vento
-
-
-# Velocidade média do vento 
+### Velocidade média do vento 
 
 
 ```r
@@ -665,7 +665,7 @@ ggplot(vento_long, aes(m, value, color = name, group = name )) +
 
 
 
-# Direção do vento
+### Direção do vento
 
 ```r
 freq <- 
