@@ -144,7 +144,7 @@ Neste exemplo, um gráfico completamente diferente do anterior é gerado com ape
 
 Cada gráfico criado com a função `ggplot()` tem um tema padrão. *Tema*, aqui, é toda propriedade relacionada ao aspecto visual do gráfico, que não foi definida na função `aes()` e que pode ser modificada utilizando a função `theme()` (veja `?theme`). O `ggplot2` já conta com alguns temas personalizados para facilitar nosso trabalho. Considerando o exemplo anterior, vamos utilizar a função `theme_bw()` (preto e branco) e a função `theme()` para modificar as propriedades visuais do gráfico.
 
-```{r message = FALSE, warning = FALSE, fig.width = 8, fig.height = 10, fig.align = "center", fig.cap = "Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) "}
+```{r message = FALSE, warning = FALSE, fig.width = 8, fig.height = 8, fig.align = "center", fig.cap = "Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) "}
 fac2 <- 
   ggplot(df, aes(x = comprimento, y = largura, color = cor)) +
   geom_point() +
@@ -237,7 +237,7 @@ arrange_ggplot(g1, g2,
 
 ### Gráficos do tipo boxplot
 
-```{r message = FALSE, warning = FALSE, fig.width = 9, fig.height = 5, fig.align = "center", fig.cap = "Gráfico do tipo boxplot combinando mapeamentos estéticos."}
+```{r message = FALSE, warning = FALSE, fig.width = 9, fig.height = 8, fig.align = "center", fig.cap = "Gráfico do tipo boxplot combinando mapeamentos estéticos."}
 
 box1 <- 
   ggplot(df, aes(grupo, comprimento)) +
@@ -266,7 +266,7 @@ Cinco estatísticas são mostradas neste boxplot. A mediana (linha horizontal), 
 ### Gráficos do tipo histograma
 Neste exemplo, utilizaremos os dados de temperatura mínima da estação meteorológica, disponível no data frame `df_estacao`. O primeiro histograma (p1) mostra os dados gerais desde 01/01/2022. No segundo,  um histograma é gerado para cada mês.
 
-```{r message = FALSE, warning = FALSE, fig.width = 10, fig.height = 10, fig.align = "center", fig.cap = "Gráfico do tipo histograma "}
+```{r message = FALSE, warning = FALSE, fig.width = 10, fig.height = 5, fig.align = "center", fig.cap = "Gráfico do tipo histograma "}
 
 h1 <- 
   ggplot(df_estacao, aes(x = tmed)) +
@@ -295,7 +295,7 @@ No terceiro exemplo (d3), eu mostro como é possível construir um gráfico de d
 
 [^2]: https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
 
-```{r message = FALSE, warning = FALSE, fig.width = 10, fig.height = 10, fig.align = "center", fig.cap = "Gráfico do tipo densidade "}
+```{r message = FALSE, warning = FALSE, fig.width = 10, fig.height = 8, fig.align = "center", fig.cap = "Gráfico do tipo densidade "}
 
 d1 <- 
   ggplot(df_estacao, aes(x = tmed)) +
