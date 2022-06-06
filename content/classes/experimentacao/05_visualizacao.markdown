@@ -18,7 +18,7 @@ weight: 5
 
 
 # Pacotes
-Para reprodução destes exemplos, os seguintes pacotes são necessários:
+Para reprodução destes exemplos, os seguintes pacotes precisam ser instalados do github
 
 
 ```r
@@ -32,55 +32,17 @@ Antes de carregar, verifique se o pacote está instalado.
 
 ```r
 library(tidyverse)
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
-## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
-## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
-## ✔ readr   2.1.2     ✔ forcats 0.5.1
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
 library(metan)   
-## Registered S3 method overwritten by 'GGally':
-##   method from   
-##   +.gg   ggplot2
-## |=========================================================|
-## | Multi-Environment Trial Analysis (metan) v1.16.0        |
-## | Author: Tiago Olivoto                                   |
-## | Type 'citation('metan')' to know how to cite metan      |
-## | Type 'vignette('metan_start')' for a short tutorial     |
-## | Visit 'https://bit.ly/pkgmetan' for a complete tutorial |
-## |=========================================================|
-## 
-## Attaching package: 'metan'
-## The following object is masked from 'package:forcats':
-## 
-##     as_factor
-## The following object is masked from 'package:dplyr':
-## 
-##     recode_factor
-## The following object is masked from 'package:tidyr':
-## 
-##     replace_na
-## The following objects are masked from 'package:tibble':
-## 
-##     column_to_rownames, remove_rownames, rownames_to_column
 library(rio)
 library(ggridges)
 library(rnaturalearth)
 library(ggradar)
 library(lubridate)
-## 
-## Attaching package: 'lubridate'
-## The following objects are masked from 'package:base':
-## 
-##     date, intersect, setdiff, union
 ```
 
 # Dados
 ## Grãos de café
 Os dados contidos na aba `graos` do arquivo [`Atividade caracteres qualitativos e quantitativos`](https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=2073179916) serão utilizados. Este arquivo contém dados do comprimento e largura de grãos e folhas de café, amostrados na primeira aula de Bioestatística da turma 2022/01. Para carregar estes dados, utilizamos o seguinte comando.
-
 
 
 
@@ -149,10 +111,26 @@ No `ggplot2`, os gráficos são construídos camada por camada (ou, *layers*, em
 
 
 ```r
+ggplot(df, aes(comprimento, largura)) +
+  geom_point()
+```
+
+<div class="figure" style="text-align: center">
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-5-1.png" alt="Gráfico de dispersão (x e y) padrão. " width="480" />
+<p class="caption">Figure 1: Gráfico de dispersão (x e y) padrão. </p>
+</div>
+
+```r
 p1 <- 
   ggplot(df, aes(x = comprimento, y = largura)) +
   geom_point()
+p1
 ```
+
+<div class="figure" style="text-align: center">
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-5-2.png" alt="Gráfico de dispersão (x e y) padrão. " width="480" />
+<p class="caption">Figure 2: Gráfico de dispersão (x e y) padrão. </p>
+</div>
 
 Este comando criou um gráfico e armazenou no objeto `p1`, que será plotado posteriormente. Observe que o primeiro argumento da função é o data frame onde nossos dados foram armazenados. A função `aes()` descreve como as variáveis são mapeadas (neste caso `comprimento` no eixo `x` e `largura` no eixo `y`). A função `geom_point()` definiu que a forma geométrica a ser utilizada é baseada em pontos, gerando, assim, um gráfico de dispersão. Isto é tudo que precisa ser feito para a confecção de um gráfico simples.
 
@@ -165,22 +143,21 @@ Alterar a estética dos gráficos `ggplot2` é uma tarefa relativamente simples.
 
 ```r
 p2 <- 
-  ggplot(df, aes(x = comprimento, y = largura, colour = cor)) +
+  ggplot(df, aes(x = comprimento,
+                 y = largura,
+                 colour = cor)) +
   geom_point()
 p2
 ```
 
-<div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-6-1.png" alt="Gráfico de dispersão padrão (p1) e com pontos mapeados por cores para cada nível do fator 'DAP' (p2)." width="768" />
-<p class="caption">Figure 1: Gráfico de dispersão padrão (p1) e com pontos mapeados por cores para cada nível do fator 'DAP' (p2).</p>
-</div>
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-6-1.png" width="960" style="display: block; margin: auto;" />
 
 Ao incluirmos `colour = cor` dentro da função `aes`, dizemos ao `ggplot` que os pontos devem ser mapeados esteticamente (neste caso utilizando cores) para cada nível do fator `cor` presente em nossos dados. Digamos que em vez de utilizar diferentes cores, a cor do grão do café deveria ser representada por diferentes tipos de marcadores (quadrados, triângulo, etc.) Neste caso, o argumento `colour = cor` é substituído por `shape = cor`.
 
 
 ```r
 p3 <- 
-  ggplot(df, aes(x = comprimento, y = largura, shape = cor)) +
+  ggplot(df, aes(x = comprimento, y = largura, shape = cor, color = cor)) +
   geom_point()
 
 # organizar os gráficos
@@ -190,8 +167,8 @@ arrange_ggplot(p1, p2, p3,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-7-1.png" alt="Gráfico de dispersão padrão (p1) e com pontos mapeados por cores (p2) e marcadores (p3) para cada nível do fator 'cor'." width="960" />
-<p class="caption">Figure 2: Gráfico de dispersão padrão (p1) e com pontos mapeados por cores (p2) e marcadores (p3) para cada nível do fator 'cor'.</p>
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-7-1.png" alt="Gráfico de dispersão padrão (p1) e com pontos mapeados por cores (p2) e marcadores (p3) para cada nível do fator 'cor'." width="768" />
+<p class="caption">Figure 3: Gráfico de dispersão padrão (p1) e com pontos mapeados por cores (p2) e marcadores (p3) para cada nível do fator 'cor'.</p>
 </div>
 
 ## Facet (facetas)
@@ -201,15 +178,17 @@ Mapeando os diferentes níveis de `cor` para diferentes cores, incluímos em um 
 
 ```r
 fac1 <- 
-  ggplot(df, aes(x = comprimento, y = largura, color = cor)) +
+  ggplot(df, aes(x = comprimento,
+                 y = largura,
+                 color = cor)) +
   geom_point() +
   facet_wrap(~ grupo)
 fac1
 ```
 
 <div class="figure">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-8-1.png" alt="Um painel para cada nível da variável DAP" width="960" />
-<p class="caption">Figure 3: Um painel para cada nível da variável DAP</p>
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-8-1.png" alt="Um painel para cada nível da variável grupo." width="960" />
+<p class="caption">Figure 4: Um painel para cada nível da variável grupo.</p>
 </div>
 
 Neste exemplo, um gráfico completamente diferente do anterior é gerado com apenas uma simples adição: incluímos uma nova função, `facet_wrap(~ grupo)`. Neste caso, informamos que um gráfico deveria ser realizado para cada grupo.
@@ -228,6 +207,8 @@ fac2 <-
   theme(panel.grid.minor = element_blank(), # remove as linhas do corpo do gráfico
         # sem bordas entre os painéis
         panel.spacing = unit(0, "cm"),
+        # legenda abaixo do gráfico
+        legend.position = "bottom",
         # modifica o texto dos eixos
         axis.text = element_text(size = 12, colour = "black"),
         # cor dos marcadores
@@ -239,14 +220,16 @@ fac2 <-
   # título dos eixos
   labs(x = "Comprimento do grão (mm)", # título do eixo x
        y = "Largura do grão (mm)", # título do eixo y
-       color = "Cor do grão") # título da legenda
+       color = "") # título da legenda
 
-arrange_ggplot(fac1, fac2, tag_levels = list(c("f1", "f2")))
+arrange_ggplot(fac1, fac2,
+               ncol = 1,
+               tag_levels = list(c("f1", "f2")))
 ```
 
 <div class="figure" style="text-align: center">
 <img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-9-1.png" alt="Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) " width="768" />
-<p class="caption">Figure 4: Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) </p>
+<p class="caption">Figure 5: Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) </p>
 </div>
 
 Os argumentos inseridos dentro das função `theme()` modificaram a aparência do nosso gráfico. Inúmeros outros argumentos são disponíveis, fazendo com que os gráficos originados sejam completamente personalizáveis. Digamos que precisamos confeccionar diversos gráficos e gostaríamos de manter o mesmo tema do gráfico acima. Seria exaustivo e desinteressante informar cada vez estes argumentos para cada gráfico, não? Felizmente, outra poderosa ferramenta proporcionada pelo `ggplot2` é a possibilidade de confeccionarmos nossos próprios temas. Para isto, vamos executar o seguinte comando para criar um tema personalizado (`my_theme()`). Este tema pode então ser aplicado como uma camada adicional a cada gráfico que confecionarmos. Para evitar a necessidade da inclusão deste tema em cada gráfico gerado, iremos definir este tema como padrão utilizando a função `theme_set()`.
@@ -299,20 +282,19 @@ g1 <-
   ggplot(df, aes(comprimento, largura)) +
   geom_point()
 
+
 # adiciona linhas horizontais e verticais
 g2 <- 
   g1 +
   geom_hline(yintercept = mean(df$largura), color = "blue") +
   geom_vline(xintercept = mean(df$comprimento), color = "red")
 
-
-
-
 arrange_ggplot(g1, g2,
+               ncol = 1,
                tag_levels = list(c("g1", "g2")))
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-11-1.png" width="960" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-11-1.png" width="768" />
 
 ### Gráficos do tipo boxplot
 
@@ -332,6 +314,7 @@ box3 <-
   geom_boxplot(width = 0.3) + 
   labs(x = "Grupo",
        y = "Comprimento do grão (mm)") +
+  theme(legend.position = "bottom") +
   scale_fill_manual(values = c("green", "red"))
 
 arrange_ggplot((box1 + box2) / box3,
@@ -340,7 +323,7 @@ arrange_ggplot((box1 + box2) / box3,
 
 <div class="figure" style="text-align: center">
 <img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-12-1.png" alt="Gráfico do tipo boxplot combinando mapeamentos estéticos." width="864" />
-<p class="caption">Figure 5: Gráfico do tipo boxplot combinando mapeamentos estéticos.</p>
+<p class="caption">Figure 6: Gráfico do tipo boxplot combinando mapeamentos estéticos.</p>
 </div>
 
 Cinco estatísticas são mostradas neste boxplot. A mediana (linha horizontal), as caixas inferior e superior (primeiro e terceiro quartil (percentis 25 e 75, respectivamente)). A linha vertical superior se estende da caixa até o maior valor, não maior que \$1,5 \times {IQR}\$ (onde IQR é a amplitude interquartílica). A linha vertical inferior se estende da caixa até o menor valor, de no máximo, \$1,5 \times {IQR}\$. Dados além das linhas horizontais podem ser considerados *outliers*.
@@ -353,7 +336,6 @@ Neste exemplo, utilizaremos os dados de temperatura mínima da estação meteoro
 h1 <- 
   ggplot(df_estacao, aes(x = tmed)) +
   geom_histogram()
-
 
 h2 <- 
   ggplot(df_estacao, aes(x = tmed)) +
@@ -369,8 +351,8 @@ arrange_ggplot(h1, h2,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-13-1.png" alt="Gráfico do tipo histograma " width="672" />
-<p class="caption">Figure 6: Gráfico do tipo histograma </p>
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-13-1.png" alt="Gráfico do tipo histograma " width="960" />
+<p class="caption">Figure 7: Gráfico do tipo histograma </p>
 </div>
 
 No histograma (h2), a linha vermelha representa a estimativa da função de probabilidade normal. Para isto, a escala do eixo `y` foi mudada de contagem para densidade.
@@ -405,14 +387,14 @@ d3 <-
        y = "Meses do ano",
        fill = "Temperatura\nmédia (ºC)")
 
-arrange_ggplot(d1, d2, d3,
-               widths = c(1, 2, 2),
+# agrupa os gráficos
+arrange_ggplot((d1 + d2) / d3,
                tag_levels = list(c("d1", "d2", "d3")))
 ```
 
 <div class="figure" style="text-align: center">
 <img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-14-1.png" alt="Gráfico do tipo densidade " width="960" />
-<p class="caption">Figure 7: Gráfico do tipo densidade </p>
+<p class="caption">Figure 8: Gráfico do tipo densidade </p>
 </div>
 
 ### Gráficos de linhas
@@ -453,11 +435,14 @@ clima_max_min
 
 
 
-
 ```r
-clima_max_min |> 
-  subset(name != "precip") |> 
-  ggplot(aes(dia, value, color = name)) +
+# realiza um subset para remover a precipitação
+df_temp <-  
+  clima_max_min |>  
+  subset(name != "precip")
+
+# faz o gráfico de linhas
+ggplot(df_temp, aes(dia, value, color = name)) +
   geom_point() + 
   geom_line() + 
   scale_color_manual(values = c("red", "green", "blue"),
@@ -465,9 +450,10 @@ clima_max_min |>
                                 "Temperatura média (ºC)",
                                 "Temperatura mínima (ºC)"),
                      guide = "legend") + 
-  scale_x_date(date_breaks = "2 week", # marcação a cada duas semanas
+  scale_x_date(date_breaks = "3 week", # marcação a cada duas semanas
                date_labels = "%d/%m/%y") + # formato dd/mm/aa
-  theme(legend.position = "bottom") + 
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) + 
   labs(title = "Temperaturas máximas, médias e mínimas em 2022",
        subtitle = "Estação - Fazenda Ressacada",
        caption = "Elaboração: Prof. Olivoto",
@@ -499,6 +485,7 @@ bar2 <-
                width = 0.2,
                position = position_dodge(0.8))
 
+
 arrange_ggplot(bar1, bar2,
                widths = c(0.6, 1.2),
                tag_levels = list(c("bar1", "bar2")))
@@ -506,7 +493,7 @@ arrange_ggplot(bar1, bar2,
 
 <div class="figure" style="text-align: center">
 <img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-17-1.png" alt="Gráfico do tipo barras, com mapeamento estético e barras de erro." width="960" />
-<p class="caption">Figure 8: Gráfico do tipo barras, com mapeamento estético e barras de erro.</p>
+<p class="caption">Figure 9: Gráfico do tipo barras, com mapeamento estético e barras de erro.</p>
 </div>
 
 A afirmação de que um gráfico `ggplot2` é feito em camadas fica mais evidente aqui. No gráfico `bar1`, as barras representam as médias geral do `comprimento` para cada grupo. No segundo gráfico, ao usar `fill = cor` informamos que as barras devem ser coloridas para cada nível do fator `cor`. A função `stat_summary()`, é vista pela primeira vez aqui, foi utilizada no segundo gráfico para substituir a função `geom_bar()`. Com isto, foi possível incluir as médias (`fun = mean` e `geom = "bar`), bem como as barras de erro (`fun.data = mean_se` e `geom = "errorbar"`).
@@ -612,18 +599,24 @@ ggplot() +
   geom_line(df_prec, 
             mapping = aes(x = dia, y = min, colour = "blue"),
             size = 1) +
-  scale_x_date(date_breaks = "7 days", date_labels =  "%d/%m")+
+  scale_x_date(date_breaks = "15 days", date_labels =  "%d/%m",
+               expand = expansion(c(0, 0)))+
   scale_y_continuous(name = expression("Temperatura ("~degree~"C)"),
                      sec.axis = sec_axis(~ . * 100 / 30 , name = "Precipitação (mm)")) +
   theme(legend.position = "bottom",
-        legend.title = element_blank()) +
+        legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
   scale_color_identity(breaks = c("red", "blue"),
                        labels = c("Temperatura máxima (ºC)",
                                   "Temperatura mínima (ºC)"),
-                       guide = "legend")
+                       guide = "legend") +
+  labs(x = "Dia do ano")
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+<div class="figure">
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-19-1.png" alt="Temperaturas máximas e mínimas e precipitação observada ao longo dos dias." width="960" />
+<p class="caption">Figure 10: Temperaturas máximas e mínimas e precipitação observada ao longo dos dias.</p>
+</div>
 
 ### Velocidade média do vento 
 
@@ -634,7 +627,16 @@ vento_long <-
   df_estacao %>%
   select(m, hora, velvent) %>% 
   pivot_longer(-c(m, hora))
-
+head(vento_long)
+## # A tibble: 6 × 4
+##   m     hora  name    value
+##   <chr> <chr> <chr>   <dbl>
+## 1 1     00:00 velvent  0   
+## 2 1     01:00 velvent  0   
+## 3 1     02:00 velvent  0   
+## 4 1     03:00 velvent  0   
+## 5 1     04:00 velvent  0   
+## 6 1     05:00 velvent  0.33
 
 
 
@@ -653,8 +655,8 @@ ggplot(vento_long, aes(m, value, color = name, group = name )) +
         legend.title = element_blank(),
         axis.title = element_text(size = 12),
         axis.text = element_text(size = 12)) + 
-  labs(title = "Velocidade média mensal do vento em 2020",
-       subtitle = "Estação INMET - UFSM-FW",
+  labs(title = "Velocidade média mensal do vento em 2022",
+       subtitle = "Estação UFSC - Ressacada",
        caption = "Elaboração: Prof. Tiago Olivoto",
        x = "Mês do ano",
        y = "Velocidade (m/s)")
@@ -668,6 +670,8 @@ ggplot(vento_long, aes(m, value, color = name, group = name )) +
 ### Direção do vento
 
 ```r
+# cria uma tabela de frequência transformando a variável quantitativa direção do vento
+# em uma qualitativa 
 freq <- 
   cut(df_estacao$dirvent, breaks = seq(0, 360, by = 45)) |> 
   table() |> 
@@ -691,7 +695,7 @@ freq
 # criar um radar plot para mostrar a direção predominante
 # do vento
 ggradar(freq %>% transpose_df(),
-        values.radar = c("0%", "0%", "25.8%"),
+        values.radar = c("0%",  "25.8%"),
         grid.max = max(freq$Percent))
 ```
 
