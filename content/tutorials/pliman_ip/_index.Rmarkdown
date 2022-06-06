@@ -1,5 +1,5 @@
 +++
-title = "Lights, camera, pliman! An R package for plant image analysis [Português]"
+title = "Lights, camera, pliman! An R package for plant image analysis [English]"
 linktitle = "The R package {pliman}"
 summary = "The pliman package offers a flexible, intuitive and richly documented working environment for image-based phenotyping, being an interesting alternative to free and commercial ‘point-and-click’ solutions. R users will find the package fairly easy to use and will be surprised at how the setting of a few arguments will allow processing thousands of images while they enjoy a cup of coffee."
 date = "2021/09/28"

@@ -1,0 +1,118 @@
+---
+title: Importação e exportação de dados
+linktitle: "3. Importação de dados"
+toc: true
+type: docs
+date: "2021/11/25"
+lastmod: "2021/11/25"
+draft: false
+df_print: paged
+code_download: true
+menu:
+  rqt:
+    parent: rqt
+    weight: 4
+weight: 3
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/r_quick_tips")
+```
+
+
+<!-- # Tutorial -->
+
+<!-- <iframe width="760" height="430" src="https://www.youtube.com/embed/8B8QDZnDhtY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+
+
+
+# Diretório e pacotes
+O pacote [`rio`](https://cran.r-project.org/web/packages/rio/index.html) é um pacote R relativamente recente utilizado para importação e exportação de dados. Ele faz suposições sobre o formato do arquivo ([veja os formatos suportados aqui](https://www.rdocumentation.org/packages/rio/versions/0.5.29)), ou seja, adivinha o formato do arquivo que você está tentando importar e, consequentemente, aplica funções de importação apropriadas a esse formato. Tudo isso é feito com a função `import()`.
+
+O primeiro passo sugerido é definir o diretório de trabalho para a pasta dos arquivos. É razoável assumir que se o arquivo está em uma determinada pasta, esta pasta conterá seus scripts e saídas.
+
+```{r}
+# definir diretório
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/r_quick_tips")
+library(rio)
+```
+
+
+# Importar
+## Do excel
+### Um arquivo
+```{r}
+# primeira planilha do excel
+df_excel <- import("df_excel.xlsx")
+df_excel
+
+# uma planilha específica
+# converter para tible
+df_excel2 <- 
+  import("df_excel.xlsx",
+         sheet = "traits",
+         setclass = "tbl")
+df_excel2
+```
+
+### Vários arquivos 
+
+```{r}
+padrao <- list.files(pattern = "df_excel")
+df_lista <- import_list(file = padrao)
+str(df_lista)
+df_lista_bind <- import_list(file = padrao, rbind = TRUE)
+df_lista_bind
+```
+
+## Planilha separada por vírgulas
+```{r}
+df_csv <- import("df_csv.csv")
+df_csv
+```
+
+
+## Arquivos de texto
+```{r}
+df_txt <- import("df_txt.txt")
+df_txt
+```
+
+
+## Google sheets
+```{r}
+url <- "https://docs.google.com/spreadsheets/d/1b-Sj9l-VwJ-Oy-hFx7j8twsA5oC6-Fr9ukllywfim0E"
+df_gsheet <- import(url)
+df_gsheet
+```
+
+
+
+
+# Exportar
+```{r}
+# exportar para excel
+export(df_excel, "exportado.xlsx")
+# exportar para txt
+export(df_excel, "exportado.txt")
+# exportar para csv
+export(df_excel, "exportado.csv")
+
+# exportar várias planilhas para um arquivo
+export(
+  list(
+    plan1 = df_excel,
+    plan2 = df_excel2
+  ),
+  file = "minha_lista.xlsx"
+)
+```
+
+
+# Versão e pacotes
+
+```{r}
+sessionInfo()
+```
+
+

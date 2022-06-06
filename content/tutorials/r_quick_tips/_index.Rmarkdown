@@ -1,0 +1,38 @@
++++
+title = "R Quick Tips [Português]"
+linktitle = "R Quick Tips"
+summary = "Dicas rápidas sobre o uso do R"
+date = "2022/06/05"
+lastmod = "2022/06/05"
+toc = true  # Show table of contents? true/false
+type = "docs"  # Do not modify.
+[menu.rqt]
+parent = "rqt"
+weight = 1
++++
+
+# Apresentação
+Nesta série, pretendo dar dicas rápidas de uso do R, com foco nas Ciências Agrárias. Você pode encontar os vídeos [nesta playlist](https://www.youtube.com/playlist?list=PLJG9aEbqLtMiHWzBMBuakz33LtehOaUTD).
+
+O código fonte deste material pode ser encontrado neste repositório
+
+
+
+# <i class="fab fa-creative-commons"></i> Licença
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener"><img alt="Licença Creative Commons" style="border-width:0" src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/img/gemsr/license.jpg" width="300" height="214" /></a><br />Este conteúdo está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons - Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional</a>. O resumo legível da licença afirma que você tem o direito de:
+
+<i class="fas fa-check"></i> **Compartilhar** — copiar e redistribuir o material em qualquer suporte ou formato
+
+<i class="fas fa-check"></i>**Adaptar** — remixar, transformar, e criar a partir do material
+
+<i class="fas fa-check"></i>**Atribuição** — Você deve dar o crédito apropriado, prover um link para a licença e indicar se mudanças foram feitas. Você deve fazê-lo em qualquer circunstância razoável, mas de nenhuma maneira que sugira que o licenciante apoia você ou o seu uso.
+
+<i class="fas fa-check"></i>**De acordo com os termos seguintes**
+
+* **Não Comercial** — Você não pode usar o material para fins comerciais.
+
+* **CompartilhaIgual** — Se você remixar, transformar, ou criar a partir do material, tem de distribuir as suas contribuições sob a mesma licença que o original.
+
+* **Sem restrições adicionais** — Você não pode aplicar termos jurídicos ou medidas de caráter tecnológico que restrinjam legalmente outros de fazerem algo que a licença permita.
+
