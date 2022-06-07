@@ -171,6 +171,17 @@ arrange_ggplot(p1, p2, p3,
 <p class="caption">Figure 3: Gráfico de dispersão padrão (p1) e com pontos mapeados por cores (p2) e marcadores (p3) para cada nível do fator 'cor'.</p>
 </div>
 
+## Salvar gráficos
+A função `ggsave()` é uma função conveniente para salvar um gráfico. O padrão é salvar a última plotagem exibida, usando o tamanho do dispositivo gráfico atual. Também é possível informar a altura (`height`) e largura (`width`). Ele também adivinha o tipo de dispositivo gráfico da extensão. No seguinte exemplo, o gráfico acima é salvo no diretório de trabalho atual com o nome `pontos.png`, com 5 polegadas de altura e 10 de largura.
+
+
+
+```r
+ggsave("pontos.png",
+       height = 5,
+       width = 10)
+```
+
 ## Facet (facetas)
 
 Mapeando os diferentes níveis de `cor` para diferentes cores, incluímos em um único gráfico os dados de todos osgrupos. Mas, e se nosso objetivo fosse realizar um gráfico para cada grupo? O `ggplot2` tem uma poderosa ferramenta para isto: as funções `facet_`. Ao utilizar estas funções, o conjunto de dados é subdividido e um gráfico é construído para cada um destes subconjuntos. Vamos ver como elas podem nos ajudar em nosso problema.
@@ -187,7 +198,7 @@ fac1
 ```
 
 <div class="figure">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-8-1.png" alt="Um painel para cada nível da variável grupo." width="960" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-9-1.png" alt="Um painel para cada nível da variável grupo." width="960" />
 <p class="caption">Figure 4: Um painel para cada nível da variável grupo.</p>
 </div>
 
@@ -228,7 +239,7 @@ arrange_ggplot(fac1, fac2,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-9-1.png" alt="Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) " width="768" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-10-1.png" alt="Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) " width="768" />
 <p class="caption">Figure 5: Gráfico de dispersão considerando a confecção de um gráfico para cada nível de um fator(f1) e modificações na propriedades do tema de um gráfico ggplot2 (f2) </p>
 </div>
 
@@ -294,7 +305,7 @@ arrange_ggplot(g1, g2,
                tag_levels = list(c("g1", "g2")))
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-11-1.png" width="768" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-12-1.png" width="768" />
 
 ### Gráficos do tipo boxplot
 
@@ -322,7 +333,7 @@ arrange_ggplot((box1 + box2) / box3,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-12-1.png" alt="Gráfico do tipo boxplot combinando mapeamentos estéticos." width="864" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-13-1.png" alt="Gráfico do tipo boxplot combinando mapeamentos estéticos." width="864" />
 <p class="caption">Figure 6: Gráfico do tipo boxplot combinando mapeamentos estéticos.</p>
 </div>
 
@@ -351,7 +362,7 @@ arrange_ggplot(h1, h2,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-13-1.png" alt="Gráfico do tipo histograma " width="960" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-14-1.png" alt="Gráfico do tipo histograma " width="960" />
 <p class="caption">Figure 7: Gráfico do tipo histograma </p>
 </div>
 
@@ -393,7 +404,7 @@ arrange_ggplot((d1 + d2) / d3,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-14-1.png" alt="Gráfico do tipo densidade " width="960" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-15-1.png" alt="Gráfico do tipo densidade " width="960" />
 <p class="caption">Figure 8: Gráfico do tipo densidade </p>
 </div>
 
@@ -462,7 +473,7 @@ ggplot(df_temp, aes(dia, value, color = name)) +
        color = NULL) # remove o título da legenda
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-16-1.png" width="672" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 
 ### Gráficos do tipo barra
@@ -492,7 +503,7 @@ arrange_ggplot(bar1, bar2,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-17-1.png" alt="Gráfico do tipo barras, com mapeamento estético e barras de erro." width="960" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-18-1.png" alt="Gráfico do tipo barras, com mapeamento estético e barras de erro." width="960" />
 <p class="caption">Figure 9: Gráfico do tipo barras, com mapeamento estético e barras de erro.</p>
 </div>
 
@@ -516,7 +527,7 @@ arrange_ggplot(metan1, metan2,
                tag_levels = list(c("metan1", "metan2")))
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-18-1.png" width="960" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-19-1.png" width="960" />
 
 
 
@@ -614,7 +625,7 @@ ggplot() +
 ```
 
 <div class="figure">
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-19-1.png" alt="Temperaturas máximas e mínimas e precipitação observada ao longo dos dias." width="960" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-20-1.png" alt="Temperaturas máximas e mínimas e precipitação observada ao longo dos dias." width="960" />
 <p class="caption">Figure 10: Temperaturas máximas e mínimas e precipitação observada ao longo dos dias.</p>
 </div>
 
@@ -662,7 +673,7 @@ ggplot(vento_long, aes(m, value, color = name, group = name )) +
        y = "Velocidade (m/s)")
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-21-1.png" width="672" />
 
 
 
@@ -699,7 +710,7 @@ ggradar(freq %>% transpose_df(),
         grid.max = max(freq$Percent))
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-22-1.png" width="672" />
 
 
 
@@ -734,7 +745,7 @@ p1 +
   geom_sf(data = brazil, aes(fill = scat))
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-23-1.png" width="672" />
 
 
 # Referências

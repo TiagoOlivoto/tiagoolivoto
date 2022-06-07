@@ -124,6 +124,16 @@ arrange_ggplot(p1, p2, p3,
                tag_levels = list(c("p1", "p2", "p3")))
 ```
 
+## Salvar gráficos
+A função `ggsave()` é uma função conveniente para salvar um gráfico. O padrão é salvar a última plotagem exibida, usando o tamanho do dispositivo gráfico atual. Também é possível informar a altura (`height`) e largura (`width`). Ele também adivinha o tipo de dispositivo gráfico da extensão. No seguinte exemplo, o gráfico acima é salvo no diretório de trabalho atual com o nome `pontos.png`, com 5 polegadas de altura e 10 de largura.
+
+
+```{r eval=FALSE}
+ggsave("pontos.png",
+       height = 5,
+       width = 10)
+```
+
 ## Facet (facetas)
 
 Mapeando os diferentes níveis de `cor` para diferentes cores, incluímos em um único gráfico os dados de todos osgrupos. Mas, e se nosso objetivo fosse realizar um gráfico para cada grupo? O `ggplot2` tem uma poderosa ferramenta para isto: as funções `facet_`. Ao utilizar estas funções, o conjunto de dados é subdividido e um gráfico é construído para cada um destes subconjuntos. Vamos ver como elas podem nos ajudar em nosso problema.
