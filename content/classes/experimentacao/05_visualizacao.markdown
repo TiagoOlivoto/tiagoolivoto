@@ -482,7 +482,7 @@ No seguinte exemplo, os dados do comprimento do grão de café disponíveis em `
 ```r
 bar1 <- 
   ggplot(df, aes(x = grupo, y = comprimento)) +
-  geom_bar(stat = "summary")
+  geom_bar(stat = "summary", fun = "mean")
 
 bar2 <- 
   ggplot(df, aes(x = grupo, y = comprimento, fill = cor)) +
