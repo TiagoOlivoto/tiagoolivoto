@@ -60,7 +60,7 @@ df_excel2
 ### Vários arquivos 
 
 ```{r}
-padrao <- list.files(pattern = "df_excel")
+(padrao <- list.files(pattern = "df_excel"))
 df_lista <- import_list(file = padrao)
 str(df_lista)
 df_lista_bind <- import_list(file = padrao, rbind = TRUE)
@@ -84,7 +84,7 @@ df_txt
 ## Google sheets
 ```{r}
 url <- "https://docs.google.com/spreadsheets/d/1b-Sj9l-VwJ-Oy-hFx7j8twsA5oC6-Fr9ukllywfim0E"
-df_gsheet <- import(url)
+df_gsheet <- import(url, dec = ",")
 df_gsheet
 ```
 
@@ -92,7 +92,6 @@ df_gsheet
 
 
 # Exportar
-A exportação de dados pode ser feita facilmente com a função `export()`.
 ```{r}
 # exportar para excel
 export(df_excel, "exportado.xlsx")
@@ -117,5 +116,6 @@ export(
 ```{r}
 sessionInfo()
 ```
+
 
 

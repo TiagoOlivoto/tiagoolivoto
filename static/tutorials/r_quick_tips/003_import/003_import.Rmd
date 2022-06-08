@@ -1,10 +1,4 @@
 
-<!-- # Tutorial -->
-
-<!-- <iframe width="760" height="430" src="https://www.youtube.com/embed/8B8QDZnDhtY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
-
-
-
 # Diretório e pacotes
 O pacote [`rio`](https://cran.r-project.org/web/packages/rio/index.html) é um pacote R relativamente recente utilizado para importação e exportação de dados. Ele faz suposições sobre o formato do arquivo ([veja os formatos suportados aqui](https://www.rdocumentation.org/packages/rio/versions/0.5.29)), ou seja, adivinha o formato do arquivo que você está tentando importar e, consequentemente, aplica funções de importação apropriadas a esse formato. Tudo isso é feito com a função `import()`.
 
@@ -12,7 +6,7 @@ O primeiro passo sugerido é definir o diretório de trabalho para a pasta dos a
 
 ```{r}
 # definir diretório
-setwd("E:/Desktop/tiagoolivoto/static/tutorials/r_quick_tips")
+setwd("E:/Desktop/tiagoolivoto/static/tutorials/r_quick_tips/003_import")
 library(rio)
 ```
 
@@ -37,7 +31,7 @@ df_excel2
 ### Vários arquivos 
 
 ```{r}
-padrao <- list.files(pattern = "df_excel")
+(padrao <- list.files(pattern = "df_excel"))
 df_lista <- import_list(file = padrao)
 str(df_lista)
 df_lista_bind <- import_list(file = padrao, rbind = TRUE)
@@ -61,7 +55,7 @@ df_txt
 ## Google sheets
 ```{r}
 url <- "https://docs.google.com/spreadsheets/d/1b-Sj9l-VwJ-Oy-hFx7j8twsA5oC6-Fr9ukllywfim0E"
-df_gsheet <- import(url)
+df_gsheet <- import(url, dec = ",")
 df_gsheet
 ```
 
