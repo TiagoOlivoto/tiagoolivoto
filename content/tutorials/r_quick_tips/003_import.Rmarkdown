@@ -20,7 +20,7 @@ knitr::opts_knit$set(root.dir = "E:/Desktop/tiagoolivoto/static/tutorials/r_quic
 ```
 
 
-<a class="btn btn-success" href="https://github.com/TiagoOlivoto/tiagoolivoto/tree/master/static/tutorials/r_quick_tips/003_import" target="_blank"><i class="fab fa-github"></i> Código fonte</a>
+<a class="btn btn-success" href="https://downgit.github.io/#/home?url=https://github.com/TiagoOlivoto/tiagoolivoto/tree/master/static/tutorials/r_quick_tips/003_import" target="_blank"><i class="fab fa-github"></i> Download do exemplo!</a>
 
 
 <!-- # Tutorial -->

@@ -18,7 +18,7 @@ weight: 3
 
 
 
-<a class="btn btn-success" href="https://github.com/TiagoOlivoto/tiagoolivoto/tree/master/static/tutorials/r_quick_tips/003_import" target="_blank"><i class="fab fa-github"></i> Código fonte</a>
+<a class="btn btn-success" href="https://downgit.github.io/#/home?url=https://github.com/TiagoOlivoto/tiagoolivoto/tree/master/static/tutorials/r_quick_tips/003_import" target="_blank"><i class="fab fa-github"></i> Download do exemplo!</a>
 
 
 <!-- # Tutorial -->
@@ -97,7 +97,14 @@ df_excel2
 
 
 ```r
-padrao <- list.files(pattern = "df_excel")
+(padrao <- list.files(pattern = "df_excel"))
+```
+
+```
+## [1] "df_excel.xlsx"  "df_excel2.xlsx" "df_excel3.xlsx"
+```
+
+```r
 df_lista <- import_list(file = padrao)
 str(df_lista)
 ```
@@ -121,9 +128,9 @@ str(df_lista)
 ##  $ df_excel3:'data.frame':	12 obs. of  5 variables:
 ##   ..$ RAD  : num [1:12] 50 50 50 50 70 70 70 70 100 100 ...
 ##   ..$ REP  : num [1:12] 1 2 3 4 1 2 3 4 1 2 ...
-##   ..$ AF_M2: num [1:12] 5.02 3.65 3.93 4.71 6.12 5.61 5.11 4.98 5.46 5.55 ...
-##   ..$ AF   : num [1:12] 5016 3648 3925 4705 6118 ...
-##   ..$ MST  : num [1:12] 12.3 10.7 10.9 11 15.8 ...
+##   ..$ AF_M2: chr [1:12] "5,02" "3,65" "3,93" "4,71" ...
+##   ..$ AF   : chr [1:12] "5016,43" "3648,36" "3925,33" "4705,27" ...
+##   ..$ MST  : chr [1:12] "12,31" "10,73" "10,86" "10,98" ...
 ##   ..- attr(*, "filename")= chr "df_excel3.xlsx"
 ```
 
@@ -133,43 +140,43 @@ df_lista_bind
 ```
 
 ```
-##    RAD REP AF_M2       AF      MST          _file
-## 1   50   1  5.02 5016.429 12.30785  df_excel.xlsx
-## 2   50   2  3.65 3648.359 10.73315  df_excel.xlsx
-## 3   50   3  3.93 3925.333 10.86140  df_excel.xlsx
-## 4   50   4  4.71 4705.269 10.97850  df_excel.xlsx
-## 5   70   1  6.12 6118.425 15.75180  df_excel.xlsx
-## 6   70   2  5.61 5614.233 13.30495  df_excel.xlsx
-## 7   70   3  5.11 5109.944 13.88435  df_excel.xlsx
-## 8   70   4  4.98 4975.857 13.09225  df_excel.xlsx
-## 9  100   1  5.46 5464.528 16.92240  df_excel.xlsx
-## 10 100   2  5.55 5551.951 14.93085  df_excel.xlsx
-## 11 100   3  5.72 5723.849 16.12900  df_excel.xlsx
-## 12 100   4  5.87 5869.697 15.78145  df_excel.xlsx
-## 13  50   1  5.02 5016.429 12.30785 df_excel2.xlsx
-## 14  50   2  3.65 3648.359 10.73315 df_excel2.xlsx
-## 15  50   3  3.93 3925.333 10.86140 df_excel2.xlsx
-## 16  50   4  4.71 4705.269 10.97850 df_excel2.xlsx
-## 17  70   1  6.12 6118.425 15.75180 df_excel2.xlsx
-## 18  70   2  5.61 5614.233 13.30495 df_excel2.xlsx
-## 19  70   3  5.11 5109.944 13.88435 df_excel2.xlsx
-## 20  70   4  4.98 4975.857 13.09225 df_excel2.xlsx
-## 21 100   1  5.46 5464.528 16.92240 df_excel2.xlsx
-## 22 100   2  5.55 5551.951 14.93085 df_excel2.xlsx
-## 23 100   3  5.72 5723.849 16.12900 df_excel2.xlsx
-## 24 100   4  5.87 5869.697 15.78145 df_excel2.xlsx
-## 25  50   1  5.02 5016.429 12.30785 df_excel3.xlsx
-## 26  50   2  3.65 3648.359 10.73315 df_excel3.xlsx
-## 27  50   3  3.93 3925.333 10.86140 df_excel3.xlsx
-## 28  50   4  4.71 4705.269 10.97850 df_excel3.xlsx
-## 29  70   1  6.12 6118.425 15.75180 df_excel3.xlsx
-## 30  70   2  5.61 5614.233 13.30495 df_excel3.xlsx
-## 31  70   3  5.11 5109.944 13.88435 df_excel3.xlsx
-## 32  70   4  4.98 4975.857 13.09225 df_excel3.xlsx
-## 33 100   1  5.46 5464.528 16.92240 df_excel3.xlsx
-## 34 100   2  5.55 5551.951 14.93085 df_excel3.xlsx
-## 35 100   3  5.72 5723.849 16.12900 df_excel3.xlsx
-## 36 100   4  5.87 5869.697 15.78145 df_excel3.xlsx
+##    RAD REP AF_M2         AF      MST          _file
+## 1   50   1  5.02 5016.42875 12.30785  df_excel.xlsx
+## 2   50   2  3.65  3648.3589 10.73315  df_excel.xlsx
+## 3   50   3  3.93 3925.33325  10.8614  df_excel.xlsx
+## 4   50   4  4.71  4705.2685  10.9785  df_excel.xlsx
+## 5   70   1  6.12  6118.4251  15.7518  df_excel.xlsx
+## 6   70   2  5.61 5614.23305 13.30495  df_excel.xlsx
+## 7   70   3  5.11 5109.94435 13.88435  df_excel.xlsx
+## 8   70   4  4.98 4975.85695 13.09225  df_excel.xlsx
+## 9  100   1  5.46   5464.528  16.9224  df_excel.xlsx
+## 10 100   2  5.55 5551.95115 14.93085  df_excel.xlsx
+## 11 100   3  5.72 5723.84875   16.129  df_excel.xlsx
+## 12 100   4  5.87 5869.69745 15.78145  df_excel.xlsx
+## 13  50   1  5.02 5016.42875 12.30785 df_excel2.xlsx
+## 14  50   2  3.65  3648.3589 10.73315 df_excel2.xlsx
+## 15  50   3  3.93 3925.33325  10.8614 df_excel2.xlsx
+## 16  50   4  4.71  4705.2685  10.9785 df_excel2.xlsx
+## 17  70   1  6.12  6118.4251  15.7518 df_excel2.xlsx
+## 18  70   2  5.61 5614.23305 13.30495 df_excel2.xlsx
+## 19  70   3  5.11 5109.94435 13.88435 df_excel2.xlsx
+## 20  70   4  4.98 4975.85695 13.09225 df_excel2.xlsx
+## 21 100   1  5.46   5464.528  16.9224 df_excel2.xlsx
+## 22 100   2  5.55 5551.95115 14.93085 df_excel2.xlsx
+## 23 100   3  5.72 5723.84875   16.129 df_excel2.xlsx
+## 24 100   4  5.87 5869.69745 15.78145 df_excel2.xlsx
+## 25  50   1  5,02    5016,43    12,31 df_excel3.xlsx
+## 26  50   2  3,65    3648,36    10,73 df_excel3.xlsx
+## 27  50   3  3,93    3925,33    10,86 df_excel3.xlsx
+## 28  50   4  4,71    4705,27    10,98 df_excel3.xlsx
+## 29  70   1  6,12    6118,43    15,75 df_excel3.xlsx
+## 30  70   2  5,61    5614,23    13,30 df_excel3.xlsx
+## 31  70   3  5,11    5109,94    13,88 df_excel3.xlsx
+## 32  70   4  4,98    4975,86    13,09 df_excel3.xlsx
+## 33 100   1  5,46    5464,53    16,92 df_excel3.xlsx
+## 34 100   2  5,55    5551,95    14,93 df_excel3.xlsx
+## 35 100   3  5,72    5723,85    16,13 df_excel3.xlsx
+## 36 100   4  5,87    5869,70    15,78 df_excel3.xlsx
 ```
 
 ## Planilha separada por vírgulas
@@ -224,31 +231,30 @@ df_txt
 
 ```r
 url <- "https://docs.google.com/spreadsheets/d/1b-Sj9l-VwJ-Oy-hFx7j8twsA5oC6-Fr9ukllywfim0E"
-df_gsheet <- import(url)
+df_gsheet <- import(url, dec = ",")
 df_gsheet
 ```
 
 ```
-##    RAD REP AF_M2        AF       MST
-## 1   50   1  5.02 5.016.429 1.230.785
-## 2   50   2  3.65 3.648.359 1.073.315
-## 3   50   3  3.93 3.925.333   10.8614
-## 4   50   4  4.71 4.705.269   10.9785
-## 5   70   1  6.12 6.118.425   157.518
-## 6   70   2  5.61 5.614.233 1.330.495
-## 7   70   3  5.11 5.109.944 1.388.435
-## 8   70   4  4.98 4.975.857 1.309.225
-## 9  100   1  5.46 5.464.528   169.224
-## 10 100   2  5.55 5.551.951 1.493.085
-## 11 100   3  5.72 5.723.849    16.129
-## 12 100   4  5.87 5.869.697 1.578.145
+##    RAD REP AF_M2      AF   MST
+## 1   50   1  5.02 5016.43 12.31
+## 2   50   2  3.65 3648.36 10.73
+## 3   50   3  3.93 3925.33 10.86
+## 4   50   4  4.71 4705.27 10.98
+## 5   70   1  6.12 6118.43 15.75
+## 6   70   2  5.61 5614.23 13.30
+## 7   70   3  5.11 5109.94 13.88
+## 8   70   4  4.98 4975.86 13.09
+## 9  100   1  5.46 5464.53 16.92
+## 10 100   2  5.55 5551.95 14.93
+## 11 100   3  5.72 5723.85 16.13
+## 12 100   4  5.87 5869.70 15.78
 ```
 
 
 
 
 # Exportar
-A exportação de dados pode ser feita facilmente com a função `export()`.
 
 ```r
 # exportar para excel
@@ -307,5 +313,6 @@ sessionInfo()
 ## [37] rmarkdown_2.14    bookdown_0.26     magrittr_2.0.3    htmltools_0.5.2  
 ## [41] ellipsis_0.3.2    utf8_1.2.2        stringi_1.7.6     crayon_1.5.1
 ```
+
 
 
