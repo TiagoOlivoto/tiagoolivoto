@@ -8,6 +8,9 @@ O primeiro passo sugerido é definir o diretório de trabalho para a pasta dos a
 # definir diretório
 setwd("E:/Desktop/tiagoolivoto/static/tutorials/r_quick_tips/003_import")
 library(rio)
+
+# para instalar os pacotes sugeridos e ampliar o leque de formatos
+install_formats()
 ```
 
 
@@ -60,6 +63,34 @@ df_gsheet
 ```
 
 
+## SPSS
+
+O arquivo `".sav"` de exemplo foi baixado [deste site](https://lo.unisa.edu.au/mod/book/view.php?id=646443&chapterid=106604) 
+```{r}
+df_spss <- import("df_spss.sav", setclass = "tbl")
+df_spss
+```
+
+## DBF
+O arquivo `".dbf"` de exemplo foi baixado [deste site](https://github.com/infused/dbf/blob/master/spec/fixtures/dbase_83.dbf) 
+```{r}
+df_dbf <- import("df_dbf.dbf")
+df_dbf
+```
+
+## ODS
+```{r}
+df_ods <- import("df_ods.ods")
+df_ods
+```
+
+
+## Rdata
+```{r}
+df_rdata <- import("df_r.Rdata")
+df_rdata
+```
+
 
 
 # Exportar
@@ -87,5 +118,4 @@ export(
 ```{r}
 sessionInfo()
 ```
-
 
