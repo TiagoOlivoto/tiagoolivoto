@@ -1,0 +1,218 @@
+---
+toc: true
+title: metan 1.17.0 is now available!
+subtitle: ''
+summary: Find out what comes with metan 1.17.0'
+author: Tiago Olivoto
+date: '2022-06-09'
+lastmod: '2022-06-09'
+url_source: https://github.com/TiagoOlivoto/metan
+url_project: https://olivoto.netlify.app/project/metan/
+url_code: https://doi.org/10.5281/zenodo.5666815
+doi: "10.1111/2041-210X.13384"
+categories:
+  - metan
+tags:
+  - path analysis
+  - AMMI analysis
+  - missing data
+image:
+  placement: 2
+  caption: 'Image by jplenio from Pixabay'
+  preview_only: no
+featured: no
+---
+
+
+<script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"></script>
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(comment = "#", collapse = TRUE)
+
+```
+
+
+<i class="far fa-calendar-alt"></i> After exactly seven months since the last stable release, I'm chuffed to announce that `metan` 1.17.0 in now on [CRAN](https://CRAN.R-project.org/package=metan). `metan` was first released on CRAN on 2020/01/14 and since there,  16 stable versions have been released regularly.   I'm happy with the package cause today it does much more than it was designed to do. So, from now on, stable versions gonna be launched within a wider time interval, mainly cause I'm now focused on improving the [pliman package](https://tiagoolivoto.github.io/pliman/). Critical bug fixes and minor improvements, however, can be quickly obtained from the [dev version](https://github.com/TiagoOlivoto/metan).
+
+
+This[new version](https://tiagoolivoto.github.io/metan/news/index.html#metan-1170) includes new features and minor improvements, that I'll dissect below.
+
+
+# Instalation
+```{r eval=FALSE}
+# The latest stable version is installed with
+install.packages("metan")
+
+# Or the development version from GitHub:
+# install.packages("devtools")
+devtools::install_github("TiagoOlivoto/metan")
+```
+
+
+# New features
+
+* This new version includes a new function `path_coeff_seq()` to implement a sequential (two chains) path analysis (see more details in this [blogpost](https://olivoto.netlify.app/post/seq_path_anal/)).
+
+```{r}
+library(metan)
+
+mod1 <- 
+  path_coeff_seq(data_ge2,
+                 resp = KW,
+                 chain_1 = c(TKW, NKE, NKR),
+                 chain_2 = c(PH, EH, EL, ED, CL, CD))
+mod1$fc_sc_coef
+
+# Coefficients for the primary traits and response
+plot(mod1$resp_fc)
+
+# Coefficients for the secondary traits and response
+plot(mod1$resp_sc)
+```
+
+
+* New functions `ci_mean_z()` and `ci_mean_t()` to compute z- and t-confidence intervals, respectively. Let's see how the confidence interval changes depending on the different sample sizes.
+
+```{r}
+df <- data.frame(data = rnorm(n = 20, mean = 30, sd = 10))
+m <- mean(df$data)
+dp <- sd(df$data)
+n <- 20
+
+# t-interval (95%)
+qt(0.975, 19) * dp / sqrt(n)
+ci_mean_t(df)
+
+# z-interval (95%)
+qnorm(0.975) * dp / sqrt(n)
+ci_mean_z(df)
+
+
+# now in a data frame with several traits
+ci_mean_t(data_ge2)
+```
+
+* New function `prop_na()` to measure the proportion of NAs in each column.
+```{r}
+# force 20% of NA in GY
+dfna <- data_ge
+dfna[sample(1:nrow(dfna), 84), 4] <- NA
+prop_na(dfna)
+```
+
+
+* New functions `remove_cols_all_na()` and `remove_rows_all_na()` to remove columns and rows that have all values as NAs.
+```{r}
+dfna$HM <- NA
+
+# see the difference
+remove_cols_na(dfna)
+remove_cols_all_na(dfna)
+```
+
+* New functions `freq_table()` and `freq_hist()` to create frequency tables and histograms, respectively. 
+
+   - Qualitative or continuous-discrete variables
+
+```{r}
+fq_quali <- 
+  mtcars |> 
+  as_integer(gear) |> 
+  freq_table(gear)
+fq_quali$freqs
+
+# histogram
+freq_hist(fq_quali)
+```
+
+
+   - Continuous variables
+```{r}
+# default number of classes [sqrt(n)]
+fq_quanti <- 
+  mtcars |> 
+  freq_table(wt)
+fq_quanti$freqs
+
+# change the number of classes
+fq_quanti2 <- 
+  mtcars |> 
+  freq_table(wt, k = 5)
+fq_quanti2$freqs
+
+freq_hist(fq_quanti2)
+```
+
+
+
+# Minor improvements
+
+* Improve the control over highlighted individuals in `plot_scores()`, such as shape, alpha, color, and size.
+* Fix bug with `x.lab` and `y.lab` from `plot_scores()`. Now it accepts an object from `expression()`
+```{r}
+# WAASB model
+model <- waasb(data_ge,
+               env = ENV,
+               gen = GEN,
+               rep = REP,
+               resp = GY)
+
+# PC1 x PC1
+p1 <- plot_scores(model, type = 2)
+
+# WAASB x GY
+p2 <- plot_scores(model,
+                 type = 3, 
+                 x.lab = expression(Grain~yield~(kg~ha^{-1})),
+                 highlight = c("G2", "G3", "G8"), #highlight genotypes
+                 col.alpha.env = 0.5, # alpha for environments
+                 col.alpha.gen = 0, # remove the other genotypes
+                 col.env = "gray", # color for environment point
+                 col.segm.env = "gray", # color for environment segment
+                 plot_theme = theme_metan_minimal()) # theme
+
+arrange_ggplot(p1, p2)
+```
+
+
+* `get_model_data()` now includes new options coefs, and anova for objects computed with `ge_reg()`.
+
+```{r}
+reg <- ge_reg(data_ge2,
+             env = ENV,
+             gen = GEN,
+             rep = REP,
+             resp = PH)
+get_model_data(reg, what = "coefs")
+get_model_data(reg, what = "anova")
+```
+
+
+
+# Cheatsheet
+
+<a href="https://github.com/TiagoOlivoto/metan/raw/master/metan_cheat_sheet.pdf"><img src="https://raw.githubusercontent.com/TiagoOlivoto/metan/master/man/figures/metan_cheat_sheet.png" width="1280" height="720"/></a>
+
+
+# Citation
+
+To cite `metan` in your publications, please, use the official reference paper:
+> Olivoto, T., and Lúcio, A.D. (2020). metan: an R package for multi-environment
+trial analysis. Methods Ecol Evol. 11:783-789 doi:[10.1111/2041-210X.13384](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13384)
+
+A BibTeX entry for LaTeX users is
+
+``` r
+@Article{Olivoto2020,
+author = {Tiago Olivoto and Alessandro Dal'Col L{'{u}}cio},
+title = {metan: an R package for multi-environment trial analysis},
+journal = {Methods in Ecology and Evolution},
+volume = {11},
+number = {6},
+pages = {783-789},
+year = {2020},
+doi = {10.1111/2041-210X.13384},
+}
+```
+
+
