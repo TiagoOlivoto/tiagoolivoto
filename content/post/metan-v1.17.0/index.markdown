@@ -8,7 +8,7 @@ date: '2022-06-09'
 lastmod: '2022-06-09'
 url_source: https://github.com/TiagoOlivoto/metan
 url_project: https://olivoto.netlify.app/project/metan/
-url_code: https://doi.org/10.5281/zenodo.5666815
+url_code: https://zenodo.org/badge/latestdoi/130062661
 doi: "10.1111/2041-210X.13384"
 categories:
   - metan
@@ -29,7 +29,7 @@ featured: no
 
 
 
-<i class="far fa-calendar-alt"></i> After exactly seven months since the last stable release, I'm chuffed to announce that `metan` 1.17.0 in now on [CRAN](https://CRAN.R-project.org/package=metan). `metan` was first released on CRAN on 2020/01/14 and since there,  16 stable versions have been released regularly.   I'm happy with the package cause today it does much more than it was designed to do. So, from now on, stable versions gonna be launched within a wider time interval, mainly cause I'm now focused on improving the [pliman package](https://tiagoolivoto.github.io/pliman/). Critical bug fixes and minor improvements, however, can be quickly obtained from the [dev version](https://github.com/TiagoOlivoto/metan).
+<i class="far fa-calendar-alt"></i> After exactly seven months since the last stable release, I'm chuffed to announce that `metan` 1.17.0 in now on [CRAN](https://CRAN.R-project.org/package=metan). `metan` was first released on CRAN on 2020/01/14 and since there, 16 stable versions have been released regularly.   I'm happy with the package cause today it does much more than it was designed to do. So, from now on, stable versions gonna be launched within a wider time interval, mainly cause I'm now focused on improving the [pliman package](https://tiagoolivoto.github.io/pliman/). Critical bug fixes and minor improvements, however, can be quickly obtained from the [dev version](https://github.com/TiagoOlivoto/metan).
 
 
 This[new version](https://tiagoolivoto.github.io/metan/news/index.html#metan-1170) includes new features and minor improvements, that I'll dissect below.
@@ -155,17 +155,17 @@ n <- 20
 
 # t-interval (95%)
 qt(0.975, 19) * dp / sqrt(n)
-# [1] 5.530284
+# [1] 4.610762
 ci_mean_t(df)
 #       data
-# 1 5.530284
+# 1 4.610762
 
 # z-interval (95%)
 qnorm(0.975) * dp / sqrt(n)
-# [1] 5.178707
+# [1] 4.317642
 ci_mean_z(df)
 #       data
-# 1 5.178707
+# 1 4.317642
 
 
 # now in a data frame with several traits
@@ -222,14 +222,14 @@ remove_cols_all_na(dfna)
 #    <fct> <fct> <fct> <dbl>
 #  1 E1    G1    1      2.17
 #  2 E1    G1    2      2.50
-#  3 E1    G1    3      2.43
-#  4 E1    G2    1     NA   
+#  3 E1    G1    3     NA   
+#  4 E1    G2    1      3.21
 #  5 E1    G2    2      2.93
-#  6 E1    G2    3     NA   
-#  7 E1    G3    1     NA   
+#  6 E1    G2    3      2.56
+#  7 E1    G3    1      2.77
 #  8 E1    G3    2      3.62
 #  9 E1    G3    3      2.28
-# 10 E1    G4    1      2.36
+# 10 E1    G4    1     NA   
 # # … with 410 more rows
 ```
 
