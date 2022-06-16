@@ -386,24 +386,21 @@ Neste exemplo, mostro como as estatísticas descritivas para os dados coletados 
 library(rio)
 
 # link dos dados
-link <- "https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=463165208"
+link <- "https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=1216373680"
 
 # função para importar os dados
-df <- 
-  import(link) |> 
-  as_character(1:3) # primeiras 3 colunas como caracteres
+df <- import(link) 
 
 # estrutura dos dados 
 str(df)
 ```
 
 ```
-## 'data.frame':	160 obs. of  5 variables:
-##  $ Grupo           : chr  "Grupo 1" "Grupo 1" "Grupo 1" "Grupo 1" ...
-##  $ Tipo            : chr  "Folha" "Folha" "Folha" "Folha" ...
-##  $ Amostra         : chr  "1" "2" "3" "4" ...
-##  $ Comprimento     : num  14 9.4 12.1 12.2 12 12.5 11.4 7.5 9.8 14.5 ...
-##  $ Largura_Diametro: num  6.4 6.41 6.42 6.43 6.44 6.45 6.46 6.47 6.48 6.49 ...
+## 'data.frame':	40 obs. of  4 variables:
+##  $ Grupo      : chr  "Grupo 1" "Grupo 1" "Grupo 1" "Grupo 1" ...
+##  $ Coloracao  : chr  "vermelho" "vermelho" "vermelho" "vermelho" ...
+##  $ comprimento: num  15.9 14.7 13.6 11.4 14.3 ...
+##  $ diametro   : num  11.7 11.4 11.4 11.6 10.7 ...
 ```
 
 ```r
@@ -412,75 +409,63 @@ head(df)
 ```
 
 ```
-##     Grupo  Tipo Amostra Comprimento Largura_Diametro
-## 1 Grupo 1 Folha       1        14.0             6.40
-## 2 Grupo 1 Folha       2         9.4             6.41
-## 3 Grupo 1 Folha       3        12.1             6.42
-## 4 Grupo 1 Folha       4        12.2             6.43
-## 5 Grupo 1 Folha       5        12.0             6.44
-## 6 Grupo 1 Folha       6        12.5             6.45
+##     Grupo Coloracao comprimento diametro
+## 1 Grupo 1  vermelho       15.89    11.66
+## 2 Grupo 1  vermelho       14.68    11.37
+## 3 Grupo 1  vermelho       13.60    11.39
+## 4 Grupo 1  vermelho       11.39    11.58
+## 5 Grupo 1  vermelho       14.27    10.69
+## 6 Grupo 1  vermelho       15.02    11.28
 ```
 
-Os dados foram organziados de maneira que cada fator (grupo e tipo de amostra) estivessem em uma coluna. Isto possibilita o cálculo das estatísticas para cada nível destes fatores. As duas variáveis quantitativas contínuas são: `Comprimento` (o comprimento da folha em cm e o comprimento do grão em mm); e `Largura_diametro` (a largura da folha em cm e o diâmetro do grão em mm). 
+Os dados foram organziados de maneira que cada fator (coloração e grupo) estivessem em uma coluna. Isto possibilita o cálculo das estatísticas para cada nível destes fatores. As duas variáveis quantitativas contínuas são: `comprimento` (o comprimento do grão em mm); e `diametro` (o diâmetro do grão em mm). 
 
 
 ### Estatísticas gerais
-Para saber as estatísticas descritivas gerais (sem estratificação por grupo), vamos utilizar a função `group_by()` para agrupar por `Tipo`. Com isso, as estatísticas serão calculadas separadamente para `Folha` e `Grao`. Por padrão, a função calcula as estatísticas descritivas para todas as variáveis numéricas do conjunto de dados. Sendo assim, não há necessidade de informar qual variável analisar.
+Para saber as estatísticas descritivas gerais (sem estratificação por grupo), vamos utilizar a função `group_by()` para agrupar por `Coloracao`. Com isso, as estatísticas serão calculadas separadamente para `vermelho` e `verde`. Por padrão, a função calcula as estatísticas descritivas para todas as variáveis numéricas do conjunto de dados. Sendo assim, não há necessidade de informar qual variável analisar.
 
 
 
 ```r
 stats = c("mean, median, range, ave.dev, var.amo, sd.amo, cv, se, n")
 df |> 
-  group_by(Tipo) |> 
+  group_by(Coloracao) |> 
   desc_stat(stats = stats)
 ```
 
 ```
 ## # A tibble: 4 × 11
-##   Tipo  variable      mean median range ave.dev var.amo sd.amo    cv    se     n
-##   <chr> <chr>        <dbl>  <dbl> <dbl>   <dbl>   <dbl>  <dbl> <dbl> <dbl> <dbl>
-## 1 Folha Comprimento  12.2   12.1  13      2.23    8.33   2.89   23.7 0.382    57
-## 2 Folha Largura_Dia…  6.16   6.5   1.81   0.605   0.462  0.680  11.0 0.09     57
-## 3 Grao  Comprimento  13.5   12.4  24      3.34   23.9    4.89   36.3 0.482   103
-## 4 Grao  Largura_Dia…  9.53   9.59 18      2.37   11.4    3.38   35.4 0.333   103
+##   Coloracao variable  mean median range ave.dev var.amo sd.amo    cv    se     n
+##   <chr>     <chr>    <dbl>  <dbl> <dbl>   <dbl>   <dbl>  <dbl> <dbl> <dbl> <dbl>
+## 1 verde     comprim…  11.3  11.0   5.17    1.24    2.11   1.45  12.9 0.303    23
+## 2 verde     diametro  10.6   9.36  9.57    2.33    7.36   2.71  25.6 0.566    23
+## 3 vermelho  comprim…  13.6  13.6   6.11    1.45    3.25   1.80  13.3 0.438    17
+## 4 vermelho  diametro  11.9  11.4   8.07    1.60    4.84   2.20  18.6 0.534    17
 ```
 
-### Estatísticas por grupo
+### Estatísticas por grupo e coloração
 
 Para obter as estatística para cada grupo, basta adicionar o fator `Grupo` na função `group_by()` e realizar o mesmo comando mostrado acima.
 
 
 ```r
 df |> 
-  group_by(Grupo, Tipo) |> 
+  group_by(Grupo, Coloracao) |> 
   desc_stat(stats = stats)
 ```
 
 ```
-## # A tibble: 20 × 12
-##    Grupo  Tipo  variable  mean median range ave.dev var.amo sd.amo     cv     se
-##    <chr>  <chr> <chr>    <dbl>  <dbl> <dbl>   <dbl>   <dbl>  <dbl>  <dbl>  <dbl>
-##  1 Grupo… Folha Comprim… 11.7   12.2   7     1.43    3.79   1.95   16.7   0.562 
-##  2 Grupo… Folha Largura…  6.46   6.46  0.11  0.03    0.0013 0.0361  0.559 0.0104
-##  3 Grupo… Grao  Comprim… 14.3   14.2   4.21  1.05    1.77   1.33    9.28  0.384 
-##  4 Grupo… Grao  Largura… 10.8   10.2   3.9   1.04    1.81   1.35   12.4   0.388 
-##  5 Grupo… Folha Comprim… 11.7   12.2   5.5   2       5.97   2.44   20.9   0.997 
-##  6 Grupo… Folha Largura…  5.32   5.32  0.05  0.015   0.0003 0.0187  0.351 0.0076
-##  7 Grupo… Grao  Comprim… 12.9   12.7   6.89  1.57    3.60   1.90   14.7   0.359 
-##  8 Grupo… Grao  Largura…  9.75   9.37  5.36  1.23    2.06   1.44   14.7   0.271 
-##  9 Grupo… Folha Comprim…  9.77  10     7.5   2.07    6.57   2.56   26.2   0.773 
-## 10 Grupo… Folha Largura…  5.05   5.05  0.1   0.0273  0.0011 0.0332  0.657 0.01  
-## 11 Grupo… Grao  Comprim… 10.5   10     8     1.75    4.37   2.09   19.9   0.348 
-## 12 Grupo… Grao  Largura…  6.56   6.5   7     1.17    2.14   1.46   22.3   0.244 
-## 13 Grupo… Folha Comprim… 13.1   12.8   8.6   2.02    6.40   2.53   19.3   0.632 
-## 14 Grupo… Folha Largura…  6.58   6.58  0.15  0.04    0.0023 0.0476  0.724 0.0119
-## 15 Grupo… Grao  Comprim… 18.2   15.4  21     7.65   70.0    8.37   45.9   1.87  
-## 16 Grupo… Grao  Largura… 13.5   10.5  11     3.88   18.2    4.27   31.6   0.954 
-## 17 Grupo… Folha Comprim… 13.9   15.3  10.4   2.42   10.3    3.21   23.0   0.927 
-## 18 Grupo… Folha Largura…  6.76   6.76  0.11  0.03    0.0013 0.0361  0.534 0.0104
-## 19 Grupo… Grao  Comprim… 16     16     4     0.857   1.67   1.29    8.07  0.488 
-## 20 Grupo… Grao  Largura… 10.3   10     2     0.612   0.571  0.756   7.35  0.286 
+## # A tibble: 8 × 12
+##   Grupo Coloracao variable  mean median range ave.dev var.amo sd.amo    cv    se
+##   <chr> <chr>     <chr>    <dbl>  <dbl> <dbl>   <dbl>   <dbl>  <dbl> <dbl> <dbl>
+## 1 Grup… verde     comprim… 11.8    12.0  5.17   1.18    2.23   1.49  12.7  0.386
+## 2 Grup… verde     diametro  8.82    8.7  3.84   0.759   1.02   1.01  11.5  0.261
+## 3 Grup… vermelho  comprim… 14.1    14.6  4.59   1.27    2.36   1.54  10.9  0.426
+## 4 Grup… vermelho  diametro 10.8    11.3  3.45   0.825   1.13   1.06   9.81 0.294
+## 5 Grup… verde     comprim… 10.3    10.1  2.02   0.458   0.414  0.644  6.28 0.228
+## 6 Grup… verde     diametro 14.0    13.7  3.8    0.898   1.40   1.18   8.47 0.418
+## 7 Grup… vermelho  comprim… 11.9    12.2  3.62   1.47    3.14   1.77  14.8  0.886
+## 8 Grup… vermelho  diametro 15.2    15.1  2.51   1.05    1.56   1.25   8.20 0.624
 ## # … with 1 more variable: n <dbl>
 ```
 
@@ -547,6 +532,7 @@ dados
 ## 29     C  0.2399639
 ## 30     C 28.0874035
 ```
+
 
 Utilizando a função `means_by()` do pacote metan é possível computar médias por grupos.
 
