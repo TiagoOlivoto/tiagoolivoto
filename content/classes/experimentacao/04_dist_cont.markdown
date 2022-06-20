@@ -52,14 +52,14 @@ Vamos ver a distribuição dos valores do comprimento da folha de café, mensura
 ```r
 library(rio)
 # link dos dados
-link <- "https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=463165208"
+link <- "https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=1453191616"
 
 # função para importar os dados
 df <-  
-  import(link) |> 
-  filter(Tipo == "Folha")
+  import(link, dec = ",") |> 
+  filter(tipo == "Folha")
 
-ggplot(df, aes(Comprimento)) + 
+ggplot(df, aes(comprimento)) + 
   geom_histogram(aes(y = ..density..),
                  bins = 10) +
   stat_function(fun = dnorm,
@@ -67,8 +67,8 @@ ggplot(df, aes(Comprimento)) +
                 color = "red",
                 size = 1,
                 args = list(
-                  mean = mean(df$Comprimento),
-                  sd = sd(df$Comprimento)
+                  mean = mean(df$comprimento),
+                  sd = sd(df$comprimento)
                 ))
 ```
 
@@ -532,1489 +532,10 @@ arrange_ggplot(normal, padrao, ncol = 1)
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-16-1.png" width="672" />
 
-<!-- ## Questões -->
 
-<!-- ### Questão 1 -->
 
-<!-- 1.  A série histórica das vendas de uma determinada fórmula de adubo seguem uma distribuição normal com média 25.000 t e desvio padrão de 2.600 t. Se a empresa fabricante decidir fabricar 30000 toneladas deste adubo para suprir a demanda da safra atual, qual é a probabilidade de que ela não possa atender todas as vendas por estar   com a produção esgotada? -->
 
-<!-- (R = 0,0272) SOLUÇÃO: encontrar a -->
 
-<!--     probabilidade de vender mais que 30000 t -->
-
-<!-- ```{r fig.width=10, fig.height=8} -->
-
-<!-- me <- 25000 -->
-
-<!-- sdd <- 2600 -->
-
-<!-- val <- 30000 -->
-
-<!-- Z <- (val - me) / sdd -->
-
-<!-- prob <- 1 - pnorm(Z) -->
-
-<!-- qnorm(1-pnorm(3.5), me, sdd) -->
-
-<!-- qnorm(1-pnorm(3.5), me, sdd, lower.tail = F) -->
-
-<!-- normal <- -->
-
-<!--   ggplot() + -->
-
-<!--   xlim(c(15900, 34100)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(30000, 34100), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 )) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 )) + -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor original", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável original") -->
-
-<!-- padrao <- -->
-
-<!--   ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(Z, 3.5)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
-
-<!--   # theme_metan(color.background = "transparent")+ -->
-
-<!--   ggtitle("Distribuição da variável padronizada", -->
-
-<!--           subtitle = paste("Valor de Z:", round(Z, 4), "; Prob área sombreada:", round(prob, 4))) -->
-
-<!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-
-<!-- ``` -->
-
-<!-- ### Questão 2 -->
-
-<!-- 2. O gerente da empresa que João trabalha resolveu premiar seus     vendedores mais eficientes (5%) na venda de insumos. Um levantamento     das vendas individuais anuais mostrou que a venda de adubo segue uma     distribuição normal com média 240.000 t. e desvio padrão 30.000 t.     Qual o volume de vendas mínimo que João deve realizar para ser premiado? -->
-
-<!-- > (R = 289.346)  -->
-
-<!-- RESOLUÇÃO: encontrar o valor de Z associado aos 5% que mais vendem Z = 1.6448 Valor da variável original associado ao Z = 289.346 -->
-
-<!-- ```{r fig.width=10, fig.height=8} -->
-
-<!-- # quantil associado aos 5% que mais vendem  -->
-
-<!-- Z <- qnorm(0.95) -->
-
-<!-- me <- 240000 -->
-
-<!-- sdd <- 30000 -->
-
-<!-- # volume mínimo de vendas -->
-
-<!-- vendas <- round(Z * sdd + me) -->
-
-<!-- original <- -->
-
-<!--   ggplot() + -->
-
-<!--   xlim(c(135000, 345000)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(vendas, 360000), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor original", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável original") -->
-
-<!-- padrao <- -->
-
-<!--   ggplot() + -->
-
-<!--   xlim(c(-3.5, 3.5)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(Z, 3.5))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição de Z", -->
-
-<!--           subtitle = paste("Valor de Z:", round(Z, 4), "; Prob área sombreada:", round(prob, 4))) -->
-
-<!-- arrange_ggplot(original, padrao, ncol = 1) -->
-
-<!-- ``` -->
-
-<!-- ### Questão 3 -->
-
-<!-- Uma variável aleatória X segue uma distribuição normal com média 100 e desvio padrão 10. Calcule a probabilidade de x estar entre 90 e 110. -->
-
-<!-- ```{r fig.width=10, fig.height=8} -->
-
-<!-- me <- 100 -->
-
-<!-- sdd <- 10 -->
-
-<!-- val1 <- 90 -->
-
-<!-- val2 <- 110 -->
-
-<!-- Z1 <- (val1 - me) / sdd -->
-
-<!-- Z2 <- (val2 - me) / sdd -->
-
-<!-- # probabilidade dos valores estarem a 1 desvio padrão para mais ou menos -->
-
-<!-- pnorm(Z2) - pnorm(Z1) -->
-
-<!-- args <- list( -->
-
-<!--   mean = 100, -->
-
-<!--   sd = 10 -->
-
-<!-- ) -->
-
-<!-- normal <- -->
-
-<!--   ggplot() + -->
-
-<!--   scale_x_continuous(limits = c(60, 140), -->
-
-<!--                      breaks = seq(60, 140, 10)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(90, 110), -->
-
-<!--                 args = args) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 args = args) + -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor original", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável original") -->
-
-<!-- padrao <- -->
-
-<!--   ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(Z1, Z2)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-4, 4), breaks = c(seq(-4, 4, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", -->
-
-<!--        y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável padronizada") -->
-
-<!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-
-<!-- ``` -->
-
-<!-- ### Questão 4 -->
-
-<!-- Se X\~N(10, 2), calcule (9 \< X \< 12) -->
-
-<!-- > R: 0,53 RESOLUÇÃO: calcular a probabilidade x ser maior que 9 e menor que 12 -->
-
-<!-- ```{r fig.width=10, fig.height=8} -->
-
-<!-- me <- 10 -->
-
-<!-- sdd <- 2 -->
-
-<!-- val1 <- 9 -->
-
-<!-- val2 <- 12 -->
-
-<!-- Z1 <- (val1 - me) / sdd -->
-
-<!-- Z2 <- (val2 - me) / sdd -->
-
-<!-- (prob <- pnorm(Z2) - pnorm(Z1)) -->
-
-<!-- normal <- -->
-
-<!--   ggplot() + -->
-
-<!--   scale_x_continuous(limits =  c(3, 17), -->
-
-<!--                      breaks = 3:17) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(val1, val2), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor original", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável original") -->
-
-<!-- padrao <- -->
-
-<!--   ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(Z1, Z2))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável padronizada", -->
-
-<!--           subtitle = paste("Z1:", round(Z1, 4), "  Z2:", round(Z2, 4), "; Prob área sombreada:", round(prob, 4))) -->
-
-<!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-
-<!-- ``` -->
-
-<!-- ### Questão 5 -->
-
-<!-- Se X tem uma distribuição normal com média 100 e desvio padrão 10, determine: -->
-
-<!-- * P(X \< 115) -->
-
-<!-- ```{r fig.width=10, fig.height=8} -->
-
-<!-- me <- 100 -->
-
-<!-- sdd <- 10 -->
-
-<!-- val <- 115 -->
-
-<!-- Z <- (val - me) / sdd -->
-
-<!-- (prob <- pnorm(Z)) -->
-
-<!-- normal <- -->
-
-<!--   ggplot() + -->
-
-<!--   scale_x_continuous(limits = c(65,  135)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(65, val), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor original", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável original") -->
-
-<!-- padrao <- -->
-
-<!--   ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(-3.5, Z))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável padronizada", -->
-
-<!--           subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4))) -->
-
-<!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-
-<!-- ``` -->
-
-<!-- * P(X \> 80) -->
-
-<!-- > R: 0,9772 -->
-
-<!-- RESOLUÇÃO: calcular a probabilidade x ser maior que 80, ou seja `\(1 - P(X \le 80\)`). -->
-
-<!-- ```{r} -->
-
-<!-- me <- 100 -->
-
-<!-- sdd <- 10 -->
-
-<!-- val <- 80 -->
-
-<!-- Z <- (val - me) / sdd -->
-
-<!-- (prob <- 1 - pnorm(Z)) -->
-
-<!-- normal <- -->
-
-<!--   ggplot() + -->
-
-<!--   scale_x_continuous(limits = c(65,  135)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(80, 140), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor original", -->
-
-<!--        y = "Probabilidade") -->
-
-<!-- padrao <- -->
-
-<!--   ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(Z, 4))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", y = "Probabilidade") -->
-
-<!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-
-<!-- ``` -->
-
-<!-- * P(X \> 100) -->
-
-<!-- > R: 0,5 -->
-
-<!-- RESOLUÇÃO: calcular a probabilidade x ser maior que 50, ou seja `\(1 - P(X \le 50\)`). -->
-
-<!-- ```{r} -->
-
-<!-- me <- 100 -->
-
-<!-- sdd <- 10 -->
-
-<!-- val <- 100 -->
-
-<!-- Z <- (val - me) / sdd -->
-
-<!-- (prob <- 1 - pnorm(Z)) -->
-
-<!-- normal <- -->
-
-<!--   ggplot() + -->
-
-<!--   scale_x_continuous(limits = c(65,  135)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(100, 140), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor original", -->
-
-<!--        y = "Probabilidade") -->
-
-<!-- padrao <- -->
-
-<!--   ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(Z, 4))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", y = "Probabilidade") -->
-
-<!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-
-<!-- ``` -->
-
-<!-- ### Questão 6 -->
-
-<!-- A alturas de 10000 alunos de um colégio têm distribuição aproximadamente normal com média de 170 cm e desvio padrão de 5 cm. Qual o número esperado de alunos com altura superior a 1,65 m? -->
-
-<!-- > R = 8413 alunos (0,8413 \* 10000) -->
-
-<!-- RESOLUÇÃO: calcular a probabilidade de alunos com mais de 165 cm, logo achando o número de alunos. -->
-
-<!-- ```{r fig.width=10, fig.height=8} -->
-
-<!-- n <- 10000 -->
-
-<!-- me <- 170 -->
-
-<!-- sdd <- 5 -->
-
-<!-- val <- 165 -->
-
-<!-- Z <- (val - me) / sdd -->
-
-<!-- (prob <- 1 - pnorm(Z)) -->
-
-<!-- normal <- -->
-
-<!--   ggplot() + -->
-
-<!--   scale_x_continuous(limits = c(152.5,  187.5), -->
-
-<!--                      breaks = seq(150, 190, by = 5)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(val, 187.5), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Altura do aluno",  -->
-
-<!--        y = "Probabilidade") -->
-
-<!-- padrao <- -->
-
-<!--   ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(Z, 3.5))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-3.5, 3.5), -->
-
-<!--                      breaks = c(seq(-3, 3, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", -->
-
-<!--        y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável padronizada", -->
-
-<!--           subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4))) -->
-
-<!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-
-<!-- ``` -->
-
-<!-- ### Questão 7 -->
-
-<!-- Uma ensacadora de adubos está regulada para que o peso em cada saco seja de 50 Kg com desvio padrão de 5 Kg. Admitindo-se que a distribuição é aproximadamente normal, qual a percentagem de sacos em que o peso de adubo é inferior a 45 Kg? -->
-
-<!-- > R (0,1587) -->
-
-<!-- RESOLUÇÃO: encontrar a probabilidade de achar sacos com menos que 45 Kg. -->
-
-<!-- ```{r fig.width=10, fig.height=8} -->
-
-<!-- me <- 50 -->
-
-<!-- sdd <- 5 -->
-
-<!-- val <- 45 -->
-
-<!-- Z <- (val - me) / sdd -->
-
-<!-- (prob <- pnorm(Z)) -->
-
-<!-- normal <- -->
-
-<!--   ggplot() + -->
-
-<!--   scale_x_continuous(limits = c(32.5,  67.5), -->
-
-<!--                      breaks = seq(30, 70, by = 5)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(32.5, val), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 size = 1, -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Peso do saco de adubo", -->
-
-<!--        y = "Probabilidade") -->
-
-<!-- padrao <- -->
-
-<!--   ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(-3.5, Z))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável padronizada", -->
-
-<!--           subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4))) -->
-
-<!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-
-<!-- ``` -->
-
-<!-- ### Questão 8 -->
-
-<!-- Um lote de frangos com 14.000 frangos apresenta média de peso de 3,0 Kg e desvio padrão de 0,2 Kg. Assumindo que o peso deste lote segue uma distribuição aproximadamente normal, quantos são os frangos que pesam mais que 3300 g? -->
-
-<!-- > R = \~ 935 (0,0668072 \* 14000) -->
-
-<!-- RESOLUÇÃO: encontrar Z e achar a probabilidade de o peso ser maior que Z. -->
-
-<!-- ```{r fig.width=10, fig.height=8} -->
-
-<!-- me <- 3 -->
-
-<!-- sdd <- 0.2 -->
-
-<!-- val <- 3.3 -->
-
-<!-- Z <- (val - me) / sdd -->
-
-<!-- (prob <- 1 - pnorm(Z)) -->
-
-<!-- round(prob * 14000) -->
-
-<!-- normal <- -->
-
-<!--   ggplot() + -->
-
-<!--   scale_x_continuous(limits = c(2.3, 3.7), -->
-
-<!--                      breaks = seq(2, 4, by = 0.5)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(val, 4), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+  -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Peso do frango (kg)", y = "probabilidade")  -->
-
-<!-- padrao <- -->
-
-<!--   ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(Z, 3.5))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-3.5, 3.5), -->
-
-<!--                      breaks = c(seq(-3, 3, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável padronizada", -->
-
-<!--           subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4))) -->
-
-<!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-
-<!-- ``` -->
-
-<!-- ### Questão 9 -->
-
-<!-- Em uma fazenda de criação de coelhos, um lote com 300 coelhos tem média que segue uma distribuição normal com média de 3,5 Kg com desvio padrão de 250 g. Coelhos com peso de até 3.7 Kg são vendidos a R\$ 15,00 o Kg. Coelhos com peso acima de 3,7 Kg são vendidos a R\$ 20,00 o Kg. Quantos coelhos serão vendidos ao maior valor de venda? -->
-
-<!-- > R (\~ 63 coelhos; 0.2119 \* 300) -->
-
-<!-- RESOLUÇÃO encontrar o número de coelhos que pesem mais que 3.7 Kg. No -->
-
-<!-- gráfico abaixo, a cor vermelha representa a probabilidade de coelhos com -->
-
-<!-- menos de 3.7 Kg e a cor azul a probabilidade de encontrar coelhos com -->
-
-<!-- mais de 3.7 Kg. -->
-
-<!-- ```{r fig.width=10, fig.height=8} -->
-
-<!-- me <- 3.5 -->
-
-<!-- sdd <- 0.25 -->
-
-<!-- val <- 3.7 -->
-
-<!-- (Z <- (val - me) / sdd) -->
-
-<!-- (prob <- 1 - pnorm(Z)) -->
-
-<!-- # número de coelhos -->
-
-<!-- round(prob * 300) -->
-
-<!-- normal <- -->
-
-<!--   ggplot() +  -->
-
-<!--   scale_x_continuous(limits = c(2.625,  4.375)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "blue", -->
-
-<!--                 xlim = c(val, 4.375), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "red", -->
-
-<!--                 xlim = c(2.625, val), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor original", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Peso do coelho") -->
-
-<!-- padrao <-  -->
-
-<!-- ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "blue", -->
-
-<!--                 xlim = c(Z, 3.5))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "red", -->
-
-<!--                 xlim = c(-3.5, Z))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável padronizada", -->
-
-<!--           subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área azul:", round(prob, 4))) -->
-
-<!-- arrange_ggplot(normal, padrao, ncol = 1) -->
-
-<!-- ``` -->
-
-<!-- ### Questão 10 -->
-
-<!-- 1.  Um lote gado de corte com 3000 cabeças apresenta 430 Kg de peso vivo por cabeça em média com desvio padrão de 65 Kg e se sabe que segue uma distribuição normal. Na venda deste lote, animais com até 320 Kg são abatidos em um abatedouro A. Por outro lado, animais com peso maior que 320 e menor que 520 Kg são abatidos no abatedouro B. Animais com peso superior a 520 Kg são abatidos no abatedouro C. Considerando estes dados, responda: -->
-
-<!-- a\. O número de animais abatidos nos 3 batedouros -->
-
-<!-- b\. O número de animais abatidos no abatedouro A -->
-
-<!-- c\. O número de animais abatidos no abatedouro B -->
-
-<!-- d\. O número de animais abatidos no abatedouro C -->
-
-<!-- > RESOLUÇÃO: encontrar a probabilidade do peso (X) assumir P(X\<320), P(320 \< X \< 520) e P(X \> 520). -->
-
-<!-- ```{r fig.width=10, fig.height=5} -->
-
-<!-- me <- 430 -->
-
-<!-- sdd <- 65 -->
-
-<!-- val1 <- 320 -->
-
-<!-- val2 <- 520 -->
-
-<!-- Z1 <- (val1 - me) / sdd -->
-
-<!-- Z2 <- (val2 - me) / sdd -->
-
-<!-- (prob1 <- pnorm(Z1)) -->
-
-<!-- (prob2 <- pnorm(Z2) - prob1) -->
-
-<!-- (prob3 <- 1 - sum(prob1, prob2)) -->
-
-<!-- # checar se a soma das probabilidades deu 1 -->
-
-<!-- sum(prob1, prob2, prob3) -->
-
-<!-- normal <- -->
-
-<!--   ggplot() + -->
-
-<!--   xlim(c(202.5,  657.5)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(202.5, val1), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "green", -->
-
-<!--                 xlim = c(val1, val2), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "red", -->
-
-<!--                 xlim = c(val2, 657.5), -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 args = list( -->
-
-<!--                   mean = me, -->
-
-<!--                   sd = sdd -->
-
-<!--                 ))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor original", y = "Probabilidade")+ -->
-
-<!--   ggtitle("Distribuição da variável ") -->
-
-<!-- padrao <- -->
-
-<!--   ggplot() + -->
-
-<!--   xlim(c(-3.5, 3.5)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "steelblue", -->
-
-<!--                 xlim = c(-3.5, Z1))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "green", -->
-
-<!--                 xlim = c(Z1, Z2))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "red", -->
-
-<!--                 xlim = c(Z2, 3.5))+ -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line")+ -->
-
-<!--   scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+ -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, .1)))+ -->
-
-<!--   labs(x = "Valor de Z", y = "Probabilidade")+ -->
-
-<!--   annotate("text", x = -3, y = 0.11, label = "Abatedouro A") + -->
-
-<!--   annotate("segment", -->
-
-<!--            x = -3, -->
-
-<!--            y = 0.1, -->
-
-<!--            xend = -2.2, -->
-
-<!--            yend = 0.01, -->
-
-<!--            arrow=arrow()) + -->
-
-<!--   annotate("text", x = -3, y = 0.31, label = "Abatedouro B") + -->
-
-<!--   annotate("segment", -->
-
-<!--            x = -3, -->
-
-<!--            y = 0.3, -->
-
-<!--            xend = 0, -->
-
-<!--            yend = 0.15, -->
-
-<!--            arrow=arrow()) + -->
-
-<!--   annotate("text", x = 3, y = 0.11, label = "Abatedouro C") + -->
-
-<!--   annotate("segment", -->
-
-<!--            x = 3, -->
-
-<!--            y = 0.1, -->
-
-<!--            xend = 2, -->
-
-<!--            yend = 0.01, -->
-
-<!--            arrow=arrow()) -->
-
-<!-- arrange_ggplot(normal, padrao) -->
-
-<!-- ``` -->
-
-<!-- ### Questão 11 -->
-
-<!-- Um agricultor possui uma área de plantio de eucalipto com 2,5 ha e uma densidade de 1500 plantas por ha. O diâmetro a altura do peito (DAP) segue uma distribuição normal, com média de 22 cm e variância de 16 cm\$^2\$. -->
-
-<!-- O produtor recebeu uma proposta de compra das toras que segue a seguinte -->
-
-<!-- condição. -->
-
-<!-- -   Se as toras apresentarem até 17 cm de DAP, a madeira é destinada para produção de maravalha, com preço por tora de R\\\$ 28,00. -->
-
-<!-- - Se as toras apresentarem DAP maior do que 17 cm, a madeira é destinada para produção de tábuas, com preço por tora de R\\\$ 46,00. -->
-
-<!-- Considerando o exposto, calcule: -->
-
-<!-- a\) O valor estimado de venda de toras para maravalha -->
-
-<!-- Para encontrar este número, precisamos saber quantas árvores com esta -->
-
-<!-- medida são esperadas. Para isso, precisamos encontrar a probabilidade de -->
-
-<!-- ocorrência de árvores com até 18 cm de DAP e multiplicar essa -->
-
-<!-- probabilidade pelo total de árvores. -->
-
-<!-- $$ -->
-
-<!-- Z = \frac{17 - 22}{4} = -1,25 -->
-
-<!-- $$ -->
-
-<!-- ```{r fig.width=10, fig.height=8} -->
-
-<!-- ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "cyan", -->
-
-<!--                 xlim = c(-3, -1.25)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 xlim = c(-3, 3)) + -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + -->
-
-<!--   labs(y = "", x = "Z") -->
-
-<!-- # probabilidade -->
-
-<!-- (p17 <- pnorm(17, mean = 22, sd = 4)) -->
-
-<!-- # número de toras -->
-
-<!-- (n <- round(p17 * (1500 * 2.5))) -->
-
-<!-- # valor das toras -->
-
-<!-- n * 28 -->
-
-<!-- ``` -->
-
-<!-- b\) o valor estimado de venda de toras para fabricação de tábua -->
-
-<!-- Para encontrar este número, precisamos saber quantas árvores com com mais de 18 cm se espera. A probabilidade de árvores com mais de 18 cm (P) é dada por -->
-
-<!-- $$ -->
-
-<!-- Z = P(X > 1,25) = 1 - P(\le 1,25) -->
-
-<!-- $$ -->
-
-<!-- $$ -->
-
-<!-- P(X > 1,25) = 1 - 0,1056 -->
-
-<!-- $$ -->
-
-<!-- $$ -->
-
-<!-- P(X > 1,25) = 0,8943 -->
-
-<!-- $$ -->
-
-<!-- ```{r} -->
-
-<!-- ggplot() + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "cyan", -->
-
-<!--                 xlim = c(-1.25, 3)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line", -->
-
-<!--                 xlim = c(-3, 3)) + -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + -->
-
-<!--   labs(y = "", x = "Z") -->
-
-<!-- # probabilidade -->
-
-<!-- (p_mais18 <- 1 - pnorm(17, mean = 22, sd = 4)) -->
-
-<!-- # número de toras -->
-
-<!-- (n2 <- round(p_mais18 * (1500 * 2.5))) -->
-
-<!-- # valor das toras -->
-
-<!-- n2 * 46 -->
-
-<!-- ``` -->
-
-<!-- c\) O DAP que somente 5 % das toras ultrapassará -->
-
-<!-- Este valor é o quantil da distribuição no valor acumulado de 0.95. -->
-
-<!-- Precisamos, primeiramente, encontrar a probabilidade de \$P(Z \> z)\$: -->
-
-<!-- $$ -->
-
-<!-- P(Z\>z) = 1 - P(Z≤z) -->
-
-<!-- $$ -->
-
-<!-- $$ -->
-
-<!-- P(Z\>z) = 1 - 0,95 -->
-
-<!-- $$ -->
-
-<!-- $$ -->
-
-<!-- P(Z\>z) = 0,05 -->
-
-<!-- $$ -->
-
-<!-- O valor de 0,95 é encontrado no quantil \~1,65 (Z) da distribuição -->
-
-<!-- normal padrão (tabela). Para saber o valor exato, podemos utilizar a -->
-
-<!-- função `qnorm()`. -->
-
-<!-- ```{r} -->
-
-<!-- qnorm(0.95) -->
-
-<!-- ``` -->
-
-<!-- ```{r} -->
-
-<!-- ggplot() + -->
-
-<!--   scale_x_continuous(limits = c(-3, 3), -->
-
-<!--                      breaks = 1.644) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "area", -->
-
-<!--                 fill = "cyan", -->
-
-<!--                 xlim = c(1.644, 3)) + -->
-
-<!--   stat_function(fun = dnorm, -->
-
-<!--                 geom = "line") + -->
-
-<!--   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + -->
-
-<!--   labs(y = "", x = "Z") + -->
-
-<!--     annotate("segment", -->
-
-<!--            x = 2.1, -->
-
-<!--            y = 0.1, -->
-
-<!--            xend = 2, -->
-
-<!--            yend = 0.02, -->
-
-<!--            arrow=arrow()) + -->
-
-<!--   annotate("text", -->
-
-<!--            x = 2.1, y = 0.11, -->
-
-<!--            label = "Área = 0,05") -->
-
-<!-- ``` -->
-
-<!-- De posse do valor de *Z*, basta realizar uma inversão da fórmula de -->
-
-<!-- padronização para encontrar o valor de *x*. -->
-
-<!-- $$ -->
-
-<!-- Z = (x – \mu)/\sigma\\ -->
-
-<!-- $$ -->
-
-<!-- $$ -->
-
-<!-- 1,644 = (x – 22)/4\\ -->
-
-<!-- $$ -->
-
-<!-- $$ -->
-
-<!-- 1,644\times4 = x – 22\\ -->
-
-<!-- $$ -->
-
-<!-- $$ -->
-
-<!-- 6,576 = x – 22\\ -->
-
-<!-- $$ -->
-
-<!-- $$ -->
-
-<!-- x = 22 + 6,576 -->
-
-<!-- $$ -->
-
-<!-- $$ -->
-
-<!-- x = 28,576 -->
-
-<!-- $$ -->
-
-<!-- Então, o peso DAP que somente 5% das toras ultrapassará é de \~28,6 cm. -->
 
 # Distribuição t
 
@@ -2187,6 +708,15 @@ get_ci_t <- function(media, dp, n){
   )
   return(semi_amp)
 }
+get_ci_t(168, sqrt(67.404), 20)
+```
+
+```
+## [164.158 ; 171.842]
+```
+
+```
+## [1] 3.842395
 ```
 
 
@@ -2467,6 +997,7 @@ t.test(altura, mu = 165)
 
 ### Teste de hipóteses para amostras independentes
 
+
 Neste tipo de teste de hipótese, o objetivo é comparar se a estimativa da média de um grupo "A" difere estatisticamente da estimativa da média de um grupo "B". Utilizaremos como amostras os dados do diâmetro dos grãos obtidas na primeira aula, onde deseja-se comparar se o diâmetro entre os grupos "vermelho" e "verde" difere estatisticamente.
 
 
@@ -2701,137 +1232,1192 @@ t.test(paired$DIFERENCA, var.equal = TRUE)
 ## -0.9285714
 ```
 
-## Exercícios
-
-### Métodos de mensuração (régua e imagem)
-
-Nos últimos anos, o melhoramento ganhou ferramentas que aumentam a eficiência no desenvolvimento de novas cultivares. Dentre essas, pode-se citar a genotipagem por meio do mapeamento genético e marcadores moleculares, gerando uma infinidade de informações genéticas. No entanto, mesmo com o avanço exponencial desse ramo da ciência, há ainda uma enorme necessidade de obtenção de dados fenotípicos confiáveis [^2].
-
-[^2]: <https://link.springer.com/10.1007/s00122-021-03820-3>
-
-Técnicas que utilizam visão computacional e análise de imagens possibilitam ganho de tempo e, principalmente recursos durante as etapas do melhoramento. Com tais análises, é possível obter grande quantidade de dados em pouco tempo. No entanto, é necessário que tais medidas sejam acuradas, ou seja, representem fidedignamente os valores reais observados. Para validar a obtenção de medidas de comprimento e largura de folhas via imagens, medidas de comprimento e largura de 15 folhas foram obtidas utilizando duas técnicas. A primeira, utilizando análises de imagens no pacote R pliman e a segunda por meio do auxílio de uma régua. Os dados coletados são encontrados a seguir.
 
 
-```r
-library(rio)
-library(metan)
-library(tidyverse)
 
-df <- import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=2115165499",
-             dec = ",")
-df
-```
+## Exercícios Distribuição Normal
+### Questão 1
 
-```
-##    folha metodo comprimento largura
-## 1      1  regua       16.50    6.40
-## 2      2  regua       16.00    4.70
-## 3      3  regua       12.50    3.40
-## 4      4  regua       10.00    4.20
-## 5      5  regua        7.60    3.40
-## 6      6  regua        6.80    3.20
-## 7      7  regua       14.10    6.80
-## 8      8  regua        9.90    4.80
-## 9      9  regua        9.70    4.30
-## 10    10  regua        6.50    2.60
-## 11    11  regua        5.70    2.50
-## 12     1   foto       15.64    6.66
-## 13     2   foto       15.40    4.55
-## 14     3   foto       12.29    3.38
-## 15     4   foto        9.71    4.16
-## 16     5   foto        7.66    3.41
-## 17     6   foto        6.67    3.17
-## 18     7   foto       14.55    6.90
-## 19     8   foto       10.22    4.98
-## 20     9   foto        9.96    4.46
-## 21    10   foto        6.61    2.72
-## 22    11   foto        5.94    2.54
-```
+A série histórica das vendas de uma determinada fórmula de adubo seguem uma distribuição normal com média 25.000 t e desvio padrão de 2.600 t. Se a empresa fabricante decidir fabricar 30000 toneladas deste adubo para suprir a demanda da safra atual, qual é a probabilidade de que ela não possa atender todas as vendas por estar com a produção esgotada?
 
-Considerando que as medidas (régua e foto) foram obtidas no mesmo indivíduo, utilize um teste t pareado para testar, a 5% de probabilidade de erro, se o método de mensuração por imagem difere do método manual (por régua) para as variáveis em questão.
+(R = 0,0272) SOLUÇÃO: encontrar a
+
+    probabilidade de vender mais que 30000 t
 
 
 ```r
-# variável comprimento da folha
-# ex
-comp_foto <- df |> subset(metodo == "foto") |> pull(comprimento)
-comp_foto
+me <- 25000
+sdd <- 2600
+val <- 30000
+Z <- (val - me) / sdd
+prob <- 1 - pnorm(Z)
+qnorm(1-pnorm(3.5), me, sdd)
 ```
 
 ```
-##  [1] 15.64 15.40 12.29  9.71  7.66  6.67 14.55 10.22  9.96  6.61  5.94
-```
-
-```r
-comp_regua <- df |> subset(metodo == "regua") |> pull(comprimento)
-comp_regua
-```
-
-```
-##  [1] 16.5 16.0 12.5 10.0  7.6  6.8 14.1  9.9  9.7  6.5  5.7
+## [1] 15900
 ```
 
 ```r
-# calcula a diferença
-dif <- comp_foto - comp_regua
-# realiza um teste t com a diferença
-
-t.test(dif)
+qnorm(1-pnorm(3.5), me, sdd, lower.tail = F)
 ```
 
 ```
-## 
-## 	One Sample t-test
-## 
-## data:  dif
-## t = -0.48217, df = 10, p-value = 0.6401
-## alternative hypothesis: true mean is not equal to 0
-## 95 percent confidence interval:
-##  -0.3321539  0.2139721
-## sample estimates:
-##   mean of x 
-## -0.05909091
+## [1] 34100
 ```
 
 ```r
-# mesma coisa informando as duas médias com 'paired = TRUE'
-t.test(comprimento ~ metodo, data = df, paired = TRUE)
+normal <-
+  ggplot() +
+  xlim(c(15900, 34100)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(30000, 34100),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                )) +
+  stat_function(fun = dnorm,
+                geom = "line",
+                args = list(
+                  mean = me,
+                  sd = sdd
+                )) +
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor original", y = "Probabilidade")+
+  ggtitle("Distribuição da variável original")
+
+padrao <-
+  ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(Z, 3.5)) +
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z", y = "Probabilidade")+
+  ggtitle("Distribuição da variável padronizada",
+          subtitle = paste("Valor de Z:", round(Z, 4), "; Prob área sombreada:", round(prob, 4)))
+arrange_ggplot(normal, padrao, ncol = 1)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-36-1.png" width="960" />
+
+### Questão 2
+
+2. O gerente da empresa que João trabalha resolveu premiar seus vendedores mais eficientes (5%) na venda de insumos. Um levantamento das vendas individuais anuais mostrou que a venda de adubo segue uma distribuição normal com média 240.000 t. e desvio padrão 30.000 t. Qual o volume de vendas mínimo que João deve realizar para ser premiado?
+
+> (R = 289.346)
+
+RESOLUÇÃO: encontrar o valor de Z associado aos 5% que mais vendem Z = 1.6448 Valor da variável original associado ao Z = 289.346
+
+
+```r
+# quantil associado aos 5% que mais vendem
+Z <- qnorm(0.95)
+me <- 240000
+sdd <- 30000
+
+# volume mínimo de vendas
+(vendas <- Z * sdd + me)
 ```
 
 ```
-## 
-## 	Paired t-test
-## 
-## data:  comprimento by metodo
-## t = -0.48217, df = 10, p-value = 0.6401
-## alternative hypothesis: true mean difference is not equal to 0
-## 95 percent confidence interval:
-##  -0.3321539  0.2139721
-## sample estimates:
-## mean difference 
-##     -0.05909091
+## [1] 289345.6
 ```
 
 ```r
-# variável largura da folha
-t.test(largura ~ metodo, data = df, paired = TRUE)
+original <-
+  ggplot() +
+  xlim(c(135000, 345000)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(vendas, 360000),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "line",
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor original", y = "Probabilidade")+
+  ggtitle("Distribuição da variável original")
+
+padrao <-
+  ggplot() +
+  xlim(c(-3.5, 3.5)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(Z, 3.5))+
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z", y = "Probabilidade")+
+  ggtitle("Distribuição de Z",
+          subtitle = paste("Valor de Z:", round(Z, 4), "; Prob área sombreada:", round(prob, 4)))
 ```
 
 ```
-## 
-## 	Paired t-test
-## 
-## data:  largura by metodo
-## t = 1.5996, df = 10, p-value = 0.1408
-## alternative hypothesis: true mean difference is not equal to 0
-## 95 percent confidence interval:
-##  -0.02250533  0.13705079
-## sample estimates:
-## mean difference 
-##      0.05727273
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
 ```
 
-### Variáveis espiga de milho
+```r
+arrange_ggplot(original, padrao, ncol = 1)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-37-1.png" width="960" />
+
+### Questão 3
+
+Uma variável aleatória X segue uma distribuição normal com média 100 e desvio padrão 10. Calcule a probabilidade de x estar entre 90 e 110.
+
+
+```r
+me <- 100
+sdd <- 10
+val1 <- 90
+val2 <- 110
+(Z1 <- (val1 - me) / sdd)
+```
+
+```
+## [1] -1
+```
+
+```r
+(Z2 <- (val2 - me) / sdd)
+```
+
+```
+## [1] 1
+```
+
+```r
+# probabilidade dos valores estarem a 1 desvio padrão para mais ou menos
+pnorm(Z2) - pnorm(Z1)
+```
+
+```
+## [1] 0.6826895
+```
+
+```r
+args <- list(
+  mean = 100,
+  sd = 10
+)
+normal <-
+  ggplot() +
+  scale_x_continuous(limits = c(60, 140),
+                     breaks = seq(60, 140, 10)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(90, 110),
+                args = args) +
+  stat_function(fun = dnorm,
+                geom = "line",
+                args = args) +
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor original", y = "Probabilidade")+
+  ggtitle("Distribuição da variável original")
+
+padrao <-
+  ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(Z1, Z2)) +
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-4, 4), breaks = c(seq(-4, 4, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z",
+       y = "Probabilidade")+
+  ggtitle("Distribuição da variável padronizada")
+
+arrange_ggplot(normal, padrao, ncol = 1)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-38-1.png" width="960" />
+
+### Questão 4
+
+Se X\~N(10, 2), calcule (9 \< X \< 12)
+
+> R: 0,53 RESOLUÇÃO: calcular a probabilidade x ser maior que 9 e menor que 12
+
+
+```r
+me <- 10
+sdd <- 2
+val1 <- 9
+val2 <- 12
+Z1 <- (val1 - me) / sdd
+Z2 <- (val2 - me) / sdd
+(prob <- pnorm(Z2) - pnorm(Z1))
+```
+
+```
+## [1] 0.5328072
+```
+
+```r
+normal <-
+  ggplot() +
+  scale_x_continuous(limits =  c(3, 17),
+                     breaks = 3:17) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(val1, val2),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "line",
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor original", y = "Probabilidade")+
+  ggtitle("Distribuição da variável original")
+
+padrao <-
+  ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(Z1, Z2))+
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z", y = "Probabilidade")+
+  ggtitle("Distribuição da variável padronizada",
+          subtitle = paste("Z1:", round(Z1, 4), "  Z2:", round(Z2, 4), "; Prob área sombreada:", round(prob, 4)))
+
+arrange_ggplot(normal, padrao, ncol = 1)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-39-1.png" width="960" />
+
+### Questão 5
+
+Se X tem uma distribuição normal com média 100 e desvio padrão 10, determine:
+
+* P(X \< 115)
+
+
+```r
+me <- 100
+sdd <- 10
+val <- 115
+(Z <- (val - me) / sdd)
+```
+
+```
+## [1] 1.5
+```
+
+```r
+(prob <- pnorm(Z))
+```
+
+```
+## [1] 0.9331928
+```
+
+```r
+normal <-
+  ggplot() +
+  scale_x_continuous(limits = c(65,  135)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(65, val),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "line",
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor original", y = "Probabilidade")+
+  ggtitle("Distribuição da variável original")
+
+
+padrao <-
+  ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(-3.5, Z))+
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z", y = "Probabilidade")+
+  ggtitle("Distribuição da variável padronizada",
+          subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4)))
+
+arrange_ggplot(normal, padrao, ncol = 1)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-40-1.png" width="960" />
+
+* P(X \> 80)
+
+> R: 0,9772
+
+RESOLUÇÃO: calcular a probabilidade x ser maior que 80, ou seja `\(1 - P(X \le 80\)`).
+
+
+```r
+me <- 100
+sdd <- 10
+val <- 80
+(Z <- (val - me) / sdd)
+```
+
+```
+## [1] -2
+```
+
+```r
+(prob <- 1 - pnorm(Z))
+```
+
+```
+## [1] 0.9772499
+```
+
+```r
+normal <-
+  ggplot() +
+  scale_x_continuous(limits = c(65,  135)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(80, 140),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "line",
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor original",
+       y = "Probabilidade")
+
+
+padrao <-
+  ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(Z, 4))+
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z", y = "Probabilidade")
+
+arrange_ggplot(normal, padrao, ncol = 1)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-41-1.png" width="672" />
+
+* P(X \> 100)
+
+> R: 0,5
+
+RESOLUÇÃO: calcular a probabilidade x ser maior que 50, ou seja `\(1 - P(X \le 50\)`).
+
+
+```r
+me <- 100
+sdd <- 10
+val <- 100
+(Z <- (val - me) / sdd)
+```
+
+```
+## [1] 0
+```
+
+```r
+(prob <- 1 - pnorm(Z))
+```
+
+```
+## [1] 0.5
+```
+
+```r
+normal <-
+  ggplot() +
+  scale_x_continuous(limits = c(65,  135)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(100, 140),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "line",
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor original",
+       y = "Probabilidade")
+
+padrao <-
+  ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(Z, 4))+
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z", y = "Probabilidade")
+
+arrange_ggplot(normal, padrao, ncol = 1)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-42-1.png" width="672" />
+
+### Questão 6
+
+A alturas de 10000 alunos de um colégio têm distribuição aproximadamente normal com média de 170 cm e desvio padrão de 5 cm. Qual o número esperado de alunos com altura superior a 1,65 m?
+
+> R = 8413 alunos (0,8413 \* 10000)
+
+RESOLUÇÃO: calcular a probabilidade de alunos com mais de 165 cm, logo achando o número de alunos.
+
+
+```r
+n <- 10000
+me <- 170
+sdd <- 5
+val <- 165
+Z <- (val - me) / sdd
+(prob <- 1 - pnorm(Z))
+```
+
+```
+## [1] 0.8413447
+```
+
+```r
+normal <-
+  ggplot() +
+  scale_x_continuous(limits = c(152.5,  187.5),
+                     breaks = seq(150, 190, by = 5)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(val, 187.5),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "line",
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Altura do aluno",
+       y = "Probabilidade")
+
+padrao <-
+  ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(Z, 3.5))+
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-3.5, 3.5),
+                     breaks = c(seq(-3, 3, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z",
+       y = "Probabilidade")+
+  ggtitle("Distribuição da variável padronizada",
+          subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4)))
+
+arrange_ggplot(normal, padrao, ncol = 1)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-43-1.png" width="960" />
+
+### Questão 7
+
+Uma ensacadora de adubos está regulada para que o peso em cada saco seja de 50 Kg com desvio padrão de 5 Kg. Admitindo-se que a distribuição é aproximadamente normal, qual a percentagem de sacos em que o peso de adubo é inferior a 45 Kg?
+
+> R (0,1587)
+
+RESOLUÇÃO: encontrar a probabilidade de achar sacos com menos que 45 Kg.
+
+
+```r
+me <- 50
+sdd <- 5
+val <- 45
+(Z <- (val - me) / sdd)
+```
+
+```
+## [1] -1
+```
+
+```r
+(prob <- pnorm(Z))
+```
+
+```
+## [1] 0.1586553
+```
+
+```r
+normal <-
+  ggplot() +
+  scale_x_continuous(limits = c(32.5,  67.5),
+                     breaks = seq(30, 70, by = 5)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(32.5, val),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "line",
+                size = 1,
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Peso do saco de adubo",
+       y = "Probabilidade")
+
+padrao <-
+  ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(-3.5, Z))+
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z", y = "Probabilidade")+
+  ggtitle("Distribuição da variável padronizada",
+          subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4)))
+
+arrange_ggplot(normal, padrao, ncol = 1)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-44-1.png" width="960" />
+
+### Questão 8
+
+Um lote de frangos com 14.000 frangos apresenta média de peso de 3,0 Kg e desvio padrão de 0,2 Kg. Assumindo que o peso deste lote segue uma distribuição aproximadamente normal, quantos são os frangos que pesam mais que 3300 g?
+
+> R = \~ 935 (0,0668072 \* 14000)
+
+RESOLUÇÃO: encontrar Z e achar a probabilidade de o peso ser maior que Z.
+
+
+```r
+me <- 3
+sdd <- 0.2
+val <- 3.3
+(Z <- (val - me) / sdd)
+```
+
+```
+## [1] 1.5
+```
+
+```r
+(prob <- 1 - pnorm(Z))
+```
+
+```
+## [1] 0.0668072
+```
+
+```r
+round(prob * 14000)
+```
+
+```
+## [1] 935
+```
+
+```r
+normal <-
+  ggplot() +
+  scale_x_continuous(limits = c(2.3, 3.7),
+                     breaks = seq(2, 4, by = 0.5)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(val, 4),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "line",
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Peso do frango (kg)", y = "probabilidade")
+
+padrao <-
+  ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(Z, 3.5))+
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-3.5, 3.5),
+                     breaks = c(seq(-3, 3, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z", y = "Probabilidade")+
+  ggtitle("Distribuição da variável padronizada",
+          subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área sombreada:", round(prob, 4)))
+
+arrange_ggplot(normal, padrao, ncol = 1)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-45-1.png" width="960" />
+
+### Questão 9
+
+Em uma fazenda de criação de coelhos, um lote com 300 coelhos tem média que segue uma distribuição normal com média de 3,5 Kg com desvio padrão de 250 g. Coelhos com peso de até 3.7 Kg são vendidos a R\$ 15,00 o Kg. Coelhos com peso acima de 3,7 Kg são vendidos a R\$ 20,00 o Kg. Quantos coelhos serão vendidos ao maior valor de venda?
+
+> R (\~ 63 coelhos; 0.2119 \* 300)
+
+RESOLUÇÃO encontrar o número de coelhos que pesem mais que 3.7 Kg. No
+
+gráfico abaixo, a cor vermelha representa a probabilidade de coelhos com
+
+menos de 3.7 Kg e a cor azul a probabilidade de encontrar coelhos com
+
+mais de 3.7 Kg.
+
+
+```r
+me <- 3.5
+sdd <- 0.25
+val <- 3.7
+(Z <- (val - me) / sdd)
+```
+
+```
+## [1] 0.8
+```
+
+```r
+(prob <- 1 - pnorm(Z))
+```
+
+```
+## [1] 0.2118554
+```
+
+```r
+# número de coelhos
+round(prob * 300)
+```
+
+```
+## [1] 64
+```
+
+```r
+normal <-
+  ggplot() +
+  scale_x_continuous(limits = c(2.625,  4.375)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "blue",
+                xlim = c(val, 4.375),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "red",
+                xlim = c(2.625, val),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "line",
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor original", y = "Probabilidade")+
+  ggtitle("Peso do coelho")
+
+padrao <-
+ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "blue",
+                xlim = c(Z, 3.5))+
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "red",
+                xlim = c(-3.5, Z))+
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z", y = "Probabilidade")+
+  ggtitle("Distribuição da variável padronizada",
+          subtitle = paste("Valor de Z:", round(Z, 4), "\nProb área azul:", round(prob, 4)))
+
+arrange_ggplot(normal, padrao, ncol = 1)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-46-1.png" width="960" />
+
+### Questão 10
+
+1.  Um lote gado de corte com 3000 cabeças apresenta 430 Kg de peso vivo por cabeça em média com desvio padrão de 65 Kg e se sabe que segue uma distribuição normal. Na venda deste lote, animais com até 320 Kg são abatidos em um abatedouro A. Por outro lado, animais com peso maior que 320 e menor que 520 Kg são abatidos no abatedouro B. Animais com peso superior a 520 Kg são abatidos no abatedouro C. Considerando estes dados, responda:
+
+a\. O número de animais abatidos nos 3 batedouros: 3000
+b\. O número de animais abatidos no abatedouro A: 
+c\. O número de animais abatidos no abatedouro B
+d\. O número de animais abatidos no abatedouro C
+
+> RESOLUÇÃO: encontrar a probabilidade do peso (X) assumir P(X\<320), P(320 \< X \< 520) e P(X \> 520).
+
+
+```r
+me <- 430
+sdd <- 65
+val1 <- 320
+val2 <- 520
+(Z1 <- (val1 - me) / sdd)
+```
+
+```
+## [1] -1.692308
+```
+
+```r
+(Z2 <- (val2 - me) / sdd)
+```
+
+```
+## [1] 1.384615
+```
+
+```r
+(prob1 <- pnorm(Z1))
+```
+
+```
+## [1] 0.04529366
+```
+
+```r
+(prob2 <- pnorm(Z2) - prob1)
+```
+
+```
+## [1] 0.8716213
+```
+
+```r
+(prob3 <- 1 - sum(prob1, prob2))
+```
+
+```
+## [1] 0.08308505
+```
+
+```r
+# checar se a soma das probabilidades deu 1
+sum(prob1, prob2, prob3)
+```
+
+```
+## [1] 1
+```
+
+```r
+normal <-
+  ggplot() +
+  xlim(c(202.5,  657.5)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(202.5, val1),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "green",
+                xlim = c(val1, val2),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "red",
+                xlim = c(val2, 657.5),
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  stat_function(fun = dnorm,
+                geom = "line",
+                args = list(
+                  mean = me,
+                  sd = sdd
+                ))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor original", y = "Probabilidade")+
+  ggtitle("Distribuição da variável ")
+
+padrao <-
+  ggplot() +
+  xlim(c(-3.5, 3.5)) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(-3.5, Z1))+
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "green",
+                xlim = c(Z1, Z2))+
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "red",
+                xlim = c(Z2, 3.5))+
+  stat_function(fun = dnorm,
+                geom = "line")+
+  scale_x_continuous(limits = c(-3.5, 3.5), breaks = c(seq(-3, 3, 1)))+
+  scale_y_continuous(expand = expansion(mult = c(0, .1)))+
+  labs(x = "Valor de Z", y = "Probabilidade")+
+  annotate("text", x = -3, y = 0.11, label = "Abatedouro A") +
+  annotate("segment",
+           x = -3,
+           y = 0.1,
+           xend = -2.2,
+           yend = 0.01,
+           arrow=arrow()) +
+  annotate("text", x = -3, y = 0.31, label = "Abatedouro B") +
+  annotate("segment",
+           x = -3,
+           y = 0.3,
+           xend = 0,
+           yend = 0.15,
+           arrow=arrow()) +
+  annotate("text", x = 3, y = 0.11, label = "Abatedouro C") +
+  annotate("segment",
+           x = 3,
+           y = 0.1,
+           xend = 2,
+           yend = 0.01,
+           arrow=arrow())
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+arrange_ggplot(normal, padrao)
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-47-1.png" width="960" />
+
+
+### Questão 11
+
+Um agricultor possui uma área de plantio de eucalipto com 2,5 ha e uma densidade de 1500 plantas por ha. O diâmetro a altura do peito (DAP) segue uma distribuição normal, com média de 22 cm e variância de 16 cm\$^2\$.
+
+O produtor recebeu uma proposta de compra das toras que segue a seguinte
+
+condição.
+
+-   Se as toras apresentarem até 17 cm de DAP, a madeira é destinada para produção de maravalha, com preço por tora de R\\\$ 28,00.
+
+- Se as toras apresentarem DAP maior do que 17 cm, a madeira é destinada para produção de tábuas, com preço por tora de R\\\$ 46,00.
+
+Considerando o exposto, calcule:
+
+a\) O valor estimado de venda de toras para maravalha
+
+Para encontrar este número, precisamos saber quantas árvores com esta
+
+medida são esperadas. Para isso, precisamos encontrar a probabilidade de
+
+ocorrência de árvores com até 18 cm de DAP e multiplicar essa
+
+probabilidade pelo total de árvores.
+
+$$
+Z = \frac{17 - 22}{4} = -1,25
+$$
+
+
+```r
+ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "cyan",
+                xlim = c(-3, -1.25)) +
+  stat_function(fun = dnorm,
+                geom = "line",
+                xlim = c(-3, 3)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
+  labs(y = "", x = "Z")
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-48-1.png" width="960" />
+
+```r
+# probabilidade
+(p17 <- pnorm(17, mean = 22, sd = 4))
+```
+
+```
+## [1] 0.1056498
+```
+
+```r
+# número de toras
+(n <- round(p17 * (1500 * 2.5)))
+```
+
+```
+## [1] 396
+```
+
+```r
+# valor das toras
+n * 28
+```
+
+```
+## [1] 11088
+```
+
+b\) o valor estimado de venda de toras para fabricação de tábua
+
+Para encontrar este número, precisamos saber quantas árvores com com mais de 18 cm se espera. A probabilidade de árvores com mais de 18 cm (P) é dada por
+
+$$
+Z = P(X > 1,25) = 1 - P(\le 1,25)
+$$
+
+$$
+P(X > 1,25) = 1 - 0,1056
+$$
+
+$$
+P(X > 1,25) = 0,8943
+$$
+
+
+```r
+ggplot() +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "cyan",
+                xlim = c(-1.25, 3)) +
+  stat_function(fun = dnorm,
+                geom = "line",
+                xlim = c(-3, 3)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
+  labs(y = "", x = "Z")
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-49-1.png" width="672" />
+
+```r
+# probabilidade
+(p_mais18 <- 1 - pnorm(17, mean = 22, sd = 4))
+```
+
+```
+## [1] 0.8943502
+```
+
+```r
+# número de toras
+(n2 <- round(p_mais18 * (1500 * 2.5)))
+```
+
+```
+## [1] 3354
+```
+
+```r
+# valor das toras
+n2 * 46
+```
+
+```
+## [1] 154284
+```
+
+c\) O DAP que somente 5 % das toras ultrapassará
+
+Este valor é o quantil da distribuição no valor acumulado de 0.95.
+
+Precisamos, primeiramente, encontrar a probabilidade de \$P(Z \> z)\$:
+
+$$
+P(Z\>z) = 1 - P(Z≤z)
+$$
+
+$$
+P(Z\>z) = 1 - 0,95
+$$
+
+$$
+P(Z\>z) = 0,05
+$$
+
+O valor de 0,95 é encontrado no quantil \~1,65 (Z) da distribuição
+
+normal padrão (tabela). Para saber o valor exato, podemos utilizar a
+
+função `qnorm()`.
+
+
+```r
+qnorm(0.95)
+```
+
+```
+## [1] 1.644854
+```
+
+
+```r
+ggplot() +
+  scale_x_continuous(limits = c(-3, 3),
+                     breaks = 1.644) +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "cyan",
+                xlim = c(1.644, 3)) +
+  stat_function(fun = dnorm,
+                geom = "line") +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
+  labs(y = "", x = "Z") +
+    annotate("segment",
+           x = 2.1,
+           y = 0.1,
+           xend = 2,
+           yend = 0.02,
+           arrow=arrow()) +
+  annotate("text",
+           x = 2.1, y = 0.11,
+           label = "Área = 0,05")
+```
+
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-51-1.png" width="672" />
+
+De posse do valor de *Z*, basta realizar uma inversão da fórmula de
+
+padronização para encontrar o valor de *x*.
+
+$$
+
+Z = (x – \mu)/\sigma\\
+
+$$
+
+$$
+
+1,644 = (x – 22)/4\\
+
+$$
+
+$$
+
+1,644\times4 = x – 22\\
+
+$$
+
+$$
+
+6,576 = x – 22\\
+
+$$
+
+$$
+
+x = 22 + 6,576
+
+$$
+
+$$
+
+x = 28,576
+
+$$
+
+Então, o peso DAP que somente 5% das toras ultrapassará é de \~28,6 cm.
+
+
+## Exercícios distribuição t
+
+### Questão 1
 
 Um experimento visando comparar dois híbridos de milho (H1 e H2) obteve dados da massa de grãos (MGRA) e número de grãos (NGRA) por espiga, apresentados abaixo.
 
@@ -2891,8 +2477,7 @@ t.test(MGRA ~ HIBRIDO, data = df, var.equal = TRUE)
 
 ```r
 library(ggstatsplot)
-
-ggbetweenstats(df, 
+ggbetweenstats(df,
                x = HIBRIDO,
                y = MGRA,
                plot.type = "box",
@@ -2900,7 +2485,59 @@ ggbetweenstats(df,
                var.equal = TRUE)
 ```
 
-<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-39-1.png" width="672" />
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-53-1.png" width="672" />
+
+```r
+g1 <- rnorm(23, 22, 3)
+g2 <- rnorm(44, 19, 7)
+t.test(g1, g2, var.equal = TRUE)
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  g1 and g2
+## t = 1.6925, df = 65, p-value = 0.09534
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.468055  5.668615
+## sample estimates:
+## mean of x mean of y 
+##  22.00719  19.40691
+```
+
+```r
+mean(g1)
+```
+
+```
+## [1] 22.00719
+```
+
+```r
+mean(g2)
+```
+
+```
+## [1] 19.40691
+```
+
+```r
+sd(g1)
+```
+
+```
+## [1] 3.141223
+```
+
+```r
+sd(g2)
+```
+
+```
+## [1] 6.988962
+```
 
 -   Variável MGRA
 
@@ -2924,7 +2561,7 @@ t.test(NGRA ~ HIBRIDO, data = df, var.equal = TRUE)
 ```
 
 ```r
-ggbetweenstats(df, 
+ggbetweenstats(df,
                x = HIBRIDO,
                y = NGRA,
                plot.type = "box",
@@ -2932,11 +2569,150 @@ ggbetweenstats(df,
                var.equal = TRUE)
 ```
 
-<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-40-1.png" width="672" />
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-54-1.png" width="672" />
 
 Considerando os resultados do teste de hipótese, rejeita-se a hipótese nula para as duas variáveis e afirma-se que as médias dos dois híbridos para MGRA e NGRA por espiga são diferentes.
 
-### DAP de eucalipto
+### Questão 2
+
+Nos últimos anos, o melhoramento ganhou ferramentas que aumentam a eficiência no desenvolvimento de novas cultivares. Dentre essas, pode-se citar a genotipagem por meio do mapeamento genético e marcadores moleculares, gerando uma infinidade de informações genéticas. No entanto, mesmo com o avanço exponencial desse ramo da ciência, há ainda uma enorme necessidade de obtenção de dados fenotípicos confiáveis [^2].
+
+[^2]: <https://link.springer.com/10.1007/s00122-021-03820-3>
+
+Técnicas que utilizam visão computacional e análise de imagens possibilitam ganho de tempo e, principalmente recursos durante as etapas do melhoramento. Com tais análises, é possível obter grande quantidade de dados em pouco tempo. No entanto, é necessário que tais medidas sejam acuradas, ou seja, representem fidedignamente os valores reais observados. Para validar a obtenção de medidas de comprimento e largura de folhas via imagens, medidas de comprimento e largura de 15 folhas foram obtidas utilizando duas técnicas. A primeira, utilizando análises de imagens no pacote R pliman e a segunda por meio do auxílio de uma régua. Os dados coletados são encontrados a seguir.
+
+
+```r
+library(rio)
+library(metan)
+library(tidyverse)
+
+df <- import("https://docs.google.com/spreadsheets/d/1JMrkppvv1BdGKVCekzZPsPYCKcgUWjxpuDlWqejc22s/edit#gid=2115165499",
+             dec = ",")
+df
+```
+
+```
+##    folha metodo comprimento largura
+## 1      1  regua       16.50    6.40
+## 2      2  regua       16.00    4.70
+## 3      3  regua       12.50    3.40
+## 4      4  regua       10.00    4.20
+## 5      5  regua        7.60    3.40
+## 6      6  regua        6.80    3.20
+## 7      7  regua       14.10    6.80
+## 8      8  regua        9.90    4.80
+## 9      9  regua        9.70    4.30
+## 10    10  regua        6.50    2.60
+## 11    11  regua        5.70    2.50
+## 12     1   foto       15.64    6.66
+## 13     2   foto       15.40    4.55
+## 14     3   foto       12.29    3.38
+## 15     4   foto        9.71    4.16
+## 16     5   foto        7.66    3.41
+## 17     6   foto        6.67    3.17
+## 18     7   foto       14.55    6.90
+## 19     8   foto       10.22    4.98
+## 20     9   foto        9.96    4.46
+## 21    10   foto        6.61    2.72
+## 22    11   foto        5.94    2.54
+```
+
+Considerando que as medidas (régua e foto) foram obtidas no mesmo indivíduo, utilize um teste t pareado para testar, a 5% de probabilidade de erro, se o método de mensuração por imagem difere do método manual (por régua) para as variáveis em questão.
+
+
+```r
+# variável comprimento da folha
+# ex
+
+comp_foto <- df |> subset(metodo == "foto") |> pull(comprimento)
+comp_foto
+```
+
+```
+##  [1] 15.64 15.40 12.29  9.71  7.66  6.67 14.55 10.22  9.96  6.61  5.94
+```
+
+```r
+comp_regua <- df |> subset(metodo == "regua") |> pull(comprimento)
+comp_regua
+```
+
+```
+##  [1] 16.5 16.0 12.5 10.0  7.6  6.8 14.1  9.9  9.7  6.5  5.7
+```
+
+```r
+# calcula a diferença
+dif <- comp_foto - comp_regua
+dif
+```
+
+```
+##  [1] -0.86 -0.60 -0.21 -0.29  0.06 -0.13  0.45  0.32  0.26  0.11  0.24
+```
+
+```r
+# realiza um teste t com a diferença
+
+t.test(dif)
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  dif
+## t = -0.48217, df = 10, p-value = 0.6401
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  -0.3321539  0.2139721
+## sample estimates:
+##   mean of x 
+## -0.05909091
+```
+
+```r
+# mesma coisa informando as duas médias com 'paired = TRUE'
+t.test(comprimento ~ metodo, data = df, paired = TRUE)
+```
+
+```
+## 
+## 	Paired t-test
+## 
+## data:  comprimento by metodo
+## t = -0.48217, df = 10, p-value = 0.6401
+## alternative hypothesis: true mean difference is not equal to 0
+## 95 percent confidence interval:
+##  -0.3321539  0.2139721
+## sample estimates:
+## mean difference 
+##     -0.05909091
+```
+
+```r
+# variável largura da folha
+t.test(largura ~ metodo, data = df, paired = TRUE)
+```
+
+```
+## 
+## 	Paired t-test
+## 
+## data:  largura by metodo
+## t = 1.5996, df = 10, p-value = 0.1408
+## alternative hypothesis: true mean difference is not equal to 0
+## 95 percent confidence interval:
+##  -0.02250533  0.13705079
+## sample estimates:
+## mean difference 
+##      0.05727273
+```
+
+
+
+### Questão 3
 
 Um Engenheiro Florestal realizou mensurações do Diâmetro a Altura do Peito em duas áreas plantadas de eucalipto. Ambas as áreas possuem 05 anos de idade, mas se encontram em diferentes tipos de solo. Após coletar os dados, os seguintes valores foram obtidos:
 
@@ -2989,17 +2765,17 @@ ggplot(df, aes(x = media, y = area)) +
        y = "")
 ```
 
-<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-41-1.png" width="960" />
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-57-1.png" width="960" />
 
-Considerando que os intervalos de confiança se cruzam, pode-se afirmar que as médias não diferem estatisticamente. Vamos testar esta hipótese utilizando um teste t?. Neste caso, o t calculado é comparado com o t tabelado a 49 (21 + 31 - 2) graus liberdade.
+Considerando que os intervalos de confiança se cruzam, pode-se afirmar que as médias não diferem estatisticamente. Vamos testar esta hipótese utilizando um teste t?. Neste caso, o t calculado é comparado com o t tabelado a 52 (23 + 31 - 2) graus liberdade.
 
 
 ```r
-qt(0.975, df = 49)
+qt(0.975, df = 52)
 ```
 
 ```
-## [1] 2.009575
+## [1] 2.006647
 ```
 
 
