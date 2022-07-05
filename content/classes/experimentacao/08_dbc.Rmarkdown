@@ -1,6 +1,6 @@
 ---
 title: ANOVA - DIC
-linktitle: "8. Delineamento de Blocos Casualizados"
+linktitle: "8. Delineamento de Blocos Completos Casualizados"
 toc: true
 type: docs
 date: "2022/02/10"
@@ -59,6 +59,7 @@ Para realizar a casualização em um experimento em DBC, pode-se utilizar a fun�
 trats <- c("50", "70", "100")
 
 # casualização em DIC
+set.seed(1)
 sketch(trats, r = 4, pos = "line")
 # casualização em DBC
 sketch(trats, r = 4, design = "DBC", pos = "line")
@@ -138,9 +139,15 @@ summary(anova)
 ## Comparação de médias
 A análise de variância revelou efeito de tratamento significativo. Nesse caso, segue-se realizando uma análise de comparação múltipla de médias. Podemos realizar a comparação par-a-par utilizando a função `pwpm()` do pacote `emmeans`. Neste exemplo, o teste Tukey é utilizado.
 
+```{r}
+medias_dbc <- emmeans(anova, ~ RAD)
+pwpm(medias_dbc)
+```
+
+
 Neste exemplo, utilizaremos a função `emmeans` para realizar a comparação de médias pelo teste Tukey. Nesta abordagem, a avaliação da significância das médias de dois tratamentos é dada pela sobreposição das flechas de cada tratamento. Se dois tratamentos apresentam setas que se sobrepõem (considerando o eixo x), assume-se que estes tratamentos são estatisticamente diferentes um do outro.
 
-Apenas para fins de comparação, incluirei a comparação de médias considerando o modelo DIC. Observe que a redução da estimativa do erro experimental considerando o delineamento DBC fez com que 
+Apenas para fins de comparação, incluirei a comparação de médias considerando o modelo DIC. Observe que a redução da estimativa do erro experimental considerando o delineamento DBC fez com que ficasse mais fácil encontrar diferenças entre os tratamentos.
 
 ```{r fig.cap="Comparações entre pares de médias com base no teste Tukey considerando o delineamento inteiramente casualizado (a) e o delineamento de blocos casualizados (b)", fig.height=3}
 anova_dic <- aov(MST ~ RAD, data = df_dbc)
@@ -150,26 +157,49 @@ medias_dbc <- emmeans(anova, ~ RAD)
 
 plot_dic <- 
   plot(medias_dic,
+       xlab = "Matéria seca total (g)",
+       ylab = "Tratamentos",
        CIs = FALSE, # remove os intervalos de confiança das médias
        comparisons = TRUE) # insere setas para comparação de médias (Tukey)
 
 plot_dbc <- 
   plot(medias_dbc,
+       xlab = "Matéria seca total (g)",
+       ylab = "Tratamentos",
        CIs = FALSE, # remove os intervalos de confiança das médias
        comparisons = TRUE) # insere setas para comparação de médias (Tukey)
 
-arrange_ggplot(plot_dbc,
-               plot_dic,
+arrange_ggplot(plot_dic,
+               plot_dbc,
                ncol = 1,
                tag_levels = "a")
 ```
 
+## Criação de gráficos
+```{r}
 
-# Pacote AgroR
+medias <- 
+  plot_bars(df_dbc, RAD, MST,
+            lab.bar = c("c", "b", "a"))
+medias2 <- 
+  plot_bars(df_dbc, RAD, MST,
+            plot_theme = theme_bw(),
+            lab.bar = c("c", "b", "a"),
+            values = TRUE,
+            width.bar = 0.6,
+            y.expand = 0.2)
+
+arrange_ggplot(medias, medias2, tag_levels = "a")
+
+```
+
+
+## Pacote AgroR
 
 No pacote [agroR](https://agronomiar.github.io/AgroR_Tutorial/delineamento-em-blocos-casualizados-1.html), a análise de variância neste delineamento pode ser realizada com a função `DBC()`.
 
 ```{r collapse = TRUE, message=FALSE, warning=FALSE}
+
 with(df_dbc,
      DBC(RAD, REP, MST))
 
@@ -177,29 +207,36 @@ with(df_dbc,
 
 
 
-# Notas da aula prática
+# Exemplo 2: híbridos de milho
+
+## Dados
 ```{r}
-url <- "http://bit.ly/df_biostat_exp"
-df_af <- import(url, sheet = "DIC-DBC")
-df_af <- as_factor(df_af, 1:2)
+url <- "https://docs.google.com/spreadsheets/d/1vpVGdIkggRxmdnwrkllHbVA0TIHN85UK/edit#gid=1486281449"
+df_maize <-  import(url, dec = ",")
 
 tabela <- 
-  df_af %>% 
-  make_mat(RAD, REP, AF_M2) %>% 
+  df_maize %>% 
+  make_mat(HIBRIDO, BLOCO, RG) %>% 
   row_col_sum()
 
 tabela
+```
 
-# ExpDes
-with(df_af, dbc(RAD, REP, AF_M2))
+## R base
 
+```{r}
+mod_hib <- aov(RG ~ HIBRIDO + BLOCO, data = df_maize)
+med_hib <- emmeans(mod_hib, ~HIBRIDO)
+pwpm(med_hib)
+plot(med_hib, comparisons = TRUE, CIs = FALSE)
+```
 
-# AgroR
-with(df_af, DBC(RAD, REP, AF_M2))
+## AgroR
+```{r}
 
+with(df_maize,
+     DBC(HIBRIDO, BLOCO, RG))
 
-# AgroR - DIC
-with(df_af, DIC(RAD, AF_M2))
 ```
 
 
