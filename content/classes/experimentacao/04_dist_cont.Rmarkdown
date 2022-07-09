@@ -1933,6 +1933,7 @@ t.test(largura ~ metodo, data = df, paired = TRUE)
 
 
 
+
 ### Questão 3
 
 Um Engenheiro Florestal realizou mensurações do Diâmetro a Altura do Peito em duas áreas plantadas de eucalipto. Ambas as áreas possuem 05 anos de idade, mas se encontram em diferentes tipos de solo. Após coletar os dados, os seguintes valores foram obtidos:

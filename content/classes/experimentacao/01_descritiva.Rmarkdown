@@ -99,7 +99,7 @@ ggplot(df, aes(x = altura, y = pessoa)) +
                 hjust = ifelse(desvio < 0, 1.5, -0.5))) +
   scale_x_continuous(limits = c(230, 300)) + 
   theme(panel.grid.minor = element_blank()) +
-  labs(x = "Altura da planta (m)",
+  labs(x = "Altura da planta (cm)",
        y = "Planta")
 ```
 
@@ -341,7 +341,8 @@ ggbetweenstats(dados,
                plot.type = "box",
                pairwise.comparisons = FALSE,
                results.subtitle = FALSE,
-               k = 4)
+               ylab = "rendimento",
+               k = 0)
 ```
 
 

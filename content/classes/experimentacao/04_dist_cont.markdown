@@ -1240,33 +1240,32 @@ t.test(paired$DIFERENCA, var.equal = TRUE)
 
 A série histórica das vendas de uma determinada fórmula de adubo seguem uma distribuição normal com média 25.000 t e desvio padrão de 2.600 t. Se a empresa fabricante decidir fabricar 30000 toneladas deste adubo para suprir a demanda da safra atual, qual é a probabilidade de que ela não possa atender todas as vendas por estar com a produção esgotada?
 
-(R = 0,0272) SOLUÇÃO: encontrar a
+> R = 0,0272 
 
-    probabilidade de vender mais que 30000 t
+SOLUÇÃO: encontrar a probabilidade de vender mais que 30000 t.
 
 
 ```r
 me <- 25000
 sdd <- 2600
 val <- 30000
-Z <- (val - me) / sdd
-prob <- 1 - pnorm(Z)
-qnorm(1-pnorm(3.5), me, sdd)
+(Z <- (val - me) / sdd)
 ```
 
 ```
-## [1] 15900
+## [1] 1.923077
 ```
 
 ```r
-qnorm(1-pnorm(3.5), me, sdd, lower.tail = F)
+(prob <- 1 - pnorm(Z))
 ```
 
 ```
-## [1] 34100
+## [1] 0.0272352
 ```
 
 ```r
+# gráfico da normal padrão
 normal <-
   ggplot() +
   xlim(c(15900, 34100)) +
@@ -1288,6 +1287,7 @@ normal <-
   labs(x = "Valor original", y = "Probabilidade")+
   ggtitle("Distribuição da variável original")
 
+# gráfico da variável original
 padrao <-
   ggplot() +
   stat_function(fun = dnorm,
@@ -1317,7 +1317,14 @@ RESOLUÇÃO: encontrar o valor de Z associado aos 5% que mais vendem Z = 1.6448 
 
 ```r
 # quantil associado aos 5% que mais vendem
-Z <- qnorm(0.95)
+(Z <- qnorm(0.95))
+```
+
+```
+## [1] 1.644854
+```
+
+```r
 me <- 240000
 sdd <- 30000
 
@@ -1330,6 +1337,7 @@ sdd <- 30000
 ```
 
 ```r
+# gráfico da variável original
 original <-
   ggplot() +
   xlim(c(135000, 345000)) +
@@ -1351,6 +1359,7 @@ original <-
   labs(x = "Valor original", y = "Probabilidade")+
   ggtitle("Distribuição da variável original")
 
+# gráfico da normal padrão
 padrao <-
   ggplot() +
   xlim(c(-3.5, 3.5)) +
@@ -1381,6 +1390,10 @@ arrange_ggplot(original, padrao, ncol = 1)
 ### Questão 3
 
 Uma variável aleatória X segue uma distribuição normal com média 100 e desvio padrão 10. Calcule a probabilidade de x estar entre 90 e 110.
+
+> R: 0.6826895
+
+RESOLUÇÃO: encontrar os valores de Z associado a 90 e 100, encontrando a área sobre a curva entre estes dois valores.
 
 
 ```r
@@ -1456,7 +1469,9 @@ arrange_ggplot(normal, padrao, ncol = 1)
 
 Se X\~N(10, 2), calcule (9 \< X \< 12)
 
-> R: 0,53 RESOLUÇÃO: calcular a probabilidade x ser maior que 9 e menor que 12
+> R: 0,53
+
+RESOLUÇÃO: calcular a probabilidade x ser maior que 9 e menor que 12
 
 
 ```r
@@ -1520,6 +1535,10 @@ arrange_ggplot(normal, padrao, ncol = 1)
 Se X tem uma distribuição normal com média 100 e desvio padrão 10, determine:
 
 * P(X \< 115)
+
+> R: 0,9333
+
+RESOLUÇÃO: Encontrar a probabilidade associada ao valor de Z associado a 115
 
 
 ```r
@@ -1935,13 +1954,7 @@ Em uma fazenda de criação de coelhos, um lote com 300 coelhos tem média que s
 
 > R (\~ 63 coelhos; 0.2119 \* 300)
 
-RESOLUÇÃO encontrar o número de coelhos que pesem mais que 3.7 Kg. No
-
-gráfico abaixo, a cor vermelha representa a probabilidade de coelhos com
-
-menos de 3.7 Kg e a cor azul a probabilidade de encontrar coelhos com
-
-mais de 3.7 Kg.
+RESOLUÇÃO encontrar o número de coelhos que pesem mais que 3.7 Kg. No gráfico abaixo, a cor vermelha representa a probabilidade de coelhos com menos de 3.7 Kg e a cor azul a probabilidade de encontrar coelhos com mais de 3.7 Kg.
 
 
 ```r
@@ -2030,9 +2043,12 @@ arrange_ggplot(normal, padrao, ncol = 1)
 1.  Um lote gado de corte com 3000 cabeças apresenta 430 Kg de peso vivo por cabeça em média com desvio padrão de 65 Kg e se sabe que segue uma distribuição normal. Na venda deste lote, animais com até 320 Kg são abatidos em um abatedouro A. Por outro lado, animais com peso maior que 320 e menor que 520 Kg são abatidos no abatedouro B. Animais com peso superior a 520 Kg são abatidos no abatedouro C. Considerando estes dados, responda:
 
 a\. O número de animais abatidos nos 3 batedouros: 3000
+
 b\. O número de animais abatidos no abatedouro A: 
-c\. O número de animais abatidos no abatedouro B
-d\. O número de animais abatidos no abatedouro C
+
+c\. O número de animais abatidos no abatedouro B:
+
+d\. O número de animais abatidos no abatedouro C:
 
 > RESOLUÇÃO: encontrar a probabilidade do peso (X) assumir P(X\<320), P(320 \< X \< 520) e P(X \> 520).
 
@@ -2058,6 +2074,7 @@ val2 <- 520
 ```
 
 ```r
+# Abatedouro A
 (prob1 <- pnorm(Z1))
 ```
 
@@ -2066,6 +2083,15 @@ val2 <- 520
 ```
 
 ```r
+(n1 <- round(prob1*3000))
+```
+
+```
+## [1] 136
+```
+
+```r
+# Abateroudo B
 (prob2 <- pnorm(Z2) - prob1)
 ```
 
@@ -2074,11 +2100,28 @@ val2 <- 520
 ```
 
 ```r
+(n2 <- round(prob2*3000))
+```
+
+```
+## [1] 2615
+```
+
+```r
+# Abatedouro C
 (prob3 <- 1 - sum(prob1, prob2))
 ```
 
 ```
 ## [1] 0.08308505
+```
+
+```r
+(n3 <- round(prob3*3000))
+```
+
+```
+## [1] 249
 ```
 
 ```r
@@ -2091,6 +2134,16 @@ sum(prob1, prob2, prob3)
 ```
 
 ```r
+# checar se o total de animais deu 3000
+n1 + n2 + n3
+```
+
+```
+## [1] 3000
+```
+
+```r
+# gráfico
 normal <-
   ggplot() +
   xlim(c(202.5,  657.5)) +
@@ -2185,11 +2238,7 @@ arrange_ggplot(normal, padrao)
 
 ### Questão 11
 
-Um agricultor possui uma área de plantio de eucalipto com 2,5 ha e uma densidade de 1500 plantas por ha. O diâmetro a altura do peito (DAP) segue uma distribuição normal, com média de 22 cm e variância de 16 cm\$^2\$.
-
-O produtor recebeu uma proposta de compra das toras que segue a seguinte
-
-condição.
+Um agricultor possui uma área de plantio de eucalipto com 2,5 ha e uma densidade de 1500 plantas por ha. O diâmetro a altura do peito (DAP) segue uma distribuição normal, com média de 22 cm e variância de 16 cm\$^2\$. O produtor recebeu uma proposta de compra das toras que segue a seguinte condição.
 
 -   Se as toras apresentarem até 17 cm de DAP, a madeira é destinada para produção de maravalha, com preço por tora de R\\\$ 28,00.
 
@@ -2199,13 +2248,7 @@ Considerando o exposto, calcule:
 
 a\) O valor estimado de venda de toras para maravalha
 
-Para encontrar este número, precisamos saber quantas árvores com esta
-
-medida são esperadas. Para isso, precisamos encontrar a probabilidade de
-
-ocorrência de árvores com até 18 cm de DAP e multiplicar essa
-
-probabilidade pelo total de árvores.
+> Para encontrar este número, precisamos saber quantas árvores com esta medida são esperadas. Para isso, precisamos encontrar a probabilidade de ocorrência de árvores com até 18 cm de DAP e multiplicar essa probabilidade pelo total de árvores.
 
 $$
 Z = \frac{17 - 22}{4} = -1,25
@@ -2256,7 +2299,7 @@ n * 28
 
 b\) o valor estimado de venda de toras para fabricação de tábua
 
-Para encontrar este número, precisamos saber quantas árvores com com mais de 18 cm se espera. A probabilidade de árvores com mais de 18 cm (P) é dada por
+> Para encontrar este número, precisamos saber quantas árvores com com mais de 18 cm se espera. A probabilidade de árvores com mais de 18 cm (P) é dada por
 
 $$
 Z = P(X > 1,25) = 1 - P(\le 1,25)
@@ -2315,9 +2358,7 @@ n2 * 46
 
 c\) O DAP que somente 5 % das toras ultrapassará
 
-Este valor é o quantil da distribuição no valor acumulado de 0.95.
-
-Precisamos, primeiramente, encontrar a probabilidade de \$P(Z \> z)\$:
+> Este valor é o quantil da distribuição no valor acumulado de 0.95. Precisamos, primeiramente, encontrar a probabilidade de \$P(Z \> z)\$:
 
 $$
 P(Z\>z) = 1 - P(Z≤z)
@@ -2331,11 +2372,7 @@ $$
 P(Z\>z) = 0,05
 $$
 
-O valor de 0,95 é encontrado no quantil \~1,65 (Z) da distribuição
-
-normal padrão (tabela). Para saber o valor exato, podemos utilizar a
-
-função `qnorm()`.
+O valor de 0,95 é encontrado no quantil \~1,65 (Z) da distribuição normal padrão (tabela). Para saber o valor exato, podemos utilizar a função `qnorm()`.
 
 
 ```r
@@ -2372,9 +2409,7 @@ ggplot() +
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-51-1.png" width="672" />
 
-De posse do valor de *Z*, basta realizar uma inversão da fórmula de
-
-padronização para encontrar o valor de *x*.
+De posse do valor de *Z*, basta realizar uma inversão da fórmula de padronização para encontrar o valor de *x*.
 
 $$
 
@@ -2452,9 +2487,54 @@ df
 ## 20      H2   61  196
 ```
 
+```r
+# encontrando o desvio padrão e a média
+df |> 
+  desc_stat(MGRA, NGRA,
+            by = HIBRIDO, 
+            stats = c("mean, sd.amo, n")) |> 
+  as.data.frame()
+```
+
+```
+##   HIBRIDO variable  mean   sd.amo  n
+## 1      H1     MGRA 222.7  51.5753 10
+## 2      H1     NGRA 593.5 118.5685 10
+## 3      H2     MGRA 144.4  55.3598 10
+## 4      H2     NGRA 457.9 135.6396 10
+```
+
 Assumindo que as variáveis MGRA e NGRA seguem uma distribuição normal, utilize um teste t para testar a hipótese de diferença das médias destas variáveis entre os dois híbridos. Após a obtenção dos resultados, realize a interpretação para cada variável.
 
 -   Variável MGRA
+
+
+$$
+{t_c} = \frac{{\left( {{{\bar x}_1} - {{\bar x}_2}} \right)}}{{\sqrt {S_p^2\left( {\frac{1}{{{n_1}}} + \frac{1}{{{n_2}}}} \right)} }}
+$$
+
+$$
+S_p^2 = \frac{{\left( {10 - 1} \right)51,575^2 + \left( {10 - 1} \right)55,359^2}}{{10 + 10 - 2}}
+$$
+
+
+$$
+2862,299
+$$
+
+
+$$
+{t_c} = \frac{{\left( {{222,7} - {144,4}} \right)}}{{\sqrt {2862,299\left( {\frac{1}{{10}} + \frac{1}{{10}}} \right)} }}
+$$
+
+$$
+t_c = 3,2725
+$$
+
+
+
+
+A aplicação no software R, é dada no seguinte exemplo
 
 
 ```r
@@ -2539,7 +2619,27 @@ sd(g2)
 ## [1] 6.988962
 ```
 
--   Variável MGRA
+-   Variável NGRA
+
+$$
+S_p^2 = \frac{{\left( {10 - 1} \right)118,5685^2 + \left( {10 - 1} \right)135,6396^2}}{{10 + 10 - 2}}
+$$
+
+
+$$
+16228,29
+$$
+
+
+$$
+{t_c} = \frac{{\left( {{593,5} - {457,9}} \right)}}{{\sqrt {16228,29\left( {\frac{1}{{10}} + \frac{1}{{10}}} \right)}}}
+$$
+
+$$
+t_c = 2,38
+$$
+
+
 
 
 ```r
@@ -2571,7 +2671,21 @@ ggbetweenstats(df,
 
 <img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-54-1.png" width="672" />
 
+O valor de t tabelado para 5% de erro e grau liberdade de 18 é 2,10.
+
+
+```r
+qt(0.975, df = 18)
+```
+
+```
+## [1] 2.100922
+```
+
+
 Considerando os resultados do teste de hipótese, rejeita-se a hipótese nula para as duas variáveis e afirma-se que as médias dos dois híbridos para MGRA e NGRA por espiga são diferentes.
+
+
 
 ### Questão 2
 
@@ -2712,6 +2826,7 @@ t.test(largura ~ metodo, data = df, paired = TRUE)
 
 
 
+
 ### Questão 3
 
 Um Engenheiro Florestal realizou mensurações do Diâmetro a Altura do Peito em duas áreas plantadas de eucalipto. Ambas as áreas possuem 05 anos de idade, mas se encontram em diferentes tipos de solo. Após coletar os dados, os seguintes valores foram obtidos:
@@ -2765,7 +2880,7 @@ ggplot(df, aes(x = media, y = area)) +
        y = "")
 ```
 
-<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-57-1.png" width="960" />
+<img src="/classes/experimentacao/04_dist_cont_files/figure-html/unnamed-chunk-58-1.png" width="960" />
 
 Considerando que os intervalos de confiança se cruzam, pode-se afirmar que as médias não diferem estatisticamente. Vamos testar esta hipótese utilizando um teste t?. Neste caso, o t calculado é comparado com o t tabelado a 52 (23 + 31 - 2) graus liberdade.
 
@@ -2787,4 +2902,6 @@ $$
 $$
 {t_c} = 1,688
 $$
+
+
 Como o t calculado foi menor que o tabelado, não rejeita-se a hipótese nula de diferença entre as médias, assumindo-se que as médias são estatisticamente iguais.

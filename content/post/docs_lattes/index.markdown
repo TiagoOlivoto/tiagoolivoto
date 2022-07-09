@@ -4,8 +4,8 @@ title: Organizando o currículo Lattes
 subtitle: ''
 summary: 'Neste post, apresento uma planilha baseada na linguagem VBA-Excel para gerenciamento e organização do currículo lattes.'
 author: Tiago Olivoto
-date: '2022-01-18'
-lastmod: '2022-01-18'
+date: '2022-01-22'
+lastmod: '2022-03-18'
 url_source: https://github.com/TiagoOlivoto/lattes
 links:
 - icon: twitter
@@ -35,10 +35,10 @@ math: true
 
 No primeiro post de 2022, apresento uma planilha confeccionada em VBA-Excel, para gerenciamento e organização do[ Curriculo Lattes](https://lattes.cnpq.br/). A Plataforma Lattes é um sistema de currículos virtual criado e mantido pelo Conselho Nacional de Desenvolvimento Científico e Tecnológico, pelo qual integra as bases de dados curriculares, grupos de pesquisa e instituições em um único sistema de informações, das áreas de Ciência e Tecnologia, atuando no Brasil.
 
-Um usuário com Curriculo Lattes mantém sua base digital atualizada na plataforma, mas os comprovantes para documentação do currículo (arquivos .pdf ou imagem, etc.), são muitas vezes salvos em pastas sem nenhum tipo de organização, dificultando uma futura compilação. Tendo passado por três concursos públicos, onde necessitava organizar os documentos do Lattes para posterior comprovação, senti a necessidade de uma ferramente específica para isso. Como já tinha alguma experiência com a linguagem VBA (*Visual Basic for Applications*) no Microsoft Excel (MS-Excel), resolvi desenvolver a aplicação.
+Um usuário com Curriculo Lattes mantém sua base digital atualizada na plataforma, mas os comprovantes para documentação do currículo (arquivos .pdf ou imagem, etc.), são muitas vezes salvos em pastas sem nenhum tipo de organização, dificultando uma futura compilação. Tendo passado por três concursos públicos, onde necessitava organizar os documentos do Lattes para posterior comprovação, senti a necessidade de uma ferramenta específica para isso. Como já tinha alguma experiência com a linguagem VBA (*Visual Basic for Applications*) no Microsoft Excel (MS-Excel), resolvi desenvolver a aplicação.
 
 
-A planilha foi desenvolvida utilizando VBA no Microsoft MS-Excel. Embora seja necessária uma licença comercial para o MS-Excel, ele é o principal editor de planilhas utilizado pela comunidade acadêmica e científica. As aplicações feitas por meio de macros e userform não requerem instalação, apenas uma cópia do MS-Excel 2007 ou superior com a opção macro habilitada.
+A planilha foi desenvolvida utilizando VBA no Microsoft MS-Excel. Embora seja necessária uma licença comercial para o MS-Excel, ele é o principal editor de planilhas utilizado pela comunidade acadêmica e científica. As aplicações feitas por meio de macros e `userform` não requerem instalação, apenas uma cópia do MS-Excel 2007 ou superior com a opção macro habilitada.
 
 
 

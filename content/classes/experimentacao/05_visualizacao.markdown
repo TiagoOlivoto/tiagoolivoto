@@ -25,6 +25,8 @@ Para reprodução destes exemplos, os seguintes pacotes precisam ser instalados 
 # pacotes para criação de mapas (github)
 remotes::install_github("ropensci/rnaturalearthhires")
 remotes::install_github("ricardo-bion/ggradar")
+remotes::install_github("ricardo-bion/ggradar")
+remotes::install_github("ipeaGIT/geobr", subdir = "r-package")
 ```
 
 Antes de carregar, verifique se o pacote está instalado.
@@ -38,6 +40,7 @@ library(ggridges)
 library(rnaturalearth)
 library(ggradar)
 library(lubridate)
+library(geobr)
 ```
 
 # Dados
@@ -716,6 +719,7 @@ ggradar(freq %>% transpose_df(),
 
 
 ## Mapas
+### Mapa da américa do sul e Brasil
 O pacote `rnaturalearth` é uma excelente ferramenta para manter e facilitar a interação com os dados do mapa [Natural Earth](https://www.naturalearthdata.com/). Para produção de mapas com o `ggplot2`, os seguintes pacotes são necessários.
 
 
@@ -741,11 +745,252 @@ brazil <-
   ne_states(country = "brazil", returnclass = "sf") |> 
   mutate(scat = ifelse(postal == "SC", "SC", "Outros"))
 
-p1 + 
+p2 <- 
+  p1 + 
   geom_sf(data = brazil, aes(fill = scat))
+p2
 ```
 
-<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-23-1.png" width="768" />
 
+### Mapa do Brasil e SC, com municípios
+
+
+```r
+sc <- 
+  read_municipality(code_muni = "SC",
+                    simplified = FALSE,
+                    showProgress = FALSE) |> 
+  mutate(floripa = ifelse(name_muni == "Florianópolis",
+                          "Florianópolis",
+                          "Outro"))
+```
+
+```
+## Using year 2010
+```
+
+```r
+p3 <-
+  p1 + 
+  geom_sf(data = brazil) +
+  geom_sf(data = sc, aes(fill = floripa)) +
+  xlim(c(-55, -47)) +
+  ylim(c(-30, -25)) +
+  labs(title = "Mapa do brasil destacando o estado de SC",
+       caption = "Produzido com os pkgs geobr e rnaturalearth",
+       fill = "") +
+  theme(legend.position = "bottom")
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+p3
+```
+
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+
+
+
+# Exercício
+## Motivação
+
+A densidade de fluxo de fótons fotossintéticos (PPFD) em níveis subótimos ou superótimos pode modificar o acúmulo de biomassa, composição bromatológica e aparência das culturas. Para isso, Olivoto et al. (2018)[3] investigaram o efeito de níveis de radiação no crescimento da chicória (*Cichorium endivia* L. var. *latifolia*). Os dados disponíveis na aba `FAT_CI` (https://docs.google.com/spreadsheets/d/1vpVGdIkggRxmdnwrkllHbVA0TIHN85UK/edit#gid=2056145155) são relativos a duas variáveis, à saber, matéria seca total (MST) e área foliar (AF) de plantas de chicória cultivadas em diferentes níveis de sombreamento (50, 70, e 100), e avaliados aos 21, 28 e 35 dias após o plantio.
+
+* Considerando o link disponível, importe os dados para o software R, salvando-os em um objeto chamado `df` (preste atenção com o separador decimal!).
+
+
+```r
+library(rio)
+library(tidyverse)
+library(metan)
+url <- "https://docs.google.com/spreadsheets/d/1vpVGdIkggRxmdnwrkllHbVA0TIHN85UK/edit#gid=2056145155"
+df <-  import(url, dec = ",")
+```
+
+Para lapidar os conhecimentos na construção de gráficos, utilize o pacote `ggplot2`[^4] e metan[^5] para solução dos seguintes problemas.
+
+## Problema 1 - Associação entre variáveis
+
+* Considerando os dados, construa um gráfico de dispersão com a variável `AF` no eixo x e a variável `MST` no eixo y, salve o gráfico em um objeto chamado `p1`.
+
+
+```r
+p1 <- 
+  ggplot(df, aes(AF, MST)) +
+  geom_point()
+```
+
+* Para melhor compreender a distribuição dos pontos, realize o mapeamento da variável `DAP` com diferentes cores.
+* Altere a legenda do eixo x e y para 'Área foliar (cm2)' e 'Matéria seca (g)', respectivamente.
+* Aplique um tema de sua preferência ao tema utilizando qualquer tema definido por `theme_*()`[^6].
+* Armazene o gráfico em um objeto chamado `p2`.
+
+
+```r
+p2 <- 
+  ggplot(df, aes(AF, MST, color = DAP)) +
+  geom_point() +
+  labs(x = "Área foliar (cm2)",
+       y = "Matéria seca (g)")
+```
+
+* Organize os gráficos `p1` e `p2` em um mesmo painel, um ao lado do outro.
+
+```r
+arrange_ggplot(p1, p2)
+```
+
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-28-1.png" width="672" />
+
+* Realize a interpretação do gráfico com relação à associação entre AF e MST.
+
+> A área foliar e a matéria seca estão positivamente relacionadas, ou seja, há a tendêncida de que o aumento na área foliar venha acompanhado do aumento na matéria seca. No segundo gráfico, é possível identificar que os maiores valores de matéria seca e área foliar foram observados nos 35DAP, e o menores, aos 21DAP.
+
+* Salve os gráficos em um arquivo chamado `dispersão.png`, com 3 polegadas de altura e 8 de largura
+
+
+```r
+ggsave("dispersão.png", width = 8, height = 3)
+```
+
+
+
+## Problema 2 - Variação dos dados
+
+* Confeccione um gráfico do tipo boxplot contendo a variável `DAP` no eixo x e `MST` no eixo y. Salve o gráfico em um objeto chamado `p3`.
+
+
+```r
+p3 <- 
+  ggplot(df, aes(DAP, MST)) +
+  geom_boxplot()
+```
+
+* Para fazer inferências sobre o fator sombreamento, construa um boxplot semelhante, mas agora mapeando a variável `SOM` com diferentes cores de preenchimento do boxplot. * Inclua uma linha horizontal que represente a média geral da matéria seca.
+* Salve o gráfico em um objeto chamado `p4`.
+
+
+```r
+p4 <- 
+  ggplot(df, aes(DAP, MST, fill = SOM)) +
+  geom_boxplot() +
+  geom_hline(yintercept = mean(df$MST))
+```
+
+
+* Organize os gráficos `p3` e `p4` em um mesmo painel, um ao lado do outro.
+
+```r
+arrange_ggplot(p3, p4)
+```
+
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-32-1.png" width="672" />
+
+* Realize a interpretação do gráfico com relação à variação da matéria seca total entre os diferentes níveis de radiação dentro de cada dia após o plantio.
+
+Aos 21DAP foi observada a menor variação entre os níveis de SOM. Aos 28DAP, a diferença entre os níveis de SOM foi mais evidente, onde plantas crescendo em 100R apresentaram um valor mediano de MST maior, mas também a maior variação entre as repetições (comprimento da caixa). Aos 35DAP, a diferença entre as radiações torna-se mais evidente. Também, pode-se observar que as variações entre as repetições do 100R e 50R foram menores se comparado aos 28DAP (menor comprimento da caixa).
+
+
+* Salve os boxplots em um arquivo chamado `boxplot.png`.
+
+
+```r
+ggsave("boxplot.png")
+```
+
+
+
+## Problema 3 - Médias
+* Confeccione um gráfico de barras mostrando a média da variável `AF` no eixo y para cada dia após o plantio (`DAP`) no eixo x.
+* Defina os limites do eixo y de 0 até 6000.
+* Salve o gráfico em um objeto chamado `p5`. 
+
+> Dica: a função plot_bars() do pacote metan pode ser útil.
+
+
+```r
+p5 <- 
+  plot_bars(df,
+            x = DAP,
+            y = AF,
+            y.lim = c(0, 6000))
+
+# versão ggplot2
+p5.2 <- 
+  ggplot(df, aes(DAP, AF)) +
+  geom_bar(stat = "summary") +
+  ylim(c(0, 6000))
+```
+
+* Assumindo que as médias da AF precisam ser apresentadas para cada combinação de DAP e SOM, mapeie a variável `SOM` com diferentes cores de preenchimento no gráfico de barras.
+* Mude os títulos dos eixos x e y para "Dias após o plantio (DAP)" e "Área foliar (cm2)", respectivamente.
+* Defina os limites do eixo y de 0 até 6000.
+* Armazene o gráfico em um objeto chamado `p6`.
+* Organize os gráficos `p5` e `p6` em um único painel
+* Salve os gráficos de barra em uma imagem chamada `barras.png`.
+
+> Dica: a função plot_factbars() do pacote metan pode ser útil.
+
+
+```r
+p6 <- 
+  plot_factbars(df, DAP, SOM,
+                resp = AF,
+                y.lim = c(0, 6000),
+                xlab = "Dias após o plantio (DAP)",
+                ylab = "Área foliar (cm2)")
+
+# versão ggplot2
+p6.2 <- 
+  ggplot(df, aes(DAP, AF, fill = SOM)) +
+  geom_bar(stat = "summary",
+           fun = "mean",
+           width = 0.7,
+           position = position_dodge()) +
+  stat_summary(fun.data = mean_se,
+               geom = "errorbar",
+               width = 0.2,
+               position = position_dodge( width = 0.7)) +
+  labs(x = "Dias após o plantio (DAP)",
+       y = "Área foliar (cm2)") +
+  ylim(c(0, 6000))
+```
+
+
+* Organize os gráficos `p5` e `p6` em um mesmo painel, um ao lado do outro.
+
+```r
+arrange_ggplot(p5, p6)
+```
+
+<img src="/classes/experimentacao/05_visualizacao_files/figure-html/unnamed-chunk-36-1.png" width="672" />
+
+* Realize a interpretação do gráfico com relação à área foliar nos diferentes níveis de radiação ao longo dos dias após o plantio.
+
+> A média da área foliar foi mais semelhante entre os níveis de radiação aos 21DAP. Considerando o erro padrão da média como uma medida de significância, pode-se afirmar que aos 21DAP as médias do 50R e 70R foram estatisticamente iguais. Aos 35DAP, a área foliar das plantas crescendo com 50% de radiação foi menor que àquelas crescendo em pleno sol (100R) e com 70% de radiação (70R).
+
+* Salve os boxplots em um arquivo chamado `barras.png`.
+
+
+```r
+ggsave("barras.png")
+```
+
+
+
+
+# Referências
+[^3]: OLIVOTO, T. et al. Photosynthetic photon flux density levels affect morphology and bromatology in *Cichorium endivia* L. var. *latifolia* grown in a hydroponic system. **Scientia Horticulturae**, v. 230, p. 178–185, 7 jan. 2018. 
+
+[^4]: WICKHAM, H. ggplot2: Elegant Graphics for Data Analysis. New York: Springer, 2016. 
+
+[^5]: OLIVOTO, T.; LÚCIO, A. D. metan: An R package for multi‐environment trial analysis. Methods in Ecology and Evolution, v. 11, n. 6, p. 783–789, 2020. 
+
+[^6]: O pacote ggthemes (https://mran.microsoft.com/snapshot/2015-04-01/web/packages/ggthemes/vignettes/ggthemes.html) pode ser utilizado para aumentar o leque de possibilidades.
 
 # Referências
