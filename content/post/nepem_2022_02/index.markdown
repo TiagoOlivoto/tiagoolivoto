@@ -53,17 +53,15 @@ Se você é aluno ativo da UFSC e gostaria de aperfeiçoar suas competências e 
 
 **Venha fazer parte da equipe!**
 
-Para participar do processo, preencha o formulário e compareça a entrevista, que será realizada dia 28 e 29/09, na sala do Prof. Olivoto
-
 <br>
 
-# <i class="fas fa-clock"></i> Cronograma
+# <i class="fas fa-clock"></i> Fases do processo e cronograma
 
-| ATIVIDADE                         | PERÍODO            |
-|-----------------------------------|--------------------|
-| Inscrições (bit.ly/selecao_nepem) | 17/09 a 27/09/2022 |
-| Entrevistas                       | 28 e 29/09/2022    |
-| Divulgação dos resultados         | 30/09/2022         |
+| ATIVIDADE                                          | PERÍODO            |
+|----------------------------------------------------|--------------------|
+| Inscrições ([bit.ly/selecao_nepem](https://docs.google.com/forms/d/e/1FAIpQLSeGfqPZ-naUmgrFsHmSdLn0alPmPGabWNnURbFQUfVI0ufN_g/viewform))                  | 17/09 a 27/09/2022 |
+| Entrevistas                                        | 28 e 29/09/2022    |
+| Divulgação dos resultados                          | 30/09/2022         |
 
 <br> <br>
 
