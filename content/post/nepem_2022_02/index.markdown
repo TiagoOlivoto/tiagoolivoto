@@ -4,8 +4,8 @@ title: Seleção NEPEM
 subtitle: ''
 summary: 'Processo seletivo para ingresso no Núcleo de Ensinos e Pesquisas em Experimentação e Melhoramento Vegetal (NEPEM).'
 author: Tiago Olivoto
-date: '2022-04-20'
-lastmod: '2022-04-25'
+date: '2022-09-16'
+lastmod: '2022-09-16'
 # url_source: https://github.com/TiagoOlivoto/lattes
 links:
 - icon: twitter
@@ -20,40 +20,59 @@ tags:
   - Organização
 image:
   placement: 2
-  caption: 'Image by StartupStockPhotos from Pixabay'
+  caption: 'Image by Tiago Olivoto'
   preview_only: no
 featured: no
 math: true
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 <script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"></script>
 
 
 
-Teste
+Se você é aluno ativo da UFSC e gostaria de aperfeiçoar suas competências e habilidades na área de Melhoramento Genético e Experimentação Agrícola, a oportunidade chegou!! O NEPEM está com processo seletivo aberto para de ingresso como membro efetivo!
 
-<br> 
+**Algumas vantagens oferecidas aos integrantes do NEPEM**
 
+* Bolsa de Iniciação Científica;
+* Bolsa de Iniciação Tecnológica;
+* Certificado de horas de bolsista voluntário;
+* Prática em atividades de campo;
+* Treinamento em instalação e condução de experimentos; 
+* Treinamento em processamento de imagens; 
+* Treinamento no software R; 
+* Treinamento em análise e apresentação de dados; 
+* Oportunidade de monitoria em cursos e eventos; 
+* Participação em congressos e eventos científicos; 
+* Gerenciamento de trabalho em equipe; 
+* Realização de TCC nas áreas de atuação do grupo;
+* Discussão de artigos científicos;
+
+**Venha fazer parte da equipe!**
+
+Para participar do processo, preencha o formulário e compareça a entrevista, que será realizada dia 28 e 29/09, na sala do Prof. Olivoto
+
+<br>
 
 # <i class="fas fa-clock"></i> Cronograma
 
-|     ATIVIDADE                         |     PERÍODO                               |
-|---------------------------------------|-------------------------------------------|
-|     Lançamento do Edital              |     20 de abril de 2022                   |
-|     Inscrição dos candidatos          |     20 de abril a 02 de maio   de 2022    |
-|     Entrevista com os   candidatos    |     04 de maio de 2022                    |
-|     Divulgação do resultado           |     05 de maio de 2022                    |
+| ATIVIDADE                         | PERÍODO            |
+|-----------------------------------|--------------------|
+| Inscrições (bit.ly/selecao_nepem) | 17/09 a 27/09/2022 |
+| Entrevistas                       | 28 e 29/09/2022    |
+| Divulgação dos resultados         | 30/09/2022         |
 
-<br> 
-<br> 
+<br> <br>
 
 # <i class="fas fa-file-export"></i> Inscrição
 
-A inscrição deve ser realizada pelo [formulário online de inscrição](https://forms.gle/npCsKZvgom3B5rD2A), até as 23:59 do dia 02 de maio de 2022.
+A inscrição deve ser realizada pelo [formulário online de inscrição](https://forms.gle/SBkWNAuLnF1SigvC6), até as 23:59 do dia 27 de setembro de 2022.
 
-<br> 
-<br> 
+<br> <br>
 
 # <i class="fas fa-file-export"></i> Resultado
 
-
+Em breve
