@@ -1,5 +1,5 @@
 +++
-title = "Multi‚Ä trait selection for mean performance and stability in maize"
+title = "Multi‚Äêtrait selection for mean performance and stability in maize"
 date = "2021-01-01"
 publication_types = ["2"]
 authors = ["**Olivoto T.**", "Nardino M.", "Meira D.", "Meier C.", "Follmann D.", "Souza V.", "Konflanz V.", "Baretta D."]

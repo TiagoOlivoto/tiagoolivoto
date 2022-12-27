@@ -89,6 +89,57 @@ gg1
 <br>
 <br>
 
+## Citation progress
+```{r, echo = FALSE, fig.align = "center", fig.height = 4.32, fig.width = 10, fig.cap = cap, warning=FALSE, message=FALSE}
+
+cap <- sprintf("Number of citations over time. Last update at %s.",
+               Sys.Date())
+
+
+library(scholar)
+library(tidyverse)
+id <- 'QjxIJkcAAAAJ'
+## Get his citation history, i.e. citations to his work in a given year
+ct <-
+  get_citation_history(id) %>% 
+  rename(Yearly = cites) %>% 
+  mutate(Accumulated = cumsum(Yearly),) %>% 
+  pivot_longer(-year) %>% 
+  mutate(name = as.factor(name),
+         name = fct_relevel(name, "Accumulated", "Yearly"))
+
+## Plot citation trend
+library(ggplot2)
+ggplot(ct, aes(year, value)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~name, scales = "free") +
+  geom_label(mapping = aes(label = value),
+             label.size = 0.4,
+             # fill = "gray25",
+             # color = "white",
+             # label.padding = unit(0.15, "lines"),
+             nudge_x = 0.1,
+             hjust = 1,
+             vjust = -0.3) +
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.15)))+ 
+  scale_x_continuous(expand = expansion(mult = c(0.1, 0.1)),
+                     breaks = unique(ct$year))+
+  labs(x = "Year",
+       y = "Number of citations")
+```
+
+
+```{r, echo = FALSE, fig.align = "center", fig.height = 4.32, fig.width = 10, fig.cap = cap, warning=FALSE, message=FALSE}
+
+
+
+```
+
+
+<br>
+<br>
+
 # Doctor Thesis
 
 <h3>Genotypic stability indexes and multivariate simultaneous selection: a new approach</h3>
@@ -100,12 +151,12 @@ gg1
 **Keywords**: AMMI. BLUP. Genotype−environment interaction. GGE. metan.
 
 
-  Committee (Approved on December 19, 2019):
-  * Prof. Dr. Alessandro Dal’Col Lúcio (Orientador) - UFSM
-  * Prof. Dr. José Antonio Gonzales da Silva - UNIJUÍ
-  * Prof. Dr. Sidinei José Lopes - UFSM
-  * Prof. Dr. Thomas Newton Martin - UFSM
-  * Prof. Dr. Velci Queiróz de Souza - UNIPAMPA
+Committee (Approved on December 19, 2019):
+* Prof. Dr. Alessandro Dal’Col Lúcio (Orientador) - UFSM
+* Prof. Dr. José Antonio Gonzales da Silva - UNIJUÍ
+* Prof. Dr. Sidinei José Lopes - UFSM
+* Prof. Dr. Thomas Newton Martin - UFSM
+* Prof. Dr. Velci Queiróz de Souza - UNIPAMPA
 
 
 <br>
@@ -124,9 +175,9 @@ gg1
 **Keywords**: *Zea mays* L. Correlation coefficient. Multicollinearity. Simulations.
 
 Committee (Approved on February 20, 2017):
-  * Prof. Dr. Velci Queiróz de Souza (Orientador) - UFSM
-  * Prof. Dr. Volmir Sério Marchioro - UFSM
-  * Prof. Dr. Marcos Vinícios Marques Pinheiro - UFSM
+* Prof. Dr. Velci Queiróz de Souza (Orientador) - UFSM
+* Prof. Dr. Volmir Sério Marchioro - UFSM
+* Prof. Dr. Marcos Vinícios Marques Pinheiro - UFSM
 
 <br>
 <br>

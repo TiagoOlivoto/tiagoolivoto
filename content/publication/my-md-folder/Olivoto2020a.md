@@ -1,5 +1,5 @@
 +++
-title = "Metan: an r package for multi‚Ä environment trial analysis"
+title = "Metan: an r package for multi‚Äêenvironment trial analysis"
 date = "2020-01-01"
 publication_types = ["2"]
 authors = ["**Olivoto T.**", "Lucio A."]

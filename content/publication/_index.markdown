@@ -15,9 +15,22 @@ headless = true
 ## Production progress
 
 <div class="figure" style="text-align: center">
-<img src="/publication/_index_files/figure-html/unnamed-chunk-2-1.png" alt="Number of publications in journal over time. The complete list of references is at the bottom of the page. Last update at 2022-04-01." width="960" />
-<p class="caption">Figure 1: Number of publications in journal over time. The complete list of references is at the bottom of the page. Last update at 2022-04-01.</p>
+<img src="/publication/_index_files/figure-html/unnamed-chunk-2-1.png" alt="Number of publications in journal over time. The complete list of references is at the bottom of the page. Last update at 2022-12-27." width="960" />
+<p class="caption">Figure 1: Number of publications in journal over time. The complete list of references is at the bottom of the page. Last update at 2022-12-27.</p>
 </div>
+
+<br>
+<br>
+
+## Citation progress
+<div class="figure" style="text-align: center">
+<img src="/publication/_index_files/figure-html/unnamed-chunk-3-1.png" alt="Number of citations over time. Last update at 2022-12-27." width="960" />
+<p class="caption">Figure 2: Number of citations over time. Last update at 2022-12-27.</p>
+</div>
+
+
+
+
 
 <br>
 <br>
@@ -33,12 +46,12 @@ headless = true
 **Keywords**: AMMI. BLUP. Genotype−environment interaction. GGE. metan.
 
 
-  Committee (Approved on December 19, 2019):
-  * Prof. Dr. Alessandro Dal’Col Lúcio (Orientador) - UFSM
-  * Prof. Dr. José Antonio Gonzales da Silva - UNIJUÍ
-  * Prof. Dr. Sidinei José Lopes - UFSM
-  * Prof. Dr. Thomas Newton Martin - UFSM
-  * Prof. Dr. Velci Queiróz de Souza - UNIPAMPA
+Committee (Approved on December 19, 2019):
+* Prof. Dr. Alessandro Dal’Col Lúcio (Orientador) - UFSM
+* Prof. Dr. José Antonio Gonzales da Silva - UNIJUÍ
+* Prof. Dr. Sidinei José Lopes - UFSM
+* Prof. Dr. Thomas Newton Martin - UFSM
+* Prof. Dr. Velci Queiróz de Souza - UNIPAMPA
 
 
 <br>
@@ -57,9 +70,9 @@ headless = true
 **Keywords**: *Zea mays* L. Correlation coefficient. Multicollinearity. Simulations.
 
 Committee (Approved on February 20, 2017):
-  * Prof. Dr. Velci Queiróz de Souza (Orientador) - UFSM
-  * Prof. Dr. Volmir Sério Marchioro - UFSM
-  * Prof. Dr. Marcos Vinícios Marques Pinheiro - UFSM
+* Prof. Dr. Velci Queiróz de Souza (Orientador) - UFSM
+* Prof. Dr. Volmir Sério Marchioro - UFSM
+* Prof. Dr. Marcos Vinícios Marques Pinheiro - UFSM
 
 <br>
 <br>
