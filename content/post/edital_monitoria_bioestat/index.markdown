@@ -86,6 +86,6 @@ Em breve...
 <!-- \$^5\$ Média final (Histórico$\times$0,3 + Entrevista$\times$0,7) -->
 
 
-<a class="btn btn-success" href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/content/post/edital_monitoria_bioestat/resultado_monitoria_FIT5306_assinado.pdf" target="_blank"><i class="fa fa-save"></i> Download do resultado</a>
+<!-- <a class="btn btn-success" href="https://github.com/TiagoOlivoto/tiagoolivoto/raw/master/content/post/edital_monitoria_bioestat/resultado_monitoria_FIT5306_assinado.pdf" target="_blank"><i class="fa fa-save"></i> Download do resultado</a> -->
 
 
