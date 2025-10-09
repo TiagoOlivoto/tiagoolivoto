@@ -73,10 +73,27 @@ user_groups:
 - Visitors
 ---
 
-I am Adjunct Professor at [Department of Plant Sciences](https://fit.ufsc.br/) at [Federal University of Santa Catarina](https://ufsc.br/) (UFSC, 2022 - today). My main research interests are related to Plant Breeding and Experimental Statistics, with emphasis on the development of methods for stability analysis in plant breeding trials.
+Agricultural Engineer (2014), MSc in Agronomy (2017), and PhD in Agronomy with
+emphasis on Plant Breeding and Experimental Statistics (2020) from the Federal
+University of Santa Maria. Currently, I am an Associate Professor at the
+Department of Crop Science, Federal University of Santa Catarina (UFSC), where I
+lead the Flax Breeding Program within [NEPEM/UFSC](https://nepemufsc.com/). My
+research focuses on Experimental Statistics, Biometry, and High-throughput
+Phenotyping applied to Plant Breeding. I also serve as Associate Editor of
+Ciência Rural and the Brazilian Journal of Biometrics. 
 
-I'm an active member of the [International Biometric Society (IBS)](https://www.biometricsociety.org/home), and [Brazilian Society of Plant Breeding (SBMP)](http://www.sbmp.org.br/). I'm also a member of the Young Researchers Committee of the [Brazilian Region of the International Biometric Society](http://www.rbras.org.br/?q=pt-br), (JP-RBras) representing the states of RS, SC, and PR.
+I am the developer and maintainer of the R packages
+[metan](https://nepem-ufsc.github.io/metan/), dedicated to the analysis,
+visualization, and reporting of multi-environment trials; 
+[pliman](https://nepem-ufsc.github.io/pliman/), designed for plant image
+analysis, disease quantification, and object measurement; and
+[plimanshiny](https://github.com/TiagoOlivoto/plimanshiny), a Shiny application
+that extends pliman with a user-friendly graphical interface for high-throughput
+phenotyping. In 2024, Elsevier ranked me among the 12 most influential
+researchers at UFSC in the year of 2023.
 
-In my [CV](http://lattes.cnpq.br/2432360896340086), the most frequent terms in the context of scientific production are analysis of multi-environment trials, multivariate indexes, confidence interval for correlation, design of experiments, indirect selection, genotype-vs-environment interaction, mixed models, and genetic parameters. 
 
-I have some experience with well-known statistical software such as SAS, SPSS, Statistica, GEA-R, and Gênes, but since my Ph.D. I have dedicated my efforts to R programming. I've been working on the development of the R packages [metan](https://tiagoolivoto.github.io/metan/), designed for checking, manipulating, summarizing, analyzing, and plotting multi-environment trial data, and [pliman](https://bit.ly/pliman), designed for analyzing plant images.
+
+
+
+
