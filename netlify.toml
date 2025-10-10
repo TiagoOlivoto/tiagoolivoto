@@ -3,8 +3,10 @@
   command = "hugo"
 
 [build.environment]
-  # This is a fallback for any context not specifically defined below
   NODE_VERSION = "18"
+  HUGO_VERSION = "0.74.2"
+  HUGO_ENV = "production"
+  HUGO_ENABLEGITINFO = "true"
 
 [context.production.environment]
   NODE_VERSION = "18"
