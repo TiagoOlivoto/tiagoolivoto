@@ -1,17 +1,21 @@
 [build]
-publish = "public"
-command = "hugo"
-
-[context.production.environment]
-HUGO_VERSION = "0.74.2"
-HUGO_ENV = "production"
-HUGO_ENABLEGITINFO = "true"
-
-[context.branch-deploy.environment]
-HUGO_VERSION = "0.74.2"
-
-[context.deploy-preview.environment]
-HUGO_VERSION = "0.74.2"
+  publish = "public"
+  command = "hugo"
 
 [build.environment]
-NODE_VERSION = "18"
+  # This is a fallback for any context not specifically defined below
+  NODE_VERSION = "18"
+
+[context.production.environment]
+  NODE_VERSION = "18"
+  HUGO_VERSION = "0.74.2"
+  HUGO_ENV = "production"
+  HUGO_ENABLEGITINFO = "true"
+
+[context.branch-deploy.environment]
+  NODE_VERSION = "18"
+  HUGO_VERSION = "0.74.2"
+
+[context.deploy-preview.environment]
+  NODE_VERSION = "18"
+  HUGO_VERSION = "0.74.2"
