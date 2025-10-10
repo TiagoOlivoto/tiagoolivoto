@@ -12,3 +12,6 @@ HUGO_VERSION = "0.74.2"
 
 [context.deploy-preview.environment]
 HUGO_VERSION = "0.74.2"
+
+[build.environment]
+NODE_VERSION = "18"
